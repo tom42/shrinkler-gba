@@ -1,6 +1,3 @@
-* Need to redo the release of lzasm:
-  * Fix reference to gbaic, is now shrinkler-gba
-  * Either delete release 0.1.0, or create a release 0.1.1. Whatever works.
 * Set up 3rd party dependencies:
   * 3rdparty/subtree vs. just 3rdparty
   * In any case, might want to have a README.md in there? or 3rdparty.md?
