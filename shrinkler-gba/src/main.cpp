@@ -21,6 +21,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-int main(int argc, char* argv)
+#include <cstdlib>
+#include <iostream>
+#include <stdexcept>
+
+int main(int argc, char* argv[])
 {
+	try
+	{
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << argv[0] << ": " << e.what() << std::endl;
+		return EXIT_FAILURE;
+	}
 }
