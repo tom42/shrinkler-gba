@@ -1,3 +1,8 @@
+* Set ub libshrinkler
+  * README.md in libshrinkler, explaining what it is
+  * A single header
+  * Somehow a translation unit that sucks in all needed shrinkler source
+  * A unit test: do we have something like this? (just need a single one we can use to get things up and running)
 * Add README.md (or 3rdparty.md)
   * Document what's inside this directory
   * Also document how to create subtrees, since I forget how to do this:
