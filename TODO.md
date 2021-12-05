@@ -19,4 +19,5 @@
     * elfio: compile it, but only if it is not found otherwise
 * Be clear about licensing (top level README.md)
   * shrinkler-gba code: MIT license
+  * libshrinkler: MIT, except actual shrinkler code, which is Blueberry's
   * 3rd party code: has their own license (Shrinkler in particular)
