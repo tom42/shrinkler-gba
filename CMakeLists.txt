@@ -1,3 +1,4 @@
+
 # MIT License
 #
 # shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
@@ -33,6 +34,20 @@ endif()
 if(IS_MAIN_PROJECT)
   set_property(GLOBAL PROPERTY USE_FOLDERS ON)
   include(CTest)
+endif()
+
+
+################################################################################
+# Find Boost for unit testing.
+################################################################################
+
+# Search for Boost headers only, but not the libraries.
+# We'll compile the unit test framework ourselves as part of the unit tests.
+# This simplifies cross development, since we only
+# need Boost headers on build machines.
+find_package(Boost 1.74)
+if(NOT Boost_FOUND)
+  message(STATUS "Boost not found. Unit tests will not be built")
 endif()
 
 
