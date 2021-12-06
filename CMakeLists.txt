@@ -1,4 +1,3 @@
-
 # MIT License
 #
 # shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA

@@ -1,7 +1,7 @@
 // MIT License
 //
 // shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
-// Copyright(c) 2021 Thomas Mathys
+// Copyright (c) 2021 Thomas Mathys
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
