@@ -27,12 +27,33 @@
 namespace libshrinkler_unittest
 {
 
+using namespace libshrinkler;
+
 BOOST_AUTO_TEST_SUITE(shrinkler_parameters_test)
 
-	BOOST_AUTO_TEST_CASE(constructor_default_preset)
-	{
-		BOOST_FAIL("IMPLEMENT");
-	}
+    BOOST_AUTO_TEST_CASE(constructor_default_preset)
+    {
+        shrinkler_parameters testee;
+
+        BOOST_TEST(testee.iterations == 2);
+        BOOST_TEST(testee.length_margin == 2);
+        BOOST_TEST(testee.same_length == 20);
+        BOOST_TEST(testee.effort == 200);
+        BOOST_TEST(testee.skip_length == 2000);
+        BOOST_TEST(testee.references == 100000);
+    }
+
+    BOOST_AUTO_TEST_CASE(constructor_preset9)
+    {
+        shrinkler_parameters testee(9);
+
+        BOOST_TEST(parameters.iterations == 9);
+        BOOST_TEST(parameters.length_margin == 9);
+        BOOST_TEST(parameters.same_length == 90);
+        BOOST_TEST(parameters.effort == 900);
+        BOOST_TEST(parameters.skip_length == 9000);
+        BOOST_TEST(parameters.references == 100000);
+    }
 
 BOOST_AUTO_TEST_SUITE_END()
 

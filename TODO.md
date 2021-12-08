@@ -1,7 +1,10 @@
 * Streamline copyright notice in sources: do we have the year or not?
+* Ensure all source files are using spaces, not tabs
 * Set up libshrinkler
   * README.md in libshrinkler, explaining what it is
+  * Do we add that new bytes parameter thing?
   * A single header
+    * Add that to the sources, so that it shows up in visual studio, no?
   * Somehow a translation unit that sucks in all needed shrinkler source
   * A unit test: do we have something like this? (just need a single one we can use to get things up and running)
 * Add README.md (or 3rdparty.md)

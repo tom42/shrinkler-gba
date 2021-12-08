@@ -27,7 +27,10 @@
 namespace libshrinkler
 {
 
-class shrinkler_parameters{};
+class shrinkler_parameters
+{
+public:
+};
 
 }
 
