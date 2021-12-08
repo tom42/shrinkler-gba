@@ -43,16 +43,16 @@ BOOST_AUTO_TEST_SUITE(shrinkler_parameters_test)
         BOOST_TEST(testee.references == 100000);
     }
 
-    BOOST_AUTO_TEST_CASE(constructor_preset9)
+    BOOST_AUTO_TEST_CASE(constructor_preset_9)
     {
         shrinkler_parameters testee(9);
 
-        BOOST_TEST(parameters.iterations == 9);
-        BOOST_TEST(parameters.length_margin == 9);
-        BOOST_TEST(parameters.same_length == 90);
-        BOOST_TEST(parameters.effort == 900);
-        BOOST_TEST(parameters.skip_length == 9000);
-        BOOST_TEST(parameters.references == 100000);
+        BOOST_TEST(testee.iterations == 9);
+        BOOST_TEST(testee.length_margin == 9);
+        BOOST_TEST(testee.same_length == 90);
+        BOOST_TEST(testee.effort == 900);
+        BOOST_TEST(testee.skip_length == 9000);
+        BOOST_TEST(testee.references == 100000);
     }
 
 BOOST_AUTO_TEST_SUITE_END()
