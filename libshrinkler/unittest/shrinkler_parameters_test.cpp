@@ -21,14 +21,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef LIBSHRINKLER_LIBSHRINKLER_HPP
-#define LIBSHRINKLER_LIBSHRINKLER_HPP
+#include <boost/test/unit_test.hpp>
+#include "libshrinkler/libshrinkler.hpp"
 
-namespace libshrinkler
+namespace libshrinkler_unittest
 {
 
-class shrinkler_parameters{};
+BOOST_AUTO_TEST_SUITE(shrinkler_parameters_test)
+
+	BOOST_AUTO_TEST_CASE(constructor_default_preset)
+	{
+		BOOST_FAIL("IMPLEMENT");
+	}
+
+BOOST_AUTO_TEST_SUITE_END()
 
 }
-
-#endif

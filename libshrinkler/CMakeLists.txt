@@ -26,9 +26,14 @@ set(
   src/shrinkler.cpp)
 
 add_library(libshrinkler ${SOURCES})
+target_include_directories(libshrinkler PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 if(BUILD_TESTING AND Boost_FOUND)
-  add_executable(libshrinkler-unittest unittest/main.cpp)
+  add_executable(
+    libshrinkler-unittest
+    unittest/main.cpp
+    unittest/shrinkler_parameters_test.cpp)
   target_include_directories(libshrinkler-unittest PRIVATE "${Boost_INCLUDE_DIRS}")
+  target_link_libraries(libshrinkler-unittest PRIVATE libshrinkler)
   add_test(NAME libshrinkler-unittest COMMAND libshrinkler-unittest)
 endif()

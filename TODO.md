@@ -1,4 +1,5 @@
-* Set ub libshrinkler
+* Streamline copyright notice in sources: do we have the year or not?
+* Set up libshrinkler
   * README.md in libshrinkler, explaining what it is
   * A single header
   * Somehow a translation unit that sucks in all needed shrinkler source
