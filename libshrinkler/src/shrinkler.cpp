@@ -21,7 +21,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include <iostream>
 #include "libshrinkler/libshrinkler.hpp"
+
+// TODO: somehow make this configurable
+#define CONSOLE std::cout
 
 namespace libshrinkler
 {
