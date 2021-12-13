@@ -30,10 +30,13 @@
 #if defined(_WIN64)
 #pragma warning(disable: 4267)
 #endif
+#define _CRT_SECURE_NO_WARNINGS
 #endif
 
+#include "../../3rdparty/shrinkler/cruncher/HunkFile.h"
 #include "../../3rdparty/shrinkler/cruncher/Pack.h"
 
 #if defined(_MSC_VER)
 #pragma warning(pop)
+#undef _CRT_SECURE_NO_WARNINGS
 #endif
