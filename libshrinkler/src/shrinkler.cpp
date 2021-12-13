@@ -53,6 +53,15 @@ static vector<uint32_t> compress(vector<unsigned char>& data, PackParams& params
     vector<uint32_t> pack_buffer;
     RangeCoder range_coder(LZEncoder::NUM_CONTEXTS + NUM_RELOC_CONTEXTS, pack_buffer);
 
+    // Print compression status header
+    // TODO: get rid of this.
+    const char* ordinals[] = { "st", "nd", "rd", "th" };
+    printf("Original");
+    for (int p = 1; p <= params.iterations; p++) {
+        printf("  After %d%s pass", p, ordinals[min(p, 4) - 1]);
+    }
+    printf("\n");
+
     // Crunch the data
     range_coder.reset();
     // TODO: nicer cast (static_cast, or maybe lexical cast...)
@@ -60,30 +69,11 @@ static vector<uint32_t> compress(vector<unsigned char>& data, PackParams& params
     packData(&data[0], (int)data.size(), 0, &params, &range_coder, &edge_factory, show_progress);
     range_coder.finish();
 
+    // TODO: get rid of this
+    printf("\n\n");
+    fflush(stdout);
+
     return pack_buffer;
-
-    /*
-    * TODO: port stuff below (DataFile::compress)
-        vector<unsigned> pack_buffer;
-        RangeCoder range_coder(LZEncoder::NUM_CONTEXTS + NUM_RELOC_CONTEXTS, pack_buffer);
-
-        // Print compression status header
-        const char *ordinals[] = { "st", "nd", "rd", "th" };
-        printf("Original");
-        for (int p = 1 ; p <= params->iterations ; p++) {
-            printf("  After %d%s pass", p, ordinals[min(p,4)-1]);
-        }
-        printf("\n");
-
-        // Crunch the data
-        range_coder.reset();
-        packData(&data[0], data.size(), 0, params, &range_coder, edge_factory, show_progress);
-        range_coder.finish();
-        printf("\n\n");
-        fflush(stdout);
-
-        return pack_buffer;
-    */
 }
 
 static vector<unsigned char> crunch(const vector<unsigned char>& data, PackParams& params, RefEdgeFactory& edge_factory, bool show_progress)
