@@ -35,13 +35,14 @@ std::vector<unsigned char> shrinkler::compress(const std::vector<unsigned char>&
 {
     CONSOLE << "Compressing..." << std::endl;
 
+    RefEdgeFactory edge_factory(parameters.references);
+
     // TODO: real implementation
     return std::vector<unsigned char>();
 
     // TODO: port stuff below
 	/* From old shrinkler::compress
 
-    RefEdgeFactory edge_factory(m_parameters.references);
     auto pack_params = create_pack_params(m_parameters);
 
     // For the time being we do not allow progress updates using ANSI escape sequences.
