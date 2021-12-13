@@ -24,4 +24,16 @@
 // shrinkler.ipp: include all of Shrinkler's code we need.
 // Before doing so, disable selected warnings. Afterwards, enable them again.
 
+#if defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable: 4018 4100 4244 4389 4456 4458)
+#if defined(_WIN64)
+#pragma warning(disable: 4267)
+#endif
+#endif
+
 #include "../../3rdparty/shrinkler/cruncher/Pack.h"
+
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif
