@@ -22,9 +22,11 @@
 // SOFTWARE.
 
 #include "shrinkler.ipp"
+#include <cstdint>
 #include <iostream>
 #include "libshrinkler/libshrinkler.hpp"
 
+// TODO: review entire mess in this file (parameters, whatnot, ...)
 // TODO: somehow make this configurable
 #define CONSOLE std::cout
 
@@ -45,7 +47,50 @@ static PackParams create_pack_params(const shrinkler_parameters& parameters)
     };
 }
 
-static vector<unsigned char> crunch(const vector<unsigned char>& data, const PackParams& /*params*/, const RefEdgeFactory& /*edge_factory*/, bool /*show_progress*/)
+static vector<uint32_t> compress(const vector<unsigned char>& /*data*/, const PackParams& /*params*/, const RefEdgeFactory& /*edge_factory*/, bool /*show_progress*/)
+{
+    // TODO: where this comes from (DataFile::compress?)
+
+    // TODO: real implementation
+    return std::vector<uint32_t>();
+
+    /* TODO: port stuff below (shrinkler::compress)
+    vector<uint32_t> pack_buffer;
+    RangeCoder range_coder(LZEncoder::NUM_CONTEXTS + NUM_RELOC_CONTEXTS, pack_buffer);
+
+    // Crunch the data
+    range_coder.reset();
+    packData2(m_console, &data[0], boost::numeric_cast<int>(data.size()), 0, &params, &range_coder, &edge_factory, show_progress);
+    range_coder.finish();
+
+    return pack_buffer;
+    */
+
+    /*
+    * TODO: port stuff below (DataFile::compress)
+        vector<unsigned> pack_buffer;
+        RangeCoder range_coder(LZEncoder::NUM_CONTEXTS + NUM_RELOC_CONTEXTS, pack_buffer);
+
+        // Print compression status header
+        const char *ordinals[] = { "st", "nd", "rd", "th" };
+        printf("Original");
+        for (int p = 1 ; p <= params->iterations ; p++) {
+            printf("  After %d%s pass", p, ordinals[min(p,4)-1]);
+        }
+        printf("\n");
+
+        // Crunch the data
+        range_coder.reset();
+        packData(&data[0], data.size(), 0, params, &range_coder, edge_factory, show_progress);
+        range_coder.finish();
+        printf("\n\n");
+        fflush(stdout);
+
+        return pack_buffer;
+    */
+}
+
+static vector<unsigned char> crunch(const vector<unsigned char>& data, const PackParams& params, const RefEdgeFactory& edge_factory, bool show_progress)
 {
     // TODO: document where this comes from (datafile::crunch or however it is called)
     // TODO: implement this
@@ -53,6 +98,9 @@ static vector<unsigned char> crunch(const vector<unsigned char>& data, const Pac
 
     // Shrinkler code uses non-const buffers all over the place. Let's create a copy then.
     vector<unsigned char> non_const_data = data;
+
+    // Compress and verify
+    vector<uint32_t> pack_buffer = compress(non_const_data, params, edge_factory, show_progress);
 
     // TODO: real implementation
     return std::vector<unsigned char>();
