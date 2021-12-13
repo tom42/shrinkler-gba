@@ -45,18 +45,60 @@ static PackParams create_pack_params(const shrinkler_parameters& parameters)
     };
 }
 
-std::vector<unsigned char> shrinkler::compress(const std::vector<unsigned char>& /*data*/) const
+static vector<unsigned char> crunch(const vector<unsigned char>& /*data*/, const PackParams& /*params*/, const RefEdgeFactory& /*edge_factory*/, bool /*show_progress*/)
+{
+    // TODO: document where this comes from (datafile::crunch or however it is called)
+    // TODO: implement this
+    // TODO: might have to remove const-ness from some of the parameters
+    throw std::runtime_error("not implemented");
+
+    /* TODO: port stuff below (from old shrinkler::crunch)
+    // Shrinkler code uses non-const buffers all over the place. Let's create a copy then.
+    vector<unsigned char> non_const_data = data;
+
+    // Compress and verify
+    vector<uint32_t> pack_buffer = compress(non_const_data, params, edge_factory, show_progress);
+    int margin = verify(non_const_data, pack_buffer);
+    CONSOLE_VERBOSE(m_console) << "Minimum safety margin for overlapped decrunching: " << margin << std::endl;
+
+    // Convert to array of bytes
+    vector<unsigned char> packed_bytes;
+    packed_bytes.reserve(pack_buffer.size() * sizeof(pack_buffer[0]));
+    for (auto word : pack_buffer)
+    {
+        packed_bytes.push_back(word & 0xff);
+        packed_bytes.push_back((word >> 8) & 0xff);
+        packed_bytes.push_back((word >> 16) & 0xff);
+        packed_bytes.push_back((word >> 24) & 0xff);
+    }
+
+    return packed_bytes;
+    */
+
+    /* TODO: port stuff below (from DataFile::crunch)
+        vector<unsigned> pack_buffer = compress(params, edge_factory, show_progress);
+        int margin = verify(params, pack_buffer);
+
+        printf("Minimum safety margin for overlapped decrunching: %d\n\n", margin);
+
+        DataFile *ef = new DataFile;
+        ef->data.resize(pack_buffer.size() * 4, 0);
+
+        Longword* dest = (Longword*) (void*) &ef->data[0];
+        for (int i = 0 ; i < pack_buffer.size() ; i++) {
+            dest[i] = pack_buffer[i];
+        }
+
+        return ef;
+    */
+}
+
+std::vector<unsigned char> shrinkler::compress(const std::vector<unsigned char>& data) const
 {
     CONSOLE << "Compressing..." << std::endl;
 
     RefEdgeFactory edge_factory(parameters.references);
     auto pack_params = create_pack_params(parameters);
-
-    // TODO: real implementation
-    return std::vector<unsigned char>();
-
-    // TODO: port stuff below
-	/* From old shrinkler::compress
 
     // For the time being we do not allow progress updates using ANSI escape sequences.
     // Problem is that in the past the Windows console did not support ANSI escape sequences at all.
@@ -64,6 +106,12 @@ std::vector<unsigned char> shrinkler::compress(const std::vector<unsigned char>&
     // https://docs.microsoft.com/en-us/windows/console/console-virtual-terminal-sequences.
     // Not worth the trouble for the time being.
     auto packed_bytes = crunch(data, pack_params, edge_factory, false);
+
+    // TODO: real implementation
+    return std::vector<unsigned char>();
+
+    // TODO: port stuff below
+	/* From old shrinkler::compress
 
     CONSOLE_VERBOSE(m_console) << format("References considered: {}", edge_factory.max_edge_count) << std::endl;
     CONSOLE_VERBOSE(m_console) << format("References discarded: {}", edge_factory.max_cleaned_edges) << std::endl;
