@@ -21,43 +21,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef LIBSHRINKLER_LIBSHRINKLER_HPP
-#define LIBSHRINKLER_LIBSHRINKLER_HPP
+#include <boost/test/unit_test.hpp>
+#include "libshrinkler/libshrinkler.hpp"
 
-#include <vector>
-
-namespace libshrinkler
+namespace libshrinkler_unittest
 {
 
-class shrinkler_parameters
-{
-public:
-    shrinkler_parameters(int preset = 2)
-        : iterations(1 * preset),
-        length_margin(1 * preset),
-        same_length(10 * preset),
-        effort(100 * preset),
-        skip_length(1000 * preset),
-        references(100000)
-    {}
+using namespace libshrinkler;
 
-    int iterations;
-    int length_margin;
-    int same_length;
-    int effort;
-    int skip_length;
-    int references;
-};
-
-class shrinkler
-{
-public:
-    std::vector<unsigned char> compress(const std::vector<unsigned char>& data) const;
-    void set_parameters(const shrinkler_parameters& p) { parameters = p; }
-private:
-    shrinkler_parameters parameters;
-};
+BOOST_AUTO_TEST_SUITE(shrinkler_test)
+BOOST_AUTO_TEST_SUITE_END()
 
 }
-
-#endif

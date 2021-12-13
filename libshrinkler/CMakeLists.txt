@@ -32,7 +32,8 @@ if(BUILD_TESTING AND Boost_FOUND)
   add_executable(
     libshrinkler-unittest
     unittest/main.cpp
-    unittest/shrinkler_parameters_test.cpp)
+    unittest/shrinkler_parameters_test.cpp
+    unittest/shrinkler_test.cpp)
   target_include_directories(libshrinkler-unittest PRIVATE "${Boost_INCLUDE_DIRS}")
   target_link_libraries(libshrinkler-unittest PRIVATE libshrinkler)
   add_test(NAME libshrinkler-unittest COMMAND libshrinkler-unittest)
