@@ -29,7 +29,25 @@ namespace libshrinkler_unittest
 
 using namespace libshrinkler;
 
+static std::vector<unsigned char> make_vector(const char* s)
+{
+    return std::vector<unsigned char>(s, s + strlen(s));
+}
+
 BOOST_AUTO_TEST_SUITE(shrinkler_test)
+
+    BOOST_AUTO_TEST_CASE(shrinkler_test)
+    {
+        auto original = make_vector("He who foos last foos best.");
+        shrinkler testee;
+        testee.set_parameters(shrinkler_parameters(9));
+
+        auto compressed = testee.compress(original);
+
+        // TODO: verify data, somehow
+        BOOST_FAIL("YIKES");
+    }
+
 BOOST_AUTO_TEST_SUITE_END()
 
 }
