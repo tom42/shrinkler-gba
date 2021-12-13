@@ -31,19 +31,32 @@
 namespace libshrinkler
 {
 
+static PackParams create_pack_params(const shrinkler_parameters& parameters)
+{
+    return
+    {
+        // TODO: make parity context selectable at runtime
+        .parity_context = true,
+        .iterations = parameters.iterations,
+        .length_margin = parameters.length_margin,
+        .skip_length = parameters.skip_length,
+        .match_patience = parameters.effort,
+        .max_same_length = parameters.same_length
+    };
+}
+
 std::vector<unsigned char> shrinkler::compress(const std::vector<unsigned char>& /*data*/) const
 {
     CONSOLE << "Compressing..." << std::endl;
 
     RefEdgeFactory edge_factory(parameters.references);
+    auto pack_params = create_pack_params(parameters);
 
     // TODO: real implementation
     return std::vector<unsigned char>();
 
     // TODO: port stuff below
 	/* From old shrinkler::compress
-
-    auto pack_params = create_pack_params(m_parameters);
 
     // For the time being we do not allow progress updates using ANSI escape sequences.
     // Problem is that in the past the Windows console did not support ANSI escape sequences at all.
