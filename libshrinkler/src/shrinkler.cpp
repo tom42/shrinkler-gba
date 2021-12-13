@@ -20,3 +20,16 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
+
+#include "libshrinkler/libshrinkler.hpp"
+
+namespace libshrinkler
+{
+
+std::vector<unsigned char> shrinkler::compress(const std::vector<unsigned char>& /*data*/) const
+{
+    // TODO: real implementation
+    return std::vector<unsigned char>();
+}
+
+}
