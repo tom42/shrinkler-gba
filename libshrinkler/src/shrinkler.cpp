@@ -58,17 +58,9 @@ static vector<uint32_t> compress(vector<unsigned char>& data, PackParams& params
     // TODO: nicer cast (static_cast, or maybe lexical cast...)
     // TODO: remember why we duplicated packData too. Or Fix it. What IS it printing here?
     packData(&data[0], (int)data.size(), 0, &params, &range_coder, &edge_factory, show_progress);
-
-    // TODO: real implementation
-    return std::vector<uint32_t>();
-
-    /* TODO: port stuff below (shrinkler::compress)
-
-    packData2(m_console, &data[0], boost::numeric_cast<int>(data.size()), 0, &params, &range_coder, &edge_factory, show_progress);
     range_coder.finish();
 
     return pack_buffer;
-    */
 
     /*
     * TODO: port stuff below (DataFile::compress)
