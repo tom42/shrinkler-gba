@@ -45,16 +45,19 @@ static PackParams create_pack_params(const shrinkler_parameters& parameters)
     };
 }
 
-static vector<unsigned char> crunch(const vector<unsigned char>& /*data*/, const PackParams& /*params*/, const RefEdgeFactory& /*edge_factory*/, bool /*show_progress*/)
+static vector<unsigned char> crunch(const vector<unsigned char>& data, const PackParams& /*params*/, const RefEdgeFactory& /*edge_factory*/, bool /*show_progress*/)
 {
     // TODO: document where this comes from (datafile::crunch or however it is called)
     // TODO: implement this
     // TODO: might have to remove const-ness from some of the parameters
-    throw std::runtime_error("not implemented");
 
-    /* TODO: port stuff below (from old shrinkler::crunch)
     // Shrinkler code uses non-const buffers all over the place. Let's create a copy then.
     vector<unsigned char> non_const_data = data;
+
+    // TODO: real implementation
+    return std::vector<unsigned char>();
+
+    /* TODO: port stuff below (from old shrinkler::crunch)
 
     // Compress and verify
     vector<uint32_t> pack_buffer = compress(non_const_data, params, edge_factory, show_progress);
