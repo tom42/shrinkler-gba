@@ -47,19 +47,23 @@ static PackParams create_pack_params(const shrinkler_parameters& parameters)
     };
 }
 
-static vector<uint32_t> compress(const vector<unsigned char>& /*data*/, const PackParams& /*params*/, const RefEdgeFactory& /*edge_factory*/, bool /*show_progress*/)
+// Corresponds to DataFile::compress in Shrinkler.
+static vector<uint32_t> compress(vector<unsigned char>& data, PackParams& params, RefEdgeFactory& edge_factory, bool show_progress)
 {
-    // TODO: where this comes from (DataFile::compress?)
-
-    // TODO: real implementation
-    return std::vector<uint32_t>();
-
-    /* TODO: port stuff below (shrinkler::compress)
     vector<uint32_t> pack_buffer;
     RangeCoder range_coder(LZEncoder::NUM_CONTEXTS + NUM_RELOC_CONTEXTS, pack_buffer);
 
     // Crunch the data
     range_coder.reset();
+    // TODO: nicer cast (static_cast, or maybe lexical cast...)
+    // TODO: remember why we duplicated packData too. Or Fix it. What IS it printing here?
+    packData(&data[0], (int)data.size(), 0, &params, &range_coder, &edge_factory, show_progress);
+
+    // TODO: real implementation
+    return std::vector<uint32_t>();
+
+    /* TODO: port stuff below (shrinkler::compress)
+
     packData2(m_console, &data[0], boost::numeric_cast<int>(data.size()), 0, &params, &range_coder, &edge_factory, show_progress);
     range_coder.finish();
 
@@ -90,7 +94,7 @@ static vector<uint32_t> compress(const vector<unsigned char>& /*data*/, const Pa
     */
 }
 
-static vector<unsigned char> crunch(const vector<unsigned char>& data, const PackParams& params, const RefEdgeFactory& edge_factory, bool show_progress)
+static vector<unsigned char> crunch(const vector<unsigned char>& data, PackParams& params, RefEdgeFactory& edge_factory, bool show_progress)
 {
     // TODO: document where this comes from (datafile::crunch or however it is called)
     // TODO: implement this
