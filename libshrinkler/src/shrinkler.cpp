@@ -105,13 +105,9 @@ int verify(vector<unsigned char>& data, vector<uint32_t>& pack_buffer, PackParam
         throw runtime_error(format("INTERNAL ERROR: decompressed data has incorrect length ({}, should have been {})", verifier.size(), data.size()));
     }
 
-    // TODO: implement
-    throw runtime_error("TODO: implement");
-
-    /* TODO: port stuff below (from gbaic shrinkler::verify)
-
-    return boost::numeric_cast<int>(verifier.front_overlap_margin + pack_buffer.size() * 4 - data.size());
-    */
+    // TODO: use numeric_cast here
+    // TODO: is the number printed here correct? (maybe test with lost marbles)
+    return (int)(verifier.front_overlap_margin + pack_buffer.size() * 4 - data.size());
 
     /* // TODO: port stuff below (from DataFile::verify)
     int verify(PackParams *params, vector<unsigned>& pack_buffer) {
