@@ -82,7 +82,7 @@ static vector<uint32_t> compress(vector<unsigned char>& data, PackParams& params
     return pack_buffer;
 }
 
-// TODO: document where this comes from in Shrinkler source
+// Corresponds to DataFile::verify in Shrinkler.
 int verify(vector<unsigned char>& data, vector<uint32_t>& pack_buffer, PackParams& params)
 {
     CONSOLE << "Verifying..." << endl;
@@ -100,7 +100,7 @@ int verify(vector<unsigned char>& data, vector<uint32_t>& pack_buffer, PackParam
     }
 
     // Check length
-    if ((int)verifier.size() != data.size()) // TODO: different cast (numeric)
+    if (verifier.size() != data.size()) // TODO: different cast (numeric)
     {
         throw runtime_error(format("INTERNAL ERROR: decompressed data has incorrect length ({}, should have been {})", verifier.size(), data.size()));
     }
@@ -108,38 +108,6 @@ int verify(vector<unsigned char>& data, vector<uint32_t>& pack_buffer, PackParam
     // TODO: use numeric_cast here
     // TODO: is the number printed here correct? (maybe test with lost marbles)
     return (int)(verifier.front_overlap_margin + pack_buffer.size() * 4 - data.size());
-
-    /* // TODO: port stuff below (from DataFile::verify)
-    int verify(PackParams *params, vector<unsigned>& pack_buffer) {
-        printf("Verifying... ");
-        fflush(stdout);
-        RangeDecoder decoder(LZEncoder::NUM_CONTEXTS + NUM_RELOC_CONTEXTS, pack_buffer);
-        LZDecoder lzd(&decoder, params->parity_context);
-
-        // Verify data
-        bool error = false;
-        LZVerifier verifier(0, &data[0], data.size(), data.size());
-        decoder.reset();
-        decoder.setListener(&verifier);
-        if (!lzd.decode(verifier)) {
-            error = true;
-        }
-
-        // Check length
-        if (!error && verifier.size() != data.size()) {
-            printf("Verify error: data has incorrect length (%d, should have been %d)!\n", verifier.size(), (int) data.size());
-            error = true;
-        }
-
-        if (error) {
-            internal_error();
-        }
-
-        printf("OK\n\n");
-
-        return verifier.front_overlap_margin + pack_buffer.size() * 4 - data.size();
-    }
-    */
 }
 
 // Corresponds to DataFile::crunch in Shrinkler.
