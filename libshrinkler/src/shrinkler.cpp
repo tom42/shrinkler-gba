@@ -24,6 +24,7 @@
 #include "shrinkler.ipp"
 #include <cstdint>
 #include <iostream>
+#include "fmt/core.h"
 #include "libshrinkler/libshrinkler.hpp"
 
 // TODO: review entire mess in this file (parameters, whatnot, compare with latest shrinkler source...)
@@ -32,6 +33,11 @@
 
 namespace libshrinkler
 {
+
+using fmt::format;
+using std::endl;
+using std::runtime_error;
+using std::vector;
 
 static PackParams create_pack_params(const shrinkler_parameters& parameters)
 {
@@ -79,7 +85,7 @@ static vector<uint32_t> compress(vector<unsigned char>& data, PackParams& params
 // TODO: document where this comes from in Shrinkler source
 int verify(vector<unsigned char>& data, vector<uint32_t>& pack_buffer, PackParams& params)
 {
-    CONSOLE << "Verifying..." << std::endl;
+    CONSOLE << "Verifying..." << endl;
 
     RangeDecoder decoder(LZEncoder::NUM_CONTEXTS + NUM_RELOC_CONTEXTS, pack_buffer);
     LZDecoder lzd(&decoder, params.parity_context);
@@ -90,17 +96,17 @@ int verify(vector<unsigned char>& data, vector<uint32_t>& pack_buffer, PackParam
     decoder.setListener(&verifier);
     if (!lzd.decode(verifier))
     {
-        throw std::runtime_error("INTERNAL ERROR: could not verify decompressed data");
+        throw runtime_error("INTERNAL ERROR: could not verify decompressed data");
     }
 
     // Check length
     if ((int)verifier.size() != data.size()) // TODO: different cast (numeric)
     {
-        throw std::runtime_error(format("INTERNAL ERROR: decompressed data has incorrect length ({}, should have been {})", verifier.size(), data.size()));
+        throw runtime_error(format("INTERNAL ERROR: decompressed data has incorrect length ({}, should have been {})", verifier.size(), data.size()));
     }
 
     // TODO: implement
-    throw std::runtime_error("TODO: implement");
+    throw runtime_error("TODO: implement");
 
     /* TODO: port stuff below (from gbaic shrinkler::verify)
 
@@ -149,10 +155,10 @@ static vector<unsigned char> crunch(const vector<unsigned char>& data, PackParam
     // Compress and verify
     vector<uint32_t> pack_buffer = compress(non_const_data, params, edge_factory, show_progress);
     auto margin = verify(non_const_data, pack_buffer, params);
-    CONSOLE << "Minimum safety margin for overlapped decrunching: " << margin << std::endl;
+    CONSOLE << "Minimum safety margin for overlapped decrunching: " << margin << endl;
 
     // TODO: real implementation
-    return std::vector<unsigned char>();
+    return vector<unsigned char>();
 
     /* TODO: port stuff below (from old shrinkler::crunch)
 
@@ -188,9 +194,9 @@ static vector<unsigned char> crunch(const vector<unsigned char>& data, PackParam
     */
 }
 
-std::vector<unsigned char> shrinkler::compress(const std::vector<unsigned char>& data) const
+vector<unsigned char> shrinkler::compress(const vector<unsigned char>& data) const
 {
-    CONSOLE << "Compressing..." << std::endl;
+    CONSOLE << "Compressing..." << endl;
 
     RefEdgeFactory edge_factory(parameters.references);
     auto pack_params = create_pack_params(parameters);
@@ -203,19 +209,19 @@ std::vector<unsigned char> shrinkler::compress(const std::vector<unsigned char>&
     auto packed_bytes = crunch(data, pack_params, edge_factory, false);
 
     // TODO: real implementation
-    return std::vector<unsigned char>();
+    return vector<unsigned char>();
 
     // TODO: port stuff below
 	/* From old shrinkler::compress
 
-    CONSOLE_VERBOSE(m_console) << format("References considered: {}", edge_factory.max_edge_count) << std::endl;
-    CONSOLE_VERBOSE(m_console) << format("References discarded: {}", edge_factory.max_cleaned_edges) << std::endl;
-    CONSOLE_VERBOSE(m_console) << format("Uncompressed data size: {} bytes", data.size()) << std::endl;
-    CONSOLE_VERBOSE(m_console) << format("Final compressed data size: {} bytes", packed_bytes.size()) << std::endl;
+    CONSOLE_VERBOSE(m_console) << format("References considered: {}", edge_factory.max_edge_count) << endl;
+    CONSOLE_VERBOSE(m_console) << format("References discarded: {}", edge_factory.max_cleaned_edges) << endl;
+    CONSOLE_VERBOSE(m_console) << format("Uncompressed data size: {} bytes", data.size()) << endl;
+    CONSOLE_VERBOSE(m_console) << format("Final compressed data size: {} bytes", packed_bytes.size()) << endl;
 
     if (edge_factory.max_edge_count > m_parameters.references)
     {
-        CONSOLE_OUT(m_console) << "Note: compression may benefit from a larger reference buffer (-r option)" << std::endl;
+        CONSOLE_OUT(m_console) << "Note: compression may benefit from a larger reference buffer (-r option)" << endl;
     }
 
     return packed_bytes;

@@ -1,4 +1,6 @@
 * Streamline copyright notice in sources: do we have the year or not?
+* Licensing of shrinkler.cpp:
+  * Since this file is mostly copypasted Shrinkler code it ought to be using the Shrinkler license, no?
 * Ensure all source files are using spaces, not tabs
 * Set up libshrinkler
   * README.md in libshrinkler, explaining what it is

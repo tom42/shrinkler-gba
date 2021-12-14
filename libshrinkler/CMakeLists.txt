@@ -28,7 +28,9 @@ set(
 add_library(libshrinkler ${SOURCES})
 target_include_directories(
   libshrinkler
-  PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include"
+  PUBLIC
+  "${CMAKE_CURRENT_SOURCE_DIR}/include"
+  PRIVATE
   # Add Shrinkler's decruncher directory to the list of include directories,
   # but do not add 3rdparty/shrinkler/cruncher which contains Shrinkler's
   # C++ sources. This is because Shrinkler relies on being able to include
@@ -36,6 +38,7 @@ target_include_directories(
   # If the directory containing Shrinkler's assert.h is in the search path,
   # then that will not work. Not with MSVC anyway.
   "${PROJECT_SOURCE_DIR}/3rdparty/shrinkler/decrunchers_bin")
+target_link_libraries(libshrinkler PRIVATE fmt)
 
 if(BUILD_TESTING AND Boost_FOUND)
   add_executable(
