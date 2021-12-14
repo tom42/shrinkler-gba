@@ -135,12 +135,7 @@ static vector<unsigned char> crunch(const vector<unsigned char>& data, PackParam
         packed_bytes.push_back((word >> 24) & 0xff);
     }
 
-    // TODO: real implementation
-    return vector<unsigned char>();
-
-    /* TODO: port stuff below (from old shrinkler::crunch)
     return packed_bytes;
-    */
 
     /* TODO: port stuff below (from DataFile::crunch)
         vector<unsigned> pack_buffer = compress(params, edge_factory, show_progress);
@@ -174,8 +169,7 @@ vector<unsigned char> shrinkler::compress(const vector<unsigned char>& data) con
     // Not worth the trouble for the time being.
     auto packed_bytes = crunch(data, pack_params, edge_factory, false);
 
-    // TODO: real implementation
-    return vector<unsigned char>();
+    return packed_bytes;
 
     // TODO: port stuff below
 	/* From old shrinkler::compress

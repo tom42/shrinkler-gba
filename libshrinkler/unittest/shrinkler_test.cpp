@@ -38,14 +38,16 @@ BOOST_AUTO_TEST_SUITE(shrinkler_test)
 
     BOOST_AUTO_TEST_CASE(shrinkler_test)
     {
-        auto original = make_vector("He who foos last foos best.");
+        auto original = make_vector("foo foo");
         shrinkler testee;
         testee.set_parameters(shrinkler_parameters(9));
 
         auto compressed = testee.compress(original);
 
-        // TODO: verify data, somehow
-        BOOST_FAIL("YIKES");
+        // TODO: real expected data
+        //       Also: should we start using lost marbles again?
+        unsigned char expected[]{1};
+        BOOST_TEST(expected == compressed, boost::test_tools::per_element());
     }
 
 BOOST_AUTO_TEST_SUITE_END()
