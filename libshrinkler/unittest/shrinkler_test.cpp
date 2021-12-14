@@ -38,7 +38,7 @@ BOOST_AUTO_TEST_SUITE(shrinkler_test)
 
     BOOST_AUTO_TEST_CASE(shrinkler_test)
     {
-        auto original = make_vector("foo foo");
+        auto original = make_vector("foo foo foo foo");
         shrinkler testee;
         testee.set_parameters(shrinkler_parameters(9));
 
