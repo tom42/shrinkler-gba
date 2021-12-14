@@ -64,7 +64,7 @@ static vector<uint32_t> compress(vector<unsigned char>& data, PackParams& params
 
     // Crunch the data
     range_coder.reset();
-    // TODO: nicer cast (static_cast, or maybe lexical cast...)
+    // TODO: nicer cast (static_cast, or maybe numeric cast...)
     // TODO: remember why we duplicated packData too. Or Fix it. What IS it printing here?
     packData(&data[0], (int)data.size(), 0, &params, &range_coder, &edge_factory, show_progress);
     range_coder.finish();
@@ -77,31 +77,32 @@ static vector<uint32_t> compress(vector<unsigned char>& data, PackParams& params
 }
 
 // TODO: document where this comes from in Shrinkler source
-int verify(const vector<unsigned char>& /*data*/, const vector<uint32_t>& /*pack_buffer*/)
+int verify(vector<unsigned char>& data, vector<uint32_t>& pack_buffer, PackParams& params)
 {
-    // TODO: implement
-    throw std::runtime_error("TODO: implement");
-
-    /* TODO: port stuff below (from gbaic shrinkler::verify)
-    CONSOLE_VERBOSE(m_console) << "Verifying..." << std::endl;
+    CONSOLE << "Verifying..." << std::endl;
 
     RangeDecoder decoder(LZEncoder::NUM_CONTEXTS + NUM_RELOC_CONTEXTS, pack_buffer);
-    LZDecoder lzd(&decoder);
+    LZDecoder lzd(&decoder, params.parity_context);
 
     // Verify data
-    LZVerifier verifier(0, &data[0], boost::numeric_cast<int>(data.size()), boost::numeric_cast<int>(data.size()));
+    LZVerifier verifier(0, &data[0], (int)data.size(), (int)data.size()); // TODO: different cast (static_cast, numeric cast, whatnot)
     decoder.reset();
     decoder.setListener(&verifier);
     if (!lzd.decode(verifier))
     {
-        throw runtime_error("INTERNAL ERROR: could not verify decompressed data");
+        throw std::runtime_error("INTERNAL ERROR: could not verify decompressed data");
     }
 
     // Check length
-    if (boost::numeric_cast<size_t>(verifier.size()) != data.size())
+    if ((int)verifier.size() != data.size()) // TODO: different cast (numeric)
     {
-        throw runtime_error(format("INTERNAL ERROR: decompressed data has incorrect length ({}, should have been {})", verifier.size(), data.size()));
+        throw std::runtime_error(format("INTERNAL ERROR: decompressed data has incorrect length ({}, should have been {})", verifier.size(), data.size()));
     }
+
+    // TODO: implement
+    throw std::runtime_error("TODO: implement");
+
+    /* TODO: port stuff below (from gbaic shrinkler::verify)
 
     return boost::numeric_cast<int>(verifier.front_overlap_margin + pack_buffer.size() * 4 - data.size());
     */
@@ -147,7 +148,7 @@ static vector<unsigned char> crunch(const vector<unsigned char>& data, PackParam
 
     // Compress and verify
     vector<uint32_t> pack_buffer = compress(non_const_data, params, edge_factory, show_progress);
-    auto margin = verify(non_const_data, pack_buffer);
+    auto margin = verify(non_const_data, pack_buffer, params);
     CONSOLE << "Minimum safety margin for overlapped decrunching: " << margin << std::endl;
 
     // TODO: real implementation
