@@ -123,12 +123,8 @@ static vector<unsigned char> crunch(const vector<unsigned char>& data, PackParam
     auto margin = verify(non_const_data, pack_buffer, params);
     CONSOLE << "Minimum safety margin for overlapped decrunching: " << margin << endl;
 
-    // TODO: real implementation
-    return vector<unsigned char>();
-
-    /* TODO: port stuff below (from old shrinkler::crunch)
-
     // Convert to array of bytes
+    // TODO: own method and give it a name that says what it does (convert to little endian)
     vector<unsigned char> packed_bytes;
     packed_bytes.reserve(pack_buffer.size() * sizeof(pack_buffer[0]));
     for (auto word : pack_buffer)
@@ -139,6 +135,10 @@ static vector<unsigned char> crunch(const vector<unsigned char>& data, PackParam
         packed_bytes.push_back((word >> 24) & 0xff);
     }
 
+    // TODO: real implementation
+    return vector<unsigned char>();
+
+    /* TODO: port stuff below (from old shrinkler::crunch)
     return packed_bytes;
     */
 
