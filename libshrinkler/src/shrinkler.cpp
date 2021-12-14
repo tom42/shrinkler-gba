@@ -26,7 +26,7 @@
 #include <iostream>
 #include "libshrinkler/libshrinkler.hpp"
 
-// TODO: review entire mess in this file (parameters, whatnot, ...)
+// TODO: review entire mess in this file (parameters, whatnot, compare with latest shrinkler source...)
 // TODO: somehow make this configurable
 #define CONSOLE std::cout
 
@@ -76,27 +76,84 @@ static vector<uint32_t> compress(vector<unsigned char>& data, PackParams& params
     return pack_buffer;
 }
 
+// TODO: document where this comes from in Shrinkler source
+int verify(const vector<unsigned char>& /*data*/, const vector<uint32_t>& /*pack_buffer*/)
+{
+    // TODO: implement
+    throw std::runtime_error("TODO: implement");
+
+    /* TODO: port stuff below (from gbaic shrinkler::verify)
+    CONSOLE_VERBOSE(m_console) << "Verifying..." << std::endl;
+
+    RangeDecoder decoder(LZEncoder::NUM_CONTEXTS + NUM_RELOC_CONTEXTS, pack_buffer);
+    LZDecoder lzd(&decoder);
+
+    // Verify data
+    LZVerifier verifier(0, &data[0], boost::numeric_cast<int>(data.size()), boost::numeric_cast<int>(data.size()));
+    decoder.reset();
+    decoder.setListener(&verifier);
+    if (!lzd.decode(verifier))
+    {
+        throw runtime_error("INTERNAL ERROR: could not verify decompressed data");
+    }
+
+    // Check length
+    if (boost::numeric_cast<size_t>(verifier.size()) != data.size())
+    {
+        throw runtime_error(format("INTERNAL ERROR: decompressed data has incorrect length ({}, should have been {})", verifier.size(), data.size()));
+    }
+
+    return boost::numeric_cast<int>(verifier.front_overlap_margin + pack_buffer.size() * 4 - data.size());
+    */
+
+    /* // TODO: port stuff below (from DataFile::verify)
+    int verify(PackParams *params, vector<unsigned>& pack_buffer) {
+        printf("Verifying... ");
+        fflush(stdout);
+        RangeDecoder decoder(LZEncoder::NUM_CONTEXTS + NUM_RELOC_CONTEXTS, pack_buffer);
+        LZDecoder lzd(&decoder, params->parity_context);
+
+        // Verify data
+        bool error = false;
+        LZVerifier verifier(0, &data[0], data.size(), data.size());
+        decoder.reset();
+        decoder.setListener(&verifier);
+        if (!lzd.decode(verifier)) {
+            error = true;
+        }
+
+        // Check length
+        if (!error && verifier.size() != data.size()) {
+            printf("Verify error: data has incorrect length (%d, should have been %d)!\n", verifier.size(), (int) data.size());
+            error = true;
+        }
+
+        if (error) {
+            internal_error();
+        }
+
+        printf("OK\n\n");
+
+        return verifier.front_overlap_margin + pack_buffer.size() * 4 - data.size();
+    }
+    */
+}
+
+// Corresponds to DataFile::crunch in Shrinkler.
 static vector<unsigned char> crunch(const vector<unsigned char>& data, PackParams& params, RefEdgeFactory& edge_factory, bool show_progress)
 {
-    // TODO: document where this comes from (datafile::crunch or however it is called)
-    // TODO: implement this
-    // TODO: might have to remove const-ness from some of the parameters
-
     // Shrinkler code uses non-const buffers all over the place. Let's create a copy then.
     vector<unsigned char> non_const_data = data;
 
     // Compress and verify
     vector<uint32_t> pack_buffer = compress(non_const_data, params, edge_factory, show_progress);
+    auto margin = verify(non_const_data, pack_buffer);
+    CONSOLE << "Minimum safety margin for overlapped decrunching: " << margin << std::endl;
 
     // TODO: real implementation
     return std::vector<unsigned char>();
 
     /* TODO: port stuff below (from old shrinkler::crunch)
-
-    // Compress and verify
-    vector<uint32_t> pack_buffer = compress(non_const_data, params, edge_factory, show_progress);
-    int margin = verify(non_const_data, pack_buffer);
-    CONSOLE_VERBOSE(m_console) << "Minimum safety margin for overlapped decrunching: " << margin << std::endl;
 
     // Convert to array of bytes
     vector<unsigned char> packed_bytes;
