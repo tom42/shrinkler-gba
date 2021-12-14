@@ -107,6 +107,8 @@ int verify(vector<unsigned char>& data, vector<uint32_t>& pack_buffer, PackParam
 
     // TODO: use numeric_cast here
     // TODO: is the number printed here correct? (maybe test with lost marbles)
+    //       And it seems to be possible that this becomes negative for very small input?
+    //       => Well we can somehow return this as a result and have unit tests check it, no?
     return (int)(verifier.front_overlap_margin + pack_buffer.size() * 4 - data.size());
 }
 
