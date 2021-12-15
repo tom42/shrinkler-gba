@@ -136,23 +136,6 @@ static vector<unsigned char> crunch(const vector<unsigned char>& data, PackParam
     }
 
     return packed_bytes;
-
-    /* TODO: port stuff below (from DataFile::crunch)
-        vector<unsigned> pack_buffer = compress(params, edge_factory, show_progress);
-        int margin = verify(params, pack_buffer);
-
-        printf("Minimum safety margin for overlapped decrunching: %d\n\n", margin);
-
-        DataFile *ef = new DataFile;
-        ef->data.resize(pack_buffer.size() * 4, 0);
-
-        Longword* dest = (Longword*) (void*) &ef->data[0];
-        for (int i = 0 ; i < pack_buffer.size() ; i++) {
-            dest[i] = pack_buffer[i];
-        }
-
-        return ef;
-    */
 }
 
 vector<unsigned char> shrinkler::compress(const vector<unsigned char>& data) const
