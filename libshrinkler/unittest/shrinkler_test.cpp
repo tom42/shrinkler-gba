@@ -44,9 +44,7 @@ BOOST_AUTO_TEST_SUITE(shrinkler_test)
 
         auto compressed = testee.compress(original);
 
-        // TODO: real expected data
-        //       Also: should we start using lost marbles again?
-        unsigned char expected[]{1};
+        unsigned char expected[]{ 0xc6, 0x62, 0xc8, 0x99, 0x00, 0x00, 0x39, 0x9b };
         BOOST_TEST(expected == compressed, boost::test_tools::per_element());
     }
 
