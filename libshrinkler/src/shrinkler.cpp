@@ -93,7 +93,7 @@ int verify(vector<unsigned char>& data, vector<uint32_t>& pack_buffer, PackParam
     LZDecoder lzd(&decoder, params.parity_context);
 
     // Verify data
-    LZVerifier verifier(0, &data[0], (int)data.size(), (int)data.size()); // TODO: different cast (static_cast, numeric cast, whatnot)
+    LZVerifier verifier(0, &data[0], numeric_cast<int>(data.size()), numeric_cast<int>(data.size()));
     decoder.reset();
     decoder.setListener(&verifier);
     if (!lzd.decode(verifier))
@@ -107,11 +107,10 @@ int verify(vector<unsigned char>& data, vector<uint32_t>& pack_buffer, PackParam
         throw runtime_error(format("INTERNAL ERROR: decompressed data has incorrect length ({}, should have been {})", verifier.size(), data.size()));
     }
 
-    // TODO: use numeric_cast here
     // TODO: is the number printed here correct? (maybe test with lost marbles)
     //       And it seems to be possible that this becomes negative for very small input?
     //       => Well we can somehow return this as a result and have unit tests check it, no?
-    return (int)(verifier.front_overlap_margin + pack_buffer.size() * 4 - data.size());
+    return numeric_cast<int>(verifier.front_overlap_margin + pack_buffer.size() * 4 - data.size());
 }
 
 static vector<unsigned char> to_little_endian(const vector<uint32_t>& pack_buffer)
