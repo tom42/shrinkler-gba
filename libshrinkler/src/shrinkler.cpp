@@ -22,6 +22,8 @@
 // SOFTWARE.
 
 #include "shrinkler.ipp"
+
+#include <boost/numeric/conversion/cast.hpp>
 #include <cstdint>
 #include <iostream>
 #include "fmt/core.h"
@@ -34,6 +36,7 @@
 namespace libshrinkler
 {
 
+using boost::numeric_cast;
 using fmt::format;
 using std::endl;
 using std::runtime_error;
@@ -70,9 +73,8 @@ static vector<uint32_t> compress(vector<unsigned char>& data, PackParams& params
 
     // Crunch the data
     range_coder.reset();
-    // TODO: nicer cast (static_cast, or maybe numeric cast...)
     // TODO: remember why we duplicated packData too. Or Fix it. What IS it printing here?
-    packData(&data[0], (int)data.size(), 0, &params, &range_coder, &edge_factory, show_progress);
+    packData(&data[0], numeric_cast<int>(data.size()), 0, &params, &range_coder, &edge_factory, show_progress);
     range_coder.finish();
 
     // TODO: get rid of this
