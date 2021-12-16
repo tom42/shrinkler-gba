@@ -112,21 +112,11 @@ int verify(vector<unsigned char>& data, vector<uint32_t>& pack_buffer, PackParam
     return (int)(verifier.front_overlap_margin + pack_buffer.size() * 4 - data.size());
 }
 
-// Corresponds to DataFile::crunch in Shrinkler.
-static vector<unsigned char> crunch(const vector<unsigned char>& data, PackParams& params, RefEdgeFactory& edge_factory, bool show_progress)
+static vector<unsigned char> to_little_endian(const vector<uint32_t>& pack_buffer)
 {
-    // Shrinkler code uses non-const buffers all over the place. Let's create a copy then.
-    vector<unsigned char> non_const_data = data;
-
-    // Compress and verify
-    vector<uint32_t> pack_buffer = compress(non_const_data, params, edge_factory, show_progress);
-    auto margin = verify(non_const_data, pack_buffer, params);
-    CONSOLE << "Minimum safety margin for overlapped decrunching: " << margin << endl;
-
-    // Convert to array of bytes
-    // TODO: own method and give it a name that says what it does (convert to little endian)
     vector<unsigned char> packed_bytes;
     packed_bytes.reserve(pack_buffer.size() * sizeof(pack_buffer[0]));
+
     for (auto word : pack_buffer)
     {
         packed_bytes.push_back(word & 0xff);
@@ -136,6 +126,22 @@ static vector<unsigned char> crunch(const vector<unsigned char>& data, PackParam
     }
 
     return packed_bytes;
+}
+
+// Corresponds to DataFile::crunch in Shrinkler.
+static vector<unsigned char> crunch(const vector<unsigned char>& data, PackParams& params, RefEdgeFactory& edge_factory, bool show_progress)
+{
+    // Shrinkler code uses non-const buffers all over the place, so we create a copy of the original data.
+    vector<unsigned char> non_const_data = data;
+
+    // Compress and verify
+    vector<uint32_t> pack_buffer = compress(non_const_data, params, edge_factory, show_progress);
+    auto margin = verify(non_const_data, pack_buffer, params);
+    CONSOLE << "Minimum safety margin for overlapped decrunching: " << margin << endl;
+
+    // Shrinkler produces packed data suitable for 68k CPUs.
+    // For the GBA's ARM7TDMI convert the data to little endian.
+    return to_little_endian(pack_buffer);
 }
 
 // Corresponds to main in Shrinkler.
