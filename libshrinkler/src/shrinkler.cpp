@@ -138,6 +138,7 @@ static vector<unsigned char> crunch(const vector<unsigned char>& data, PackParam
     return packed_bytes;
 }
 
+// Corresponds to main in Shrinkler.
 vector<unsigned char> shrinkler::compress(const vector<unsigned char>& data) const
 {
     CONSOLE << "Compressing..." << endl;
@@ -152,48 +153,17 @@ vector<unsigned char> shrinkler::compress(const vector<unsigned char>& data) con
     // Not worth the trouble for the time being.
     auto packed_bytes = crunch(data, pack_params, edge_factory, false);
 
-    return packed_bytes;
+    CONSOLE << format("References considered: {}", edge_factory.max_edge_count) << endl;
+    CONSOLE << format("References discarded: {}", edge_factory.max_cleaned_edges) << endl;
+    CONSOLE << format("Uncompressed data size: {} bytes", data.size()) << endl;
+    CONSOLE << format("Compressed data size: {} bytes", packed_bytes.size()) << endl;
 
-    // TODO: port stuff below
-	/* From old shrinkler::compress
-
-    CONSOLE_VERBOSE(m_console) << format("References considered: {}", edge_factory.max_edge_count) << endl;
-    CONSOLE_VERBOSE(m_console) << format("References discarded: {}", edge_factory.max_cleaned_edges) << endl;
-    CONSOLE_VERBOSE(m_console) << format("Uncompressed data size: {} bytes", data.size()) << endl;
-    CONSOLE_VERBOSE(m_console) << format("Final compressed data size: {} bytes", packed_bytes.size()) << endl;
-
-    if (edge_factory.max_edge_count > m_parameters.references)
+    if (edge_factory.max_edge_count > parameters.references)
     {
-        CONSOLE_OUT(m_console) << "Note: compression may benefit from a larger reference buffer (-r option)" << endl;
+        CONSOLE << "Note: compression may benefit from a larger reference buffer (-r option)" << endl;
     }
 
     return packed_bytes;
-    */
-    /* From Shrinkler.cpp, main()
-		// Data file compression
-		printf("Loading file %s...\n\n", infile);
-		DataFile *orig = new DataFile;
-		orig->load(infile);
-
-		printf("Crunching...\n\n");
-		RefEdgeFactory edge_factory(references.value);
-		DataFile *crunched = orig->crunch(&params, &edge_factory, !no_progress.seen);
-		delete orig;
-		printf("References considered:%8d\n",  edge_factory.max_edge_count);
-		printf("References discarded:%9d\n\n", edge_factory.max_cleaned_edges);
-
-		printf("Saving file %s...\n\n", outfile);
-		crunched->save(outfile);
-
-		printf("Final file size: %d\n\n", crunched->size());
-		delete crunched;
-
-		if (edge_factory.max_edge_count > references.value) {
-			printf("Note: compression may benefit from a larger reference buffer (-r option).\n\n");
-		}
-
-		return 0;
-    */
 }
 
 }
