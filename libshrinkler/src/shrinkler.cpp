@@ -97,6 +97,10 @@ int verify(vector<unsigned char>& data, vector<uint32_t>& pack_buffer, PackParam
     // TODO: is the number printed here correct? (maybe test with lost marbles)
     //       And it seems to be possible that this becomes negative for very small input?
     //       => Well we can somehow return this as a result and have unit tests check it, no?
+    // TODO: we DO not want a numeric_cast here. What we do want is to return a suitable
+    //       signed integer type, e.g. ssize_t or maybe ptrdiff_t. We can check this if
+    //       we disable the parity context. With the current code this will throw, because
+    //       the margin ends up -7, but due to the numeric_cast, that conversion from unsigned to signed will throw.
     return numeric_cast<int>(verifier.front_overlap_margin + pack_buffer.size() * 4 - data.size());
 }
 
