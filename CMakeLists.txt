@@ -37,7 +37,7 @@ endif()
 
 
 ################################################################################
-# Find Boost for unit testing.
+# Find packages.
 ################################################################################
 
 # Search for Boost headers only, but not the libraries.
@@ -45,9 +45,6 @@ endif()
 # This simplifies cross development, since we only
 # need Boost headers on build machines.
 find_package(Boost 1.74)
-if(NOT Boost_FOUND)
-  message(STATUS "Boost not found. Unit tests will not be built")
-endif()
 
 
 ################################################################################
