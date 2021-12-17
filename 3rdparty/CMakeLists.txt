@@ -22,5 +22,5 @@
 # SOFTWARE.
 
 add_subdirectory(argp-standalone)
-add_subdirectory(elfio)
+add_subdirectory(ELFIO)
 add_subdirectory(fmt)
