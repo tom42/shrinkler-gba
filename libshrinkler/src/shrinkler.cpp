@@ -46,8 +46,7 @@ static PackParams create_pack_params(const shrinkler_parameters& parameters)
 {
     return
     {
-        // TODO: make parity context selectable at runtime
-        .parity_context = true,
+        .parity_context = parameters.parity_context,
         .iterations = parameters.iterations,
         .length_margin = parameters.length_margin,
         .skip_length = parameters.skip_length,
