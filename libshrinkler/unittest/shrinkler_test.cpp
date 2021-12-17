@@ -58,7 +58,7 @@ BOOST_AUTO_TEST_SUITE(shrinkler_test)
 
         auto compressed = testee.compress(original);
 
-        unsigned char expected[]{ 0xc6, 0x62, 0xc8, 0x99, 0x00, 0x00, 0x39, 0x9b };
+        unsigned char expected[]{ 0xda, 0x70, 0xc5, 0x99, 0x00, 0x80, 0x59, 0xe3 };
         BOOST_TEST(expected == compressed, boost::test_tools::per_element());
     }
 
