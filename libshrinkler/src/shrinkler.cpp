@@ -95,7 +95,7 @@ auto verify(vector<unsigned char>& data, vector<uint32_t>& pack_buffer, PackPara
     }
 
     // Check length
-    if (verifier.size() != data.size()) // TODO: different cast (numeric)
+    if (numeric_cast<size_t>(verifier.size()) != data.size())
     {
         throw runtime_error(format("INTERNAL ERROR: decompressed data has incorrect length ({}, should have been {})", verifier.size(), data.size()));
     }
