@@ -24,6 +24,12 @@
 // shrinkler.ipp: include all of Shrinkler's code we need.
 // Before doing so, disable selected warnings. Afterwards, enable them again.
 
+#if defined(__GNUC__) || defined(__clang__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wsign-compare"
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
+
 #if defined(_MSC_VER)
 #pragma warning(push)
 #pragma warning(disable: 4018 4100 4244 4389 4456 4458)
@@ -35,6 +41,10 @@
 
 #include "../../3rdparty/Shrinkler/cruncher/HunkFile.h"
 #include "../../3rdparty/Shrinkler/cruncher/Pack.h"
+
+#if defined(__GNUC__) || defined(__clang__)
+#pragma GCC diagnostic pop
+#endif
 
 #if defined(_MSC_VER)
 #pragma warning(pop)
