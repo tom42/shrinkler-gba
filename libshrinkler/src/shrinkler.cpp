@@ -100,9 +100,6 @@ auto verify(vector<unsigned char>& data, vector<uint32_t>& pack_buffer, PackPara
         throw runtime_error(format("INTERNAL ERROR: decompressed data has incorrect length ({}, should have been {})", verifier.size(), data.size()));
     }
 
-    // TODO: is the number printed here correct? (maybe test with lost marbles)
-    //       And it seems to be possible that this becomes negative for very small input?
-    //       => Well we can somehow return this as a result and have unit tests check it, no?
     return signed_cast(verifier.front_overlap_margin + pack_buffer.size() * 4 - data.size());
 }
 
