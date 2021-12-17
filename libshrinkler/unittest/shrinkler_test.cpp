@@ -48,6 +48,20 @@ BOOST_AUTO_TEST_SUITE(shrinkler_test)
         BOOST_TEST(expected == compressed, boost::test_tools::per_element());
     }
 
+    BOOST_AUTO_TEST_CASE(shrinkler_test_no_parity)
+    {
+        auto original = make_vector("foo foo foo foo");
+        shrinkler_parameters parameters(9);
+        parameters.parity_context = false;
+        shrinkler testee;
+        testee.set_parameters(parameters);
+
+        auto compressed = testee.compress(original);
+
+        unsigned char expected[]{ 0xc6, 0x62, 0xc8, 0x99, 0x00, 0x00, 0x39, 0x9b };
+        BOOST_TEST(expected == compressed, boost::test_tools::per_element());
+    }
+
 BOOST_AUTO_TEST_SUITE_END()
 
 }
