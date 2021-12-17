@@ -35,6 +35,7 @@ BOOST_AUTO_TEST_SUITE(shrinkler_parameters_test)
     {
         shrinkler_parameters testee;
 
+        BOOST_TEST(testee.parity_context == true);
         BOOST_TEST(testee.iterations == 2);
         BOOST_TEST(testee.length_margin == 2);
         BOOST_TEST(testee.same_length == 20);
@@ -47,6 +48,7 @@ BOOST_AUTO_TEST_SUITE(shrinkler_parameters_test)
     {
         shrinkler_parameters testee(9);
 
+        BOOST_TEST(testee.parity_context == true);
         BOOST_TEST(testee.iterations == 9);
         BOOST_TEST(testee.length_margin == 9);
         BOOST_TEST(testee.same_length == 90);

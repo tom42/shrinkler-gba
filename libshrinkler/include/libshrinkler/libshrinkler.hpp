@@ -33,7 +33,8 @@ class shrinkler_parameters
 {
 public:
     shrinkler_parameters(int preset = 2)
-        : iterations(1 * preset),
+        : parity_context(true),
+        iterations(1 * preset),
         length_margin(1 * preset),
         same_length(10 * preset),
         effort(100 * preset),
@@ -41,6 +42,7 @@ public:
         references(100000)
     {}
 
+    bool parity_context;
     int iterations;
     int length_margin;
     int same_length;
