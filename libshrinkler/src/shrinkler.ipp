@@ -33,8 +33,8 @@
 #define _CRT_SECURE_NO_WARNINGS
 #endif
 
-#include "../../3rdparty/shrinkler/cruncher/HunkFile.h"
-#include "../../3rdparty/shrinkler/cruncher/Pack.h"
+#include "../../3rdparty/Shrinkler/cruncher/HunkFile.h"
+#include "../../3rdparty/Shrinkler/cruncher/Pack.h"
 
 #if defined(_MSC_VER)
 #pragma warning(pop)
