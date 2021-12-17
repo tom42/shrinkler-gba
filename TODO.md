@@ -1,3 +1,7 @@
+* Get it to compile:
+  * 32 bit gcc
+  * 32 bit clang
+  * cygwin gcc
 * Streamline copyright notice in sources: do we have the year or not?
 * Licensing of shrinkler.cpp:
   * Since this file is mostly copypasted Shrinkler code it ought to be using the Shrinkler license, no?
