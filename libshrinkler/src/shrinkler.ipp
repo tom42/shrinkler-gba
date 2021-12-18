@@ -28,6 +28,7 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wsign-compare"
 #pragma GCC diagnostic ignored "-Wunused-parameter"
+#pragma GCC diagnostic ignored "-Wnarrowing" // Only required for 32 bit targets
 #endif
 
 #if defined(_MSC_VER)
