@@ -21,5 +21,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#if defined(__CYGWIN__)
+#if defined(__GNUC__) || defined(__clang__)
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
+#define _POSIX_C_SOURCE 200112L
+#endif
+
 #define BOOST_TEST_MODULE libshrinkler-unittest
 #include <boost/test/included/unit_test.hpp>
