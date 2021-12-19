@@ -169,7 +169,7 @@ vector<unsigned char> shrinkler::compress(const vector<unsigned char>& data) con
 }
 
 // Corresponds to DataFile::crunch in Shrinkler.
-vector<unsigned char> shrinkler::crunch(const vector<unsigned char>& data, PackParams& params, RefEdgeFactory& edge_factory, bool show_progress) const
+std::vector<unsigned char> shrinkler::crunch(const std::vector<unsigned char>& data, PackParams& params, RefEdgeFactory& edge_factory, bool show_progress) const
 {
     // Shrinkler code uses non-const buffers all over the place, so we create a copy of the original data.
     vector<unsigned char> non_const_data = data;
@@ -185,7 +185,7 @@ vector<unsigned char> shrinkler::crunch(const vector<unsigned char>& data, PackP
 }
 
 // Corresponds to DataFile::compress in Shrinkler.
-vector<uint32_t> shrinkler::compress(vector<unsigned char>& data, PackParams& params, RefEdgeFactory& edge_factory, bool show_progress) const
+std::vector<uint32_t> shrinkler::compress(std::vector<unsigned char>& data, PackParams& params, RefEdgeFactory& edge_factory, bool show_progress) const
 {
     vector<uint32_t> pack_buffer;
     RangeCoder range_coder(LZEncoder::NUM_CONTEXTS + NUM_RELOC_CONTEXTS, pack_buffer);
@@ -199,7 +199,7 @@ vector<uint32_t> shrinkler::compress(vector<unsigned char>& data, PackParams& pa
 }
 
 // Corresponds to DataFile::verify in Shrinkler.
-ptrdiff_t shrinkler::verify(vector<unsigned char>& data, vector<uint32_t>& pack_buffer, PackParams& params) const
+ptrdiff_t shrinkler::verify(std::vector<unsigned char>& data, std::vector<uint32_t>& pack_buffer, PackParams& params) const
 {
     CONSOLE << "Verifying..." << endl;
 
