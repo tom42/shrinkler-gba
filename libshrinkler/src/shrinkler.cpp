@@ -75,7 +75,7 @@ static void packData2(unsigned char* data, int data_length, int zero_padding, Pa
     else {
         progress = new NoProgress();
     }
-    CONSOLE << "Original: " << data_length << std::endl;
+    CONSOLE << "Original: " << data_length << endl;
     for (int i = 0; i < params->iterations; i++) {
         // Parse data into LZ symbols
         LZParseResult& result = results[1 - best_result];
@@ -99,7 +99,7 @@ static void packData2(unsigned char* data, int data_length, int zero_padding, Pa
         }
 
         // Print size
-        CONSOLE << format("Pass {}: {:.3f}", i + 1, real_size / (double)(8 << Coder::BIT_PRECISION)) << std::endl;
+        CONSOLE << format("Pass {}: {:.3f}", i + 1, real_size / (double)(8 << Coder::BIT_PRECISION)) << endl;
 
         // Count symbol frequencies
         CountingCoder* new_counting_coder = new CountingCoder(LZEncoder::NUM_CONTEXTS);
