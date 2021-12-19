@@ -124,35 +124,6 @@ std::make_signed_t<T> signed_cast(T value)
     return value;
 }
 
-// Corresponds to DataFile::verify in Shrinkler.
-ptrdiff_t verify(vector<unsigned char>& data, vector<uint32_t>& pack_buffer, PackParams& params)
-{
-    CONSOLE_OLD << "Verifying..." << endl;
-
-    RangeDecoder decoder(LZEncoder::NUM_CONTEXTS + NUM_RELOC_CONTEXTS, pack_buffer);
-    LZDecoder lzd(&decoder, params.parity_context);
-
-    // Verify data
-    LZVerifier verifier(0, &data[0], numeric_cast<int>(data.size()), numeric_cast<int>(data.size()));
-    decoder.reset();
-    decoder.setListener(&verifier);
-    if (!lzd.decode(verifier))
-    {
-        throw runtime_error("INTERNAL ERROR: could not verify decompressed data");
-    }
-
-    // Check length
-    if (numeric_cast<size_t>(verifier.size()) != data.size())
-    {
-        throw runtime_error(format("INTERNAL ERROR: decompressed data has incorrect length ({}, should have been {})", verifier.size(), data.size()));
-    }
-
-    // TODO: we're now returning ptrdiff_t:
-    //       * What header is this defined in? Include it!
-    //       * Add a static assertion: sizeof(ptrdiff_t) must not be smaller sizeof(size_t)
-    return verifier.front_overlap_margin + pack_buffer.size() * 4 - data.size();
-}
-
 static vector<unsigned char> to_little_endian(const vector<uint32_t>& pack_buffer)
 {
     vector<unsigned char> packed_bytes;
@@ -225,6 +196,35 @@ vector<uint32_t> shrinkler::compress(vector<unsigned char>& data, PackParams& pa
     range_coder.finish();
 
     return pack_buffer;
+}
+
+// Corresponds to DataFile::verify in Shrinkler.
+ptrdiff_t shrinkler::verify(vector<unsigned char>& data, vector<uint32_t>& pack_buffer, PackParams& params) const
+{
+    CONSOLE << "Verifying..." << endl;
+
+    RangeDecoder decoder(LZEncoder::NUM_CONTEXTS + NUM_RELOC_CONTEXTS, pack_buffer);
+    LZDecoder lzd(&decoder, params.parity_context);
+
+    // Verify data
+    LZVerifier verifier(0, &data[0], numeric_cast<int>(data.size()), numeric_cast<int>(data.size()));
+    decoder.reset();
+    decoder.setListener(&verifier);
+    if (!lzd.decode(verifier))
+    {
+        throw runtime_error("INTERNAL ERROR: could not verify decompressed data");
+    }
+
+    // Check length
+    if (numeric_cast<size_t>(verifier.size()) != data.size())
+    {
+        throw runtime_error(format("INTERNAL ERROR: decompressed data has incorrect length ({}, should have been {})", verifier.size(), data.size()));
+    }
+
+    // TODO: we're now returning ptrdiff_t:
+    //       * What header is this defined in? Include it!
+    //       * Add a static assertion: sizeof(ptrdiff_t) must not be smaller sizeof(size_t)
+    return verifier.front_overlap_margin + pack_buffer.size() * 4 - data.size();
 }
 
 }

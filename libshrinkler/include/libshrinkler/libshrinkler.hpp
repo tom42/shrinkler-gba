@@ -24,6 +24,7 @@
 #ifndef LIBSHRINKLER_LIBSHRINKLER_HPP
 #define LIBSHRINKLER_LIBSHRINKLER_HPP
 
+#include <cstddef>
 #include <vector>
 
 // TODO: can we get rid of these?
@@ -65,6 +66,7 @@ public:
 private:
     std::vector<unsigned char> crunch(const std::vector<unsigned char>& data, PackParams& params, RefEdgeFactory& edge_factory, bool show_progress) const;
     std::vector<uint32_t> compress(std::vector<unsigned char>& data, PackParams& params, RefEdgeFactory& edge_factory, bool show_progress) const;
+    ptrdiff_t verify(std::vector<unsigned char>& data, std::vector<uint32_t>& pack_buffer, PackParams& params) const;
 
     shrinkler_parameters parameters;
 };
