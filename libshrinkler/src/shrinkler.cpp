@@ -35,7 +35,8 @@
 
 // TODO: review entire mess in this file (parameters, whatnot, compare with latest shrinkler source...)
 // TODO: somehow make this configurable
-#define CONSOLE std::cout
+#define CONSOLE_OLD std::cout
+#define CONSOLE if (!parameters.verbose); else std::cout
 
 namespace libshrinkler
 {
@@ -75,7 +76,7 @@ static void packData2(unsigned char* data, int data_length, int zero_padding, Pa
     else {
         progress = new NoProgress();
     }
-    CONSOLE << "Original: " << data_length << endl;
+    CONSOLE_OLD << "Original: " << data_length << endl;
     for (int i = 0; i < params->iterations; i++) {
         // Parse data into LZ symbols
         LZParseResult& result = results[1 - best_result];
@@ -99,7 +100,7 @@ static void packData2(unsigned char* data, int data_length, int zero_padding, Pa
         }
 
         // Print size
-        CONSOLE << format("Pass {}: {:.3f}", i + 1, real_size / (double)(8 << Coder::BIT_PRECISION)) << endl;
+        CONSOLE_OLD << format("Pass {}: {:.3f}", i + 1, real_size / (double)(8 << Coder::BIT_PRECISION)) << endl;
 
         // Count symbol frequencies
         CountingCoder* new_counting_coder = new CountingCoder(LZEncoder::NUM_CONTEXTS);
@@ -140,7 +141,7 @@ std::make_signed_t<T> signed_cast(T value)
 // Corresponds to DataFile::verify in Shrinkler.
 auto verify(vector<unsigned char>& data, vector<uint32_t>& pack_buffer, PackParams& params)
 {
-    CONSOLE << "Verifying..." << endl;
+    CONSOLE_OLD << "Verifying..." << endl;
 
     RangeDecoder decoder(LZEncoder::NUM_CONTEXTS + NUM_RELOC_CONTEXTS, pack_buffer);
     LZDecoder lzd(&decoder, params.parity_context);
@@ -188,7 +189,7 @@ static vector<unsigned char> crunch(const vector<unsigned char>& data, PackParam
     // Compress and verify
     vector<uint32_t> pack_buffer = compress(non_const_data, params, edge_factory, show_progress);
     auto margin = verify(non_const_data, pack_buffer, params);
-    CONSOLE << "Minimum safety margin for overlapped decrunching: " << margin << endl;
+    CONSOLE_OLD << "Minimum safety margin for overlapped decrunching: " << margin << endl;
 
     // Shrinkler produces packed data suitable for 68k CPUs.
     // For the GBA's ARM7TDMI convert the data to little endian.
