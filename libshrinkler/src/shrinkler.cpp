@@ -221,9 +221,6 @@ ptrdiff_t shrinkler::verify(std::vector<unsigned char>& data, std::vector<uint32
         throw runtime_error(format("INTERNAL ERROR: decompressed data has incorrect length ({}, should have been {})", verifier.size(), data.size()));
     }
 
-    // TODO: we're now returning ptrdiff_t:
-    //       * What header is this defined in? Include it!
-    //       * Add a static assertion: sizeof(ptrdiff_t) must not be smaller sizeof(size_t)
     return verifier.front_overlap_margin + pack_buffer.size() * 4 - data.size();
 }
 
