@@ -25,6 +25,7 @@
 #define LIBSHRINKLER_LIBSHRINKLER_HPP
 
 #include <cstddef>
+#include <cstdint>
 #include <vector>
 
 // TODO: can we get rid of these?

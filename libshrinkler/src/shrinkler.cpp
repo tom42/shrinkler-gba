@@ -24,7 +24,6 @@
 #include "shrinkler.ipp"
 
 #include <boost/numeric/conversion/cast.hpp>
-#include <cstdint>
 #include <cstdio>
 #include <cstdlib>
 #include <iostream>
