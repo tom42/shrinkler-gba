@@ -33,7 +33,7 @@ BOOST_AUTO_TEST_SUITE(shrinkler_parameters_test)
 
     BOOST_AUTO_TEST_CASE(constructor_default_preset)
     {
-        shrinkler_parameters testee;
+        const shrinkler_parameters testee;
 
         BOOST_TEST(testee.parity_context == true);
         BOOST_TEST(testee.iterations == 2);
@@ -42,11 +42,12 @@ BOOST_AUTO_TEST_SUITE(shrinkler_parameters_test)
         BOOST_TEST(testee.effort == 200);
         BOOST_TEST(testee.skip_length == 2000);
         BOOST_TEST(testee.references == 100000);
+        BOOST_TEST(testee.verbose == false);
     }
 
     BOOST_AUTO_TEST_CASE(constructor_preset_9)
     {
-        shrinkler_parameters testee(9);
+        const shrinkler_parameters testee(9);
 
         BOOST_TEST(testee.parity_context == true);
         BOOST_TEST(testee.iterations == 9);
@@ -55,6 +56,7 @@ BOOST_AUTO_TEST_SUITE(shrinkler_parameters_test)
         BOOST_TEST(testee.effort == 900);
         BOOST_TEST(testee.skip_length == 9000);
         BOOST_TEST(testee.references == 100000);
+        BOOST_TEST(testee.verbose == false);
     }
 
 BOOST_AUTO_TEST_SUITE_END()

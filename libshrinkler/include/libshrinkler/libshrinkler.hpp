@@ -39,7 +39,8 @@ public:
         same_length(10 * preset),
         effort(100 * preset),
         skip_length(1000 * preset),
-        references(100000)
+        references(100000),
+        verbose(false)
     {}
 
     bool parity_context;
@@ -49,6 +50,7 @@ public:
     int effort;
     int skip_length;
     int references;
+    bool verbose;
 };
 
 class shrinkler
