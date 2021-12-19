@@ -72,10 +72,8 @@ static void packData2(unsigned char* data, int data_length, int zero_padding, Pa
     else {
         progress = new NoProgress();
     }
-    printf("%8d", data_length);
+    CONSOLE << "Original: " << data_length << std::endl;
     for (int i = 0; i < params->iterations; i++) {
-        printf("  ");
-
         // Parse data into LZ symbols
         LZParseResult& result = results[1 - best_result];
         Coder* measurer = new SizeMeasuringCoder(counting_coder);
@@ -98,7 +96,7 @@ static void packData2(unsigned char* data, int data_length, int zero_padding, Pa
         }
 
         // Print size
-        printf("%14.3f", real_size / (double)(8 << Coder::BIT_PRECISION));
+        CONSOLE << format("Pass {}: {:.3f}", i + 1, real_size / (double)(8 << Coder::BIT_PRECISION)) << std::endl;
 
         // Count symbol frequencies
         CountingCoder* new_counting_coder = new CountingCoder(LZEncoder::NUM_CONTEXTS);
@@ -124,7 +122,6 @@ static vector<uint32_t> compress(vector<unsigned char>& data, PackParams& params
 
     // Crunch the data
     range_coder.reset();
-    // TODO: remember why we duplicated packData too. Or Fix it. What IS it printing here?
     packData2(&data[0], numeric_cast<int>(data.size()), 0, &params, &range_coder, &edge_factory, show_progress);
     range_coder.finish();
 
