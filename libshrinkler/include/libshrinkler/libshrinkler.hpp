@@ -64,6 +64,7 @@ public:
     void set_parameters(const shrinkler_parameters& p) { parameters = p; }
 private:
     std::vector<unsigned char> crunch(const std::vector<unsigned char>& data, PackParams& params, RefEdgeFactory& edge_factory, bool show_progress) const;
+    std::vector<uint32_t> compress(std::vector<unsigned char>& data, PackParams& params, RefEdgeFactory& edge_factory, bool show_progress) const;
 
     shrinkler_parameters parameters;
 };

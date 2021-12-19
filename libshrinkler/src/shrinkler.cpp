@@ -118,20 +118,6 @@ static void packData2(unsigned char* data, int data_length, int zero_padding, Pa
     results[best_result].encode(LZEncoder(result_coder, params->parity_context));
 }
 
-// Corresponds to DataFile::compress in Shrinkler.
-static vector<uint32_t> compress(vector<unsigned char>& data, PackParams& params, RefEdgeFactory& edge_factory, bool show_progress)
-{
-    vector<uint32_t> pack_buffer;
-    RangeCoder range_coder(LZEncoder::NUM_CONTEXTS + NUM_RELOC_CONTEXTS, pack_buffer);
-
-    // Crunch the data
-    range_coder.reset();
-    packData2(&data[0], numeric_cast<int>(data.size()), 0, &params, &range_coder, &edge_factory, show_progress);
-    range_coder.finish();
-
-    return pack_buffer;
-}
-
 template <typename T>
 std::make_signed_t<T> signed_cast(T value)
 {
@@ -215,13 +201,27 @@ vector<unsigned char> shrinkler::crunch(const vector<unsigned char>& data, PackP
     vector<unsigned char> non_const_data = data;
 
     // Compress and verify
-    vector<uint32_t> pack_buffer = libshrinkler::compress(non_const_data, params, edge_factory, show_progress); // TODO: remove full qualification
+    vector<uint32_t> pack_buffer = compress(non_const_data, params, edge_factory, show_progress);
     auto margin = verify(non_const_data, pack_buffer, params);
     CONSOLE << "Minimum safety margin for overlapped decrunching: " << margin << endl;
 
     // Shrinkler produces packed data suitable for 68k CPUs.
     // For the GBA's ARM7TDMI convert the data to little endian.
     return to_little_endian(pack_buffer);
+}
+
+// Corresponds to DataFile::compress in Shrinkler.
+vector<uint32_t> shrinkler::compress(vector<unsigned char>& data, PackParams& params, RefEdgeFactory& edge_factory, bool show_progress) const
+{
+    vector<uint32_t> pack_buffer;
+    RangeCoder range_coder(LZEncoder::NUM_CONTEXTS + NUM_RELOC_CONTEXTS, pack_buffer);
+
+    // Crunch the data
+    range_coder.reset();
+    packData2(&data[0], numeric_cast<int>(data.size()), 0, &params, &range_coder, &edge_factory, show_progress);
+    range_coder.finish();
+
+    return pack_buffer;
 }
 
 }
