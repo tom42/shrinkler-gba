@@ -23,6 +23,7 @@
 
 set(
   SOURCES
+  include/libshrinkler/libshrinkler.hpp
   src/shrinkler.cpp)
 
 add_library(libshrinkler ${SOURCES})
