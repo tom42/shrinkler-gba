@@ -1,3 +1,5 @@
+* See which output in shrinkler.cpp should be optional and which should not:
+  * The message about the -r option for instance should NOT be hidden if verbose mode is not used
 * Streamline copyright notice in sources: do we have the year or not?
 * Licensing of shrinkler.cpp:
   * Since this file is mostly copypasted Shrinkler code it ought to be using the Shrinkler license, no?
@@ -26,3 +28,6 @@
   * shrinkler-gba code: MIT license
   * libshrinkler: MIT, except actual shrinkler code, which is Blueberry's
   * 3rd party code: has their own license (Shrinkler in particular)
+* Redo our own code:
+  * Do we provide the parity context option?
+    * Well maybe not at first. It would mean we have to update the decompressor
