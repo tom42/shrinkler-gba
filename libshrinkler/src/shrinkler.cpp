@@ -125,7 +125,7 @@ std::make_signed_t<T> signed_cast(T value)
 }
 
 // Corresponds to DataFile::verify in Shrinkler.
-auto verify(vector<unsigned char>& data, vector<uint32_t>& pack_buffer, PackParams& params)
+ptrdiff_t verify(vector<unsigned char>& data, vector<uint32_t>& pack_buffer, PackParams& params)
 {
     CONSOLE_OLD << "Verifying..." << endl;
 
@@ -147,7 +147,10 @@ auto verify(vector<unsigned char>& data, vector<uint32_t>& pack_buffer, PackPara
         throw runtime_error(format("INTERNAL ERROR: decompressed data has incorrect length ({}, should have been {})", verifier.size(), data.size()));
     }
 
-    return signed_cast(verifier.front_overlap_margin + pack_buffer.size() * 4 - data.size());
+    // TODO: we're now returning ptrdiff_t:
+    //       * What header is this defined in? Include it!
+    //       * Add a static assertion: sizeof(ptrdiff_t) must not be smaller sizeof(size_t)
+    return verifier.front_overlap_margin + pack_buffer.size() * 4 - data.size();
 }
 
 static vector<unsigned char> to_little_endian(const vector<uint32_t>& pack_buffer)
