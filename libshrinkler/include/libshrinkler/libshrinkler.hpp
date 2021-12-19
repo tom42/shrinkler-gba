@@ -28,7 +28,6 @@
 #include <cstdint>
 #include <vector>
 
-// TODO: can we get rid of these?
 struct PackParams;
 class RefEdgeFactory;
 
