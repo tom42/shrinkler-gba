@@ -180,22 +180,6 @@ static vector<unsigned char> to_little_endian(const vector<uint32_t>& pack_buffe
     return packed_bytes;
 }
 
-// Corresponds to DataFile::crunch in Shrinkler.
-static vector<unsigned char> crunch(const vector<unsigned char>& data, PackParams& params, RefEdgeFactory& edge_factory, bool show_progress)
-{
-    // Shrinkler code uses non-const buffers all over the place, so we create a copy of the original data.
-    vector<unsigned char> non_const_data = data;
-
-    // Compress and verify
-    vector<uint32_t> pack_buffer = compress(non_const_data, params, edge_factory, show_progress);
-    auto margin = verify(non_const_data, pack_buffer, params);
-    CONSOLE_OLD << "Minimum safety margin for overlapped decrunching: " << margin << endl;
-
-    // Shrinkler produces packed data suitable for 68k CPUs.
-    // For the GBA's ARM7TDMI convert the data to little endian.
-    return to_little_endian(pack_buffer);
-}
-
 // Corresponds to main in Shrinkler.
 vector<unsigned char> shrinkler::compress(const vector<unsigned char>& data) const
 {
@@ -222,6 +206,22 @@ vector<unsigned char> shrinkler::compress(const vector<unsigned char>& data) con
     }
 
     return packed_bytes;
+}
+
+// Corresponds to DataFile::crunch in Shrinkler.
+vector<unsigned char> shrinkler::crunch(const vector<unsigned char>& data, PackParams& params, RefEdgeFactory& edge_factory, bool show_progress) const
+{
+    // Shrinkler code uses non-const buffers all over the place, so we create a copy of the original data.
+    vector<unsigned char> non_const_data = data;
+
+    // Compress and verify
+    vector<uint32_t> pack_buffer = libshrinkler::compress(non_const_data, params, edge_factory, show_progress); // TODO: remove full qualification
+    auto margin = verify(non_const_data, pack_buffer, params);
+    CONSOLE << "Minimum safety margin for overlapped decrunching: " << margin << endl;
+
+    // Shrinkler produces packed data suitable for 68k CPUs.
+    // For the GBA's ARM7TDMI convert the data to little endian.
+    return to_little_endian(pack_buffer);
 }
 
 }
