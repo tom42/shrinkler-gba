@@ -118,12 +118,6 @@ static void packData2(unsigned char* data, int data_length, int zero_padding, Pa
     results[best_result].encode(LZEncoder(result_coder, params->parity_context));
 }
 
-template <typename T>
-std::make_signed_t<T> signed_cast(T value)
-{
-    return value;
-}
-
 static vector<unsigned char> to_little_endian(const vector<uint32_t>& pack_buffer)
 {
     vector<unsigned char> packed_bytes;
