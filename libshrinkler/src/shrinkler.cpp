@@ -29,7 +29,6 @@
 #include <cstdlib>
 #include <iostream>
 #include <stdexcept>
-#include <type_traits>
 #include "fmt/core.h"
 #include "libshrinkler/libshrinkler.hpp"
 
