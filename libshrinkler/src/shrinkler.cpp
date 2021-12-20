@@ -58,64 +58,6 @@ static PackParams create_pack_params(const shrinkler_parameters& parameters)
     };
 }
 
-static void packData2(unsigned char* data, int data_length, int zero_padding, PackParams* params, Coder* result_coder, RefEdgeFactory* edge_factory, bool show_progress)
-{
-    MatchFinder finder(data, data_length, 2, params->match_patience, params->max_same_length);
-    LZParser parser(data, data_length, zero_padding, finder, params->length_margin, params->skip_length, edge_factory);
-    result_size_t real_size = 0;
-    result_size_t best_size = (result_size_t)1 << (32 + 3 + Coder::BIT_PRECISION);
-    int best_result = 0;
-    vector<LZParseResult> results(2);
-    CountingCoder* counting_coder = new CountingCoder(LZEncoder::NUM_CONTEXTS);
-    LZProgress* progress;
-    if (show_progress) {
-        progress = new PackProgress();
-    }
-    else {
-        progress = new NoProgress();
-    }
-    CONSOLE_OLD << "Original: " << data_length << endl;
-    for (int i = 0; i < params->iterations; i++) {
-        // Parse data into LZ symbols
-        LZParseResult& result = results[1 - best_result];
-        Coder* measurer = new SizeMeasuringCoder(counting_coder);
-        measurer->setNumberContexts(LZEncoder::NUMBER_CONTEXT_OFFSET, LZEncoder::NUM_NUMBER_CONTEXTS, data_length);
-        finder.reset();
-        result = parser.parse(LZEncoder(measurer, params->parity_context), progress);
-        delete measurer;
-
-        // Encode result using adaptive range coding
-        vector<unsigned> dummy_result;
-        RangeCoder* range_coder = new RangeCoder(LZEncoder::NUM_CONTEXTS, dummy_result);
-        real_size = result.encode(LZEncoder(range_coder, params->parity_context));
-        range_coder->finish();
-        delete range_coder;
-
-        // Choose if best
-        if (real_size < best_size) {
-            best_result = 1 - best_result;
-            best_size = real_size;
-        }
-
-        // Print size
-        CONSOLE_OLD << format("Pass {}: {:.3f}", i + 1, real_size / (double)(8 << Coder::BIT_PRECISION)) << endl;
-
-        // Count symbol frequencies
-        CountingCoder* new_counting_coder = new CountingCoder(LZEncoder::NUM_CONTEXTS);
-        result.encode(LZEncoder(counting_coder, params->parity_context));
-
-        // New size measurer based on frequencies
-        CountingCoder* old_counting_coder = counting_coder;
-        counting_coder = new CountingCoder(old_counting_coder, new_counting_coder);
-        delete old_counting_coder;
-        delete new_counting_coder;
-    }
-    delete progress;
-    delete counting_coder;
-
-    results[best_result].encode(LZEncoder(result_coder, params->parity_context));
-}
-
 static vector<unsigned char> to_little_endian(const vector<uint32_t>& pack_buffer)
 {
     vector<unsigned char> packed_bytes;
@@ -184,7 +126,7 @@ std::vector<uint32_t> shrinkler::compress(std::vector<unsigned char>& data, Pack
 
     // Crunch the data
     range_coder.reset();
-    packData2(&data[0], numeric_cast<int>(data.size()), 0, &params, &range_coder, &edge_factory, show_progress);
+    packData(&data[0], numeric_cast<int>(data.size()), 0, &params, &range_coder, &edge_factory, show_progress);
     range_coder.finish();
 
     return pack_buffer;
@@ -214,6 +156,64 @@ ptrdiff_t shrinkler::verify(std::vector<unsigned char>& data, std::vector<uint32
     }
 
     return verifier.front_overlap_margin + pack_buffer.size() * 4 - data.size();
+}
+
+void shrinkler::packData(unsigned char* data, int data_length, int zero_padding, PackParams* params, Coder* result_coder, RefEdgeFactory* edge_factory, bool show_progress) const
+{
+    MatchFinder finder(data, data_length, 2, params->match_patience, params->max_same_length);
+    LZParser parser(data, data_length, zero_padding, finder, params->length_margin, params->skip_length, edge_factory);
+    result_size_t real_size = 0;
+    result_size_t best_size = (result_size_t)1 << (32 + 3 + Coder::BIT_PRECISION);
+    int best_result = 0;
+    vector<LZParseResult> results(2);
+    CountingCoder* counting_coder = new CountingCoder(LZEncoder::NUM_CONTEXTS);
+    LZProgress* progress;
+    if (show_progress) {
+        progress = new PackProgress();
+    }
+    else {
+        progress = new NoProgress();
+    }
+    CONSOLE_OLD << "Original: " << data_length << endl;
+    for (int i = 0; i < params->iterations; i++) {
+        // Parse data into LZ symbols
+        LZParseResult& result = results[1 - best_result];
+        Coder* measurer = new SizeMeasuringCoder(counting_coder);
+        measurer->setNumberContexts(LZEncoder::NUMBER_CONTEXT_OFFSET, LZEncoder::NUM_NUMBER_CONTEXTS, data_length);
+        finder.reset();
+        result = parser.parse(LZEncoder(measurer, params->parity_context), progress);
+        delete measurer;
+
+        // Encode result using adaptive range coding
+        vector<unsigned> dummy_result;
+        RangeCoder* range_coder = new RangeCoder(LZEncoder::NUM_CONTEXTS, dummy_result);
+        real_size = result.encode(LZEncoder(range_coder, params->parity_context));
+        range_coder->finish();
+        delete range_coder;
+
+        // Choose if best
+        if (real_size < best_size) {
+            best_result = 1 - best_result;
+            best_size = real_size;
+        }
+
+        // Print size
+        CONSOLE_OLD << format("Pass {}: {:.3f}", i + 1, real_size / (double)(8 << Coder::BIT_PRECISION)) << endl;
+
+        // Count symbol frequencies
+        CountingCoder* new_counting_coder = new CountingCoder(LZEncoder::NUM_CONTEXTS);
+        result.encode(LZEncoder(counting_coder, params->parity_context));
+
+        // New size measurer based on frequencies
+        CountingCoder* old_counting_coder = counting_coder;
+        counting_coder = new CountingCoder(old_counting_coder, new_counting_coder);
+        delete old_counting_coder;
+        delete new_counting_coder;
+    }
+    delete progress;
+    delete counting_coder;
+
+    results[best_result].encode(LZEncoder(result_coder, params->parity_context));
 }
 
 }

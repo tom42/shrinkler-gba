@@ -28,6 +28,7 @@
 #include <cstdint>
 #include <vector>
 
+class Coder;
 struct PackParams;
 class RefEdgeFactory;
 
@@ -69,6 +70,8 @@ private:
 
     static_assert(sizeof(ptrdiff_t) >= sizeof(size_t));
     ptrdiff_t verify(std::vector<unsigned char>& data, std::vector<uint32_t>& pack_buffer, PackParams& params) const;
+
+    void packData(unsigned char* data, int data_length, int zero_padding, PackParams* params, Coder* result_coder, RefEdgeFactory* edge_factory, bool show_progress) const;
 
     shrinkler_parameters parameters;
 };
