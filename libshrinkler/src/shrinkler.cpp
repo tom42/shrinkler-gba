@@ -32,8 +32,6 @@
 #include "libshrinkler/libshrinkler.hpp"
 
 // TODO: review entire mess in this file (parameters, whatnot, compare with latest shrinkler source...)
-// TODO: somehow make this configurable
-#define CONSOLE_OLD std::cout
 #define CONSOLE if (!parameters.verbose); else std::cout
 
 namespace libshrinkler
@@ -174,7 +172,7 @@ void shrinkler::packData(unsigned char* data, int data_length, int zero_padding,
     else {
         progress = new NoProgress();
     }
-    CONSOLE_OLD << "Original: " << data_length << endl;
+    CONSOLE << "Original: " << data_length << endl;
     for (int i = 0; i < params->iterations; i++) {
         // Parse data into LZ symbols
         LZParseResult& result = results[1 - best_result];
@@ -198,7 +196,7 @@ void shrinkler::packData(unsigned char* data, int data_length, int zero_padding,
         }
 
         // Print size
-        CONSOLE_OLD << format("Pass {}: {:.3f}", i + 1, real_size / (double)(8 << Coder::BIT_PRECISION)) << endl;
+        CONSOLE << format("Pass {}: {:.3f}", i + 1, real_size / (double)(8 << Coder::BIT_PRECISION)) << endl;
 
         // Count symbol frequencies
         CountingCoder* new_counting_coder = new CountingCoder(LZEncoder::NUM_CONTEXTS);
