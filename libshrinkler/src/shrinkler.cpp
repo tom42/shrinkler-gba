@@ -31,7 +31,6 @@
 #include "fmt/core.h"
 #include "libshrinkler/libshrinkler.hpp"
 
-// TODO: review entire mess in this file (parameters, whatnot, compare with latest shrinkler source...)
 #define CONSOLE if (!parameters.verbose); else std::cout
 
 namespace libshrinkler
