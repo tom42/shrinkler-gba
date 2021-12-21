@@ -24,3 +24,4 @@
 add_subdirectory(argp-standalone)
 add_subdirectory(ELFIO)
 add_subdirectory(fmt)
+add_subdirectory(lzasm)

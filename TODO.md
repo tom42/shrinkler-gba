@@ -18,6 +18,7 @@
     * git subtree add --prefix 3rdparty/argp-standalone https://github.com/tom42/argp-standalone master --squash
     * git subtree add --prefix 3rdparty/ELFIO https://github.com/serge1/ELFIO Release_3.9 --squash
     * git subtree add --prefix 3rdparty/fmt https://github.com/fmtlib/fmt 8.0.1 --squash
+    * git subtree add --prefix 3rdparty/lzasm https://github.com/tom42/lzasm v0.1.0 --squash
 * Set up 3rd party dependencies:
   * In any case, might want to have a README.md in there? or 3rdparty.md?
   * Merge dependencies into subtree (there is nothing to do for ELFIO, which is header only, and for shrinkler, for which we'll create a special library)
