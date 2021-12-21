@@ -69,5 +69,5 @@ else()
 endif()
 
 add_subdirectory(libshrinkler)
-add_subdirectory(libshrinkler-gba)
+add_subdirectory(libshrinklergba)
 add_subdirectory(shrinkler-gba)

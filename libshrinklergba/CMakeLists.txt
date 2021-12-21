@@ -25,4 +25,4 @@ set(
   SOURCES
   src/dummy.cpp)
 
-add_library(libshrinkler-gba ${SOURCES})
+add_library(libshrinklergba ${SOURCES})
