@@ -1,3 +1,6 @@
+* Set up libshrinkler-gba
+  * First step would be command line parsing
+    * That would then also lead to argp probing
 * See which output in shrinkler.cpp should be optional and which should not:
   * The message about the -r option for instance should NOT be hidden if verbose mode is not used
 * Streamline copyright notice in sources: do we have the year or not?
