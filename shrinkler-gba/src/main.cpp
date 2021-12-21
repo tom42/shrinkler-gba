@@ -27,12 +27,12 @@
 
 int main(int, char* argv[])
 {
-	try
-	{
-	}
-	catch (const std::exception& e)
-	{
-		std::cerr << argv[0] << ": " << e.what() << std::endl;
-		return EXIT_FAILURE;
-	}
+    try
+    {
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << argv[0] << ": " << e.what() << std::endl;
+        return EXIT_FAILURE;
+    }
 }
