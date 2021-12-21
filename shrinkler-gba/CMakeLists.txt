@@ -22,3 +22,4 @@
 # SOFTWARE.
 
 add_executable(shrinkler-gba src/main.cpp)
+target_link_libraries(shrinkler-gba libshrinklergba)

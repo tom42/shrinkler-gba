@@ -1,3 +1,7 @@
+* main program:
+  * Set up option parsing
+    * This requires the option class
+    * And then some parse_command_line function
 * Set up libshrinkler-gba
   * First step would be command line parsing
     * That would then also lead to argp probing
