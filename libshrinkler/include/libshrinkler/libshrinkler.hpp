@@ -39,24 +39,22 @@ class shrinkler_parameters
 {
 public:
     shrinkler_parameters(int preset = 2)
-        : parity_context(true),
-        iterations(1 * preset),
+        : iterations(1 * preset),
         length_margin(1 * preset),
         same_length(10 * preset),
         effort(100 * preset),
         skip_length(1000 * preset),
-        references(100000),
-        verbose(false)
+        references(100000)
     {}
 
-    bool parity_context;
+    bool verbose = false;
+    bool parity_context = true;
     int iterations;
     int length_margin;
     int same_length;
     int effort;
     int skip_length;
     int references;
-    bool verbose;
 };
 
 class shrinkler
