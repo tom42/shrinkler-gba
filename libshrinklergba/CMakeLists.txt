@@ -27,6 +27,10 @@ set(
   src/dummy.cpp)
 
 add_library(libshrinklergba ${SOURCES})
+target_include_directories(
+  libshrinklergba
+  PUBLIC
+  "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 if(BUILD_TESTING)
   add_executable(
@@ -34,5 +38,6 @@ if(BUILD_TESTING)
     unittest/main.cpp
     unittest/options_test.cpp)
   target_include_directories(libshrinklergba-unittest PRIVATE "${Boost_INCLUDE_DIRS}")
+  target_link_libraries(libshrinklergba-unittest PRIVATE libshrinklergba)
   add_test(NAME libshrinklergba-unittest COMMAND libshrinklergba-unittest)
 endif()
