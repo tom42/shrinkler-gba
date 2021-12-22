@@ -27,3 +27,12 @@ set(
   src/dummy.cpp)
 
 add_library(libshrinklergba ${SOURCES})
+
+if(BUILD_TESTING)
+  add_executable(
+    libshrinklergba-unittest
+    unittest/main.cpp
+    unittest/options_test.cpp)
+  target_include_directories(libshrinklergba-unittest PRIVATE "${Boost_INCLUDE_DIRS}")
+  add_test(NAME libshrinklergba-unittest COMMAND libshrinklergba-unittest)
+endif()
