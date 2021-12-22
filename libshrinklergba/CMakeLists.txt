@@ -23,6 +23,7 @@
 
 set(
   SOURCES
+  include/libshrinklergba/options.hpp
   src/dummy.cpp)
 
 add_library(libshrinklergba ${SOURCES})
