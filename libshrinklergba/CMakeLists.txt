@@ -31,6 +31,7 @@ target_include_directories(
   libshrinklergba
   PUBLIC
   "${CMAKE_CURRENT_SOURCE_DIR}/include")
+target_link_libraries(libshrinklergba PUBLIC libshrinkler)
 
 if(BUILD_TESTING)
   add_executable(

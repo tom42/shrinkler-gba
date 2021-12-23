@@ -24,13 +24,22 @@
 #ifndef LIBSHRINKLERGBA_OPTIONS_HPP
 #define LIBSHRINKLERGBA_OPTIONS_HPP
 
+#include "libshrinkler/libshrinkler.hpp"
+
 namespace libshrinklergba
 {
 
 class options
 {
 public:
+    bool verbose() const { return m_verbose; }
+    void verbose(bool verbose) { m_verbose = verbose; }
+
+    const libshrinkler::shrinkler_parameters& shrinkler_parameters() const { return m_shrinkler_parameters; }
+
 private:
+    bool m_verbose = false;
+    libshrinkler::shrinkler_parameters m_shrinkler_parameters;
 };
 
 }

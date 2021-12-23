@@ -33,9 +33,8 @@ BOOST_AUTO_TEST_SUITE(options_test)
 
     BOOST_AUTO_TEST_CASE(constructor)
     {
-        // TODO: check stuff here, e.g. input file name, output file name, verbose flag
-        //options testee;
-        BOOST_FAIL("YIKES");
+        const options testee;
+        BOOST_TEST(testee.verbose() == false);
     }
 
 BOOST_AUTO_TEST_SUITE_END()
