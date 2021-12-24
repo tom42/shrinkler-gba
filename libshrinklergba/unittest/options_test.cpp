@@ -46,6 +46,17 @@ BOOST_AUTO_TEST_SUITE(options_test)
         BOOST_TEST(testee.output_file() == "input.gba");
     }
 
+    BOOST_AUTO_TEST_CASE(input_file_does_not_set_output_file_if_already_set)
+    {
+        options testee;
+
+        testee.output_file("output.gba");
+        testee.input_file("input.bin");
+
+        BOOST_TEST(testee.input_file() == "input.bin");
+        BOOST_TEST(testee.output_file() == "output.gba");
+    }
+
 BOOST_AUTO_TEST_SUITE_END()
 
 }
