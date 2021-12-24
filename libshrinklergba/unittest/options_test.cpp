@@ -39,6 +39,13 @@ BOOST_AUTO_TEST_SUITE(options_test)
         BOOST_TEST(testee.verbose() == false);
     }
 
+    BOOST_AUTO_TEST_CASE(input_file_sets_output_file_if_not_yet_set)
+    {
+        options testee;
+        testee.input_file("input.elf");
+        BOOST_TEST(testee.output_file() == "input.gba");
+    }
+
 BOOST_AUTO_TEST_SUITE_END()
 
 }

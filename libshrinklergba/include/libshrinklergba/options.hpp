@@ -34,14 +34,28 @@ class options
 {
 public:
     bool verbose() const { return m_verbose; }
+
     void verbose(bool verbose) { m_verbose = verbose; }
 
     const std::filesystem::path& input_file() const { return m_input_file; }
 
+    void input_file(const std::filesystem::path& input_file)
+    {
+        m_input_file = input_file;
+
+        if (!m_output_file_set)
+        {
+            m_output_file = input_file;
+            m_output_file.replace_extension("gba");
+        }
+    }
+
     const std::filesystem::path& output_file() const { return m_output_file; }
 
     const libshrinkler::shrinkler_parameters& shrinkler_parameters() const { return m_shrinkler_parameters; }
+
     libshrinkler::shrinkler_parameters& shrinkler_parameters() { return m_shrinkler_parameters; }
+
     void shrinkler_parameters(const libshrinkler::shrinkler_parameters& p) { m_shrinkler_parameters = p; }
 
 private:
