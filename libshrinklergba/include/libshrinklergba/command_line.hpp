@@ -27,6 +27,13 @@
 namespace libshrinklergba
 {
 
+enum class command_action
+{
+    exit_failure,
+    exit_success,
+    process
+};
+
 }
 
 #endif
