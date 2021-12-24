@@ -24,6 +24,7 @@
 #ifndef LIBSHRINKLERGBA_OPTIONS_HPP
 #define LIBSHRINKLERGBA_OPTIONS_HPP
 
+#include <filesystem>
 #include "libshrinkler/libshrinkler.hpp"
 
 namespace libshrinklergba
@@ -35,12 +36,17 @@ public:
     bool verbose() const { return m_verbose; }
     void verbose(bool verbose) { m_verbose = verbose; }
 
+    const std::filesystem::path& input_file() const { return m_input_file; }
+
     const libshrinkler::shrinkler_parameters& shrinkler_parameters() const { return m_shrinkler_parameters; }
     libshrinkler::shrinkler_parameters& shrinkler_parameters() { return m_shrinkler_parameters; }
     void shrinkler_parameters(const libshrinkler::shrinkler_parameters& p) { m_shrinkler_parameters = p; }
 
 private:
     bool m_verbose = false;
+    bool m_output_file_set = false;
+    std::filesystem::path m_input_file;
+    std::filesystem::path m_output_file;
     libshrinkler::shrinkler_parameters m_shrinkler_parameters;
 };
 

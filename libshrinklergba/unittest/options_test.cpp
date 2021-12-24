@@ -34,6 +34,7 @@ BOOST_AUTO_TEST_SUITE(options_test)
     BOOST_AUTO_TEST_CASE(constructor)
     {
         const options testee;
+        BOOST_TEST(testee.input_file() == "");
         BOOST_TEST(testee.verbose() == false);
     }
 
