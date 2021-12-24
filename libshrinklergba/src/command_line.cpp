@@ -21,23 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef LIBSHRINKLERGBA_COMMAND_LINE_HPP
-#define LIBSHRINKLERGBA_COMMAND_LINE_HPP
-
-#include "libshrinklergba/options.hpp"
-
 namespace libshrinklergba
 {
 
-enum class command_action
-{
-    exit_failure,
-    exit_success,
-    process
-};
-
-command_action parse_command_line(int argc, char* argv[], options& options, bool silent);
-
 }
-
-#endif
