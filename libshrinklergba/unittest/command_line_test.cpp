@@ -44,8 +44,7 @@ BOOST_FIXTURE_TEST_SUITE(command_line_test, command_line_test_fixture)
 
     BOOST_AUTO_TEST_CASE(empty_command_line)
     {
-        // TODO: get rid of casts
-        BOOST_TEST((int)parse_command_line("") == (int)command_action::exit_failure);
+        BOOST_TEST((parse_command_line("") == command_action::exit_failure));
     }
 
 BOOST_AUTO_TEST_SUITE_END()
