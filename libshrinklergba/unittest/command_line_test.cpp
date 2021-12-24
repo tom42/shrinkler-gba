@@ -55,6 +55,15 @@ BOOST_FIXTURE_TEST_SUITE(command_line_test, command_line_test_fixture)
         BOOST_TEST((parse_command_line("file1 file2") == command_action::exit_failure));
     }
 
+    BOOST_AUTO_TEST_CASE(one_input_file_no_other_options)
+    {
+        // TODO: rewrite to use BOOST_TEST
+        BOOST_TEST((parse_command_line("file1") == command_action::process));
+        BOOST_CHECK_EQUAL("file1", options.input_file());
+        BOOST_CHECK_EQUAL("file1.gba", options.output_file());
+        BOOST_CHECK_EQUAL(false, options.verbose());
+    }
+
 BOOST_AUTO_TEST_SUITE_END()
 
 }
