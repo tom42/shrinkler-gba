@@ -36,6 +36,8 @@ public:
     void verbose(bool verbose) { m_verbose = verbose; }
 
     const libshrinkler::shrinkler_parameters& shrinkler_parameters() const { return m_shrinkler_parameters; }
+    libshrinkler::shrinkler_parameters& shrinkler_parameters() { return m_shrinkler_parameters; }
+    void shrinkler_parameters(const libshrinkler::shrinkler_parameters& p) { m_shrinkler_parameters = p; }
 
 private:
     bool m_verbose = false;
