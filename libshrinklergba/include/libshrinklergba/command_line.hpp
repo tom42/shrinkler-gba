@@ -21,22 +21,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <cstdlib>
-#include <iostream>
-#include <stdexcept>
+#ifndef LIBSHRINKLERGBA_COMMAND_LINE_HPP
+#define LIBSHRINKLERGBA_COMMAND_LINE_HPP
 
-#include "libshrinklergba/command_line.hpp"
-#include "libshrinklergba/options.hpp"
-
-int main(int, char* argv[])
+namespace libshrinklergba
 {
-    try
-    {
-        libshrinklergba::options options;
-    }
-    catch (const std::exception& e)
-    {
-        std::cerr << argv[0] << ": " << e.what() << std::endl;
-        return EXIT_FAILURE;
-    }
+
 }
+
+#endif

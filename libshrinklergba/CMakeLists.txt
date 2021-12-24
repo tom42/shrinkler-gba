@@ -23,6 +23,7 @@
 
 set(
   SOURCES
+  include/libshrinklergba/command_line.hpp
   include/libshrinklergba/options.hpp
   src/dummy.cpp)
 
