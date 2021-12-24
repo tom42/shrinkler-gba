@@ -50,6 +50,11 @@ BOOST_FIXTURE_TEST_SUITE(command_line_test, command_line_test_fixture)
         BOOST_TEST((parse_command_line("") == command_action::exit_failure));
     }
 
+    BOOST_AUTO_TEST_CASE(more_than_one_input_file)
+    {
+        BOOST_TEST((parse_command_line("file1 file2") == command_action::exit_failure));
+    }
+
 BOOST_AUTO_TEST_SUITE_END()
 
 }
