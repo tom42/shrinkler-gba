@@ -28,15 +28,18 @@ namespace libshrinklergba_unittest
 {
 
 using libshrinklergba::command_action;
-using libshrinklergba::parse_command_line;
 
 class command_line_test_fixture
 {
 public:
+    libshrinklergba::options options;
+
     libshrinklergba::command_action parse_command_line(const char* /*command_line*/)
     {
-        // TODO: actually run command line parser
-        return command_action::exit_failure;
+        // TODO: is a fixture instantiated for each test?
+        // TODO: argc
+        // TODO: argv
+        return libshrinklergba::parse_command_line(0, nullptr, options, true);
     }
 };
 

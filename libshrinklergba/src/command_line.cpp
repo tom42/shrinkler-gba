@@ -21,7 +21,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "libshrinklergba/command_line.hpp"
+
 namespace libshrinklergba
 {
+
+command_action parse_command_line(int /*argc*/, char* /*argv*/[], options& /*options*/, bool /*silent*/)
+{
+    // TODO: real implementation
+    return command_action::exit_failure;
+}
 
 }
