@@ -37,6 +37,7 @@ target_link_libraries(libshrinklergba PUBLIC libshrinkler)
 if(BUILD_TESTING)
   add_executable(
     libshrinklergba-unittest
+    unittest/command_line_test.cpp
     unittest/main.cpp
     unittest/options_test.cpp)
   target_include_directories(libshrinklergba-unittest PRIVATE "${Boost_INCLUDE_DIRS}")
