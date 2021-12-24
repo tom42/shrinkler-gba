@@ -38,6 +38,8 @@ public:
 
     const std::filesystem::path& input_file() const { return m_input_file; }
 
+    const std::filesystem::path& output_file() const { return m_output_file; }
+
     const libshrinkler::shrinkler_parameters& shrinkler_parameters() const { return m_shrinkler_parameters; }
     libshrinkler::shrinkler_parameters& shrinkler_parameters() { return m_shrinkler_parameters; }
     void shrinkler_parameters(const libshrinkler::shrinkler_parameters& p) { m_shrinkler_parameters = p; }

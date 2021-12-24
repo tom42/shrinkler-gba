@@ -35,6 +35,7 @@ BOOST_AUTO_TEST_SUITE(options_test)
     {
         const options testee;
         BOOST_TEST(testee.input_file() == "");
+        BOOST_TEST(testee.output_file() == "");
         BOOST_TEST(testee.verbose() == false);
     }
 
