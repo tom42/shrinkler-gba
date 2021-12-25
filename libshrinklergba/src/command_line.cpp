@@ -36,6 +36,21 @@ enum option
     usage
 };
 
+static error_t parse_opt(int key, char* arg, argp_state* state) noexcept
+{
+    try
+    {
+        parser* p = static_cast<parser*>(state->input);
+        return p->parse_opt(key, arg, state);
+    }
+    catch (const std::exception& e)
+    {
+        // Do not let any exception escape into argp, which is written in C.
+        argp_error(state, "%s", e.what());
+        return EINVAL;
+    }
+}
+
 command_action parse_command_line(int /*argc*/, char* /*argv*/[], options& /*options*/, bool /*silent*/)
 {
     static const char doc[] =
