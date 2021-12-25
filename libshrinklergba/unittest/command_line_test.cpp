@@ -21,25 +21,56 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include <boost/algorithm/string.hpp>
+#include <boost/numeric/conversion/cast.hpp>
 #include <boost/test/unit_test.hpp>
+#include <string>
+#include <vector>
 #include "libshrinklergba/command_line.hpp"
 
 namespace libshrinklergba_unittest
 {
 
 using libshrinklergba::command_action;
+using std::string;
+using std::vector;
 
 class command_line_test_fixture
 {
 public:
     libshrinklergba::options options;
 
-    libshrinklergba::command_action parse_command_line(const char* /*command_line*/)
+    libshrinklergba::command_action parse_command_line(const char* command_line)
     {
         // TODO: is a fixture instantiated for each test?
-        // TODO: argc
-        // TODO: argv
-        return libshrinklergba::parse_command_line(0, nullptr, options, true);
+
+        // Split string into individual arguments and convert them to vector<char>
+        vector<vector<char>> vectors;
+        vectors.push_back(to_vector("program_name"));
+        if (strlen(command_line))
+        {
+            vector<string> strings;
+            boost::split(strings, command_line, boost::is_any_of(" "));
+            for (const auto& s : strings)
+            {
+                vectors.push_back(to_vector(s));
+            }
+        }
+
+        // Put together an argv array.
+        vector<char*> argv;
+        for (auto& v : vectors)
+        {
+            argv.push_back(v.data());
+        }
+
+        return libshrinklergba::parse_command_line(boost::numeric_cast<int>(argv.size()), argv.data(), options, true);
+    }
+
+private:
+    static vector<char> to_vector(const string& s)
+    {
+        return vector<char>(s.c_str(), s.c_str() + s.size() + 1);
     }
 };
 
