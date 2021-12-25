@@ -28,6 +28,7 @@
 #include <string>
 #include <vector>
 #include "libshrinklergba/command_line.hpp"
+#include "libshrinklergba/options.hpp"
 
 namespace libshrinklergba_unittest
 {
@@ -43,7 +44,7 @@ public:
 
     libshrinklergba::command_action parse_command_line(const char* command_line)
     {
-        // TODO: is a fixture instantiated for each test?
+        options = libshrinklergba::options();
 
         // Split string into individual arguments and convert them to vector<char>
         vector<vector<char>> vectors;
