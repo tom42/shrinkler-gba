@@ -21,11 +21,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include <iostream>
 #include <argp.h> // TODO: how to include it? "argp.h"? <argp.h>?
+#include "libshrinkler/libshrinkler.hpp"
 #include "libshrinklergba/command_line.hpp"
 
-// TODO: get this from header file
+// TODO: get these from header file (or through compiler flags)
 #define PROJECT_NAME "shrinkler-gba"
+#define PROJECT_VERSION "0.1.0"
 
 namespace libshrinklergba
 {
@@ -34,6 +37,128 @@ enum option
 {
     first = 256,
     usage
+};
+
+class parser
+{
+public:
+    // TODO: use field initializers where possible
+    parser(options& options, bool silent) : m_options(options), m_silent(silent), m_action(command_action::process), m_inputfile_seen(false) {}
+
+    error_t parse_opt(int key, char* arg, argp_state* state)
+    {
+        switch (key)
+        {
+        case 'o':
+            m_options.output_file(arg);
+            return 0;
+        case 'v':
+            m_options.verbose(true);
+            return 0;
+        case 'a':
+            return parse_int("same length count", arg, 1, 100000, state, m_options.shrinkler_parameters().same_length);
+        case 'e':
+            return parse_int("effort", arg, 0, 100000, state, m_options.shrinkler_parameters().effort);
+        case 'i':
+            return parse_int("number of iterations", arg, 1, 9, state, m_options.shrinkler_parameters().iterations);
+        case 'l':
+            return parse_int("length margin", arg, 0, 100, state, m_options.shrinkler_parameters().length_margin);
+        case 'p':
+            return parse_preset(arg, state);
+        case 'r':
+            return parse_int("number of references", arg, 1000, 100000000, state, m_options.shrinkler_parameters().references);
+        case 's':
+            return parse_int("skip length", arg, 2, 100000, state, m_options.shrinkler_parameters().skip_length);
+        case '?':
+            argp_state_help(state, stdout, ARGP_HELP_STD_HELP);
+            stop_parsing_and_exit(state);
+            return 0;
+        case 'V':
+            print_version();
+            stop_parsing_and_exit(state);
+            return 0;
+        case option::usage:
+            argp_state_help(state, stdout, ARGP_HELP_USAGE);
+            stop_parsing_and_exit(state);
+            return 0;
+        case ARGP_KEY_ARG:
+            if (!m_inputfile_seen)
+            {
+                m_inputfile_seen = true;
+                m_options.input_file(arg);
+                return 0;
+            }
+            else
+            {
+                argp_error(state, "more than one input file given");
+                return EINVAL;
+            }
+        case ARGP_KEY_NO_ARGS:
+            if (m_action != command_action::exit_success)
+            {
+                argp_error(state, "no input file given");
+                return EINVAL;
+            }
+            else
+            {
+                return ARGP_ERR_UNKNOWN;
+            }
+        default:
+            return ARGP_ERR_UNKNOWN;
+        }
+    }
+
+    command_action action() const { return m_action; }
+
+private:
+    void stop_parsing_and_exit(argp_state* state)
+    {
+        state->next = state->argc;
+        m_action = command_action::exit_success;
+    }
+
+    void print_version()
+    {
+        if (!m_silent)
+        {
+            std::cout << PROJECT_NAME << " " << PROJECT_VERSION << std::endl;
+        }
+    }
+
+    int parse_preset(const char* s, const argp_state* state)
+    {
+        int preset = 0;
+        auto parse_result = parse_int("preset", s, 1, 9, state, preset);
+
+        if (!parse_result)
+        {
+            m_options.shrinkler_parameters(libshrinkler::shrinkler_parameters(preset));
+        }
+
+        return parse_result;
+    }
+
+    static int parse_int(const char* value_description, const char* s, int min, int max, const argp_state* state, int& parsed_int)
+    {
+        char* end;
+        auto value = strtol(s, &end, 10);
+
+        if ((*end) || (value < min) || (value > max))
+        {
+            // Exit code (EXIT_FAILURE) is not really used here since we don't allow argp to exit the program.
+            // But if we did then that's what we wanted to have as exit code.
+            argp_failure(state, EXIT_FAILURE, 0, "invalid %s: %s", value_description, s);
+            return EINVAL;
+        }
+
+        parsed_int = value;
+        return 0;
+    }
+
+    options& m_options;
+    const bool m_silent;
+    command_action m_action;
+    bool m_inputfile_seen;
 };
 
 static error_t parse_opt(int key, char* arg, argp_state* state) noexcept
