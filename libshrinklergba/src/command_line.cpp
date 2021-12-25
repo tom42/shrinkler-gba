@@ -30,6 +30,12 @@
 namespace libshrinklergba
 {
 
+enum option
+{
+    first = 256,
+    usage
+};
+
 command_action parse_command_line(int /*argc*/, char* /*argv*/[], options& /*options*/, bool /*silent*/)
 {
     static const char doc[] =
