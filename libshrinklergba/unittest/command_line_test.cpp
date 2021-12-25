@@ -24,6 +24,7 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/numeric/conversion/cast.hpp>
 #include <boost/test/unit_test.hpp>
+#include <cstring>
 #include <string>
 #include <vector>
 #include "libshrinklergba/command_line.hpp"
@@ -88,11 +89,10 @@ BOOST_FIXTURE_TEST_SUITE(command_line_test, command_line_test_fixture)
 
     BOOST_AUTO_TEST_CASE(one_input_file_no_other_options)
     {
-        // TODO: rewrite to use BOOST_TEST
         BOOST_TEST((parse_command_line("file1") == command_action::process));
-        BOOST_CHECK_EQUAL("file1", options.input_file());
-        BOOST_CHECK_EQUAL("file1.gba", options.output_file());
-        BOOST_CHECK_EQUAL(false, options.verbose());
+        BOOST_TEST(options.input_file() == "file1");
+        BOOST_TEST(options.output_file() == "file1.gba");
+        BOOST_TEST(options.verbose() == false);
     }
 
 BOOST_AUTO_TEST_SUITE_END()
