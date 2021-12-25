@@ -28,11 +28,11 @@ set(
   src/command_line.cpp)
 
 add_library(libshrinklergba ${SOURCES})
-target_include_directories(
-  libshrinklergba
-  PUBLIC
-  "${CMAKE_CURRENT_SOURCE_DIR}/include")
+target_include_directories(libshrinklergba PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
 target_link_libraries(libshrinklergba PUBLIC libshrinkler)
+if(NOT HAVE_ARGP)
+  target_link_libraries(libshrinklergba PRIVATE argp-standalone)
+endif()
 
 if(BUILD_TESTING)
   add_executable(

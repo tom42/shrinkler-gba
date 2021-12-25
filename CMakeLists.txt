@@ -40,11 +40,15 @@ endif()
 # Find packages.
 ################################################################################
 
+include(CheckFunctionExists)
+
 # Search for Boost headers only, but not the libraries.
 # We'll compile the unit test framework ourselves as part of the unit tests.
 # This simplifies cross development, since we only
 # need Boost headers on build machines.
 find_package(Boost 1.74 REQUIRED)
+
+check_function_exists(argp HAVE_ARGP)
 
 
 ################################################################################
