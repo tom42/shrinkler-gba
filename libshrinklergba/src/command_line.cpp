@@ -176,7 +176,7 @@ static error_t parse_opt(int key, char* arg, argp_state* state) noexcept
     }
 }
 
-command_action parse_command_line(int /*argc*/, char* /*argv*/[], options& /*options*/, bool /*silent*/)
+command_action parse_command_line(int argc, char* argv[], options& options, bool silent)
 {
     static const char doc[] =
         PROJECT_NAME " - Gameboy Advance Intro Cruncher by Tom/Vantage\n"   // TODO: fix name
@@ -211,8 +211,20 @@ command_action parse_command_line(int /*argc*/, char* /*argv*/[], options& /*opt
 
     static const argp argp = { argp_options, parse_opt, args_doc, doc, 0, 0, 0 };
 
-    // TODO: real implementation
-    return command_action::exit_failure;
+    parser parser(options, silent);
+
+    unsigned int flags = ARGP_NO_EXIT | ARGP_NO_HELP;
+    if (silent)
+    {
+        flags |= ARGP_NO_ERRS;
+    }
+
+    if (argp_parse(&argp, argc, argv, flags, 0, &parser))
+    {
+        return command_action::exit_failure;
+    }
+
+    return parser.action();
 }
 
 }
