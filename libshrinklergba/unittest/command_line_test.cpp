@@ -101,6 +101,12 @@ BOOST_FIXTURE_TEST_SUITE(command_line_test, command_line_test_fixture)
         BOOST_TEST((parse_command_line("--help") == command_action::exit_success));
     }
 
+    BOOST_AUTO_TEST_CASE(version_option)
+    {
+        BOOST_TEST((parse_command_line("-V") == command_action::exit_success));
+        BOOST_TEST((parse_command_line("--version") == command_action::exit_success));
+    }
+
 BOOST_AUTO_TEST_SUITE_END()
 
 }
