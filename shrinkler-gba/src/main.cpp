@@ -35,8 +35,19 @@ int main(int argc, char* argv[])
     try
     {
         options options;
-        parse_command_line(argc, argv, options, false);
-        // TODO: handle result of command line parsing
+        auto action = parse_command_line(argc, argv, options, false);
+        switch (action)
+        {
+            case command_action::exit_failure:
+                return EXIT_FAILURE;
+            case command_action::exit_success:
+                return EXIT_SUCCESS;
+            case command_action::process:
+                // TODO: process input file
+                return EXIT_SUCCESS;
+            default:
+                throw std::runtime_error("Unknown action returned by command line parser");
+        }
     }
     catch (const std::exception& e)
     {
