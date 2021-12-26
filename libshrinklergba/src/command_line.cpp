@@ -21,7 +21,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include <cstdlib>
 #include <iostream>
+#include <stdexcept>
 #include <argp.h> // TODO: how to include it? "argp.h"? <argp.h>?
 #include "libshrinkler/libshrinkler.hpp"
 #include "libshrinklergba/command_line.hpp"
