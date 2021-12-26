@@ -108,6 +108,30 @@ BOOST_FIXTURE_TEST_SUITE(command_line_test, command_line_test_fixture)
         BOOST_TEST((parse_command_line("--version") == command_action::exit_success));
     }
 
+    BOOST_AUTO_TEST_CASE(usage_option)
+    {
+        BOOST_TEST((parse_command_line("--usage") == command_action::exit_success));
+    }
+
+    BOOST_AUTO_TEST_CASE(invalid_option)
+    {
+        BOOST_TEST((parse_command_line("--invalid-option") == command_action::exit_failure));
+    }
+
+    BOOST_AUTO_TEST_CASE(output_file_option_before_input_file)
+    {
+        BOOST_TEST((parse_command_line("-o output input") == command_action::process));
+        BOOST_TEST(options.input_file() == "input");
+        BOOST_TEST(options.output_file() == "output");
+    }
+
+    BOOST_AUTO_TEST_CASE(output_file_option_after_input_file)
+    {
+        BOOST_TEST((parse_command_line("input -o output") == command_action::process));
+        BOOST_TEST(options.input_file() == "input");
+        BOOST_TEST(options.output_file() == "output");
+    }
+
 BOOST_AUTO_TEST_SUITE_END()
 
 }
