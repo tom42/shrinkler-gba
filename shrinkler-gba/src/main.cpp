@@ -28,11 +28,15 @@
 #include "libshrinklergba/command_line.hpp"
 #include "libshrinklergba/options.hpp"
 
-int main(int, char* argv[])
+using namespace libshrinklergba;
+
+int main(int argc, char* argv[])
 {
     try
     {
-        libshrinklergba::options options;
+        options options;
+        parse_command_line(argc, argv, options, false);
+        // TODO: handle result of command line parsing
     }
     catch (const std::exception& e)
     {
