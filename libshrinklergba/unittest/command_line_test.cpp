@@ -132,6 +132,50 @@ BOOST_FIXTURE_TEST_SUITE(command_line_test, command_line_test_fixture)
         BOOST_TEST(options.output_file() == "output");
     }
 
+    BOOST_AUTO_TEST_CASE(verbose_option)
+    {
+        BOOST_TEST((parse_command_line("input -v") == command_action::process));
+        BOOST_TEST(options.verbose() == true);
+        BOOST_TEST((parse_command_line("input --verbose") == command_action::process));
+        BOOST_TEST(options.verbose() == true);
+    }
+
+    BOOST_AUTO_TEST_CASE(shrinkler_iterations_option)
+    {
+        BOOST_TEST((parse_command_line("input -i") == command_action::exit_failure));
+        BOOST_TEST((parse_command_line("input -i x") == command_action::exit_failure));
+        BOOST_TEST((parse_command_line("input -i 0") == command_action::exit_failure));
+        BOOST_TEST((parse_command_line("input -i 10") == command_action::exit_failure));
+
+        BOOST_TEST((parse_command_line("input -i 1") == command_action::process));
+        BOOST_TEST(options.shrinkler_parameters().iterations == 1);
+
+        BOOST_TEST((parse_command_line("input -i 9") == command_action::process));
+        BOOST_TEST(options.shrinkler_parameters().iterations == 9);
+    }
+
+    BOOST_AUTO_TEST_CASE(shrinkler_compression_options)
+    {
+        BOOST_TEST((parse_command_line("input -i1 -l11 -a111 -e1111 -s11111 -r111111") == command_action::process));
+        BOOST_TEST(options.shrinkler_parameters().iterations == 1);
+        BOOST_TEST(options.shrinkler_parameters().length_margin == 11);
+        BOOST_TEST(options.shrinkler_parameters().same_length == 111);
+        BOOST_TEST(options.shrinkler_parameters().effort == 1111);
+        BOOST_TEST(options.shrinkler_parameters().skip_length == 11111);
+        BOOST_TEST(options.shrinkler_parameters().references == 111111);
+    }
+
+    BOOST_AUTO_TEST_CASE(shrinkler_preset_option)
+    {
+        BOOST_TEST((parse_command_line("input -p3") == command_action::process));
+        BOOST_TEST(options.shrinkler_parameters().iterations == 3);
+        BOOST_TEST(options.shrinkler_parameters().length_margin == 3);
+        BOOST_TEST(options.shrinkler_parameters().same_length == 30);
+        BOOST_TEST(options.shrinkler_parameters().effort == 300);
+        BOOST_TEST(options.shrinkler_parameters().skip_length == 3000);
+        BOOST_TEST(options.shrinkler_parameters().references == 100000);
+    }
+
 BOOST_AUTO_TEST_SUITE_END()
 
 }
