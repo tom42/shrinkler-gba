@@ -42,8 +42,7 @@ enum option
 class parser
 {
 public:
-    // TODO: use field initializers where possible
-    parser(options& options, bool silent) : m_options(options), m_silent(silent), m_action(command_action::process), m_inputfile_seen(false) {}
+    parser(options& options, bool silent) : m_options(options), m_silent(silent) {}
 
     error_t parse_opt(int key, char* arg, argp_state* state)
     {
@@ -155,10 +154,10 @@ private:
         return 0;
     }
 
+    command_action m_action = command_action::process;
+    bool m_inputfile_seen = false;
     options& m_options;
     const bool m_silent;
-    command_action m_action;
-    bool m_inputfile_seen;
 };
 
 static error_t parse_opt(int key, char* arg, argp_state* state) noexcept
