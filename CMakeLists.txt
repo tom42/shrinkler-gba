@@ -48,7 +48,7 @@ include(CheckFunctionExists)
 # need Boost headers on build machines.
 find_package(Boost 1.74 REQUIRED)
 
-check_function_exists(argp HAVE_ARGP)
+check_function_exists(argp_parse HAVE_ARGP)
 
 
 ################################################################################

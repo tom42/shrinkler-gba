@@ -28,7 +28,6 @@
 * Set up 3rd party dependencies:
   * In any case, might want to have a README.md in there? or 3rdparty.md?
   * Merge dependencies into subtree (there is nothing to do for ELFIO, which is header only, and for shrinkler, for which we'll create a special library)
-    * argp: compile it, but only if native argp is not present
     * fmt: compile it, but only if it is not found otherwise
     * elfio: compile it, but only if it is not found otherwise
 * Be clear about licensing (top level README.md)

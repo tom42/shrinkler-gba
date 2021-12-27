@@ -21,7 +21,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-add_subdirectory(argp-standalone)
+if(NOT HAVE_ARGP)
+  add_subdirectory(argp-standalone)
+endif()
+
 add_subdirectory(ELFIO)
 add_subdirectory(fmt)
 add_subdirectory(lzasm)
