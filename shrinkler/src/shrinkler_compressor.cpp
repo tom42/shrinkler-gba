@@ -72,7 +72,7 @@ static vector<unsigned char> to_little_endian(const vector<uint32_t>& pack_buffe
 }
 
 // Corresponds to main in Shrinkler.
-vector<unsigned char> shrinkler::compress(const vector<unsigned char>& data) const
+vector<unsigned char> shrinkler_compressor::compress(const vector<unsigned char>& data) const
 {
     CONSOLE << "Compressing..." << endl;
 
@@ -100,7 +100,7 @@ vector<unsigned char> shrinkler::compress(const vector<unsigned char>& data) con
 }
 
 // Corresponds to DataFile::crunch in Shrinkler.
-std::vector<unsigned char> shrinkler::crunch(const std::vector<unsigned char>& data, PackParams& params, RefEdgeFactory& edge_factory, bool show_progress) const
+std::vector<unsigned char> shrinkler_compressor::crunch(const std::vector<unsigned char>& data, PackParams& params, RefEdgeFactory& edge_factory, bool show_progress) const
 {
     // Shrinkler code uses non-const buffers all over the place, so we create a copy of the original data.
     vector<unsigned char> non_const_data = data;
@@ -116,7 +116,7 @@ std::vector<unsigned char> shrinkler::crunch(const std::vector<unsigned char>& d
 }
 
 // Corresponds to DataFile::compress in Shrinkler.
-std::vector<uint32_t> shrinkler::compress(std::vector<unsigned char>& data, PackParams& params, RefEdgeFactory& edge_factory, bool show_progress) const
+std::vector<uint32_t> shrinkler_compressor::compress(std::vector<unsigned char>& data, PackParams& params, RefEdgeFactory& edge_factory, bool show_progress) const
 {
     vector<uint32_t> pack_buffer;
     RangeCoder range_coder(LZEncoder::NUM_CONTEXTS + NUM_RELOC_CONTEXTS, pack_buffer);
@@ -130,7 +130,7 @@ std::vector<uint32_t> shrinkler::compress(std::vector<unsigned char>& data, Pack
 }
 
 // Corresponds to DataFile::verify in Shrinkler.
-ptrdiff_t shrinkler::verify(std::vector<unsigned char>& data, std::vector<uint32_t>& pack_buffer, PackParams& params) const
+ptrdiff_t shrinkler_compressor::verify(std::vector<unsigned char>& data, std::vector<uint32_t>& pack_buffer, PackParams& params) const
 {
     CONSOLE << "Verifying..." << endl;
 
@@ -155,7 +155,7 @@ ptrdiff_t shrinkler::verify(std::vector<unsigned char>& data, std::vector<uint32
     return verifier.front_overlap_margin + pack_buffer.size() * 4 - data.size();
 }
 
-void shrinkler::packData(unsigned char* data, int data_length, int zero_padding, PackParams* params, Coder* result_coder, RefEdgeFactory* edge_factory, bool show_progress) const
+void shrinkler_compressor::packData(unsigned char* data, int data_length, int zero_padding, PackParams* params, Coder* result_coder, RefEdgeFactory* edge_factory, bool show_progress) const
 {
     MatchFinder finder(data, data_length, 2, params->match_patience, params->max_same_length);
     LZParser parser(data, data_length, zero_padding, finder, params->length_margin, params->skip_length, edge_factory);

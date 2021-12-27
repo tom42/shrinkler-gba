@@ -34,12 +34,12 @@ static std::vector<unsigned char> make_vector(const char* s)
     return std::vector<unsigned char>(s, s + strlen(s));
 }
 
-BOOST_AUTO_TEST_SUITE(shrinkler_test)
+BOOST_AUTO_TEST_SUITE(shrinkler_compressor_test)
 
-    BOOST_AUTO_TEST_CASE(shrinkler_test)
+    BOOST_AUTO_TEST_CASE(compress)
     {
         auto original = make_vector("foo foo foo foo");
-        ::shrinkler::shrinkler testee; // TODO: this looks nasty. Rename class shrinkler to shrinkler_compressor or something
+        shrinkler_compressor testee;
         testee.set_parameters(shrinkler_parameters(9));
 
         auto compressed = testee.compress(original);
@@ -48,12 +48,12 @@ BOOST_AUTO_TEST_SUITE(shrinkler_test)
         BOOST_TEST(expected == compressed, boost::test_tools::per_element());
     }
 
-    BOOST_AUTO_TEST_CASE(shrinkler_test_no_parity)
+    BOOST_AUTO_TEST_CASE(compress_no_parity)
     {
         auto original = make_vector("foo foo foo foo");
         shrinkler_parameters parameters(9);
         parameters.parity_context = false;
-        ::shrinkler::shrinkler testee; // TODO: this looks nasty. Rename class shrinkler to shrinkler_compressor or something
+        shrinkler_compressor testee;
         testee.set_parameters(parameters);
 
         auto compressed = testee.compress(original);

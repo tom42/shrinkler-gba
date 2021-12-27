@@ -57,7 +57,7 @@ public:
     int references;
 };
 
-class shrinkler
+class shrinkler_compressor
 {
 public:
     std::vector<unsigned char> compress(const std::vector<unsigned char>& data) const;

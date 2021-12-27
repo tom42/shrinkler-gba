@@ -24,7 +24,7 @@
 set(
   SOURCES
   include/shrinkler/shrinkler.hpp
-  src/shrinkler.cpp)
+  src/shrinkler_compressor.cpp)
 
 add_library(shrinkler ${SOURCES})
 target_include_directories(
@@ -47,7 +47,7 @@ if(BUILD_TESTING)
     shrinkler-unittest
     unittest/main.cpp
     unittest/shrinkler_parameters_test.cpp
-    unittest/shrinkler_test.cpp)
+    unittest/shrinkler_compressor_test.cpp)
   target_include_directories(shrinkler-unittest PRIVATE "${Boost_INCLUDE_DIRS}")
   target_link_libraries(shrinkler-unittest PRIVATE shrinkler)
   add_test(NAME shrinkler-unittest COMMAND shrinkler-unittest)
