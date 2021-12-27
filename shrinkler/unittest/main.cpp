@@ -21,44 +21,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <boost/test/unit_test.hpp>
-#include "libshrinkler/libshrinkler.hpp"
+#if defined(__CYGWIN__)
+#if defined(__GNUC__) || defined(__clang__)
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
+#define _POSIX_C_SOURCE 200112L
+#endif
 
-namespace libshrinkler_unittest
-{
-
-using namespace libshrinkler;
-
-BOOST_AUTO_TEST_SUITE(shrinkler_parameters_test)
-
-    BOOST_AUTO_TEST_CASE(constructor_default_preset)
-    {
-        const shrinkler_parameters testee;
-
-        BOOST_TEST(testee.parity_context == true);
-        BOOST_TEST(testee.iterations == 2);
-        BOOST_TEST(testee.length_margin == 2);
-        BOOST_TEST(testee.same_length == 20);
-        BOOST_TEST(testee.effort == 200);
-        BOOST_TEST(testee.skip_length == 2000);
-        BOOST_TEST(testee.references == 100000);
-        BOOST_TEST(testee.verbose == false);
-    }
-
-    BOOST_AUTO_TEST_CASE(constructor_preset_9)
-    {
-        const shrinkler_parameters testee(9);
-
-        BOOST_TEST(testee.parity_context == true);
-        BOOST_TEST(testee.iterations == 9);
-        BOOST_TEST(testee.length_margin == 9);
-        BOOST_TEST(testee.same_length == 90);
-        BOOST_TEST(testee.effort == 900);
-        BOOST_TEST(testee.skip_length == 9000);
-        BOOST_TEST(testee.references == 100000);
-        BOOST_TEST(testee.verbose == false);
-    }
-
-BOOST_AUTO_TEST_SUITE_END()
-
-}
+#define BOOST_TEST_MODULE shrinkler-unittest
+#include <boost/test/included/unit_test.hpp>

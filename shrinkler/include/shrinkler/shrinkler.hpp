@@ -21,8 +21,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef LIBSHRINKLER_LIBSHRINKLER_HPP
-#define LIBSHRINKLER_LIBSHRINKLER_HPP
+#ifndef SHRINKLER_SHRINKLER_HPP
+#define SHRINKLER_SHRINKLER_HPP
 
 #include <cstddef>
 #include <cstdint>
@@ -32,7 +32,7 @@ class Coder;
 struct PackParams;
 class RefEdgeFactory;
 
-namespace libshrinkler
+namespace shrinkler
 {
 
 class shrinkler_parameters

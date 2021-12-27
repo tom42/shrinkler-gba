@@ -22,44 +22,41 @@
 // SOFTWARE.
 
 #include <boost/test/unit_test.hpp>
-#include "libshrinkler/libshrinkler.hpp"
+#include "shrinkler/shrinkler.hpp"
 
-namespace libshrinkler_unittest
+namespace shrinkler_unittest
 {
 
-using namespace libshrinkler;
+using namespace shrinkler;
 
-static std::vector<unsigned char> make_vector(const char* s)
-{
-    return std::vector<unsigned char>(s, s + strlen(s));
-}
+BOOST_AUTO_TEST_SUITE(shrinkler_parameters_test)
 
-BOOST_AUTO_TEST_SUITE(shrinkler_test)
-
-    BOOST_AUTO_TEST_CASE(shrinkler_test)
+    BOOST_AUTO_TEST_CASE(constructor_default_preset)
     {
-        auto original = make_vector("foo foo foo foo");
-        shrinkler testee;
-        testee.set_parameters(shrinkler_parameters(9));
+        const shrinkler_parameters testee;
 
-        auto compressed = testee.compress(original);
-
-        unsigned char expected[]{ 0xc6, 0x62, 0xc8, 0x99, 0x00, 0x00, 0x39, 0x9b };
-        BOOST_TEST(expected == compressed, boost::test_tools::per_element());
+        BOOST_TEST(testee.parity_context == true);
+        BOOST_TEST(testee.iterations == 2);
+        BOOST_TEST(testee.length_margin == 2);
+        BOOST_TEST(testee.same_length == 20);
+        BOOST_TEST(testee.effort == 200);
+        BOOST_TEST(testee.skip_length == 2000);
+        BOOST_TEST(testee.references == 100000);
+        BOOST_TEST(testee.verbose == false);
     }
 
-    BOOST_AUTO_TEST_CASE(shrinkler_test_no_parity)
+    BOOST_AUTO_TEST_CASE(constructor_preset_9)
     {
-        auto original = make_vector("foo foo foo foo");
-        shrinkler_parameters parameters(9);
-        parameters.parity_context = false;
-        shrinkler testee;
-        testee.set_parameters(parameters);
+        const shrinkler_parameters testee(9);
 
-        auto compressed = testee.compress(original);
-
-        unsigned char expected[]{ 0xda, 0x70, 0xc5, 0x99, 0x00, 0x80, 0x59, 0xe3 };
-        BOOST_TEST(expected == compressed, boost::test_tools::per_element());
+        BOOST_TEST(testee.parity_context == true);
+        BOOST_TEST(testee.iterations == 9);
+        BOOST_TEST(testee.length_margin == 9);
+        BOOST_TEST(testee.same_length == 90);
+        BOOST_TEST(testee.effort == 900);
+        BOOST_TEST(testee.skip_length == 9000);
+        BOOST_TEST(testee.references == 100000);
+        BOOST_TEST(testee.verbose == false);
     }
 
 BOOST_AUTO_TEST_SUITE_END()

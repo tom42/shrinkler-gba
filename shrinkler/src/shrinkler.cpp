@@ -29,11 +29,11 @@
 #include <iostream>
 #include <stdexcept>
 #include "fmt/core.h"
-#include "libshrinkler/libshrinkler.hpp"
+#include "shrinkler/shrinkler.hpp"
 
 #define CONSOLE if (!parameters.verbose); else std::cout
 
-namespace libshrinkler
+namespace shrinkler
 {
 
 using boost::numeric_cast;

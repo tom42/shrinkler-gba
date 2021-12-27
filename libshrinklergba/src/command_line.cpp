@@ -25,7 +25,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <argp.h>
-#include "libshrinkler/libshrinkler.hpp"
+#include "shrinkler/shrinkler.hpp"
 #include "libshrinklergba/command_line.hpp"
 
 // TODO: get these from header file (or through compiler flags)
@@ -133,7 +133,7 @@ private:
 
         if (!parse_result)
         {
-            m_options.shrinkler_parameters(libshrinkler::shrinkler_parameters(preset));
+            m_options.shrinkler_parameters(shrinkler::shrinkler_parameters(preset));
         }
 
         return parse_result;

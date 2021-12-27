@@ -72,6 +72,6 @@ else()
   add_compile_options(-Wall -Wextra -pedantic -Werror)
 endif()
 
-add_subdirectory(libshrinkler)
+add_subdirectory(shrinkler)
 add_subdirectory(libshrinklergba)
 add_subdirectory(shrinkler-gba)

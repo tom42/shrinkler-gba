@@ -29,7 +29,7 @@ set(
 
 add_library(libshrinklergba ${SOURCES})
 target_include_directories(libshrinklergba PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
-target_link_libraries(libshrinklergba PUBLIC libshrinkler)
+target_link_libraries(libshrinklergba PUBLIC shrinkler)
 if(NOT HAVE_ARGP)
   target_link_libraries(libshrinklergba PRIVATE argp-standalone)
 endif()
