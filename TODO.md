@@ -1,16 +1,3 @@
-* Purge lib from library names:
-  * It looks silly on Unixoids, seriously (liblibshrinkler, liblibshrinklergba)
-    * libshrinklergba => shrinklergba
-    * shrinkler-gba => ???
-  * Also must take care of headers and include directories, namespaces, ...
-  * How do we then call the main program?
-* main program:
-  * Set up option parsing
-    * This requires the option class
-    * And then some parse_command_line function
-* Set up libshrinkler-gba
-  * First step would be command line parsing
-    * That would then also lead to argp probing
 * See which output in shrinkler.cpp should be optional and which should not:
   * The message about the -r option for instance should NOT be hidden if verbose mode is not used
 * Licensing of shrinkler.cpp:
