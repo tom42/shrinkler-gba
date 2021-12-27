@@ -24,7 +24,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <stdexcept>
-#include <argp.h> // TODO: how to include it? "argp.h"? <argp.h>?
+#include <argp.h>
 #include "libshrinkler/libshrinkler.hpp"
 #include "libshrinklergba/command_line.hpp"
 
