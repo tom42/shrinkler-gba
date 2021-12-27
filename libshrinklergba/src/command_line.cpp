@@ -182,7 +182,7 @@ command_action parse_command_line(int argc, char* argv[], options& options, bool
     static const char doc[] =
         PROJECT_NAME " - Gameboy Advance Intro Cruncher by Tom/Vantage\n"   // TODO: fix name
         "Uses Shrinkler compression by Blueberry\n"                         // TODO: is this still needed in that form?
-        "https://github.com/tom42/gbaic";                                   // TODO: fix URL
+        "https://github.com/tom42/shrinkler-gba";
     static const char args_doc[] = "FILE";
 
     static const argp_option argp_options[] =
