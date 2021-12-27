@@ -180,8 +180,8 @@ static error_t parse_opt(int key, char* arg, argp_state* state) noexcept
 command_action parse_command_line(int argc, char* argv[], options& options, bool silent)
 {
     static const char doc[] =
-        PROJECT_NAME " - Gameboy Advance Intro Cruncher by Tom/Vantage\n"   // TODO: fix name
-        "Uses Shrinkler compression by Blueberry\n"                         // TODO: is this still needed in that form?
+        PROJECT_NAME " - Shrinkler for the Gameboy Advance by Tom/Vantage\n"
+        "Shrinkler compression by Blueberry/Loonies\n"
         "https://github.com/tom42/shrinkler-gba";
     static const char args_doc[] = "FILE";
 
