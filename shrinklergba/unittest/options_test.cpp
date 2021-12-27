@@ -21,23 +21,42 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef LIBSHRINKLERGBA_COMMAND_LINE_HPP
-#define LIBSHRINKLERGBA_COMMAND_LINE_HPP
+#include <boost/test/unit_test.hpp>
+#include "shrinklergba/options.hpp"
 
-#include "libshrinklergba/options.hpp"
-
-namespace libshrinklergba
+namespace shrinklergba_unittest
 {
 
-enum class command_action
-{
-    exit_failure,
-    exit_success,
-    process
-};
+using shrinklergba::options;
 
-command_action parse_command_line(int argc, char* argv[], options& options, bool silent);
+BOOST_AUTO_TEST_SUITE(options_test)
+
+    BOOST_AUTO_TEST_CASE(constructor)
+    {
+        const options testee;
+        BOOST_TEST(testee.input_file() == "");
+        BOOST_TEST(testee.output_file() == "");
+        BOOST_TEST(testee.verbose() == false);
+    }
+
+    BOOST_AUTO_TEST_CASE(input_file_sets_output_file_if_not_yet_set)
+    {
+        options testee;
+        testee.input_file("input.elf");
+        BOOST_TEST(testee.output_file() == "input.gba");
+    }
+
+    BOOST_AUTO_TEST_CASE(input_file_does_not_set_output_file_if_already_set)
+    {
+        options testee;
+
+        testee.output_file("output.gba");
+        testee.input_file("input.bin");
+
+        BOOST_TEST(testee.input_file() == "input.bin");
+        BOOST_TEST(testee.output_file() == "output.gba");
+    }
+
+BOOST_AUTO_TEST_SUITE_END()
 
 }
-
-#endif

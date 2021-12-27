@@ -73,5 +73,5 @@ else()
 endif()
 
 add_subdirectory(shrinkler)
-add_subdirectory(libshrinklergba)
+add_subdirectory(shrinklergba)
 add_subdirectory(shrinkler-gba)

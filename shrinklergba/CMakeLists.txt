@@ -23,24 +23,24 @@
 
 set(
   SOURCES
-  include/libshrinklergba/command_line.hpp
-  include/libshrinklergba/options.hpp
+  include/shrinklergba/command_line.hpp
+  include/shrinklergba/options.hpp
   src/command_line.cpp)
 
-add_library(libshrinklergba ${SOURCES})
-target_include_directories(libshrinklergba PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
-target_link_libraries(libshrinklergba PUBLIC shrinkler)
+add_library(shrinklergba ${SOURCES})
+target_include_directories(shrinklergba PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
+target_link_libraries(shrinklergba PUBLIC shrinkler)
 if(NOT HAVE_ARGP)
-  target_link_libraries(libshrinklergba PRIVATE argp-standalone)
+  target_link_libraries(shrinklergba PRIVATE argp-standalone)
 endif()
 
 if(BUILD_TESTING)
   add_executable(
-    libshrinklergba-unittest
+    shrinklergba-unittest
     unittest/command_line_test.cpp
     unittest/main.cpp
     unittest/options_test.cpp)
-  target_include_directories(libshrinklergba-unittest PRIVATE "${Boost_INCLUDE_DIRS}")
-  target_link_libraries(libshrinklergba-unittest PRIVATE libshrinklergba)
-  add_test(NAME libshrinklergba-unittest COMMAND libshrinklergba-unittest)
+  target_include_directories(shrinklergba-unittest PRIVATE "${Boost_INCLUDE_DIRS}")
+  target_link_libraries(shrinklergba-unittest PRIVATE shrinklergba)
+  add_test(NAME shrinklergba-unittest COMMAND shrinklergba-unittest)
 endif()

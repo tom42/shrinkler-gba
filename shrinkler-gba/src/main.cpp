@@ -25,10 +25,10 @@
 #include <iostream>
 #include <stdexcept>
 
-#include "libshrinklergba/command_line.hpp"
-#include "libshrinklergba/options.hpp"
+#include "shrinklergba/command_line.hpp"
+#include "shrinklergba/options.hpp"
 
-using namespace libshrinklergba;
+using namespace shrinklergba;
 
 int main(int argc, char* argv[])
 {

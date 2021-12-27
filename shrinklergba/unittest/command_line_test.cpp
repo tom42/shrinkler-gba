@@ -27,24 +27,24 @@
 #include <cstring>
 #include <string>
 #include <vector>
-#include "libshrinklergba/command_line.hpp"
-#include "libshrinklergba/options.hpp"
+#include "shrinklergba/command_line.hpp"
+#include "shrinklergba/options.hpp"
 
-namespace libshrinklergba_unittest
+namespace shrinklergba_unittest
 {
 
-using libshrinklergba::command_action;
+using shrinklergba::command_action;
 using std::string;
 using std::vector;
 
 class command_line_test_fixture
 {
 public:
-    libshrinklergba::options options;
+    shrinklergba::options options;
 
-    libshrinklergba::command_action parse_command_line(const char* command_line)
+    shrinklergba::command_action parse_command_line(const char* command_line)
     {
-        options = libshrinklergba::options();
+        options = shrinklergba::options();
 
         // Split string into individual arguments and convert them to vector<char>
         vector<vector<char>> vectors;
@@ -66,7 +66,7 @@ public:
             argv.push_back(v.data());
         }
 
-        return libshrinklergba::parse_command_line(boost::numeric_cast<int>(argv.size()), argv.data(), options, true);
+        return shrinklergba::parse_command_line(boost::numeric_cast<int>(argv.size()), argv.data(), options, true);
     }
 
 private:

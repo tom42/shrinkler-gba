@@ -26,13 +26,13 @@
 #include <stdexcept>
 #include <argp.h>
 #include "shrinkler/shrinkler.hpp"
-#include "libshrinklergba/command_line.hpp"
+#include "shrinklergba/command_line.hpp"
 
 // TODO: get these from header file (or through compiler flags)
 #define PROJECT_NAME "shrinkler-gba"
 #define PROJECT_VERSION "0.1.0"
 
-namespace libshrinklergba
+namespace shrinklergba
 {
 
 enum option

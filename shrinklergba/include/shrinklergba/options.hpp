@@ -21,13 +21,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef LIBSHRINKLERGBA_OPTIONS_HPP
-#define LIBSHRINKLERGBA_OPTIONS_HPP
+#ifndef SHRINKLERGBA_OPTIONS_HPP
+#define SHRINKLERGBA_OPTIONS_HPP
 
 #include <filesystem>
 #include "shrinkler/shrinkler.hpp"
 
-namespace libshrinklergba
+namespace shrinklergba
 {
 
 class options

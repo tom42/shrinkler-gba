@@ -21,42 +21,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <boost/test/unit_test.hpp>
-#include "libshrinklergba/options.hpp"
+#if defined(__CYGWIN__)
+#if defined(__GNUC__) || defined(__clang__)
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
+#define _POSIX_C_SOURCE 200112L
+#endif
 
-namespace libshrinklergba_unittest
-{
-
-using libshrinklergba::options;
-
-BOOST_AUTO_TEST_SUITE(options_test)
-
-    BOOST_AUTO_TEST_CASE(constructor)
-    {
-        const options testee;
-        BOOST_TEST(testee.input_file() == "");
-        BOOST_TEST(testee.output_file() == "");
-        BOOST_TEST(testee.verbose() == false);
-    }
-
-    BOOST_AUTO_TEST_CASE(input_file_sets_output_file_if_not_yet_set)
-    {
-        options testee;
-        testee.input_file("input.elf");
-        BOOST_TEST(testee.output_file() == "input.gba");
-    }
-
-    BOOST_AUTO_TEST_CASE(input_file_does_not_set_output_file_if_already_set)
-    {
-        options testee;
-
-        testee.output_file("output.gba");
-        testee.input_file("input.bin");
-
-        BOOST_TEST(testee.input_file() == "input.bin");
-        BOOST_TEST(testee.output_file() == "output.gba");
-    }
-
-BOOST_AUTO_TEST_SUITE_END()
-
-}
+#define BOOST_TEST_MODULE shrinklergba-unittest
+#include <boost/test/included/unit_test.hpp>

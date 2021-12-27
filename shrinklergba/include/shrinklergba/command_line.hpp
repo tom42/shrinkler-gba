@@ -21,12 +21,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#if defined(__CYGWIN__)
-#if defined(__GNUC__) || defined(__clang__)
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#endif
-#define _POSIX_C_SOURCE 200112L
-#endif
+#ifndef SHRINKLERGBA_COMMAND_LINE_HPP
+#define SHRINKLERGBA_COMMAND_LINE_HPP
 
-#define BOOST_TEST_MODULE libshrinklergba-unittest
-#include <boost/test/included/unit_test.hpp>
+#include "shrinklergba/options.hpp"
+
+namespace shrinklergba
+{
+
+enum class command_action
+{
+    exit_failure,
+    exit_success,
+    process
+};
+
+command_action parse_command_line(int argc, char* argv[], options& options, bool silent);
+
+}
+
+#endif
