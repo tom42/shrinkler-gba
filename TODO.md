@@ -1,3 +1,10 @@
+* Purge lib from library names:
+  * It looks silly on Unixoids, seriously (liblibshrinkler, liblibshrinklergba)
+    * libshrinkler => shrinkler
+    * libshrinklergba => shrinklergba
+    * shrinkler-gba => ???
+  * Also must take care of headers and include directories, namespaces, ...
+  * How do we then call the main program?
 * main program:
   * Set up option parsing
     * This requires the option class
