@@ -29,7 +29,7 @@ set(
 
 add_library(shrinklergba ${SOURCES})
 target_include_directories(shrinklergba PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
-target_link_libraries(shrinklergba PUBLIC shrinkler)
+target_link_libraries(shrinklergba PUBLIC shrinkler PRIVATE elfio)
 if(NOT HAVE_ARGP)
   target_link_libraries(shrinklergba PRIVATE argp-standalone)
 endif()
