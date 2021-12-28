@@ -32,7 +32,6 @@ namespace shrinklergba
 class console
 {
 public:
-
     std::ostream* out() const { return m_out; }
     void out(std::ostream* s) { m_out = s; }
     bool is_out_enabled() const { return out(); }
