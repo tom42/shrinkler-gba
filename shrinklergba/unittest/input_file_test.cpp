@@ -36,6 +36,7 @@ using shrinklergba::input_file;
 
 static input_file load_file(const std::filesystem::path& filename)
 {
+    // TODO: set up a console that does not output anything
     input_file f;
     f.load(SHRINKLERGBA_UNITTEST_TESTDATA_DIRECTORY / filename);
     return f;
