@@ -42,12 +42,17 @@ void input_file::load(const std::filesystem::path& path)
             throw std::system_error(e, std::generic_category());
         }
 
-        // TODO: delegate to actual loading code
+        load(stream);
     }
     catch (const std::exception& e)
     {
         throw std::runtime_error(path.string() + ": " + e.what());
     }
+}
+
+void input_file::load(std::istream& /*stream*/)
+{
+    throw std::runtime_error("TODO: real implementation");
 }
 
 }

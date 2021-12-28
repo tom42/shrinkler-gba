@@ -25,6 +25,7 @@
 #define SHRINKLERGBA_INPUT_FILE_HPP
 
 #include <filesystem>
+#include <iosfwd>
 #include <vector>
 #include "shrinklergba/console.hpp"
 
@@ -40,6 +41,8 @@ public:
 
     void load(const std::filesystem::path& path);
 
+    void load(std::istream& stream);
+
     auto entry() const { return 0; }        // TODO: return type, unhardcode
 
     auto load_address() const { return 0; } // TODO: return type, unhardcode
@@ -47,6 +50,8 @@ public:
     const std::vector<unsigned char>& data() const { return m_data; }
 
 private:
+    void load_elf(std::istream& stream);
+
     const console m_console;
     std::vector<unsigned char> m_data;
 };
