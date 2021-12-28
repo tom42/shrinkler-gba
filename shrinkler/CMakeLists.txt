@@ -30,7 +30,7 @@ add_library(shrinkler ${SOURCES})
 target_include_directories(
   shrinkler
   PUBLIC
-  "include"
+  include
   PRIVATE
   "${Boost_INCLUDE_DIRS}"
   # Add Shrinkler's decruncher directory to the list of include directories,
