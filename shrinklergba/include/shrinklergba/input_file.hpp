@@ -26,6 +26,7 @@
 
 #include <filesystem>
 #include <vector>
+#include "shrinklergba/console.hpp"
 
 namespace shrinklergba
 {
@@ -33,6 +34,10 @@ namespace shrinklergba
 class input_file
 {
 public:
+    input_file() : input_file(console()) {}
+
+    explicit input_file(const console& c) : m_console(c) {}
+
     void load(const std::filesystem::path& path);
 
     auto entry() const { return 0; }        // TODO: return type, unhardcode
@@ -42,6 +47,7 @@ public:
     const std::vector<unsigned char>& data() const { return m_data; }
 
 private:
+    const console m_console;
     std::vector<unsigned char> m_data;
 };
 
