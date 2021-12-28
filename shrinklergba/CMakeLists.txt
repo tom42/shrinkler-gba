@@ -26,6 +26,7 @@ configure_file(shrinklergba_version.hpp.in shrinklergba_version.hpp)
 set(
   SOURCES
   include/shrinklergba/command_line.hpp
+  include/shrinklergba/console.hpp
   include/shrinklergba/options.hpp
   src/command_line.cpp)
 
