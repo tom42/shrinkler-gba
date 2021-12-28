@@ -34,9 +34,11 @@ class console
 public:
 
     std::ostream* out() const { return m_out; }
+    void out(std::ostream* s) { m_out = s; }
     bool is_out_enabled() const { return out(); }
 
     std::ostream* verbose() const { return m_verbose; }
+    void verbose(std::ostream* s) { m_verbose = s; }
     bool is_verbose_enabled() const { return verbose(); }
 
 private:
