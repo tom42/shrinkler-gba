@@ -21,6 +21,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+configure_file(shrinklergba_version.hpp.in shrinklergba_version.hpp)
+
 set(
   SOURCES
   include/shrinklergba/command_line.hpp
@@ -28,7 +30,12 @@ set(
   src/command_line.cpp)
 
 add_library(shrinklergba ${SOURCES})
-target_include_directories(shrinklergba PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
+target_include_directories(
+  shrinklergba
+  PUBLIC
+  include
+  PRIVATE
+  "${CMAKE_CURRENT_BINARY_DIR}")
 target_link_libraries(shrinklergba PUBLIC shrinkler PRIVATE elfio)
 if(NOT HAVE_ARGP)
   target_link_libraries(shrinklergba PRIVATE argp-standalone)

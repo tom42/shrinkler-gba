@@ -27,10 +27,7 @@
 #include <argp.h>
 #include "shrinkler/shrinkler.hpp"
 #include "shrinklergba/command_line.hpp"
-
-// TODO: get these from header file (or through compiler flags)
-#define PROJECT_NAME "shrinkler-gba"
-#define PROJECT_VERSION "0.1.0"
+#include "shrinklergba_version.hpp"
 
 namespace shrinklergba
 {
@@ -122,7 +119,7 @@ private:
     {
         if (!m_silent)
         {
-            std::cout << PROJECT_NAME << " " << PROJECT_VERSION << std::endl;
+            std::cout << SHRINKLERGBA_PROJECT_NAME << " " << SHRINKLERGBA_PROJECT_VERSION << std::endl;
         }
     }
 
@@ -180,7 +177,7 @@ static error_t parse_opt(int key, char* arg, argp_state* state) noexcept
 command_action parse_command_line(int argc, char* argv[], options& options, bool silent)
 {
     static const char doc[] =
-        PROJECT_NAME " - Shrinkler for the Gameboy Advance by Tom/Vantage\n"
+        SHRINKLERGBA_PROJECT_NAME " - Shrinkler for the Gameboy Advance by Tom/Vantage\n"
         "Shrinkler compression by Blueberry/Loonies\n"
         "https://github.com/tom42/shrinkler-gba";
     static const char args_doc[] = "FILE";
