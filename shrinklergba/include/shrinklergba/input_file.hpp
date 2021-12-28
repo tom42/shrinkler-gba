@@ -24,6 +24,7 @@
 #ifndef SHRINKLERGBA_INPUT_FILE_HPP
 #define SHRINKLERGBA_INPUT_FILE_HPP
 
+#include <filesystem>
 #include <vector>
 
 namespace shrinklergba
@@ -32,6 +33,8 @@ namespace shrinklergba
 class input_file
 {
 public:
+    void load(const std::filesystem::path& path);
+
     auto entry() const { return 0; }        // TODO: return type, unhardcode
 
     auto load_address() const { return 0; } // TODO: return type, unhardcode

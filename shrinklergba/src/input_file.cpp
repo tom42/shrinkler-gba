@@ -25,4 +25,10 @@
 
 namespace shrinklergba
 {
+
+void input_file::load(const std::filesystem::path& /*path*/)
+{
+    // TODO: implement
+}
+
 }
