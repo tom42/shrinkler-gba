@@ -38,7 +38,7 @@ namespace shrinkler
 class shrinkler_parameters
 {
 public:
-    shrinkler_parameters(int preset = 2)
+    explicit shrinkler_parameters(int preset = 2)
         : iterations(1 * preset),
         length_margin(1 * preset),
         same_length(10 * preset),
