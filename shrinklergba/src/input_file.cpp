@@ -21,14 +21,33 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include <fstream>
+#include <stdexcept>
+#include <system_error>
 #include "shrinklergba/input_file.hpp"
 
 namespace shrinklergba
 {
 
-void input_file::load(const std::filesystem::path& /*path*/)
+void input_file::load(const std::filesystem::path& path)
 {
-    // TODO: implement
+    try
+    {
+        CONSOLE_VERBOSE(m_console) << "Loading: " << path.string() << std::endl;
+        std::ifstream stream(path, std::ios::binary);
+
+        if (!stream)
+        {
+            auto e = errno;
+            throw std::system_error(e, std::generic_category());
+        }
+
+        // TODO: delegate to actual loading code
+    }
+    catch (const std::exception& e)
+    {
+        throw std::runtime_error(path.string() + ": " + e.what());
+    }
 }
 
 }
