@@ -26,6 +26,8 @@ set(
   include/shrinkler/shrinkler.hpp
   src/shrinkler_compressor.cpp)
 
+source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${SOURCES})
+
 add_library(shrinkler ${SOURCES})
 target_include_directories(
   shrinkler

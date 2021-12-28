@@ -29,6 +29,8 @@ set(
   include/shrinklergba/options.hpp
   src/command_line.cpp)
 
+source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${SOURCES})
+
 add_library(shrinklergba ${SOURCES})
 target_include_directories(
   shrinklergba
