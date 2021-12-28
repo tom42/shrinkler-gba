@@ -21,27 +21,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef SHRINKLERGBA_INPUT_FILE_HPP
-#define SHRINKLERGBA_INPUT_FILE_HPP
+#include <boost/test/unit_test.hpp>
+#include "shrinklergba/input_file.hpp"
 
-#include <vector>
-
-namespace shrinklergba
+namespace shrinklergba_unittest
 {
 
-class input_file
-{
-public:
-    auto entry() const { return 0; }        // TODO: return type, unhardcode
+using shrinklergba::input_file;
 
-    auto load_address() const { return 0; } // TODO: return type, unhardcode
+BOOST_AUTO_TEST_SUITE(input_file_test)
 
-    const std::vector<unsigned char>& data() const { return m_data; }
+    BOOST_AUTO_TEST_CASE(constructor)
+    {
+        const input_file testee;
 
-private:
-    std::vector<unsigned char> m_data;
-};
+        BOOST_TEST(testee.entry() == 0);
+        BOOST_TEST(testee.load_address() == 0);
+        BOOST_TEST(testee.data().size() == 0);
+    }
+
+BOOST_AUTO_TEST_SUITE_END()
 
 }
-
-#endif

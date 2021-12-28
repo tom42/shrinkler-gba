@@ -50,6 +50,7 @@ if(BUILD_TESTING)
   add_executable(
     shrinklergba-unittest
     unittest/command_line_test.cpp
+    unittest/input_file_test.cpp
     unittest/main.cpp
     unittest/options_test.cpp)
   target_include_directories(shrinklergba-unittest PRIVATE "${Boost_INCLUDE_DIRS}")
