@@ -1,3 +1,13 @@
+* NEXT:
+  * Port console: this was not such a bad idea after all
+  * Port input_file:
+    * Here at least add ARM/Thumb entry point detection
+    * This will require a note because we must adapt the depacker code because it does not support that scenario yet
+      * Should probably start writing real test binaries for the GBA then, so that we can actually test stuff
+  * Archive open issues from
+    * Email
+    * Old gbaic
+  * Check order (left/right) of fold expressions in lzasm? (Then again, it does not matter there all too much I think)
 * See which output in shrinkler.cpp should be optional and which should not:
   * The message about the -r option for instance should NOT be hidden if verbose mode is not used
 * Licensing of shrinkler.cpp:
