@@ -33,14 +33,24 @@ class console
 {
 public:
 
-    std::ostream* out() { return m_out; } // TODO: make const
+    std::ostream* out() { return m_out; }           // TODO: make const
+    bool is_out_enabled() { return out(); }         // TODO: make const
 
-    std::ostream* verbose() { return m_verbose; } // TODO: make const
+    std::ostream* verbose() { return m_verbose; }   // TODO: make const
+    bool is_verbose_enabled() { return verbose(); } // TODO: make const
 
 private:
     std::ostream* m_out = &std::cout;
     std::ostream* m_verbose = &std::cout;
 };
+
+#define CONSOLE_OUT(console)                \
+    if (!(console).is_out_enabled());       \
+        else *(console).out()
+
+#define CONSOLE_VERBOSE(console)            \
+    if (!(console).is_verbose_enabled());   \
+        else *(console).verbose()
 
 }
 
