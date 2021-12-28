@@ -23,14 +23,23 @@
 
 #include <boost/algorithm/string.hpp>
 #include <boost/test/unit_test.hpp>
+#include <filesystem>
 #include <stdexcept>
 #include "shrinklergba/input_file.hpp"
+#include "shrinklergba_unittest_config.hpp"
 
 namespace shrinklergba_unittest
 {
 
 using std::runtime_error;
 using shrinklergba::input_file;
+
+static input_file load_file(const std::filesystem::path& filename)
+{
+    input_file f;
+    f.load(SHRINKLERGBA_UNITTEST_TESTDATA_DIRECTORY / filename);
+    return f;
+}
 
 BOOST_AUTO_TEST_SUITE(input_file_test)
 
@@ -45,12 +54,18 @@ BOOST_AUTO_TEST_SUITE(input_file_test)
 
     BOOST_AUTO_TEST_CASE(load_when_file_does_not_exist_then_throws)
     {
-        input_file testee;
-
         BOOST_CHECK_EXCEPTION(
-            testee.load("non-existing-file.elf"),
+            load_file("non-existing-file.elf"),
             runtime_error,
-            [](const auto& e) { return boost::iequals("non-existing-file.elf: no such file or directory", e.what()); });
+            [](const auto& e) { return boost::iends_with(e.what(), "non-existing-file.elf: no such file or directory"); });
+    }
+
+    BOOST_AUTO_TEST_CASE(load_when_elf_file_is_invalid_then_throws)
+    {
+        BOOST_CHECK_EXCEPTION(
+            load_file("invalid-elf-file.elf"),
+            runtime_error,
+            [](const auto& e) { return boost::iequals("file is not a valid ELF file", e.what()); });
     }
 
 BOOST_AUTO_TEST_SUITE_END()

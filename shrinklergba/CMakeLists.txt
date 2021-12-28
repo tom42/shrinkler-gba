@@ -47,13 +47,20 @@ if(NOT HAVE_ARGP)
 endif()
 
 if(BUILD_TESTING)
+  set(SHRINKLERGBA_UNITTEST_TESTDATA_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/testdata")
+  configure_file(shrinklergba_unittest_config.hpp.in shrinklergba_unittest_config.hpp)
+
   add_executable(
     shrinklergba-unittest
     unittest/command_line_test.cpp
     unittest/input_file_test.cpp
     unittest/main.cpp
     unittest/options_test.cpp)
-  target_include_directories(shrinklergba-unittest PRIVATE "${Boost_INCLUDE_DIRS}")
+  target_include_directories(
+    shrinklergba-unittest
+    PRIVATE
+    "${Boost_INCLUDE_DIRS}"
+    "${CMAKE_CURRENT_BINARY_DIR}")
   target_link_libraries(shrinklergba-unittest PRIVATE shrinklergba)
   add_test(NAME shrinklergba-unittest COMMAND shrinklergba-unittest)
 endif()
