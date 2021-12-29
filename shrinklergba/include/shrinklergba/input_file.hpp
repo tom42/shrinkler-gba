@@ -58,7 +58,7 @@ public:
 
 private:
     void load_elf(std::istream& stream);
-    void open_elf(ELFIO::elfio& reader, std::istream& stream);
+    static void open_elf(ELFIO::elfio& reader, std::istream& stream);
 
     const console m_console;
     std::vector<unsigned char> m_data;
