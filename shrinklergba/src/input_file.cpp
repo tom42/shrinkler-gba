@@ -139,9 +139,15 @@ void input_file::check_header(ELFIO::elfio& reader)
     */
 }
 
-void input_file::check_executable_type(ELFIO::elfio& /*reader*/)
+void input_file::check_executable_type(ELFIO::elfio& reader)
 {
-    // TODO: implement (need a happy path test first)
+    if ((reader.get_class() != ELFCLASS32) ||
+        (reader.get_encoding() != ELFDATA2LSB) ||
+        (reader.get_type() != ET_EXEC) ||
+        (reader.get_machine() != EM_ARM))
+    {
+        throw runtime_error("file is not a 32-bit little endian ARM executable ELF file");
+    }
 }
 
 }
