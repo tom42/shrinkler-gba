@@ -100,11 +100,11 @@ void input_file::load_elf(std::istream& stream)
 
     open_elf(reader, stream);
     check_header(reader);
+    read_entry(reader);
     throw "YIKES";
 
     // TODO: port stuff below
     /*
-    read_entry(reader);
     log_program_headers(reader);
     convert_to_binary(reader);
 
@@ -113,6 +113,11 @@ void input_file::load_elf(std::istream& stream)
     CONSOLE_VERBOSE(m_console) << format("Load address: {:#x}", m_load_address) << std::endl;
     CONSOLE_VERBOSE(m_console) << format("Total size of loaded data: {0:#x} ({0})", m_data.size()) << std::endl;
     */
+}
+
+void input_file::read_entry(elfio& reader)
+{
+    m_entry = reader.get_entry();
 }
 
 void input_file::open_elf(elfio& reader, std::istream& stream)

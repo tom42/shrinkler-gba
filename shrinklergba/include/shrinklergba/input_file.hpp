@@ -24,6 +24,7 @@
 #ifndef SHRINKLERGBA_INPUT_FILE_HPP
 #define SHRINKLERGBA_INPUT_FILE_HPP
 
+#include <cstdint>
 #include <filesystem>
 #include <iosfwd>
 #include <vector>
@@ -50,7 +51,7 @@ public:
 
     void load(std::istream& stream);
 
-    auto entry() const { return 0; }        // TODO: return type, unhardcode
+    uint_fast64_t entry() const { return m_entry; }
 
     auto load_address() const { return 0; } // TODO: return type, unhardcode
 
@@ -58,6 +59,7 @@ public:
 
 private:
     void load_elf(std::istream& stream);
+    void read_entry(ELFIO::elfio& reader);
     static void open_elf(ELFIO::elfio& reader, std::istream& stream);
     static void check_header(ELFIO::elfio& reader);
     static void check_executable_type(ELFIO::elfio& reader);
@@ -67,6 +69,7 @@ private:
     static void check_object_file_version(ELFIO::elfio& reader);
 
     const console m_console;
+    uint_fast64_t m_entry = 0;
     std::vector<unsigned char> m_data;
 };
 
