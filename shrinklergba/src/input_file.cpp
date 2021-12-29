@@ -56,12 +56,14 @@
 #pragma warning(pop)
 #endif
 
+#include "fmt/core.h"
 #include "shrinklergba/input_file.hpp"
 
 namespace shrinklergba
 {
 
 using ELFIO::elfio;
+using fmt::format;
 using std::runtime_error;
 
 void input_file::load(const std::filesystem::path& path)
@@ -124,10 +126,10 @@ void input_file::open_elf(elfio& reader, std::istream& stream)
 void input_file::check_header(ELFIO::elfio& reader)
 {
     check_executable_type(reader);
+    check_elf_version(reader);
 
     // TODO: port stuff below
     /*
-    check_elf_version(reader);
 
     // Not sure these matter. Checking them to be on the safe side.
     check_os_abi(reader);
@@ -147,6 +149,17 @@ void input_file::check_executable_type(ELFIO::elfio& reader)
         (reader.get_machine() != EM_ARM))
     {
         throw runtime_error("file is not a 32-bit little endian ARM executable ELF file");
+    }
+}
+
+void input_file::check_elf_version(ELFIO::elfio& reader)
+{
+    const auto expected_elf_version = 1;
+
+    auto ei_version = reader.get_elf_version();
+    if (ei_version != expected_elf_version)
+    {
+        throw runtime_error(format("unknown ELF format version {}. Expected {}", ei_version, expected_elf_version));
     }
 }
 

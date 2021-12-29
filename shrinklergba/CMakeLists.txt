@@ -41,7 +41,7 @@ target_include_directories(
   include
   PRIVATE
   "${CMAKE_CURRENT_BINARY_DIR}")
-target_link_libraries(shrinklergba PUBLIC shrinkler PRIVATE elfio)
+target_link_libraries(shrinklergba PUBLIC shrinkler PRIVATE elfio fmt)
 if(NOT HAVE_ARGP)
   target_link_libraries(shrinklergba PRIVATE argp-standalone)
 endif()
