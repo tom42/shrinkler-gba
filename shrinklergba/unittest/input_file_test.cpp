@@ -27,6 +27,7 @@
 #include <stdexcept>
 #include "shrinklergba/input_file.hpp"
 #include "shrinklergba_unittest_config.hpp"
+#include "test_utilities.hpp"
 
 namespace shrinklergba_unittest
 {
@@ -34,7 +35,7 @@ namespace shrinklergba_unittest
 using std::runtime_error;
 using shrinklergba::input_file;
 
-static input_file load_file(const std::filesystem::path& filename)
+static input_file load_elf_file(const std::filesystem::path& filename)
 {
     // TODO: set up a console that does not output anything
     input_file f;
@@ -56,7 +57,7 @@ BOOST_AUTO_TEST_SUITE(input_file_test)
     BOOST_AUTO_TEST_CASE(load_when_file_does_not_exist_then_throws)
     {
         BOOST_CHECK_EXCEPTION(
-            load_file("non-existing-file.elf"),
+            load_elf_file("non-existing-file.elf"),
             runtime_error,
             [](const auto& e) { return boost::iends_with(e.what(), "non-existing-file.elf: no such file or directory"); });
     }
@@ -64,9 +65,20 @@ BOOST_AUTO_TEST_SUITE(input_file_test)
     BOOST_AUTO_TEST_CASE(load_when_elf_file_is_invalid_then_throws)
     {
         BOOST_CHECK_EXCEPTION(
-            load_file("invalid-elf-file.elf"),
+            load_elf_file("invalid-elf-file.elf"),
             runtime_error,
             [](const auto& e) { return boost::iends_with(e.what(), "file is not a valid ELF file"); });
+    }
+
+    BOOST_AUTO_TEST_CASE(load)
+    {
+        auto input_file = load_elf_file("lostmarbles.elf");
+        auto expected_data = load_binary_file("lostmarbles.bin");
+
+        // TODO: port assertions below to use universal assertions (at least as far as possible)
+        BOOST_REQUIRE_EQUAL(0x03000000, input_file.entry());
+        BOOST_REQUIRE_EQUAL(0x03000000, input_file.load_address());
+        BOOST_CHECK_EQUAL_COLLECTIONS(expected_data.begin(), expected_data.end(), input_file.data().begin(), input_file.data().end());
     }
 
 BOOST_AUTO_TEST_SUITE_END()

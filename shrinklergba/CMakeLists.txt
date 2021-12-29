@@ -50,12 +50,18 @@ if(BUILD_TESTING)
   set(SHRINKLERGBA_UNITTEST_TESTDATA_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/testdata")
   configure_file(shrinklergba_unittest_config.hpp.in shrinklergba_unittest_config.hpp)
 
-  add_executable(
-    shrinklergba-unittest
+  set(
+    UNITTEST_SOURCES
     unittest/command_line_test.cpp
     unittest/input_file_test.cpp
     unittest/main.cpp
-    unittest/options_test.cpp)
+    unittest/options_test.cpp
+    unittest/test_utilities.cpp
+    unittest/test_utilities.hpp)
+
+  source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${UNITTEST_SOURCES})
+
+  add_executable(shrinklergba-unittest ${UNITTEST_SOURCES})
   target_include_directories(
     shrinklergba-unittest
     PRIVATE
