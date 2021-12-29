@@ -128,11 +128,12 @@ void input_file::check_header(ELFIO::elfio& reader)
     check_executable_type(reader);
     check_elf_version(reader);
 
+    // Not sure these matter. Checking them to be on the safe side.
+    check_os_abi(reader);
+
     // TODO: port stuff below
     /*
 
-    // Not sure these matter. Checking them to be on the safe side.
-    check_os_abi(reader);
     check_abi_version(reader);
     check_object_file_version(reader);
 
@@ -160,6 +161,17 @@ void input_file::check_elf_version(ELFIO::elfio& reader)
     if (ei_version != expected_elf_version)
     {
         throw runtime_error(format("unknown ELF format version {}. Expected {}", ei_version, expected_elf_version));
+    }
+}
+
+void input_file::check_os_abi(elfio& reader)
+{
+    const auto expected_abi = ELFOSABI_NONE;
+
+    auto ei_osabi = reader.get_os_abi();
+    if (ei_osabi != expected_abi)
+    {
+        throw runtime_error(format("unknown ELF OS ABI {}. Expected none ({})", ei_osabi, expected_abi));
     }
 }
 

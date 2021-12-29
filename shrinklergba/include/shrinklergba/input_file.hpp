@@ -62,6 +62,7 @@ private:
     static void check_header(ELFIO::elfio& reader);
     static void check_executable_type(ELFIO::elfio& reader);
     static void check_elf_version(ELFIO::elfio& reader);
+    static void check_os_abi(ELFIO::elfio& reader);
 
     const console m_console;
     std::vector<unsigned char> m_data;
