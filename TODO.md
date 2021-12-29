@@ -1,9 +1,12 @@
 * NEXT:
-  * Port console: this was not such a bad idea after all
   * Port input_file:
     * Here at least add ARM/Thumb entry point detection
     * This will require a note because we must adapt the depacker code because it does not support that scenario yet
       * Should probably start writing real test binaries for the GBA then, so that we can actually test stuff
+    * Tests:
+      * Test ARM/Thumb entry point detection
+      * File with entry different from load address (so we can see we have not messed anything up)
+      * ...
   * Archive open issues from
     * Email
     * Old gbaic
