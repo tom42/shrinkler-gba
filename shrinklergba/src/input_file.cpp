@@ -97,11 +97,11 @@ void input_file::load_elf(std::istream& stream)
     elfio reader;
 
     open_elf(reader, stream);
+    check_header(reader);
     throw "YIKES";
 
     // TODO: port stuff below
     /*
-    check_header(reader);
     read_entry(reader);
     log_program_headers(reader);
     convert_to_binary(reader);
@@ -119,6 +119,29 @@ void input_file::open_elf(elfio& reader, std::istream& stream)
     {
         throw runtime_error("file is not a valid ELF file");
     }
+}
+
+void input_file::check_header(ELFIO::elfio& reader)
+{
+    check_executable_type(reader);
+
+    // TODO: port stuff below
+    /*
+    check_elf_version(reader);
+
+    // Not sure these matter. Checking them to be on the safe side.
+    check_os_abi(reader);
+    check_abi_version(reader);
+    check_object_file_version(reader);
+
+    // TODO: store this, we're going to need it.
+    //       Do we limit the entry points we are going to accept? Well perhaps, but not in this class.
+    */
+}
+
+void input_file::check_executable_type(ELFIO::elfio& /*reader*/)
+{
+    // TODO: implement (need a happy path test first)
 }
 
 }
