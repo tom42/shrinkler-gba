@@ -101,14 +101,14 @@ void input_file::load_elf(std::istream& stream)
     open_elf(reader, stream);
     check_header(reader);
     read_entry(reader);
+    log_program_headers(reader);
     throw "YIKES";
 
     // TODO: port stuff below
     /*
-    log_program_headers(reader);
     convert_to_binary(reader);
 
-    // TODO: that should not go into load_elf, but into load, no?
+    // TODO: that should not go into load_elf, but into load, no? (since it is not ELF specific)
     CONSOLE_VERBOSE(m_console) << format("Entry: {:#x}", m_entry) << std::endl;
     CONSOLE_VERBOSE(m_console) << format("Load address: {:#x}", m_load_address) << std::endl;
     CONSOLE_VERBOSE(m_console) << format("Total size of loaded data: {0:#x} ({0})", m_data.size()) << std::endl;
@@ -118,6 +118,11 @@ void input_file::load_elf(std::istream& stream)
 void input_file::read_entry(elfio& reader)
 {
     m_entry = reader.get_entry();
+}
+
+void input_file::log_program_headers(elfio& /*reader*/)
+{
+    // TODO: implement
 }
 
 void input_file::open_elf(elfio& reader, std::istream& stream)
