@@ -66,7 +66,7 @@ BOOST_AUTO_TEST_SUITE(input_file_test)
         BOOST_CHECK_EXCEPTION(
             load_file("invalid-elf-file.elf"),
             runtime_error,
-            [](const auto& e) { return boost::iequals("file is not a valid ELF file", e.what()); });
+            [](const auto& e) { return boost::iends_with(e.what(), "file is not a valid ELF file"); });
     }
 
 BOOST_AUTO_TEST_SUITE_END()

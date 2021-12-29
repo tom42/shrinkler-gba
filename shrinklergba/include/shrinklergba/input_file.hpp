@@ -29,6 +29,13 @@
 #include <vector>
 #include "shrinklergba/console.hpp"
 
+namespace ELFIO
+{
+
+class elfio;
+
+}
+
 namespace shrinklergba
 {
 
@@ -51,6 +58,7 @@ public:
 
 private:
     void load_elf(std::istream& stream);
+    void open_elf(ELFIO::elfio& reader, std::istream& stream);
 
     const console m_console;
     std::vector<unsigned char> m_data;

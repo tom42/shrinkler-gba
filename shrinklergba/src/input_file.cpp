@@ -62,6 +62,7 @@ namespace shrinklergba
 {
 
 using ELFIO::elfio;
+using std::runtime_error;
 
 void input_file::load(const std::filesystem::path& path)
 {
@@ -89,16 +90,17 @@ void input_file::load(std::istream& stream)
     load_elf(stream);
 }
 
-void input_file::load_elf(std::istream& /*stream*/)
+void input_file::load_elf(std::istream& stream)
 {
+    // TODO: reset fields here
+
     elfio reader;
 
+    open_elf(reader, stream);
     throw "YIKES";
 
     // TODO: port stuff below
     /*
-    // TODO: reset fields here
-    open_elf(reader, stream);
     check_header(reader);
     read_entry(reader);
     log_program_headers(reader);
@@ -109,6 +111,14 @@ void input_file::load_elf(std::istream& /*stream*/)
     CONSOLE_VERBOSE(m_console) << format("Load address: {:#x}", m_load_address) << std::endl;
     CONSOLE_VERBOSE(m_console) << format("Total size of loaded data: {0:#x} ({0})", m_data.size()) << std::endl;
     */
+}
+
+void input_file::open_elf(elfio& reader, std::istream& stream)
+{
+    if (!reader.load(stream))
+    {
+        throw runtime_error("file is not a valid ELF file");
+    }
 }
 
 }
