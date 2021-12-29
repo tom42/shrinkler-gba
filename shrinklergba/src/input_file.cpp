@@ -130,16 +130,13 @@ void input_file::check_header(ELFIO::elfio& reader)
 
     // Not sure these matter. Checking them to be on the safe side.
     check_os_abi(reader);
-
-    // TODO: port stuff below
-    /*
-
     check_abi_version(reader);
     check_object_file_version(reader);
 
     // TODO: store this, we're going to need it.
-    //       Do we limit the entry points we are going to accept? Well perhaps, but not in this class.
-    */
+    //       * Do we limit the entry points we are going to accept? Well perhaps, but not in this class.
+    //       * Well basically entries must be in IWRAM or EWRAM. Or, more specifically, inside the
+    //         memory area occupied by the binary. But then, that's probably too much to worry about
 }
 
 void input_file::check_executable_type(ELFIO::elfio& reader)
@@ -172,6 +169,28 @@ void input_file::check_os_abi(elfio& reader)
     if (ei_osabi != expected_abi)
     {
         throw runtime_error(format("unknown ELF OS ABI {}. Expected none ({})", ei_osabi, expected_abi));
+    }
+}
+
+void input_file::check_abi_version(elfio& reader)
+{
+    const auto expected_abi_version = 0;
+
+    auto ei_abiversion = reader.get_abi_version();
+    if (ei_abiversion != expected_abi_version)
+    {
+        throw runtime_error(format("unknown ABI version {}. Expected {}", ei_abiversion, expected_abi_version));
+    }
+}
+
+void input_file::check_object_file_version(elfio& reader)
+{
+    const auto expected_object_file_version = 1;
+
+    auto e_version = reader.get_version();
+    if (e_version != expected_object_file_version)
+    {
+        throw runtime_error(format("unknown object file version {}. Expected {}", e_version, expected_object_file_version));
     }
 }
 
