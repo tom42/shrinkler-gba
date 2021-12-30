@@ -43,6 +43,7 @@
 
 #include <fstream>
 #include <stdexcept>
+#include <string>
 #include <system_error>
 
 #if defined(_MSC_VER)
@@ -64,8 +65,32 @@ namespace shrinklergba
 
 using ELFIO::elfio;
 using ELFIO::Elf_Half;
+using ELFIO::Elf_Word;
 using fmt::format;
 using std::runtime_error;
+using std::string;
+
+static string segment_type_to_string(Elf_Word type)
+{
+    static const char* const table[] =
+    {
+        "NULL",
+        "LOAD",
+        "DYNAMIC",
+        "INTERP",
+        "NOTE",
+        "SHLIB",
+        "PHDR",
+        "TLS"
+    };
+
+    if ((type >= 0) && (type < std::size(table)))
+    {
+        return table[type];
+    }
+
+    return format("{:#010x}", type);
+}
 
 void input_file::load(const std::filesystem::path& path)
 {
@@ -150,7 +175,7 @@ void input_file::log_program_headers(elfio& reader)
     {
         const auto& s = *reader.segments[i];
         CONSOLE_VERBOSE(m_console) << format(" {:10} {:#07x} {:#010x} {:#010x} {:#07x} {:#07x} {:#07x} {}",
-            "xxx", //segment_type_to_string(s.get_type()), // TODO: segment type
+            segment_type_to_string(s.get_type()),
             s.get_offset(),
             s.get_virtual_address(),
             s.get_physical_address(),
