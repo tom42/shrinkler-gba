@@ -83,10 +83,16 @@ static string segment_type_to_string(Elf_Word type)
     return format("{:#010x}", type);
 }
 
-static string segment_flags_to_string(Elf_Word /*flags*/)
+static string segment_flags_to_string(Elf_Word flags)
 {
-    // TODO: implement
-    return "***";
+    static const std::array table{ "", "X", "W", "WX", "R", "RX", "RW", "RWX" };
+
+    if ((flags >= 0) && (flags < table.size()))
+    {
+        return table[flags];
+    }
+
+    return format("{:#x}", flags);
 }
 
 void input_file::load(const std::filesystem::path& path)
