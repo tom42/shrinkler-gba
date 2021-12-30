@@ -75,10 +75,9 @@ BOOST_AUTO_TEST_SUITE(input_file_test)
         auto input_file = load_elf_file("lostmarbles.elf");
         auto expected_data = load_binary_file("lostmarbles.bin");
 
-        // TODO: port assertions below to use universal assertions (at least as far as possible)
-        BOOST_REQUIRE_EQUAL(0x03000000, input_file.entry());
-        BOOST_REQUIRE_EQUAL(0x03000000, input_file.load_address());
-        BOOST_CHECK_EQUAL_COLLECTIONS(expected_data.begin(), expected_data.end(), input_file.data().begin(), input_file.data().end());
+        BOOST_TEST(input_file.entry() == 0x03000000);
+        BOOST_TEST(input_file.load_address() == 0x03000000);
+        BOOST_TEST(input_file.data() == expected_data, boost::test_tools::per_element());
     }
 
 BOOST_AUTO_TEST_SUITE_END()
