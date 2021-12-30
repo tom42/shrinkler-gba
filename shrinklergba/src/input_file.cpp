@@ -41,6 +41,7 @@
 // Values 0 and 1 mean no alignment is required. Otherwise, p_align should be a positive,
 // integral power of 2, and p_vaddr should equal p_offset, modulo p_align."
 
+#include <array>
 #include <fstream>
 #include <stdexcept>
 #include <string>
@@ -72,17 +73,7 @@ using std::string;
 
 static string segment_type_to_string(Elf_Word type)
 {
-    static const char* const table[] =
-    {
-        "NULL",
-        "LOAD",
-        "DYNAMIC",
-        "INTERP",
-        "NOTE",
-        "SHLIB",
-        "PHDR",
-        "TLS"
-    };
+    static const std::array table{ "NULL", "LOAD", "DYNAMIC", "INTERP", "NOTE", "SHLIB", "PHDR", "TLS" };
 
     if ((type >= 0) && (type < std::size(table)))
     {
