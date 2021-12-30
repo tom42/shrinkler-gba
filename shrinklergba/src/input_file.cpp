@@ -42,6 +42,7 @@
 // integral power of 2, and p_vaddr should equal p_offset, modulo p_align."
 
 #include <array>
+#include <boost/numeric/conversion/cast.hpp>
 #include <fstream>
 #include <stdexcept>
 #include <string>
@@ -65,8 +66,10 @@ namespace shrinklergba
 {
 
 using ELFIO::elfio;
+using ELFIO::Elf64_Addr;
 using ELFIO::Elf_Half;
 using ELFIO::Elf_Word;
+using ELFIO::segment;
 using fmt::format;
 using std::runtime_error;
 using std::string;
@@ -131,11 +134,10 @@ void input_file::load_elf(std::istream& stream)
     check_header(reader);
     read_entry(reader);
     log_program_headers(reader);
-    throw "YIKES";
+    convert_to_binary(reader);
 
     // TODO: port stuff below
     /*
-    convert_to_binary(reader);
 
     // TODO: that should not go into load_elf, but into load, no? (since it is not ELF specific)
     CONSOLE_VERBOSE(m_console) << format("Entry: {:#x}", m_entry) << std::endl;
@@ -186,6 +188,52 @@ void input_file::log_program_headers(elfio& reader)
             s.get_memory_size(),
             s.get_align(),
             segment_flags_to_string(s.get_flags())) << std::endl;
+    }
+}
+
+void input_file::convert_to_binary(ELFIO::elfio& reader)
+{
+    // TODO: Do we initially check whether there are any program headers?
+    //       Or do we simply do all the processing and fail if there is no data left?
+    segment* last = nullptr;
+    const Elf_Half nheaders = reader.segments.size();
+    Elf64_Addr output_address = 0;
+
+    for (Elf_Half i = 0; i < nheaders; ++i)
+    {
+        segment* current = reader.segments[i];
+        if (current->get_type() == PT_LOAD)
+        {
+            verify_load_segment(last, current);
+
+            if (current->get_file_size())
+            {
+                if (m_data.size())
+                {
+                    // Move to start of segment in output. Fill up with padding bytes.
+                    const auto nbytes = current->get_virtual_address() - output_address;
+                    m_data.insert(m_data.end(), boost::numeric_cast<size_t>(nbytes), 0);
+                    output_address += nbytes;
+                }
+                else
+                {
+                    // No bytes written to output yet. Just set the output address then.
+                    output_address = current->get_virtual_address();
+                    m_load_address = output_address;
+                }
+
+                // Copy segment's data to output.
+                m_data.insert(m_data.end(), current->get_data(), current->get_data() + current->get_file_size());
+                output_address += current->get_file_size();
+            }
+
+            // TODO: make padding byte value configurable? Compressed size? Otoh, 0xff might be more healthy for flash devices?
+            // TODO: final size checks(?)
+            //       * Should we check whether there are any bytes at all?
+            //       * Should we check for a maximum size?
+
+            last = current;
+        }
     }
 }
 
@@ -266,6 +314,11 @@ void input_file::check_object_file_version(elfio& reader)
     {
         throw runtime_error(format("unknown object file version {}. Expected {}", e_version, expected_object_file_version));
     }
+}
+
+void input_file::verify_load_segment(ELFIO::segment* /*last*/, ELFIO::segment* /*current*/)
+{
+    // TODO: implement
 }
 
 }

@@ -40,6 +40,7 @@ target_include_directories(
   PUBLIC
   include
   PRIVATE
+  "${Boost_INCLUDE_DIRS}"
   "${CMAKE_CURRENT_BINARY_DIR}")
 target_link_libraries(shrinklergba PUBLIC shrinkler PRIVATE elfio fmt)
 if(NOT HAVE_ARGP)

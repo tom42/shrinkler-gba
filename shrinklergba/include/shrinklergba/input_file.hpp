@@ -34,6 +34,7 @@ namespace ELFIO
 {
 
 class elfio;
+class segment;
 
 }
 
@@ -53,7 +54,7 @@ public:
 
     uint_fast64_t entry() const { return m_entry; }
 
-    auto load_address() const { return 0; } // TODO: return type, unhardcode
+    uint_fast64_t load_address() const { return m_load_address; }
 
     const std::vector<unsigned char>& data() const { return m_data; }
 
@@ -71,8 +72,11 @@ private:
     static void check_abi_version(ELFIO::elfio& reader);
     static void check_object_file_version(ELFIO::elfio& reader);
 
+    static void verify_load_segment(ELFIO::segment* last, ELFIO::segment* current);
+
     const console m_console;
     uint_fast64_t m_entry = 0;
+    uint_fast64_t m_load_address = 0;
     std::vector<unsigned char> m_data;
 };
 
