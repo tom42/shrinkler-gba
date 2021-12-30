@@ -75,7 +75,7 @@ static string segment_type_to_string(Elf_Word type)
 {
     static const std::array table{ "NULL", "LOAD", "DYNAMIC", "INTERP", "NOTE", "SHLIB", "PHDR", "TLS" };
 
-    if ((type >= 0) && (type < std::size(table)))
+    if ((type >= 0) && (type < table.size()))
     {
         return table[type];
     }
