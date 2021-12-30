@@ -49,9 +49,9 @@ BOOST_AUTO_TEST_SUITE(input_file_test)
     {
         const input_file testee;
 
-        BOOST_TEST(testee.entry() == 0);
-        BOOST_TEST(testee.load_address() == 0);
-        BOOST_TEST(testee.data().size() == 0);
+        BOOST_TEST(testee.entry() == 0u);
+        BOOST_TEST(testee.load_address() == 0u);
+        BOOST_TEST(testee.data().size() == 0u);
     }
 
     BOOST_AUTO_TEST_CASE(load_when_file_does_not_exist_then_throws)
@@ -75,8 +75,8 @@ BOOST_AUTO_TEST_SUITE(input_file_test)
         auto input_file = load_elf_file("lostmarbles.elf");
         auto expected_data = load_binary_file("lostmarbles.bin");
 
-        BOOST_TEST(input_file.entry() == 0x03000000);
-        BOOST_TEST(input_file.load_address() == 0x03000000);
+        BOOST_TEST(input_file.entry() == 0x03000000u);
+        BOOST_TEST(input_file.load_address() == 0x03000000u);
         BOOST_TEST(input_file.data() == expected_data, boost::test_tools::per_element());
     }
 
