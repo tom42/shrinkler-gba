@@ -83,6 +83,12 @@ static string segment_type_to_string(Elf_Word type)
     return format("{:#010x}", type);
 }
 
+static string segment_flags_to_string(Elf_Word /*flags*/)
+{
+    // TODO: implement
+    return "***";
+}
+
 void input_file::load(const std::filesystem::path& path)
 {
     try
@@ -173,7 +179,7 @@ void input_file::log_program_headers(elfio& reader)
             s.get_file_size(),
             s.get_memory_size(),
             s.get_align(),
-            "yyy" /*segment_flags_to_string(s.get_flags())*/) << std::endl;
+            segment_flags_to_string(s.get_flags())) << std::endl;
     }
 }
 
