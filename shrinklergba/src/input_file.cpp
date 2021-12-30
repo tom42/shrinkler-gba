@@ -63,6 +63,7 @@ namespace shrinklergba
 {
 
 using ELFIO::elfio;
+using ELFIO::Elf_Half;
 using fmt::format;
 using std::runtime_error;
 
@@ -120,9 +121,44 @@ void input_file::read_entry(elfio& reader)
     m_entry = reader.get_entry();
 }
 
-void input_file::log_program_headers(elfio& /*reader*/)
+void input_file::log_program_headers(elfio& reader)
 {
-    // TODO: implement
+    if (!m_console.is_verbose_enabled())
+    {
+        return;
+    }
+
+    Elf_Half nheaders = reader.segments.size();
+    if (nheaders == 0)
+    {
+        CONSOLE_VERBOSE(m_console) << "File has no program headers" << std::endl;
+        return;
+    }
+
+    CONSOLE_VERBOSE(m_console) << "Program headers" << std::endl;
+    CONSOLE_VERBOSE(m_console) << format(" {:10} {:7} {:10} {:10} {:7} {:7} {:7} {:3}",
+        "Type",
+        "Offset",
+        "VirtAddr",
+        "PhysAddr",
+        "FileSiz",
+        "MemSiz",
+        "Align",
+        "Flg") << std::endl;
+
+    for (Elf_Half i = 0; i < nheaders; ++i)
+    {
+        const auto& s = *reader.segments[i];
+        CONSOLE_VERBOSE(m_console) << format(" {:10} {:#07x} {:#010x} {:#010x} {:#07x} {:#07x} {:#07x} {}",
+            "xxx", //segment_type_to_string(s.get_type()), // TODO: segment type
+            s.get_offset(),
+            s.get_virtual_address(),
+            s.get_physical_address(),
+            s.get_file_size(),
+            s.get_memory_size(),
+            s.get_align(),
+            "yyy" /*segment_flags_to_string(s.get_flags())*/) << std::endl;
+    }
 }
 
 void input_file::open_elf(elfio& reader, std::istream& stream)
