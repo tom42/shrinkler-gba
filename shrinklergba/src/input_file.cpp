@@ -78,7 +78,7 @@ static string segment_type_to_string(Elf_Word type)
 {
     static const std::array table{ "NULL", "LOAD", "DYNAMIC", "INTERP", "NOTE", "SHLIB", "PHDR", "TLS" };
 
-    if ((type >= 0) && (type < table.size()))
+    if (type < table.size())
     {
         return table[type];
     }
@@ -90,7 +90,7 @@ static string segment_flags_to_string(Elf_Word flags)
 {
     static const std::array table{ "", "X", "W", "WX", "R", "RX", "RW", "RWX" };
 
-    if ((flags >= 0) && (flags < table.size()))
+    if (flags < table.size())
     {
         return table[flags];
     }
