@@ -186,7 +186,7 @@ void input_file::log_program_headers(elfio& reader)
     }
 }
 
-void input_file::convert_to_binary(ELFIO::elfio& reader)
+void input_file::convert_to_binary(elfio& reader)
 {
     // TODO: Do we initially check whether there are any program headers?
     //       Or do we simply do all the processing and fail if there is no data left?
@@ -240,7 +240,7 @@ void input_file::open_elf(elfio& reader, std::istream& stream)
     }
 }
 
-void input_file::check_header(ELFIO::elfio& reader)
+void input_file::check_header(elfio& reader)
 {
     check_executable_type(reader);
     check_elf_version(reader);
@@ -256,7 +256,7 @@ void input_file::check_header(ELFIO::elfio& reader)
     //         memory area occupied by the binary. But then, that's probably too much to worry about
 }
 
-void input_file::check_executable_type(ELFIO::elfio& reader)
+void input_file::check_executable_type(elfio& reader)
 {
     if ((reader.get_class() != ELFCLASS32) ||
         (reader.get_encoding() != ELFDATA2LSB) ||
@@ -267,7 +267,7 @@ void input_file::check_executable_type(ELFIO::elfio& reader)
     }
 }
 
-void input_file::check_elf_version(ELFIO::elfio& reader)
+void input_file::check_elf_version(elfio& reader)
 {
     const auto expected_elf_version = 1;
 
@@ -311,9 +311,68 @@ void input_file::check_object_file_version(elfio& reader)
     }
 }
 
-void input_file::verify_load_segment(ELFIO::segment* /*last*/, ELFIO::segment* /*current*/)
+void input_file::verify_load_segment(segment* last, segment* current)
 {
-    // TODO: implement
+    throw_if_invalid_load_segment(current);
+
+    if (last)
+    {
+        throw_if_load_segments_are_out_of_order(last, current);
+        throw_if_load_segments_overlap(last, current);
+    }
+}
+
+void input_file::throw_if_invalid_load_segment(segment* seg)
+{
+    // Not sure this is a problem. Refuse to process such a file until we know.
+    if (seg->get_virtual_address() != seg->get_physical_address())
+    {
+        throw runtime_error("file contains LOAD segment whose virtual and physical address differ. Don't know how to handle that");
+    }
+
+    // Required by ELF specifications.
+    if (seg->get_file_size() > seg->get_memory_size())
+    {
+        throw runtime_error("invalid ELF file. Found LOAD segment whose file size is larger than its memory size");
+    }
+
+    // Not sure this could be a problem, but for the time being require
+    // segment alignment to be according to ELF specifications.
+    const auto align = seg->get_align();
+    if (align > 1)
+    {
+        if ((align & (align - 1)) != 0)
+        {
+            throw runtime_error("invalid ELF file. Found LOAD segment whose alignment is not a power of 2");
+        }
+
+        if ((seg->get_offset() % align) != (seg->get_virtual_address() % align))
+        {
+            throw runtime_error("invalid ELF file. Found LOAD segment where (offset % align) != (virtual address % align)");
+        }
+    }
+}
+
+void input_file::throw_if_load_segments_are_out_of_order(segment* last, segment* current)
+{
+    // Required by ELF specifications.
+    if (current->get_virtual_address() < last->get_virtual_address())
+    {
+        throw runtime_error("invalid ELF file. LOAD segment headers are not sorted by ascending virtual address");
+    }
+}
+
+void input_file::throw_if_load_segments_overlap(segment* last, segment* current)
+{
+    if ((last->get_virtual_address() + last->get_memory_size()) < last->get_virtual_address())
+    {
+        throw runtime_error("invalid ELF file. Found LOAD segment that goes past the end of the 64-bit address space");
+    }
+
+    if ((last->get_virtual_address() + last->get_memory_size()) > current->get_virtual_address())
+    {
+        throw runtime_error("invalid ELF file. Found overlapping LOAD segments");
+    }
 }
 
 }

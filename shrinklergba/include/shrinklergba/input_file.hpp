@@ -73,6 +73,9 @@ private:
     static void check_object_file_version(ELFIO::elfio& reader);
 
     static void verify_load_segment(ELFIO::segment* last, ELFIO::segment* current);
+    static void throw_if_invalid_load_segment(ELFIO::segment* seg);
+    static void throw_if_load_segments_are_out_of_order(ELFIO::segment* last, ELFIO::segment* current);
+    static void throw_if_load_segments_overlap(ELFIO::segment* last, ELFIO::segment* current);
 
     const console m_console;
     uint_fast64_t m_entry = 0;
