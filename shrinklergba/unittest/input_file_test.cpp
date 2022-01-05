@@ -35,10 +35,17 @@ namespace shrinklergba_unittest
 using std::runtime_error;
 using shrinklergba::input_file;
 
+static shrinklergba::console nullconsole()
+{
+    shrinklergba::console c;
+    c.verbose(nullptr);
+    c.out(nullptr);
+    return c;
+}
+
 static input_file load_elf_file(const std::filesystem::path& filename)
 {
-    // TODO: set up a console that does not output anything
-    input_file f;
+    input_file f(nullconsole());
     f.load(SHRINKLERGBA_UNITTEST_TESTDATA_DIRECTORY / filename);
     return f;
 }
