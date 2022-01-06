@@ -8,9 +8,23 @@
       * File with entry different from load address (so we can see we have not messed anything up)
       * ...
   * Archive open issues from
-    * Email
     * Old gbaic
-  * Check order (left/right) of fold expressions in lzasm? (Then again, it does not matter there all too much I think)
+* Open issues
+  * Final binary generation/depacker
+    * Should be updated, so that it can execute ARM and Thumb entry points. Detection is done by input_file
+      * Do we check whether the entry point is valid?
+      * Do we attempt to optimize loading of the entry point? (ldr= vs. some move/shift/rotate combo)?
+      * Attention: load address != entry point. The case where they're the same is a special case!
+        * The binary must be decompressed to the load address
+        * Execution must start at the entry point
+    * GBA HEADER
+      * The checksum must be calculated!
+      * Do we stick code into it? If so, what code? Ideally it is code that does not normally need to be modified!
+    * Depacker code
+      * Register state: do we care? Do we preserve registers as the BIOS leaves them? Or do we have this as an option?
+      * We never really validated it, particularly not the stack data mess
+        * When we execute code, is the stack pointer pointing at the right place?
+        * Did we have a buffer overrun on the stack? (In the contexts array)
 * See which output in shrinkler.cpp should be optional and which should not:
   * The message about the -r option for instance should NOT be hidden if verbose mode is not used
 * Licensing of shrinkler.cpp:
@@ -31,11 +45,6 @@
     * git subtree add --prefix 3rdparty/ELFIO https://github.com/serge1/ELFIO Release_3.9 --squash
     * git subtree add --prefix 3rdparty/fmt https://github.com/fmtlib/fmt 8.0.1 --squash
     * git subtree add --prefix 3rdparty/lzasm https://github.com/tom42/lzasm v0.1.0 --squash
-* Set up 3rd party dependencies:
-  * In any case, might want to have a README.md in there? or 3rdparty.md?
-  * Merge dependencies into subtree (there is nothing to do for ELFIO, which is header only, and for shrinkler, for which we'll create a special library)
-    * fmt: compile it, but only if it is not found otherwise
-    * elfio: compile it, but only if it is not found otherwise
 * Be clear about licensing (top level README.md)
   * shrinkler-gba code: MIT license
   * libshrinkler: MIT, except actual shrinkler code, which is Blueberry's
