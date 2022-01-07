@@ -83,6 +83,7 @@ BOOST_AUTO_TEST_SUITE(input_file_test)
         auto expected_data = load_binary_file("lostmarbles.bin");
 
         BOOST_TEST(input_file.entry() == 0x03000000u);
+        BOOST_TEST(input_file.is_thumb_entry() == false);
         BOOST_TEST(input_file.load_address() == 0x03000000u);
         BOOST_TEST(input_file.data() == expected_data, boost::test_tools::per_element());
     }
