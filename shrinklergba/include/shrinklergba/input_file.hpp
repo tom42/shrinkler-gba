@@ -54,7 +54,7 @@ public:
 
     uint_fast64_t entry() const { return m_entry; }
 
-    bool is_thumb_entry() const { return false; }
+    bool is_thumb_entry() const { return entry() & 1; }
 
     uint_fast64_t load_address() const { return m_load_address; }
 

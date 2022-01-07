@@ -88,6 +88,17 @@ BOOST_AUTO_TEST_SUITE(input_file_test)
         BOOST_TEST(input_file.data() == expected_data, boost::test_tools::per_element());
     }
 
+    BOOST_AUTO_TEST_CASE(load_thumb_entry)
+    {
+        auto testee = load_elf_file("thumb_entry.elf");
+
+        // TODO: entry and load address make no sense whatsoever. What's up here?
+        // TODO: also check data?
+        BOOST_TEST(testee.entry() == 0x8001u);
+        BOOST_TEST(testee.is_thumb_entry() == true);
+        BOOST_TEST(testee.load_address() == 0u);
+    }
+
 BOOST_AUTO_TEST_SUITE_END()
 
 }
