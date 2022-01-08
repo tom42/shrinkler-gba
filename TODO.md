@@ -1,4 +1,27 @@
 * NEXT:
+  * NEED TO REWRITE INPUT FILE => rename the old implementation while doing so, and create a new input_file / input_file_test
+    * objcopy does processing section wise, not segment wise.
+    * Need to do that too:
+      * Iterate through the section headers
+        * Determine whether to output a section header. The ELF documentation is clear on what to dump:
+          * For instance: sh_addr: Address where the first byte resides if the section appears in the memory image of a process;
+                          a value of 0 indicates the section does not appear in the memory image of a process.
+          * So we can ignore any value with sh_addr=0, which filters out most sections
+          * We're then hopefully left with PROGBITS and NOBITS sections
+            * NOBITS sections do not go into the output file, even if their size is nonzero
+            * PROGBITS sections go into the output file, but they may have a size of zero in which case it appears nothing is written to the binary file
+          * ANYWAY, THAT IS JUST QUICK NOTES. READ THE ELF DOCUMENTATION WHEN ACTUALLY IMPLEMENTING THUS
+      * Sections do not appear to have an order
+        * So we must prepare a list of sections to dump first
+        * Then we can sort them by address (note: sections cannot overlap)
+        * Finally the logic is the same:
+          * Start writing the first section. Initially, no padding is needed, set output address
+            * Copy section data to file, increment output address
+          * Next section:
+            * Pad with zeroes and increment output address until output address of next section is reached
+            * Copy section data, increment output address
+      * That should pass tests for lostmarbles.elf and thumb_entry.elf
+      * Any maybe we have a more complex example written with devKitPro?
   * Port input_file:
     * Here at least add ARM/Thumb entry point detection
     * This will require a note because we must adapt the depacker code because it does not support that scenario yet
