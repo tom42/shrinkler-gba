@@ -10,6 +10,8 @@
           * We're then hopefully left with PROGBITS and NOBITS sections
             * NOBITS sections do not go into the output file, even if their size is nonzero
             * PROGBITS sections go into the output file, but they may have a size of zero in which case it appears nothing is written to the binary file
+            * No that's not working: there may well be other section header types.
+              * So perhaps just special handle NOBITS and copy everything else. I suppose that's what objcopy does too
           * ANYWAY, THAT IS JUST QUICK NOTES. READ THE ELF DOCUMENTATION WHEN ACTUALLY IMPLEMENTING THUS
       * Sections do not appear to have an order
         * So we must prepare a list of sections to dump first
