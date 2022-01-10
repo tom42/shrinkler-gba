@@ -99,7 +99,7 @@ public:
                     {
                         os << ' ';
                     }
-                    os << ' ';
+                    print_column_separator(os);
                 }
             }
 
@@ -108,6 +108,11 @@ public:
     }
 
 private:
+    static void print_column_separator(std::ostream& os)
+    {
+        os << ' ';
+    }
+
     std::vector<std::vector<std::string>> rows;
     std::vector<size_t> column_widths;
 };
