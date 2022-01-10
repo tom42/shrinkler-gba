@@ -68,16 +68,15 @@ class table
 public:
     void add_row(std::vector<string> row)
     {
-        // TODO: rename i
-        for (size_t i = 0; i < row.size(); ++i)
+        for (size_t column = 0; column < row.size(); ++column)
         {
-            if (i >= column_widths.size())
+            if (column >= column_widths.size())
             {
-                column_widths.push_back(row[i].size());
+                column_widths.push_back(row[column].size());
             }
             else
             {
-                column_widths[i] = std::max(row[i].size(), column_widths[i]);
+                column_widths[column] = std::max(row[column].size(), column_widths[column]);
             }
         }
 
@@ -90,13 +89,13 @@ public:
         {
             // TODO: indentation before first row?
 
-            for (size_t i = 0; i < row.size(); ++i) // TODO: rename i
+            for (size_t column = 0; column < row.size(); ++column)
             {
-                os << row[i];
-                if (i < row.size() - 1)
+                os << row[column];
+                if (column < row.size() - 1)
                 {
                     // TODO: factor out/name
-                    for (int j = 0; j < column_widths[i] - row[i].size(); ++j) // TODO: rename j
+                    for (int j = 0; j < column_widths[column] - row[column].size(); ++j) // TODO: rename j
                     {
                         os << ' ';
                     }
