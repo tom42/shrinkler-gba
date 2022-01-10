@@ -51,8 +51,7 @@ using std::runtime_error;
 using std::string;
 
 // TODO: move to own source file if THIS works out
-// TODO: rename: eg: table_printer
-class table
+class table_printer
 {
 public:
     void add_row(std::vector<string> row)
@@ -315,12 +314,12 @@ void input_file::log_section_headers(ELFIO::elfio& reader)
         return;
     }
 
-    table t;
-    t.add_row({ "Nr", "Name", "Type", "Addr", "Off", "Size", "ES", "Flg", "Lk", "Inf", "Al" });
+    table_printer printer;
+    printer.add_row({ "Nr", "Name", "Type", "Addr", "Off", "Size", "ES", "Flg", "Lk", "Inf", "Al" });
     for (Elf_Half i = 0; i < nheaders; ++i)
     {
         const auto& s = *reader.sections[i];
-        t.add_row({
+        printer.add_row({
             std::to_string(i),
             s.get_name(),
             section_type_to_string(s.get_type()),
@@ -334,7 +333,7 @@ void input_file::log_section_headers(ELFIO::elfio& reader)
     }
 
     CONSOLE_VERBOSE(m_console) << "Section headers" << std::endl;
-    t.print(*m_console.verbose());
+    printer.print(*m_console.verbose());
 
     // TODO: implement
     //       * Determine width of columns for pretty printing
