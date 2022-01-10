@@ -106,7 +106,6 @@ BOOST_AUTO_TEST_SUITE(input_file_test)
         //          correct position in the file and remaining gaps (if any) between them are filled with zeros."
         //          Doesn't mean this is correct. It doesn't mean objcopy is right either, but it's
         //          at least doing what I'd expect. Maybe ask on stackoverflow?
-        // TODO: also check data?
         BOOST_TEST(testee.entry() == 0x8001u);
         BOOST_TEST(testee.is_thumb_entry() == true);
         BOOST_TEST(testee.load_address() == 0u);
