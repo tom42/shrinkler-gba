@@ -35,7 +35,7 @@ template <typename TValue, typename NDigits>
 std::string to_hex(TValue value, NDigits ndigits)
 {
     const auto prefix_width = 2;
-    return format("{:#0{}x}", value, ndigits + prefix_width);
+    return fmt::format("{:#0{}x}", value, ndigits + prefix_width);
 }
 
 }

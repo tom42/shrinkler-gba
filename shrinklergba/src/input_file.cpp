@@ -29,6 +29,7 @@
 #include <system_error>
 #include "fmt/core.h"
 #include "shrinklergba/elfio_wrapper.hpp"
+#include "shrinklergba/elf_strings.hpp"
 #include "shrinklergba/input_file.hpp"
 #include "shrinklergba/table_printer.hpp"
 
@@ -135,13 +136,6 @@ static string segment_flags_to_string(Elf_Word flags)
 
     // TODO: format?
     return format("{:#x}", flags);
-}
-
-template <typename T>
-string to_hex(T value, int ndigits)
-{
-    const auto prefix_width = 2;
-    return format("{:#0{}x}", value, ndigits + prefix_width);
 }
 
 void input_file::load(const std::filesystem::path& path)
@@ -257,10 +251,10 @@ void input_file::log_section_headers(ELFIO::elfio& reader)
             std::to_string(i),
             s.get_name(),
             section_type_to_string(s.get_type()),
-            to_hex(s.get_address(), 8),
-            to_hex(s.get_offset(), 6),
-            to_hex(s.get_size(), 6),
-            to_hex(s.get_entry_size(), 2),
+            elf_strings::to_hex(s.get_address(), 8),
+            elf_strings::to_hex(s.get_offset(), 6),
+            elf_strings::to_hex(s.get_size(), 6),
+            elf_strings::to_hex(s.get_entry_size(), 2),
             section_flags_to_string(s.get_flags())
             // TODO: Flg, Lk, Inf, al
             });
