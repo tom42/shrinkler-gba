@@ -50,7 +50,7 @@ std::string get_section_type(ELFIO::Elf_Word type)
         case SHT_SYMTAB_SHNDX: return "SYMTAB_SHNDX";
         case 0x70000003: return "ARM_ATTRIBUTES";
         default:
-            return to_hex(type, 10);
+            return to_hex(type, 8);
     }
 }
 
