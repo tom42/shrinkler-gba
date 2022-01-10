@@ -152,8 +152,10 @@ void input_file::log_section_headers(ELFIO::elfio& reader)
             elf_strings::to_hex(s.get_offset(), 6),
             elf_strings::to_hex(s.get_size(), 6),
             elf_strings::to_hex(s.get_entry_size(), 2),
-            elf_strings::get_section_flags(s.get_flags())
-            // TODO: Flg, Lk, Inf, al
+            elf_strings::get_section_flags(s.get_flags()),
+            elf_strings::to_hex(s.get_link(), 2),
+            elf_strings::to_hex(s.get_info(), 3),
+            elf_strings::to_hex(s.get_addr_align(), 2)
             // TODO: Info whether we keep or discard a section (keep/discard means it goes into bin file or not)
             });
     }
