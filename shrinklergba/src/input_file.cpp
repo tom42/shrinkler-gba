@@ -21,11 +21,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <array>
 #include <boost/numeric/conversion/cast.hpp>
 #include <fstream>
 #include <stdexcept>
-#include <string>
 #include <system_error>
 #include "fmt/core.h"
 #include "shrinklergba/elfio_wrapper.hpp"
@@ -39,26 +37,9 @@ namespace shrinklergba
 using ELFIO::elfio;
 using ELFIO::Elf64_Addr;
 using ELFIO::Elf_Half;
-using ELFIO::Elf_Word;
-using ELFIO::Elf_Xword;
 using ELFIO::segment;
 using fmt::format;
 using std::runtime_error;
-using std::string;
-
-// TODO: own file (e.g. elf_strings or elf_string_converted)
-static string segment_flags_to_string(Elf_Word flags)
-{
-    static const std::array table{ "", "X", "W", "WX", "R", "RX", "RW", "RWX" };
-
-    if (flags < table.size())
-    {
-        return table[flags];
-    }
-
-    // TODO: format?
-    return format("{:#x}", flags);
-}
 
 void input_file::load(const std::filesystem::path& path)
 {
@@ -147,7 +128,7 @@ void input_file::log_program_headers(elfio& reader)
             s.get_file_size(),
             s.get_memory_size(),
             s.get_align(),
-            segment_flags_to_string(s.get_flags())) << std::endl;
+            elf_strings::get_segment_flags(s.get_flags())) << std::endl;
     }
 }
 

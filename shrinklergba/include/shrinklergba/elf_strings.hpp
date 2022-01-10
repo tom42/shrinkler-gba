@@ -47,6 +47,7 @@ std::string to_hex(TValue value, NDigits ndigits)
 std::string get_section_type(ELFIO::Elf_Word type);
 std::string get_section_flags(ELFIO::Elf_Xword flags);
 std::string get_segment_type(ELFIO::Elf_Word type);
+std::string get_segment_flags(ELFIO::Elf_Word flags);
 
 }
 
