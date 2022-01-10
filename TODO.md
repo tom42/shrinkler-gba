@@ -1,12 +1,5 @@
 * NEXT:
   * NEED TO REWRITE INPUT FILE => rename the old implementation while doing so, and create a new input_file / input_file_test
-    * Use to_hex where possible?
-    * UH: need some sort of pretty printing, otherwise this is going to be painful
-      * Try this, then: https://github.com/friedmud/variadic_table
-        * Any sort of data type not properly supported we can implement ourselves, just by convering to string ourselves. I suppose.
-      * OK:
-        * For starters, just manually place the header somewhere in our source tree
-        * If it works out, integrate it properly as subtree with CMakeLists and all that crap (orly? with cmakelists?)
     * Dump section headers. Sample output from readelf:
         Section Headers:
           [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al

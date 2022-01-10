@@ -104,32 +104,25 @@ void input_file::log_program_headers(elfio& reader)
         return;
     }
 
-    // TODO: if this works out, use table class too
-    // TODO: add also numbering, as for the section headers
-    CONSOLE_VERBOSE(m_console) << "Program headers" << std::endl;
-    CONSOLE_VERBOSE(m_console) << format(" {:10} {:7} {:10} {:10} {:7} {:7} {:7} {:3}",
-        "Type",
-        "Offset",
-        "VirtAddr",
-        "PhysAddr",
-        "FileSiz",
-        "MemSiz",
-        "Align",
-        "Flg") << std::endl;
-
+    table_printer printer;
+    printer.add_row({ "Nr", "Type", "Offset", "VirtAddr", "PhysAddr", "FileSiz", "MemSiz", "Align", "Flg" });
     for (Elf_Half i = 0; i < nheaders; ++i)
     {
         const auto& s = *reader.segments[i];
-        CONSOLE_VERBOSE(m_console) << format(" {:10} {:#07x} {:#010x} {:#010x} {:#07x} {:#07x} {:#07x} {}",
+        printer.add_row({
+            std::to_string(i),
             elf_strings::get_segment_type(s.get_type()),
-            s.get_offset(),
-            s.get_virtual_address(),
-            s.get_physical_address(),
-            s.get_file_size(),
-            s.get_memory_size(),
-            s.get_align(),
-            elf_strings::get_segment_flags(s.get_flags())) << std::endl;
+            elf_strings::to_hex(s.get_offset(), 6),
+            elf_strings::to_hex(s.get_virtual_address(), 8),
+            elf_strings::to_hex(s.get_physical_address(), 8),
+            elf_strings::to_hex(s.get_file_size(), 5),
+            elf_strings::to_hex(s.get_memory_size(), 5),
+            elf_strings::to_hex(s.get_align(), 5),
+            elf_strings::get_segment_flags(s.get_flags())});
     }
+
+    CONSOLE_VERBOSE(m_console) << "Program headers" << std::endl;
+    printer.print(*m_console.verbose());
 }
 
 void input_file::log_section_headers(ELFIO::elfio& reader)
@@ -161,15 +154,12 @@ void input_file::log_section_headers(ELFIO::elfio& reader)
             elf_strings::to_hex(s.get_entry_size(), 2),
             elf_strings::get_section_flags(s.get_flags())
             // TODO: Flg, Lk, Inf, al
+            // TODO: Info whether we keep or discard a section (keep/discard means it goes into bin file or not)
             });
     }
 
     CONSOLE_VERBOSE(m_console) << "Section headers" << std::endl;
     printer.print(*m_console.verbose());
-
-    // TODO: implement
-    //       * Determine width of columns for pretty printing
-    //       * Output all sections, including information on whether we keep or discard them
 }
 
 void input_file::convert_to_binary(elfio& reader)
