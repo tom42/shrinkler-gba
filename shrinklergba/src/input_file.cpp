@@ -27,6 +27,10 @@
 #include <stdexcept>
 #include <string>
 #include <system_error>
+#include <iostream> // TODO: move: this is for table class
+#include <string>   // TODO: move: this is for table class
+#include <utility>  // TODO: move: this is for table class
+#include <vector>   // TODO: move: this is for table class
 
 #if defined(_MSC_VER)
 #pragma warning(push)
@@ -53,6 +57,34 @@ using ELFIO::segment;
 using fmt::format;
 using std::runtime_error;
 using std::string;
+
+// TODO: move to own source file if THIS works out
+class table
+{
+public:
+    void add_row(std::vector<string> row)
+    {
+        rows.push_back(std::move(row));
+    }
+
+    void print(std::ostream& os)
+    {
+        for (const auto& row : rows)
+        {
+            for (const auto& column : row)
+            {
+                os << column;
+                // TODO: if not last row
+                //       * Add column spacing/padding
+                //       * Add padding for this particular column
+            }
+            os << std::endl;
+        }
+    }
+
+private:
+    std::vector<std::vector<std::string>> rows;
+};
 
 static string segment_type_to_string(Elf_Word type)
 {
@@ -141,6 +173,7 @@ void input_file::log_program_headers(elfio& reader)
         return;
     }
 
+    // TODO: if this works out, use table class too
     CONSOLE_VERBOSE(m_console) << "Program headers" << std::endl;
     CONSOLE_VERBOSE(m_console) << format(" {:10} {:7} {:10} {:10} {:7} {:7} {:7} {:3}",
         "Type",
@@ -181,6 +214,16 @@ void input_file::log_section_headers(ELFIO::elfio& reader)
         return;
     }
 
+    table t;
+    t.add_row({ "Nr", "Name", "Type", "Addr", "Off", "Size", "ES", "Flg", "Lk", "Inf", "Al" });
+    for (Elf_Half i = 0; i < nheaders; ++i)
+    {
+        const auto& s = *reader.sections[i];
+        t.add_row({ std::to_string(i), s.get_name()});
+    }
+    t.print(*m_console.verbose());
+
+    // TODO: convert stuff below to use table class
     CONSOLE_VERBOSE(m_console) << "Section headers" << std::endl;
     CONSOLE_VERBOSE(m_console) << format(" {} {} {} {} {} {} {} {} {} {} {}",
         "[Nr]",             // TODO: width (determine at runtime)
