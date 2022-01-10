@@ -182,6 +182,35 @@ void input_file::log_section_headers(ELFIO::elfio& reader)
     }
 
     CONSOLE_VERBOSE(m_console) << "Section headers" << std::endl;
+    CONSOLE_VERBOSE(m_console) << format(" {} {} {} {} {} {} {} {} {} {} {}",
+        "[Nr]",             // TODO: width (determine at runtime)
+        "Name",             // TODO: width (determine at runtime)
+        "Type",             // TODO: width
+        "Addr",             // TODO: width
+        "Off",              // TODO: width
+        "Size",             // TODO: width
+        "ES",               // TODO: width
+        "Flg",              // TODO: width
+        "Lk",               // TODO: width
+        "Inf",              // TODO: width
+        "Al") << std::endl; // TODO: width
+
+    for (Elf_Half i = 0; i < nheaders; ++i)
+    {
+        const auto& s = *reader.sections[i];
+        CONSOLE_VERBOSE(m_console) << format(" [{}] {} {} {} {} {} {} {} {} {} {}",
+            i,
+            s.get_name(),
+            "Type",             // TODO: value
+            "Addr",             // TODO: value
+            "Off",              // TODO: value
+            "Size",             // TODO: value
+            "ES",               // TODO: value
+            "Flg",              // TODO: value
+            "Lk",               // TODO: value
+            "Inf",              // TODO: value
+            "Al") << std::endl; // TODO: value
+    }
 
     // TODO: implement
     //       * Determine width of columns for pretty printing
