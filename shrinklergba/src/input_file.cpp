@@ -94,11 +94,7 @@ public:
                 os << row[column];
                 if (column < row.size() - 1)
                 {
-                    // TODO: factor out/name
-                    for (int j = 0; j < column_widths[column] - row[column].size(); ++j) // TODO: rename j
-                    {
-                        os << ' ';
-                    }
+                    pad_column(os, row[column], column_widths[column]);
                     print_column_separator(os);
                 }
             }
@@ -108,6 +104,16 @@ public:
     }
 
 private:
+    static void pad_column(std::ostream& os, const string& column_text, size_t column_width)
+    {
+        const auto npadding_chars = column_width - column_text.size();
+
+        for (size_t j = 0; j < npadding_chars; ++j)
+        {
+            os << ' ';
+        }
+    }
+
     static void print_column_separator(std::ostream& os)
     {
         os << ' ';
