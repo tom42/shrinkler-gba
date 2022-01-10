@@ -28,10 +28,12 @@ set(
   include/shrinklergba/command_line.hpp
   include/shrinklergba/console.hpp
   include/shrinklergba/elfio_wrapper.hpp
+  include/shrinklergba/elf_strings.hpp
   include/shrinklergba/input_file.hpp
   include/shrinklergba/options.hpp
   include/shrinklergba/table_printer.hpp
   src/command_line.cpp
+  src/elf_strings.cpp
   src/input_file.cpp
   src/table_printer.cpp)
 
