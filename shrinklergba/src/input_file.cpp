@@ -47,34 +47,6 @@ using std::runtime_error;
 using std::string;
 
 // TODO: own file (e.g. elf_strings or elf_string_converted)
-static string section_type_to_string(Elf_Word type)
-{
-    switch (type)
-    {
-        case SHT_NULL: return "NULL";
-        case SHT_PROGBITS: return "PROGBITS";
-        case SHT_SYMTAB: return "SYMTAB";
-        case SHT_STRTAB: return "STRTAB";
-        case SHT_RELA: return "RELA";
-        case SHT_HASH: return "HASH";
-        case SHT_DYNAMIC: return "DYNAMIC";
-        case SHT_NOTE: return "NOTE";
-        case SHT_NOBITS: return "NOBITS";
-        case SHT_REL: return "REL";
-        case SHT_SHLIB: return "SHLIB";
-        case SHT_DYNSYM: return "DYNSYM";
-        case SHT_INIT_ARRAY: return "INIT_ARRAY";
-        case SHT_FINI_ARRAY: return "FINI_ARRAY";
-        case SHT_PREINIT_ARRAY: return "PREINIT_ARRAY";
-        case SHT_GROUP: return "GROUP";
-        case SHT_SYMTAB_SHNDX: return "SYMTAB_SHNDX";
-        case 0x70000003: return "ARM_ATTRIBUTES";
-        default:
-            return format("{:#010x}", type);
-    }
-}
-
-// TODO: own file (e.g. elf_strings or elf_string_converted)
 static string section_flags_to_string(Elf_Xword flags)
 {
     struct table_entry
@@ -202,6 +174,7 @@ void input_file::log_program_headers(elfio& reader)
     }
 
     // TODO: if this works out, use table class too
+    // TODO: add also numbering, as for the section headers
     CONSOLE_VERBOSE(m_console) << "Program headers" << std::endl;
     CONSOLE_VERBOSE(m_console) << format(" {:10} {:7} {:10} {:10} {:7} {:7} {:7} {:3}",
         "Type",
@@ -250,7 +223,7 @@ void input_file::log_section_headers(ELFIO::elfio& reader)
         printer.add_row({
             std::to_string(i),
             s.get_name(),
-            section_type_to_string(s.get_type()),
+            elf_strings::get_section_type(s.get_type()),
             elf_strings::to_hex(s.get_address(), 8),
             elf_strings::to_hex(s.get_offset(), 6),
             elf_strings::to_hex(s.get_size(), 6),

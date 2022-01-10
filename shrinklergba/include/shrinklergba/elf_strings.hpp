@@ -38,6 +38,8 @@ std::string to_hex(TValue value, NDigits ndigits)
     return fmt::format("{:#0{}x}", value, ndigits + prefix_width);
 }
 
+std::string get_section_type(ELFIO::Elf_Word type);
+
 }
 
 #endif
