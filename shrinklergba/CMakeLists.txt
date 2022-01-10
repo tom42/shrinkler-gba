@@ -30,8 +30,10 @@ set(
   include/shrinklergba/elfio_wrapper.hpp
   include/shrinklergba/input_file.hpp
   include/shrinklergba/options.hpp
+  include/shrinklergba/table_printer.hpp
   src/command_line.cpp
-  src/input_file.cpp)
+  src/input_file.cpp
+  src/table_printer.cpp)
 
 source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${SOURCES})
 

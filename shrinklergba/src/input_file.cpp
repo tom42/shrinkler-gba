@@ -27,15 +27,10 @@
 #include <stdexcept>
 #include <string>
 #include <system_error>
-#include <algorithm>// TODO: move: this is for table class
-#include <cstddef>  // TODO: move: this is for table class
-#include <iostream> // TODO: move: this is for table class
-#include <string>   // TODO: move: this is for table class
-#include <utility>  // TODO: move: this is for table class
-#include <vector>   // TODO: move: this is for table class
 #include "fmt/core.h"
 #include "shrinklergba/elfio_wrapper.hpp"
 #include "shrinklergba/input_file.hpp"
+#include "shrinklergba/table_printer.hpp"
 
 namespace shrinklergba
 {
@@ -49,67 +44,6 @@ using ELFIO::segment;
 using fmt::format;
 using std::runtime_error;
 using std::string;
-
-// TODO: move to own source file if THIS works out
-class table_printer
-{
-public:
-    void add_row(std::vector<string> row)
-    {
-        for (size_t column = 0; column < row.size(); ++column)
-        {
-            if (column >= column_widths.size())
-            {
-                column_widths.push_back(row[column].size());
-            }
-            else
-            {
-                column_widths[column] = std::max(row[column].size(), column_widths[column]);
-            }
-        }
-
-        rows.push_back(std::move(row));
-    }
-
-    void print(std::ostream& os)
-    {
-        for (const auto& row : rows)
-        {
-            // TODO: indentation before first row?
-
-            for (size_t column = 0; column < row.size(); ++column)
-            {
-                os << row[column];
-                if (column < row.size() - 1)
-                {
-                    pad_column(os, row[column], column_widths[column]);
-                    print_column_separator(os);
-                }
-            }
-
-            os << std::endl;
-        }
-    }
-
-private:
-    static void pad_column(std::ostream& os, const string& column_text, size_t column_width)
-    {
-        const auto npadding_chars = column_width - column_text.size();
-
-        for (size_t j = 0; j < npadding_chars; ++j)
-        {
-            os << ' ';
-        }
-    }
-
-    static void print_column_separator(std::ostream& os)
-    {
-        os << ' ';
-    }
-
-    std::vector<std::vector<std::string>> rows;
-    std::vector<size_t> column_widths;
-};
 
 // TODO: own file (e.g. elf_strings or elf_string_converted)
 static string section_type_to_string(Elf_Word type)
