@@ -47,43 +47,6 @@ using std::runtime_error;
 using std::string;
 
 // TODO: own file (e.g. elf_strings or elf_string_converted)
-static string section_flags_to_string(Elf_Xword flags)
-{
-    struct table_entry
-    {
-        Elf_Xword flag;
-        char character;
-    };
-
-    static const table_entry table[] =
-    {
-        {SHF_WRITE, 'W'},
-        {SHF_ALLOC, 'A'},
-        {SHF_EXECINSTR, 'X'},
-        {SHF_MERGE, 'M'},
-        {SHF_STRINGS, 'S'}
-    };
-
-    string result;
-
-    for (const auto& entry : table)
-    {
-        if (flags & entry.flag)
-        {
-            result += entry.character;
-            flags &= ~entry.flag;
-        }
-    }
-
-    if (flags)
-    {
-        return format("{:#0x}", flags);
-    }
-
-    return result;
-}
-
-// TODO: own file (e.g. elf_strings or elf_string_converted)
 static string segment_type_to_string(Elf_Word type)
 {
     static const std::array table{ "NULL", "LOAD", "DYNAMIC", "INTERP", "NOTE", "SHLIB", "PHDR", "TLS" };
@@ -228,7 +191,7 @@ void input_file::log_section_headers(ELFIO::elfio& reader)
             elf_strings::to_hex(s.get_offset(), 6),
             elf_strings::to_hex(s.get_size(), 6),
             elf_strings::to_hex(s.get_entry_size(), 2),
-            section_flags_to_string(s.get_flags())
+            elf_strings::get_section_flags(s.get_flags())
             // TODO: Flg, Lk, Inf, al
             });
     }

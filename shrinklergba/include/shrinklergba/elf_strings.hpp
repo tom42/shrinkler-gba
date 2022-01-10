@@ -31,6 +31,12 @@
 namespace shrinklergba::elf_strings
 {
 
+template <typename TValue>
+std::string to_hex(TValue value)
+{
+    return fmt::format("{:#0x}", value);
+}
+
 template <typename TValue, typename NDigits>
 std::string to_hex(TValue value, NDigits ndigits)
 {
@@ -39,6 +45,7 @@ std::string to_hex(TValue value, NDigits ndigits)
 }
 
 std::string get_section_type(ELFIO::Elf_Word type);
+std::string get_section_flags(ELFIO::Elf_Xword flags);
 
 }
 
