@@ -140,7 +140,7 @@ void input_file::log_section_headers(ELFIO::elfio& reader)
     }
 
     table_printer printer;
-    printer.add_row({ "Nr", "Name", "Type", "Addr", "Off", "Size", "ES", "Flg", "Lk", "Inf", "Al" });
+    printer.add_row({ "Nr", "Name", "Type", "Addr", "Off", "Size", "ES", "Flg", "Lk", "Inf", "Al", "Inc" });
     for (Elf_Half i = 0; i < nheaders; ++i)
     {
         const auto& s = *reader.sections[i];
@@ -155,8 +155,8 @@ void input_file::log_section_headers(ELFIO::elfio& reader)
             elf_strings::get_section_flags(s.get_flags()),
             elf_strings::to_hex(s.get_link(), 2),
             elf_strings::to_hex(s.get_info(), 3),
-            elf_strings::to_hex(s.get_addr_align(), 2)
-            // TODO: Info whether we keep or discard a section (keep/discard means it goes into bin file or not)
+            elf_strings::to_hex(s.get_addr_align(), 2),
+            "Y" // TODO: Info whether we keep or discard a section (keep/discard means it goes into bin file or not) => Should be "Y/N" for the moment
             });
     }
 
