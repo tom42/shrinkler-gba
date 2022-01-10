@@ -27,6 +27,8 @@
 #include <stdexcept>
 #include <string>
 #include <system_error>
+#include <algorithm>// TODO: move: this is for table class
+#include <cstddef>  // TODO: move: this is for table class
 #include <iostream> // TODO: move: this is for table class
 #include <string>   // TODO: move: this is for table class
 #include <utility>  // TODO: move: this is for table class
@@ -59,11 +61,25 @@ using std::runtime_error;
 using std::string;
 
 // TODO: move to own source file if THIS works out
+// TODO: rename: eg: table_printer
 class table
 {
 public:
     void add_row(std::vector<string> row)
     {
+        // TODO: rename i
+        for (size_t i = 0; i < row.size(); ++i)
+        {
+            if (i >= column_widths.size())
+            {
+                column_widths.push_back(row[i].size());
+            }
+            else
+            {
+                column_widths[i] = std::max(row[i].size(), column_widths[i]);
+            }
+        }
+
         rows.push_back(std::move(row));
     }
 
@@ -71,19 +87,29 @@ public:
     {
         for (const auto& row : rows)
         {
-            for (const auto& column : row)
+            // TODO: indentation before first row?
+
+            for (size_t i = 0; i < row.size(); ++i) // TODO: rename i
             {
-                os << column;
-                // TODO: if not last row
-                //       * Add column spacing/padding
-                //       * Add padding for this particular column
+                os << row[i];
+                if (i < row.size() - 1)
+                {
+                    // TODO: factor out/name
+                    for (int j = 0; j < column_widths[i] - row[i].size(); ++j) // TODO: rename j
+                    {
+                        os << ' ';
+                    }
+                    os << ' ';
+                }
             }
+
             os << std::endl;
         }
     }
 
 private:
     std::vector<std::vector<std::string>> rows;
+    std::vector<size_t> column_widths;
 };
 
 static string segment_type_to_string(Elf_Word type)
