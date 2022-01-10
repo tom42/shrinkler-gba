@@ -112,6 +112,7 @@ private:
     std::vector<size_t> column_widths;
 };
 
+// TODO: own file (e.g. elf_strings or elf_string_converted)
 static string section_type_to_string(Elf_Word type)
 {
     switch (type)
@@ -139,6 +140,7 @@ static string section_type_to_string(Elf_Word type)
     }
 }
 
+// TODO: own file (e.g. elf_strings or elf_string_converted)
 static string segment_type_to_string(Elf_Word type)
 {
     static const std::array table{ "NULL", "LOAD", "DYNAMIC", "INTERP", "NOTE", "SHLIB", "PHDR", "TLS" };
@@ -151,6 +153,7 @@ static string segment_type_to_string(Elf_Word type)
     return format("{:#010x}", type);
 }
 
+// TODO: own file (e.g. elf_strings or elf_string_converted)
 static string segment_flags_to_string(Elf_Word flags)
 {
     static const std::array table{ "", "X", "W", "WX", "R", "RX", "RW", "RWX" };
@@ -273,7 +276,15 @@ void input_file::log_section_headers(ELFIO::elfio& reader)
     for (Elf_Half i = 0; i < nheaders; ++i)
     {
         const auto& s = *reader.sections[i];
-        t.add_row({ std::to_string(i), s.get_name(), section_type_to_string(s.get_type())});
+        t.add_row({
+            std::to_string(i),
+            s.get_name(),
+            section_type_to_string(s.get_type()),
+            format("{:#010x}", s.get_address()),
+            format("{:#08x}", s.get_offset()),
+            format("{:#08x}", s.get_size())
+            // TODO: ES, Flg, Lk, Inf, al
+            });
     }
     t.print(*m_console.verbose());
 
