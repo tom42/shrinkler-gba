@@ -35,17 +35,22 @@ namespace shrinklergba_unittest
 using std::runtime_error;
 using shrinklergba::input_file;
 
-static shrinklergba::console nullconsole()
+static shrinklergba::console create_console(bool verbose)
 {
     shrinklergba::console c;
-    c.verbose(nullptr);
-    c.out(nullptr);
+
+    if (!verbose)
+    {
+        c.verbose(nullptr);
+        c.out(nullptr);
+    }
+
     return c;
 }
 
-static input_file load_elf_file(const std::filesystem::path& filename)
+static input_file load_elf_file(const std::filesystem::path& filename, bool verbose = false)
 {
-    input_file f(nullconsole());
+    input_file f(create_console(verbose));
     f.load(SHRINKLERGBA_UNITTEST_TESTDATA_DIRECTORY / filename);
     return f;
 }
