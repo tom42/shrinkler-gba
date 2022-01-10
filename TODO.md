@@ -1,5 +1,6 @@
 * NEXT:
   * NEED TO REWRITE INPUT FILE => rename the old implementation while doing so, and create a new input_file / input_file_test
+    * When done: go through entire input_file.cpp/hpp, removing methods that are not used anymore
     * objcopy does processing section wise, not segment wise.
     * Need to do that too:
       * Iterate through the section headers

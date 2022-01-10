@@ -21,26 +21,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-// Some quotes from the ELF specifications:
-//
-// Segment type PT_LOAD:
-//
-// "The array element specifies a loadable segment, described by p_filesz and p_memsz.
-// The bytes from the file are mapped to the beginning of the memory segment.
-// If the segment's memory size (p_memsz) is larger than the file size (p_filesz),
-// the ``extra'' bytes are defined to hold the value 0 and to follow the segment's
-// initialized area. The file size may not be larger than the memory size.
-// Loadable segment entries in the program header table appear in ascending order,
-// sorted on the p_vaddr member."
-//
-// p_align field of segment header:
-//
-// "Loadable process segments must have congruent values for p_vaddr and p_offset,
-// modulo the page size. This member gives the value to which the segments are aligned
-// in memory and in the file.
-// Values 0 and 1 mean no alignment is required. Otherwise, p_align should be a positive,
-// integral power of 2, and p_vaddr should equal p_offset, modulo p_align."
-
 #include <array>
 #include <boost/numeric/conversion/cast.hpp>
 #include <fstream>
