@@ -33,19 +33,8 @@
 #include <string>   // TODO: move: this is for table class
 #include <utility>  // TODO: move: this is for table class
 #include <vector>   // TODO: move: this is for table class
-
-#if defined(_MSC_VER)
-#pragma warning(push)
-#pragma warning(disable: 4458)
-#endif
-
-#include "elfio/elfio.hpp"
-
-#if defined(_MSC_VER)
-#pragma warning(pop)
-#endif
-
 #include "fmt/core.h"
+#include "shrinklergba/elfio_wrapper.hpp"
 #include "shrinklergba/input_file.hpp"
 
 namespace shrinklergba

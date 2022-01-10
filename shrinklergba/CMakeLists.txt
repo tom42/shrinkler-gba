@@ -27,6 +27,7 @@ set(
   SOURCES
   include/shrinklergba/command_line.hpp
   include/shrinklergba/console.hpp
+  include/shrinklergba/elfio_wrapper.hpp
   include/shrinklergba/input_file.hpp
   include/shrinklergba/options.hpp
   src/command_line.cpp
