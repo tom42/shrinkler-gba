@@ -1,5 +1,6 @@
 * NEXT:
   * NEED TO REWRITE INPUT FILE => rename the old implementation while doing so, and create a new input_file / input_file_test
+    * Use to_hex where possible?
     * UH: need some sort of pretty printing, otherwise this is going to be painful
       * Try this, then: https://github.com/friedmud/variadic_table
         * Any sort of data type not properly supported we can implement ourselves, just by convering to string ourselves. I suppose.
