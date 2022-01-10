@@ -112,6 +112,33 @@ private:
     std::vector<size_t> column_widths;
 };
 
+static string section_type_to_string(Elf_Word type)
+{
+    switch (type)
+    {
+        case SHT_NULL: return "NULL";
+        case SHT_PROGBITS: return "PROGBITS";
+        case SHT_SYMTAB: return "SYMTAB";
+        case SHT_STRTAB: return "STRTAB";
+        case SHT_RELA: return "RELA";
+        case SHT_HASH: return "HASH";
+        case SHT_DYNAMIC: return "DYNAMIC";
+        case SHT_NOTE: return "NOTE";
+        case SHT_NOBITS: return "NOBITS";
+        case SHT_REL: return "REL";
+        case SHT_SHLIB: return "SHLIB";
+        case SHT_DYNSYM: return "DYNSYM";
+        case SHT_INIT_ARRAY: return "INIT_ARRAY";
+        case SHT_FINI_ARRAY: return "FINI_ARRAY";
+        case SHT_PREINIT_ARRAY: return "PREINIT_ARRAY";
+        case SHT_GROUP: return "GROUP";
+        case SHT_SYMTAB_SHNDX: return "SYMTAB_SHNDX";
+        case 0x70000003: return "ARM_ATTRIBUTES";
+        default:
+            return format("{:#010x}", type);
+    }
+}
+
 static string segment_type_to_string(Elf_Word type)
 {
     static const std::array table{ "NULL", "LOAD", "DYNAMIC", "INTERP", "NOTE", "SHLIB", "PHDR", "TLS" };
@@ -133,6 +160,7 @@ static string segment_flags_to_string(Elf_Word flags)
         return table[flags];
     }
 
+    // TODO: format?
     return format("{:#x}", flags);
 }
 
@@ -245,7 +273,7 @@ void input_file::log_section_headers(ELFIO::elfio& reader)
     for (Elf_Half i = 0; i < nheaders; ++i)
     {
         const auto& s = *reader.sections[i];
-        t.add_row({ std::to_string(i), s.get_name()});
+        t.add_row({ std::to_string(i), s.get_name(), section_type_to_string(s.get_type())});
     }
     t.print(*m_console.verbose());
 
