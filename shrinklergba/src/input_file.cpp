@@ -144,27 +144,31 @@ static string section_type_to_string(Elf_Word type)
 // TODO: own file (e.g. elf_strings or elf_string_converted)
 static string section_flags_to_string(Elf_Xword flags)
 {
+    struct table_entry
+    {
+        Elf_Xword flag;
+        char character;
+    };
+
+    static const table_entry table[] =
+    {
+        {SHF_WRITE, 'W'},
+        {SHF_ALLOC, 'A'},
+        {SHF_EXECINSTR, 'X'},
+        {SHF_MERGE, 'M'},
+        {SHF_STRINGS, 'S'}
+    };
+
     string result;
 
-    if (flags & SHF_WRITE)
+    for (const auto& entry : table)
     {
-        result += 'W';
-        flags &= ~SHF_WRITE;
+        if (flags & entry.flag)
+        {
+            result += entry.character;
+            flags &= ~entry.flag;
+        }
     }
-
-    if (flags & SHF_ALLOC)
-    {
-        result += 'A';
-        flags &= ~SHF_ALLOC;
-    }
-
-    if (flags & SHF_EXECINSTR)
-    {
-        result += 'X';
-        flags &= ~SHF_EXECINSTR;
-    }
-
-    // TODO: add more flags (M, S maybe)
 
     if (flags)
     {
