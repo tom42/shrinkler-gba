@@ -64,6 +64,7 @@ private:
     void load_elf(std::istream& stream);
     void read_entry(ELFIO::elfio& reader);
     void log_program_headers(ELFIO::elfio& reader);
+    void log_section_headers(ELFIO::elfio& reader);
     void convert_to_binary(ELFIO::elfio& reader);
 
     static void open_elf(ELFIO::elfio& reader, std::istream& stream);

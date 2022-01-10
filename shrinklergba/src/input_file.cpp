@@ -118,6 +118,7 @@ void input_file::load_elf(std::istream& stream)
     check_header(reader);
     read_entry(reader);
     log_program_headers(reader);
+    log_section_headers(reader);
     convert_to_binary(reader);
 }
 
@@ -164,6 +165,27 @@ void input_file::log_program_headers(elfio& reader)
             s.get_align(),
             segment_flags_to_string(s.get_flags())) << std::endl;
     }
+}
+
+void input_file::log_section_headers(ELFIO::elfio& reader)
+{
+    if (!m_console.is_verbose_enabled())
+    {
+        return;
+    }
+
+    Elf_Half nheaders = reader.sections.size();
+    if (nheaders == 0)
+    {
+        CONSOLE_VERBOSE(m_console) << "File has no section headers" << std::endl;
+        return;
+    }
+
+    CONSOLE_VERBOSE(m_console) << "Section headers" << std::endl;
+
+    // TODO: implement
+    //       * Determine width of columns for pretty printing
+    //       * Output all sections, including information on whether we keep or discard them
 }
 
 void input_file::convert_to_binary(elfio& reader)

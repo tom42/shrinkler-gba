@@ -84,7 +84,7 @@ BOOST_AUTO_TEST_SUITE(input_file_test)
 
     BOOST_AUTO_TEST_CASE(load)
     {
-        auto input_file = load_elf_file("lostmarbles.elf");
+        auto input_file = load_elf_file("lostmarbles.elf", true);
 
         BOOST_TEST(input_file.entry() == 0x03000000u);
         BOOST_TEST(input_file.is_thumb_entry() == false);
