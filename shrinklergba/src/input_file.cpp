@@ -55,6 +55,7 @@ using ELFIO::elfio;
 using ELFIO::Elf64_Addr;
 using ELFIO::Elf_Half;
 using ELFIO::Elf_Word;
+using ELFIO::Elf_Xword;
 using ELFIO::segment;
 using fmt::format;
 using std::runtime_error;
@@ -138,6 +139,39 @@ static string section_type_to_string(Elf_Word type)
         default:
             return format("{:#010x}", type);
     }
+}
+
+// TODO: own file (e.g. elf_strings or elf_string_converted)
+static string section_flags_to_string(Elf_Xword flags)
+{
+    string result;
+
+    if (flags & SHF_WRITE)
+    {
+        result += 'W';
+        flags &= ~SHF_WRITE;
+    }
+
+    if (flags & SHF_ALLOC)
+    {
+        result += 'A';
+        flags &= ~SHF_ALLOC;
+    }
+
+    if (flags & SHF_EXECINSTR)
+    {
+        result += 'X';
+        flags &= ~SHF_EXECINSTR;
+    }
+
+    // TODO: add more flags (M, S maybe)
+
+    if (flags)
+    {
+        return format("{:#0x}", flags);
+    }
+
+    return result;
 }
 
 // TODO: own file (e.g. elf_strings or elf_string_converted)
@@ -290,7 +324,8 @@ void input_file::log_section_headers(ELFIO::elfio& reader)
             to_hex(s.get_address(), 8),
             to_hex(s.get_offset(), 6),
             to_hex(s.get_size(), 6),
-            to_hex(s.get_entry_size(), 2)
+            to_hex(s.get_entry_size(), 2),
+            section_flags_to_string(s.get_flags())
             // TODO: Flg, Lk, Inf, al
             });
     }
