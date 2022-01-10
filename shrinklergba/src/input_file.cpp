@@ -47,19 +47,6 @@ using std::runtime_error;
 using std::string;
 
 // TODO: own file (e.g. elf_strings or elf_string_converted)
-static string segment_type_to_string(Elf_Word type)
-{
-    static const std::array table{ "NULL", "LOAD", "DYNAMIC", "INTERP", "NOTE", "SHLIB", "PHDR", "TLS" };
-
-    if (type < table.size())
-    {
-        return table[type];
-    }
-
-    return format("{:#010x}", type);
-}
-
-// TODO: own file (e.g. elf_strings or elf_string_converted)
 static string segment_flags_to_string(Elf_Word flags)
 {
     static const std::array table{ "", "X", "W", "WX", "R", "RX", "RW", "RWX" };
@@ -153,7 +140,7 @@ void input_file::log_program_headers(elfio& reader)
     {
         const auto& s = *reader.segments[i];
         CONSOLE_VERBOSE(m_console) << format(" {:10} {:#07x} {:#010x} {:#010x} {:#07x} {:#07x} {:#07x} {}",
-            segment_type_to_string(s.get_type()),
+            elf_strings::get_segment_type(s.get_type()),
             s.get_offset(),
             s.get_virtual_address(),
             s.get_physical_address(),

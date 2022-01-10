@@ -21,6 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include <array>
 #include "shrinklergba/elf_strings.hpp"
 
 namespace shrinklergba::elf_strings
@@ -87,6 +88,18 @@ std::string get_section_flags(ELFIO::Elf_Xword flags)
     }
 
     return result;
+}
+
+std::string elf_strings::get_segment_type(ELFIO::Elf_Word type)
+{
+    static const std::array table{ "NULL", "LOAD", "DYNAMIC", "INTERP", "NOTE", "SHLIB", "PHDR", "TLS" };
+
+    if (type < table.size())
+    {
+        return table[type];
+    }
+
+    return to_hex(type, 8);
 }
 
 }
