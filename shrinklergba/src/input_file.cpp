@@ -157,6 +157,11 @@ void input_file::log_section_headers(ELFIO::elfio& reader)
             elf_strings::to_hex(s.get_info(), 3),
             elf_strings::to_hex(s.get_addr_align(), 2),
             "Y" // TODO: Info whether we keep or discard a section (keep/discard means it goes into bin file or not) => Should be "Y/N" for the moment
+                //       Go through elf docs:
+                //       * Type NULL is excluded
+                //       * Address 0 is exluced
+                //       * NOBITS? What else?
+                //       * ...
             });
     }
 
