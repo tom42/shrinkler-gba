@@ -183,10 +183,8 @@ bool input_file::include_section(const ELFIO::section& s)
     // TODO: go through each of these fields and see whether it can/should/must be used for filtering out of unneeded sections
 typedef struct {
         Elf32_Word      sh_name;
-        Elf32_Word      sh_type;
-        Elf32_Word      sh_flags;
-        Elf32_Addr      sh_addr;
-        Elf32_Off       sh_offset;
+        Elf32_Word      sh_flags;       =>  Is there something important with the alloc bit? Can we throw out sections that do not have it set?
+        Elf32_Off       sh_offset;      =>  Might have to special handle this along with NOBITS
         Elf32_Word      sh_size;
         Elf32_Word      sh_link;
         Elf32_Word      sh_info;
@@ -197,7 +195,25 @@ typedef struct {
 
     if (s.get_type() == SHT_NULL)
     {
+        // * SHT_NULL should be ignored: https://stackoverflow.com/questions/26812142/what-is-the-use-of-the-sht-null-section-in-elf
+        //   Quote from the ELF specifications:
+        //     "This value marks the section header as inactive; it does not have an associated section.
+        //     Other members of the section header have undefined values."
+        //  The latter bit means that we must not look at any other fields of a section header of type SHT_NULL.
+
         // TODO: are there any other section types that do not need processing at all? => Go through list of section types defined by ELFIO and ARM elf specs
+        // TODO: possibly need to filter out NOBITS sections, since, according to ELF specs, NOBITS section to not occupy space inside ELF files
+        return false;
+    }
+
+    // TODO: check sh_flags before sh_addr?
+
+    if (s.get_address() == 0)
+    {
+        // ELF specifications:
+        //   "If the section will appear in the memory image of a process, this member
+        //   gives the address at which the section's first byte should reside. Otherwise,
+        //   the member contains 0."
         return false;
     }
 
