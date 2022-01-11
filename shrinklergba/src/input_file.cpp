@@ -206,6 +206,9 @@ void input_file::convert_to_binary(elfio& reader)
             }
 
             // TODO: make padding byte value configurable? Compressed size? Otoh, 0xff might be more healthy for flash devices?
+            //       * Careful: ELF might require that it is 0x00.
+            //       * The argument regarding flash devices is moot: we're going to compress that data afterwards, so it won't
+            //         be 0xff anymore.
             // TODO: final size checks(?)
             //       * Should we check whether there are any bytes at all?
             //       * Should we check for a maximum size?
