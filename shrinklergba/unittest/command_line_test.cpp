@@ -52,6 +52,7 @@ public:
         if (strlen(command_line))
         {
             vector<string> strings;
+            // TODO: does bot build with Cygwin gcc (GCC) 11.2.0. Check with gcc/clang.
             boost::split(strings, command_line, boost::is_any_of(" "));
             for (const auto& s : strings)
             {
