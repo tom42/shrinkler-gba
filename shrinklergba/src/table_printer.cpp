@@ -29,35 +29,45 @@
 namespace shrinklergba
 {
 
+template <typename NChars>
+static void print_nchars(std::ostream& os, char c, NChars n)
+{
+    while (n--)
+    {
+        os << c;
+    }
+}
+
 void table_printer::add_row(std::vector<std::string> row)
 {
     for (size_t column = 0; column < row.size(); ++column)
     {
-        if (column >= column_widths.size())
+        if (column >= m_column_widths.size())
         {
-            column_widths.push_back(row[column].size());
+            m_column_widths.push_back(row[column].size());
         }
         else
         {
-            column_widths[column] = std::max(row[column].size(), column_widths[column]);
+            m_column_widths[column] = std::max(row[column].size(), m_column_widths[column]);
         }
     }
 
-    rows.push_back(std::move(row));
+    m_rows.push_back(std::move(row));
 }
 
 void table_printer::print(std::ostream& os)
 {
-    for (const auto& row : rows)
+    for (const auto& row : m_rows)
     {
         // TODO: indentation before first row?
+        indent_table(os);
 
         for (size_t column = 0; column < row.size(); ++column)
         {
             os << row[column];
             if (column < row.size() - 1)
             {
-                pad_column(os, row[column], column_widths[column]);
+                pad_column(os, row[column], m_column_widths[column]);
                 print_column_separator(os);
             }
         }
@@ -66,14 +76,15 @@ void table_printer::print(std::ostream& os)
     }
 }
 
+void table_printer::indent_table(std::ostream& os)
+{
+    print_nchars(os, ' ', table_indent());
+}
+
 void table_printer::pad_column(std::ostream& os, const std::string& column_text, size_t column_width)
 {
     const auto npadding_chars = column_width - column_text.size();
-
-    for (size_t j = 0; j < npadding_chars; ++j)
-    {
-        os << ' ';
-    }
+    print_nchars(os, ' ', npadding_chars);
 }
 
 void table_printer::print_column_separator(std::ostream& os)
