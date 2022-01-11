@@ -171,7 +171,7 @@ void input_file::log_section_headers(ELFIO::elfio& reader)
     printer.print(*m_console.verbose());
 }
 
-bool input_file::include_section(const ELFIO::section& /*s*/)
+bool input_file::include_section(const ELFIO::section& s)
 {
     // TODO: Info whether we keep or discard a section (keep/discard means it goes into bin file or not) => Should be "Y/N" for the moment
     //       Go through elf docs:
@@ -179,6 +179,28 @@ bool input_file::include_section(const ELFIO::section& /*s*/)
     //       * Address 0 is exluced
     //       * NOBITS? What else?
     //       * ...
+    /*
+    // TODO: go through each of these fields and see whether it can/should/must be used for filtering out of unneeded sections
+typedef struct {
+        Elf32_Word      sh_name;
+        Elf32_Word      sh_type;
+        Elf32_Word      sh_flags;
+        Elf32_Addr      sh_addr;
+        Elf32_Off       sh_offset;
+        Elf32_Word      sh_size;
+        Elf32_Word      sh_link;
+        Elf32_Word      sh_info;
+        Elf32_Word      sh_addralign;
+        Elf32_Word      sh_entsize;
+} Elf32_Shdr;
+    */
+
+    if (s.get_type() == SHT_NULL)
+    {
+        // TODO: are there any other section types that do not need processing at all? => Go through list of section types defined by ELFIO and ARM elf specs
+        return false;
+    }
+
     return true;
 }
 
