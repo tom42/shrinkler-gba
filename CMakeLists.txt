@@ -46,7 +46,7 @@ include(CheckFunctionExists)
 # We'll compile the unit test framework ourselves as part of the unit tests.
 # This simplifies cross development, since we only
 # need Boost headers on build machines.
-find_package(Boost 1.74 REQUIRED)
+find_package(Boost 1.78 REQUIRED)
 
 check_function_exists(argp_parse HAVE_ARGP)
 
