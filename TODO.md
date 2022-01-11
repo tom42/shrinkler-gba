@@ -6,6 +6,8 @@
         * My sample ELF file
         * Objcopy documentation, where it says that the dump starts with the lowest section.
           * I believe they really mean section and not segment.
+      * Some people claim looking at the alloc flag is enough, but I think it is not,
+        since NOBIT sections can have alloc set too. But they are not part of the raw binary image.
   * Verification
     * Either when reading the ELF or writing the raw binary, should we check that sh_addralign/sh_addr match?
   * NEED TO REWRITE INPUT FILE => rename the old implementation while doing so, and create a new input_file / input_file_test
