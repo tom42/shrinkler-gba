@@ -187,8 +187,6 @@ typedef struct {
         Elf32_Word      sh_size;
         Elf32_Word      sh_link;
         Elf32_Word      sh_info;
-        Elf32_Word      sh_addralign;
-        Elf32_Word      sh_entsize;
 } Elf32_Shdr;
     */
 
