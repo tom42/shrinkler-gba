@@ -1,6 +1,11 @@
 * NEXT:
   * https://stackoverflow.com/questions/57103912/how-does-objcopy-compute-what-sections-for-the-elf-file-to-insert-into-the-outpu
     * Maybe write a semi-helpful answer here?
+      * Naive implementation: just use PT_LOAD segments
+      * However, that's not what objcopy appears to do
+        * My sample ELF file
+        * Objcopy documentation, where it says that the dump starts with the lowest section.
+          * I believe they really mean section and not segment.
   * NEED TO REWRITE INPUT FILE => rename the old implementation while doing so, and create a new input_file / input_file_test
     * Dump section headers. Sample output from readelf:
         Section Headers:
