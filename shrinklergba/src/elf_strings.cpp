@@ -90,7 +90,7 @@ std::string get_section_flags(ELFIO::Elf_Xword flags)
     return result;
 }
 
-std::string elf_strings::get_segment_type(ELFIO::Elf_Word type)
+std::string get_segment_type(ELFIO::Elf_Word type)
 {
     static const std::array table{ "NULL", "LOAD", "DYNAMIC", "INTERP", "NOTE", "SHLIB", "PHDR", "TLS" };
 
@@ -102,7 +102,7 @@ std::string elf_strings::get_segment_type(ELFIO::Elf_Word type)
     return to_hex(type, 8);
 }
 
-std::string elf_strings::get_segment_flags(ELFIO::Elf_Word flags)
+std::string get_segment_flags(ELFIO::Elf_Word flags)
 {
     static const std::array table{ "", "X", "W", "WX", "R", "RX", "RW", "RWX" };
 
