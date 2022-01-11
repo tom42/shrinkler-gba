@@ -41,6 +41,13 @@ using ELFIO::segment;
 using fmt::format;
 using std::runtime_error;
 
+static table_printer create_table_printer()
+{
+    table_printer p;
+    p.table_indent(2);
+    return p;
+}
+
 void input_file::load(const std::filesystem::path& path)
 {
     try
@@ -104,7 +111,7 @@ void input_file::log_program_headers(elfio& reader)
         return;
     }
 
-    table_printer printer;
+    auto printer = create_table_printer();
     printer.add_row({ "Nr", "Type", "Offset", "VirtAddr", "PhysAddr", "FileSiz", "MemSiz", "Align", "Flg" });
     for (Elf_Half i = 0; i < nheaders; ++i)
     {
@@ -139,7 +146,7 @@ void input_file::log_section_headers(ELFIO::elfio& reader)
         return;
     }
 
-    table_printer printer;
+    auto printer = create_table_printer();
     printer.add_row({ "Nr", "Name", "Type", "Addr", "Off", "Size", "ES", "Flg", "Lk", "Inf", "Al", "Inc" });
     for (Elf_Half i = 0; i < nheaders; ++i)
     {

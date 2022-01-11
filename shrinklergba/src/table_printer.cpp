@@ -59,7 +59,6 @@ void table_printer::print(std::ostream& os)
 {
     for (const auto& row : m_rows)
     {
-        // TODO: indentation before first row?
         indent_table(os);
 
         for (size_t column = 0; column < row.size(); ++column)
