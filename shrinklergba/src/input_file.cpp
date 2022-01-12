@@ -175,8 +175,6 @@ bool input_file::include_section(const ELFIO::section& s)
 {
     // TODO: Info whether we keep or discard a section (keep/discard means it goes into bin file or not) => Should be "Y/N" for the moment
     //       Go through elf docs:
-    //       * Type NULL is excluded
-    //       * Address 0 is exluced
     //       * NOBITS? What else?
     //       * ...
     /*
@@ -185,8 +183,6 @@ typedef struct {
         Elf32_Word      sh_flags;       =>  Is there something important with the alloc bit? Can we throw out sections that do not have it set?
         Elf32_Off       sh_offset;      =>  Might have to special handle this along with NOBITS
         Elf32_Word      sh_size;
-        Elf32_Word      sh_link;
-        Elf32_Word      sh_info;
 } Elf32_Shdr;
     */
 
