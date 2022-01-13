@@ -163,7 +163,7 @@ void input_file::log_section_headers(ELFIO::elfio& reader)
             elf_strings::to_hex(s.get_link(), 2),
             elf_strings::to_hex(s.get_info(), 3),
             elf_strings::to_hex(s.get_addr_align(), 2),
-            include_section(s) ? "Y" : "N"
+            is_section_included(s) ? "Y" : "N"
             });
     }
 
@@ -171,7 +171,7 @@ void input_file::log_section_headers(ELFIO::elfio& reader)
     printer.print(*m_console.verbose());
 }
 
-bool input_file::include_section(const ELFIO::section& s)
+bool input_file::is_section_included(const ELFIO::section& s)
 {
     // TODO: Info whether we keep or discard a section (keep/discard means it goes into bin file or not) => Should be "Y/N" for the moment
     //       Go through elf docs:
