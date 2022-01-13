@@ -186,16 +186,9 @@ typedef struct {
 } Elf32_Shdr;
     */
 
-    if (s.get_type() == SHT_NULL)
+    if ((s.get_type() == SHT_NULL) || (s.get_type() == SHT_NOBITS))
     {
-        // * SHT_NULL should be ignored: https://stackoverflow.com/questions/26812142/what-is-the-use-of-the-sht-null-section-in-elf
-        //   Quote from the ELF specifications:
-        //     "This value marks the section header as inactive; it does not have an associated section.
-        //     Other members of the section header have undefined values."
-        //  The latter bit means that we must not look at any other fields of a section header of type SHT_NULL.
-
         // TODO: are there any other section types that do not need processing at all? => Go through list of section types defined by ELFIO and ARM elf specs
-        // TODO: possibly need to filter out NOBITS sections, since, according to ELF specs, NOBITS section to not occupy space inside ELF files
         return false;
     }
 
