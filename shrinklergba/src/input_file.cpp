@@ -173,15 +173,10 @@ void input_file::log_section_headers(ELFIO::elfio& reader)
 
 bool input_file::is_section_included(const ELFIO::section& s)
 {
-    // TODO: Info whether we keep or discard a section (keep/discard means it goes into bin file or not) => Should be "Y/N" for the moment
-    //       Go through elf docs:
-    //       * NOBITS? What else?
-    //       * ...
     /*
     // TODO: go through each of these fields and see whether it can/should/must be used for filtering out of unneeded sections
 typedef struct {
         Elf32_Word      sh_flags;       =>  Is there something important with the alloc bit? Can we throw out sections that do not have it set?
-        Elf32_Off       sh_offset;      =>  Might have to special handle this along with NOBITS
         Elf32_Word      sh_size;
 } Elf32_Shdr;
     */
