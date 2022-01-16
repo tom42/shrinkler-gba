@@ -177,7 +177,6 @@ bool input_file::is_section_included(const ELFIO::section& s)
     // TODO: go through each of these fields and see whether it can/should/must be used for filtering out of unneeded sections
 typedef struct {
         Elf32_Word      sh_flags;       =>  Is there something important with the alloc bit? Can we throw out sections that do not have it set?
-        Elf32_Word      sh_size;
 } Elf32_Shdr;
     */
 
