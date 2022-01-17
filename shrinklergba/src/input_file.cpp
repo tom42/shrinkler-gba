@@ -91,6 +91,8 @@ void input_file::load_elf(std::istream& stream)
     log_program_headers(reader);
     log_section_headers(reader);
     convert_to_binary(reader);
+
+    // TODO: what do we do if the resulting raw binary is 0 bytes big (or too small in general?)
 }
 
 void input_file::read_entry(elfio& reader)
@@ -191,15 +193,13 @@ void input_file::convert_to_binary(ELFIO::elfio& reader)
         }
         else
         {
-            // TODO: first time we write data to file:
-            //       * Record load address
-            //       * Record output address
+            // No bytes written to output yet.
+            // Record initial output address and load address.
             output_address = s->get_address();
             m_load_address = output_address;
         }
 
-        // TODO: copy section data to output, move output address
-        // TODO: verify this is correct
+        // Copy section data to output.
         m_data.insert(m_data.end(), s->get_data(), s->get_data() + s->get_size());
         output_address += s->get_size();
     }
