@@ -344,15 +344,14 @@ bool input_file::is_section_included(const ELFIO::section& s)
 
 std::vector<const ELFIO::section*> input_file::get_included_sections(ELFIO::elfio& reader)
 {
-    const Elf_Half nsections = reader.sections.size();
     std::vector<const ELFIO::section*> included_sections;
 
-    // TODO: do we even need to write such a loop, or is the thing a range?
-    for (Elf_Half i = 0; i < nsections; ++i)
+    // TODO: is there some sort of STL algorithm we can use?
+    for (const ELFIO::section* s : reader.sections)
     {
-        if (is_section_included(*reader.sections[i]))
+        if (is_section_included(*s))
         {
-            included_sections.push_back(reader.sections[i]);
+            included_sections.push_back(s);
         }
     }
 
