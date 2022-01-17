@@ -171,31 +171,6 @@ void input_file::log_section_headers(ELFIO::elfio& reader) const
     printer.print(*m_console.verbose());
 }
 
-bool input_file::is_section_included(const ELFIO::section& s) const
-{
-    if ((s.get_type() == SHT_NULL) || (s.get_type() == SHT_NOBITS))
-    {
-        return false;
-    }
-
-    if (s.get_address() == 0)
-    {
-        return false;
-    }
-
-    if (s.get_size() == 0)
-    {
-        return false;
-    }
-
-    if (!(s.get_flags() & SHF_ALLOC))
-    {
-        return false;
-    }
-
-    return true;
-}
-
 void input_file::convert_to_binary(ELFIO::elfio& reader)
 {
     // TODO: move to own function
@@ -349,6 +324,31 @@ void input_file::check_object_file_version(elfio& reader)
     {
         throw runtime_error(format("unknown object file version {}. Expected {}", e_version, expected_object_file_version));
     }
+}
+
+bool input_file::is_section_included(const ELFIO::section& s)
+{
+    if ((s.get_type() == SHT_NULL) || (s.get_type() == SHT_NOBITS))
+    {
+        return false;
+    }
+
+    if (s.get_address() == 0)
+    {
+        return false;
+    }
+
+    if (s.get_size() == 0)
+    {
+        return false;
+    }
+
+    if (!(s.get_flags() & SHF_ALLOC))
+    {
+        return false;
+    }
+
+    return true;
 }
 
 std::vector<const ELFIO::section*> input_file::get_included_sections(ELFIO::elfio& /*reader*/)
