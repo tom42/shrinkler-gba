@@ -177,18 +177,35 @@ void input_file::convert_to_binary(ELFIO::elfio& reader)
     std::vector<const ELFIO::section*> included_sections = get_included_sections(reader);
     sort_sections_by_address(included_sections);
 
-    // TODO: test code, remove
+    Elf64_Addr output_address = 0;
+
     for (const ELFIO::section* s : included_sections)
     {
-        std::cout << format("{:10} {:#010x}", s->get_name(), s->get_address()) << std::endl;
-    }
+        // TODO: possible sanity checks (e.g. sections must not overlap. can't think of much else, though)
 
-    // TODO: implement
-    //       * Output them, including sanity checks:
-    //         * The only sanity check that comes to mind is if sections overlap
-    throw std::runtime_error("YIKES");
+        if (m_data.size())
+        {
+            // TODO: not the first time we write data to file:
+            //       * Move to start of segment in output. Fill up with padding bytes (which must be 0, I think)
+            // TODO: we pass all the tests without having this branch implemented. This is bad. Maybe we can construct an ELF file that needs this branch?
+        }
+        else
+        {
+            // TODO: first time we write data to file:
+            //       * Record load address
+            //       * Record output address
+            output_address = s->get_address();
+            m_load_address = output_address;
+        }
+
+        // TODO: copy section data to output, move output address
+        // TODO: verify this is correct
+        m_data.insert(m_data.end(), s->get_data(), s->get_data() + s->get_size());
+        output_address += s->get_size();
+    }
 }
 
+// TODO: delete (and code only required by this method)
 void input_file::convert_to_binary_old(elfio& reader)
 {
     // TODO: Do we initially check whether there are any program headers?

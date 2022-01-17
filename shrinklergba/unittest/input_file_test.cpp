@@ -98,7 +98,7 @@ BOOST_AUTO_TEST_SUITE(input_file_test)
 
         BOOST_TEST(testee.entry() == 0x8001u);
         BOOST_TEST(testee.is_thumb_entry() == true);
-        BOOST_TEST(testee.load_address() == 0u);
+        BOOST_TEST(testee.load_address() == 0x8000u);
         BOOST_TEST(testee.data() == load_binary_file("thumb_entry.bin"), boost::test_tools::per_element());
     }
 
