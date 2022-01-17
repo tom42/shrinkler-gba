@@ -173,19 +173,10 @@ void input_file::log_section_headers(ELFIO::elfio& reader) const
 
 void input_file::convert_to_binary(ELFIO::elfio& reader)
 {
-    // TODO: move to own function
-    const Elf_Half nsections = reader.sections.size();
-    std::vector<ELFIO::section*> included_sections;
-    for (Elf_Half i = 0; i < nsections; ++i)
-    {
-        if (is_section_included(*reader.sections[i]))
-        {
-            included_sections.push_back(reader.sections[i]);
-        }
-    }
+    auto included_sections = get_included_sections(reader);
 
     // TODO: test code, remove
-    for (ELFIO::section* s : included_sections)
+    for (const ELFIO::section* s : included_sections)
     {
         std::cout << format("{:10} {:#010x}", s->get_name(), s->get_address()) << std::endl;
     }
@@ -351,10 +342,21 @@ bool input_file::is_section_included(const ELFIO::section& s)
     return true;
 }
 
-std::vector<const ELFIO::section*> input_file::get_included_sections(ELFIO::elfio& /*reader*/)
+std::vector<const ELFIO::section*> input_file::get_included_sections(ELFIO::elfio& reader)
 {
-    // TODO: implement
-    throw std::runtime_error("YIKES");
+    const Elf_Half nsections = reader.sections.size();
+    std::vector<const ELFIO::section*> included_sections;
+
+    // TODO: do we even need to write such a loop, or is the thing a range?
+    for (Elf_Half i = 0; i < nsections; ++i)
+    {
+        if (is_section_included(*reader.sections[i]))
+        {
+            included_sections.push_back(reader.sections[i]);
+        }
+    }
+
+    return included_sections;
 }
 
 void input_file::verify_load_segment(segment* last, segment* current)
