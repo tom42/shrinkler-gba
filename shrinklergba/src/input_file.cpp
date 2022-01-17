@@ -182,7 +182,6 @@ typedef struct {
 
     if ((s.get_type() == SHT_NULL) || (s.get_type() == SHT_NOBITS))
     {
-        // TODO: are there any other section types that do not need processing at all? => Go through list of section types defined by ELFIO and ARM elf specs
         return false;
     }
 
