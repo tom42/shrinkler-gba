@@ -174,7 +174,8 @@ void input_file::log_section_headers(ELFIO::elfio& reader) const
 
 void input_file::convert_to_binary(ELFIO::elfio& reader)
 {
-    auto included_sections = get_included_sections(reader);
+    std::vector<const ELFIO::section*> included_sections = get_included_sections(reader);
+    sort_sections_by_address(included_sections);
 
     // TODO: test code, remove
     for (const ELFIO::section* s : included_sections)
@@ -183,7 +184,6 @@ void input_file::convert_to_binary(ELFIO::elfio& reader)
     }
 
     // TODO: implement
-    //       * Order them by address
     //       * Output them, including sanity checks:
     //         * The only sanity check that comes to mind is if sections overlap
     throw std::runtime_error("YIKES");
@@ -351,6 +351,14 @@ std::vector<const ELFIO::section*> input_file::get_included_sections(ELFIO::elfi
         std::back_inserter(included_sections),
         is_section_included);
     return included_sections;
+}
+
+void input_file::sort_sections_by_address(std::vector<const ELFIO::section*>& sections)
+{
+    std::sort(
+        sections.begin(),
+        sections.end(),
+        [](const ELFIO::section* lhs, const ELFIO::section* rhs) { return lhs->get_address() < rhs->get_address(); });
 }
 
 void input_file::verify_load_segment(segment* last, segment* current)
