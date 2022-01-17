@@ -183,7 +183,10 @@ bool input_file::is_section_included(const ELFIO::section& s)
         return false;
     }
 
-    // TODO: also filter out sections with size 0?
+    if (s.get_size() == 0)
+    {
+        return false;
+    }
 
     if (!(s.get_flags() & SHF_ALLOC))
     {
