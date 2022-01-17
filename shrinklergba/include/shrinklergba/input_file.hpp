@@ -68,6 +68,7 @@ private:
     void log_section_headers(ELFIO::elfio& reader);
     bool is_section_included(const ELFIO::section& s);
     void convert_to_binary(ELFIO::elfio& reader);
+    void convert_to_binary_old(ELFIO::elfio& reader);
 
     static void open_elf(ELFIO::elfio& reader, std::istream& stream);
     static void check_header(ELFIO::elfio& reader);

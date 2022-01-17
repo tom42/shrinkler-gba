@@ -196,7 +196,34 @@ bool input_file::is_section_included(const ELFIO::section& s)
     return true;
 }
 
-void input_file::convert_to_binary(elfio& reader)
+void input_file::convert_to_binary(ELFIO::elfio& reader)
+{
+    // TODO: move to own function
+    const Elf_Half nsections = reader.sections.size();
+    std::vector<ELFIO::section*> included_sections;
+    for (Elf_Half i = 0; i < nsections; ++i)
+    {
+        if (is_section_included(*reader.sections[i]))
+        {
+            included_sections.push_back(reader.sections[i]);
+        }
+    }
+
+    // TODO: test code, remove
+    for (ELFIO::section* s : included_sections)
+    {
+        std::cout << format("{}", s->get_name()) << std::endl;
+    }
+
+    // TODO: implement
+    //       * Get sections
+    //       * Order them by address
+    //       * Output them, including sanity checks:
+    //         * The only sanity check that comes to mind is if sections overlap
+    throw std::runtime_error("YIKES");
+}
+
+void input_file::convert_to_binary_old(elfio& reader)
 {
     // TODO: Do we initially check whether there are any program headers?
     //       Or do we simply do all the processing and fail if there is no data left?
