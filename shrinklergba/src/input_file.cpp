@@ -173,26 +173,20 @@ void input_file::log_section_headers(ELFIO::elfio& reader)
 
 bool input_file::is_section_included(const ELFIO::section& s)
 {
-    /*
-    // TODO: go through each of these fields and see whether it can/should/must be used for filtering out of unneeded sections
-typedef struct {
-        Elf32_Word      sh_flags;       =>  Is there something important with the alloc bit? Can we throw out sections that do not have it set?
-} Elf32_Shdr;
-    */
-
     if ((s.get_type() == SHT_NULL) || (s.get_type() == SHT_NOBITS))
     {
         return false;
     }
 
-    // TODO: check sh_flags before sh_addr?
-
     if (s.get_address() == 0)
     {
-        // ELF specifications:
-        //   "If the section will appear in the memory image of a process, this member
-        //   gives the address at which the section's first byte should reside. Otherwise,
-        //   the member contains 0."
+        return false;
+    }
+
+    // TODO: also filter out sections with size 0?
+
+    if (!(s.get_flags() & SHF_ALLOC))
+    {
         return false;
     }
 
