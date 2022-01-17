@@ -77,7 +77,7 @@ private:
     static void check_abi_version(ELFIO::elfio& reader);
     static void check_object_file_version(ELFIO::elfio& reader);
 
-    static bool is_section_included(const ELFIO::section& s);
+    static bool is_section_included(const ELFIO::section* s);
     static std::vector<const ELFIO::section*> get_included_sections(ELFIO::elfio& reader);
     static void verify_load_segment(ELFIO::segment* last, ELFIO::segment* current);
     static void throw_if_invalid_load_segment(ELFIO::segment* seg);

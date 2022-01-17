@@ -21,6 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include <algorithm>
 #include <boost/numeric/conversion/cast.hpp>
 #include <fstream>
 #include <stdexcept>
@@ -150,19 +151,19 @@ void input_file::log_section_headers(ELFIO::elfio& reader) const
     printer.add_row({ "Nr", "Name", "Type", "Addr", "Off", "Size", "ES", "Flg", "Lk", "Inf", "Al", "Inc" });
     for (Elf_Half i = 0; i < nheaders; ++i)
     {
-        const auto& s = *reader.sections[i];
+        const ELFIO::section* s = reader.sections[i];
         printer.add_row({
             std::to_string(i),
-            s.get_name(),
-            elf_strings::get_section_type(s.get_type()),
-            elf_strings::to_hex(s.get_address(), 8),
-            elf_strings::to_hex(s.get_offset(), 6),
-            elf_strings::to_hex(s.get_size(), 6),
-            elf_strings::to_hex(s.get_entry_size(), 2),
-            elf_strings::get_section_flags(s.get_flags()),
-            elf_strings::to_hex(s.get_link(), 2),
-            elf_strings::to_hex(s.get_info(), 3),
-            elf_strings::to_hex(s.get_addr_align(), 2),
+            s->get_name(),
+            elf_strings::get_section_type(s->get_type()),
+            elf_strings::to_hex(s->get_address(), 8),
+            elf_strings::to_hex(s->get_offset(), 6),
+            elf_strings::to_hex(s->get_size(), 6),
+            elf_strings::to_hex(s->get_entry_size(), 2),
+            elf_strings::get_section_flags(s->get_flags()),
+            elf_strings::to_hex(s->get_link(), 2),
+            elf_strings::to_hex(s->get_info(), 3),
+            elf_strings::to_hex(s->get_addr_align(), 2),
             is_section_included(s) ? "Y" : "N"
             });
     }
@@ -182,7 +183,6 @@ void input_file::convert_to_binary(ELFIO::elfio& reader)
     }
 
     // TODO: implement
-    //       * Get sections
     //       * Order them by address
     //       * Output them, including sanity checks:
     //         * The only sanity check that comes to mind is if sections overlap
@@ -317,24 +317,24 @@ void input_file::check_object_file_version(elfio& reader)
     }
 }
 
-bool input_file::is_section_included(const ELFIO::section& s)
+bool input_file::is_section_included(const ELFIO::section* s)
 {
-    if ((s.get_type() == SHT_NULL) || (s.get_type() == SHT_NOBITS))
+    if ((s->get_type() == SHT_NULL) || (s->get_type() == SHT_NOBITS))
     {
         return false;
     }
 
-    if (s.get_address() == 0)
+    if (s->get_address() == 0)
     {
         return false;
     }
 
-    if (s.get_size() == 0)
+    if (s->get_size() == 0)
     {
         return false;
     }
 
-    if (!(s.get_flags() & SHF_ALLOC))
+    if (!(s->get_flags() & SHF_ALLOC))
     {
         return false;
     }
@@ -345,16 +345,11 @@ bool input_file::is_section_included(const ELFIO::section& s)
 std::vector<const ELFIO::section*> input_file::get_included_sections(ELFIO::elfio& reader)
 {
     std::vector<const ELFIO::section*> included_sections;
-
-    // TODO: is there some sort of STL algorithm we can use?
-    for (const ELFIO::section* s : reader.sections)
-    {
-        if (is_section_included(*s))
-        {
-            included_sections.push_back(s);
-        }
-    }
-
+    std::copy_if(
+        reader.sections.begin(),
+        reader.sections.end(),
+        std::back_inserter(included_sections),
+        is_section_included);
     return included_sections;
 }
 
