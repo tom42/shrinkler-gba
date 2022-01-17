@@ -11,34 +11,13 @@
   * Verification
     * Either when reading the ELF or writing the raw binary, should we check that sh_addralign/sh_addr match?
   * NEED TO REWRITE INPUT FILE => rename the old implementation while doing so, and create a new input_file / input_file_test
-    * Dump section headers. Sample output from readelf:
-        Section Headers:
-          [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
-          [ 0]                   NULL            00000000 000000 000000 00      0   0  0
-          [ 1] .init             PROGBITS        03000000 010000 000054 00  AX  0   0  4
-          [ 2] .plt              PROGBITS        03000054 011520 000000 00 WAX  0   0  1
-          [ 3] .text             PROGBITS        03000054 010054 00112c 00  AX  0   0  4
-          [ 4] .fini             PROGBITS        03001180 011520 000000 00 WAX  0   0  1
-          [ 5] .rodata           PROGBITS        03001180 011180 00039c 00   A  0   0  4
-          [ 6] .ctors            PROGBITS        0300151c 011520 000000 00   W  0   0  1
-          [ 7] .dtors            PROGBITS        0300151c 011520 000000 00   W  0   0  1
-          [ 8] .eh_frame         PROGBITS        0300151c 011520 000000 00   W  0   0  1
-          [ 9] .gcc_except_table PROGBITS        0300151c 011520 000000 00   W  0   0  1
-          [10] .data             PROGBITS        0300151c 01151c 000004 00  WA  0   0  4
-          [11] .bss              NOBITS          03001520 011520 000400 00  WA  0   0  2
-          [12] .sbss             NOBITS          02000000 010000 012c00 00  WA  0   0  4
-          [13] .comment          PROGBITS        00000000 011520 000022 01  MS  0   0  1
-          [14] .ARM.attributes   ARM_ATTRIBUTES  00000000 011542 00002a 00      0   0  1
-          [15] .shstrtab         STRTAB          00000000 01156c 00007e 00      0   0  1
-        Key to Flags:
-          W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
-          L (link order), O (extra OS processing required), G (group), T (TLS),
-          C (compressed), x (unknown), o (OS specific), E (exclude),
-          y (purecode), p (processor specific)
     * When done: go through entire input_file.cpp/hpp, removing methods that are not used anymore
     * objcopy does processing section wise, not segment wise.
     * Need to do that too:
       * Iterate through the section headers
+        * Note: we must gather sections to include first, then order them:
+          * It looks like sections do not need to appear in order!
+          * Either that, or we bark if it is not the case
         * Determine whether to output a section header. The ELF documentation is clear on what to dump:
           * For instance: sh_addr: Address where the first byte resides if the section appears in the memory image of a process;
                           a value of 0 indicates the section does not appear in the memory image of a process.
