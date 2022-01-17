@@ -97,7 +97,7 @@ void input_file::read_entry(elfio& reader)
     m_entry = reader.get_entry();
 }
 
-void input_file::log_program_headers(elfio& reader)
+void input_file::log_program_headers(elfio& reader) const
 {
     if (!m_console.is_verbose_enabled())
     {
@@ -132,7 +132,7 @@ void input_file::log_program_headers(elfio& reader)
     printer.print(*m_console.verbose());
 }
 
-void input_file::log_section_headers(ELFIO::elfio& reader)
+void input_file::log_section_headers(ELFIO::elfio& reader) const
 {
     if (!m_console.is_verbose_enabled())
     {
@@ -171,7 +171,7 @@ void input_file::log_section_headers(ELFIO::elfio& reader)
     printer.print(*m_console.verbose());
 }
 
-bool input_file::is_section_included(const ELFIO::section& s)
+bool input_file::is_section_included(const ELFIO::section& s) const
 {
     if ((s.get_type() == SHT_NULL) || (s.get_type() == SHT_NOBITS))
     {

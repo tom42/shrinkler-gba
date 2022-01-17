@@ -62,12 +62,11 @@ public:
     const std::vector<unsigned char>& data() const { return m_data; }
 
 private:
-    // TODO: go through which of these functions can be const?
     void load_elf(std::istream& stream);
     void read_entry(ELFIO::elfio& reader);
-    void log_program_headers(ELFIO::elfio& reader);
-    void log_section_headers(ELFIO::elfio& reader);
-    bool is_section_included(const ELFIO::section& s);
+    void log_program_headers(ELFIO::elfio& reader) const;
+    void log_section_headers(ELFIO::elfio& reader) const;
+    bool is_section_included(const ELFIO::section& s) const;
     void convert_to_binary(ELFIO::elfio& reader);
     void convert_to_binary_old(ELFIO::elfio& reader);
 
