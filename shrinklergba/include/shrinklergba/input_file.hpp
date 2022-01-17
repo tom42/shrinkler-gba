@@ -62,6 +62,7 @@ public:
     const std::vector<unsigned char>& data() const { return m_data; }
 
 private:
+    // TODO: go through which of these functions can be const?
     void load_elf(std::istream& stream);
     void read_entry(ELFIO::elfio& reader);
     void log_program_headers(ELFIO::elfio& reader);
@@ -78,6 +79,7 @@ private:
     static void check_abi_version(ELFIO::elfio& reader);
     static void check_object_file_version(ELFIO::elfio& reader);
 
+    static std::vector<const ELFIO::section*> get_included_sections(ELFIO::elfio& reader);
     static void verify_load_segment(ELFIO::segment* last, ELFIO::segment* current);
     static void throw_if_invalid_load_segment(ELFIO::segment* seg);
     static void throw_if_load_segments_are_out_of_order(ELFIO::segment* last, ELFIO::segment* current);

@@ -212,7 +212,7 @@ void input_file::convert_to_binary(ELFIO::elfio& reader)
     // TODO: test code, remove
     for (ELFIO::section* s : included_sections)
     {
-        std::cout << format("{}", s->get_name()) << std::endl;
+        std::cout << format("{:10} {:#010x}", s->get_name(), s->get_address()) << std::endl;
     }
 
     // TODO: implement
@@ -349,6 +349,12 @@ void input_file::check_object_file_version(elfio& reader)
     {
         throw runtime_error(format("unknown object file version {}. Expected {}", e_version, expected_object_file_version));
     }
+}
+
+std::vector<const ELFIO::section*> input_file::get_included_sections(ELFIO::elfio& /*reader*/)
+{
+    // TODO: implement
+    throw std::runtime_error("YIKES");
 }
 
 void input_file::verify_load_segment(segment* last, segment* current)
