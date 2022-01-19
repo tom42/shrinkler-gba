@@ -67,7 +67,6 @@ private:
     void log_program_headers(ELFIO::elfio& reader) const;
     void log_section_headers(ELFIO::elfio& reader) const;
     void convert_to_binary(ELFIO::elfio& reader);
-    void convert_to_binary_old(ELFIO::elfio& reader);
 
     static void open_elf(ELFIO::elfio& reader, std::istream& stream);
     static void check_header(ELFIO::elfio& reader);
@@ -80,7 +79,6 @@ private:
     static bool is_section_included(const ELFIO::section* s);
     static std::vector<const ELFIO::section*> get_included_sections(ELFIO::elfio& reader);
     static void sort_sections_by_address(std::vector<const ELFIO::section*>& sections);
-    static void verify_load_segment(ELFIO::segment* last, ELFIO::segment* current);
     static void throw_if_invalid_load_segment(ELFIO::segment* seg);
     static void throw_if_load_segments_are_out_of_order(ELFIO::segment* last, ELFIO::segment* current);
     static void throw_if_load_segments_overlap(ELFIO::segment* last, ELFIO::segment* current);

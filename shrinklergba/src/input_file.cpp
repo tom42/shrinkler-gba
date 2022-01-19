@@ -217,6 +217,7 @@ void input_file::convert_to_binary(ELFIO::elfio& reader)
 }
 
 // TODO: delete (and code only required by this method)
+/*
 void input_file::convert_to_binary_old(elfio& reader)
 {
     // TODO: Do we initially check whether there are any program headers?
@@ -261,6 +262,7 @@ void input_file::convert_to_binary_old(elfio& reader)
         }
     }
 }
+*/
 
 void input_file::open_elf(elfio& reader, std::istream& stream)
 {
@@ -383,17 +385,6 @@ void input_file::sort_sections_by_address(std::vector<const ELFIO::section*>& se
         sections.begin(),
         sections.end(),
         [](const ELFIO::section* lhs, const ELFIO::section* rhs) { return lhs->get_address() < rhs->get_address(); });
-}
-
-void input_file::verify_load_segment(segment* last, segment* current)
-{
-    throw_if_invalid_load_segment(current);
-
-    if (last)
-    {
-        throw_if_load_segments_are_out_of_order(last, current);
-        throw_if_load_segments_overlap(last, current);
-    }
 }
 
 void input_file::throw_if_invalid_load_segment(segment* seg)
