@@ -92,7 +92,13 @@ void input_file::load_elf(std::istream& stream)
     log_section_headers(reader);
     convert_to_binary(reader);
 
-    // TODO: what do we do if the resulting raw binary is 0 bytes big (or too small in general?)
+    // TODO: final size checks:
+    //       * what do we do if the resulting raw binary is 0 bytes big (or too small in general?)
+    //         * Well in principle it depends on our packers what they consider 'too small'. If they can cope with zero bytes, that's fine by me.
+    //       * what do we do if the resulting raw binary is too big?
+    //         * If it goes into IWRAM it can be at most 32K, and even that is too big due to stack and BIOS reserved area
+    //         * If it goes into EWRAM it can be at most 256K
+    //       * Thing is, all of this is mostly target specific and does not belong into input_file
 }
 
 void input_file::read_entry(elfio& reader)
@@ -203,8 +209,7 @@ void input_file::convert_to_binary(ELFIO::elfio& reader)
         }
         else
         {
-            // No bytes written to output yet.
-            // Record initial output address and load address.
+            // No bytes written to output yet. Record initial output address and load address.
             output_address = s->get_address();
             m_load_address = output_address;
         }
@@ -215,54 +220,6 @@ void input_file::convert_to_binary(ELFIO::elfio& reader)
         previous_section = s;
     }
 }
-
-// TODO: delete (and code only required by this method)
-/*
-void input_file::convert_to_binary_old(elfio& reader)
-{
-    // TODO: Do we initially check whether there are any program headers?
-    //       Or do we simply do all the processing and fail if there is no data left?
-    segment* last = nullptr;
-    const Elf_Half nheaders = reader.segments.size();
-    Elf64_Addr output_address = 0;
-
-    for (Elf_Half i = 0; i < nheaders; ++i)
-    {
-        segment* current = reader.segments[i];
-        if (current->get_type() == PT_LOAD)
-        {
-            verify_load_segment(last, current);
-
-            if (current->get_file_size())
-            {
-                if (m_data.size())
-                {
-                    // Move to start of segment in output. Fill up with padding bytes.
-                    const auto nbytes = current->get_virtual_address() - output_address;
-                    m_data.insert(m_data.end(), boost::numeric_cast<size_t>(nbytes), 0);
-                    output_address += nbytes;
-                }
-                else
-                {
-                    // No bytes written to output yet. Just set the output address then.
-                    output_address = current->get_virtual_address();
-                    m_load_address = output_address;
-                }
-
-                // Copy segment's data to output.
-                m_data.insert(m_data.end(), current->get_data(), current->get_data() + current->get_file_size());
-                output_address += current->get_file_size();
-            }
-
-            // TODO: final size checks(?)
-            //       * Should we check whether there are any bytes at all?
-            //       * Should we check for a maximum size?
-
-            last = current;
-        }
-    }
-}
-*/
 
 void input_file::open_elf(elfio& reader, std::istream& stream)
 {
