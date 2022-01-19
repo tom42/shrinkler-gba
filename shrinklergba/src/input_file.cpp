@@ -92,12 +92,15 @@ void input_file::load_elf(std::istream& stream)
     log_section_headers(reader);
     convert_to_binary(reader);
 
-    // TODO: final size checks:
+    // TODO: final checks:
     //       * what do we do if the resulting raw binary is 0 bytes big (or too small in general?)
     //         * Well in principle it depends on our packers what they consider 'too small'. If they can cope with zero bytes, that's fine by me.
     //       * what do we do if the resulting raw binary is too big?
     //         * If it goes into IWRAM it can be at most 32K, and even that is too big due to stack and BIOS reserved area
     //         * If it goes into EWRAM it can be at most 256K
+    //       * Do we limit the entry points we are going to accept? Well perhaps, but not in this class.
+    //         * Well basically entries must be in IWRAM or EWRAM. Or, more specifically, inside the
+    //           memory area occupied by the binary. But then, that's probably too much to worry about
     //       * Thing is, all of this is mostly target specific and does not belong into input_file
 }
 
@@ -237,11 +240,6 @@ void input_file::check_header(elfio& reader)
     check_os_abi(reader);
     check_abi_version(reader);
     check_object_file_version(reader);
-
-    // TODO: store this, we're going to need it.
-    //       * Do we limit the entry points we are going to accept? Well perhaps, but not in this class.
-    //       * Well basically entries must be in IWRAM or EWRAM. Or, more specifically, inside the
-    //         memory area occupied by the binary. But then, that's probably too much to worry about
 }
 
 void input_file::check_executable_type(elfio& reader)
