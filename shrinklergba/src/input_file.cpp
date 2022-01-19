@@ -183,13 +183,18 @@ void input_file::convert_to_binary(ELFIO::elfio& reader)
 
     for (const ELFIO::section* s : included_sections)
     {
-        // TODO: possible sanity checks (e.g. sections must not overlap. can't think of much else, though)
-
         if (m_data.size())
         {
-            // TODO: not the first time we write data to file:
-            //       * Move to start of segment in output. Fill up with padding bytes (which must be 0, I think)
-            // TODO: we pass all the tests without having this branch implemented. This is bad. Maybe we can construct an ELF file that needs this branch?
+            // TODO: add check whether sections overlap (current section address < output_address, I think)
+
+            const auto npadding_bytes = s->get_address() - output_address;
+            if (npadding_bytes > 0)
+            {
+                // There is a hole between the current and the last section.
+                // Pad it with zeros. Zeros are required by ELF.
+                m_data.insert(m_data.end(), boost::numeric_cast<size_t>(npadding_bytes), 0);
+                output_address += npadding_bytes;
+            }
         }
         else
         {
@@ -242,10 +247,6 @@ void input_file::convert_to_binary_old(elfio& reader)
                 output_address += current->get_file_size();
             }
 
-            // TODO: make padding byte value configurable? Compressed size? Otoh, 0xff might be more healthy for flash devices?
-            //       * Careful: ELF might require that it is 0x00.
-            //       * The argument regarding flash devices is moot: we're going to compress that data afterwards, so it won't
-            //         be 0xff anymore.
             // TODO: final size checks(?)
             //       * Should we check whether there are any bytes at all?
             //       * Should we check for a maximum size?
