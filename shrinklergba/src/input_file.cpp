@@ -179,13 +179,18 @@ void input_file::convert_to_binary(ELFIO::elfio& reader)
     std::vector<const ELFIO::section*> included_sections = get_included_sections(reader);
     sort_sections_by_address(included_sections);
 
+    const ELFIO::section* previous_section = nullptr;
     Elf64_Addr output_address = 0;
 
     for (const ELFIO::section* s : included_sections)
     {
         if (m_data.size())
         {
-            // TODO: add check whether sections overlap (current section address < output_address, I think)
+            if (s->get_address() < output_address)
+            {
+                // TODO: this causes a C6011 (null pointer dereference) in visual studio. Question is, do we care?
+                throw std::runtime_error(format("section {} overlaps with previous section {}", s->get_name(), previous_section->get_name()));
+            }
 
             const auto npadding_bytes = s->get_address() - output_address;
             if (npadding_bytes > 0)
@@ -207,6 +212,7 @@ void input_file::convert_to_binary(ELFIO::elfio& reader)
         // Copy section data to output.
         m_data.insert(m_data.end(), s->get_data(), s->get_data() + s->get_size());
         output_address += s->get_size();
+        previous_section = s;
     }
 }
 
