@@ -194,7 +194,6 @@ void input_file::convert_to_binary(ELFIO::elfio& reader)
         {
             if (s->get_address() < output_address)
             {
-                // TODO: this causes a C6011 (null pointer dereference) in visual studio. Question is, do we care?
                 throw std::runtime_error(format("section {} overlaps with previous section {}", s->get_name(), previous_section->get_name()));
             }
 
