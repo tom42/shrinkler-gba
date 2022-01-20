@@ -22,18 +22,22 @@
 // SOFTWARE.
 
 #include "shrinklergba/gba_packer.hpp"
+#include "shrinklergba/input_file.hpp"
 
 namespace shrinklergba
 {
 
-void gba_packer::pack(const options& /*options*/)
+void gba_packer::pack(const options& options)
 {
     // TODO: Do work
+    //       * Set up verbose mode: basically, have a console, configure that and pass it to all other things
     //       * Load input file (ELF only, no other format such as raw binary)
     //       * Compress (try Shrinkler and LZSS+H4/H8), select which is better
     //       * Assemble compressed GBA ROM image
     //       * Fix up header (checksum)
     //       * Write to disk
+    input_file input_file;
+    input_file.load(options.input_file());
 }
 
 }
