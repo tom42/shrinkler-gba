@@ -24,12 +24,15 @@
 #ifndef SHRINKLERGBA_GBA_PACKER_HPP
 #define SHRINKLERGBA_GBA_PACKER_HPP
 
+#include "shrinklergba/options.hpp"
+
 namespace shrinklergba
 {
 
 class gba_packer
 {
 public:
+    void pack(const options& options);
 };
 
 }

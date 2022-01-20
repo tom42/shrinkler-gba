@@ -35,6 +35,7 @@ set(
   include/shrinklergba/table_printer.hpp
   src/command_line.cpp
   src/elf_strings.cpp
+  src/gba_packer.cpp
   src/input_file.cpp
   src/table_printer.cpp)
 
