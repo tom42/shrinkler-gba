@@ -21,45 +21,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <cstdlib>
-#include <iostream>
-#include <stdexcept>
-#include "shrinklergba/command_line.hpp"
-#include "shrinklergba/gba_packer.hpp"
-#include "shrinklergba/options.hpp"
+#ifndef SHRINKLERGBA_GBA_PACKER_HPP
+#define SHRINKLERGBA_GBA_PACKER_HPP
 
-using namespace shrinklergba;
-
-static void process()
+namespace shrinklergba
 {
-    // TODO: process input file
-    //       * Set options
-    //       * Tell the thing to do its work
-    //gba_packer packer;
+
+class gba_packer
+{
+public:
+};
+
 }
 
-int main(int argc, char* argv[])
-{
-    try
-    {
-        options options;
-        auto action = parse_command_line(argc, argv, options, false);
-        switch (action)
-        {
-            case command_action::exit_failure:
-                return EXIT_FAILURE;
-            case command_action::exit_success:
-                return EXIT_SUCCESS;
-            case command_action::process:
-                process();
-                return EXIT_SUCCESS;
-            default:
-                throw std::runtime_error("Unknown action returned by command line parser");
-        }
-    }
-    catch (const std::exception& e)
-    {
-        std::cerr << argv[0] << ": " << e.what() << std::endl;
-        return EXIT_FAILURE;
-    }
-}
+#endif
