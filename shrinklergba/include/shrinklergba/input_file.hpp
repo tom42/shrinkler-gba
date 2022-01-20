@@ -62,6 +62,7 @@ public:
 
 private:
     void load_elf(std::istream& stream);
+    void reset();
     void read_entry(ELFIO::elfio& reader);
     void log_program_headers(ELFIO::elfio& reader) const;
     void log_section_headers(ELFIO::elfio& reader) const;

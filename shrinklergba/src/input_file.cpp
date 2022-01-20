@@ -81,10 +81,9 @@ void input_file::load(std::istream& stream)
 
 void input_file::load_elf(std::istream& stream)
 {
-    // TODO: reset fields here
+    reset();
 
     elfio reader;
-
     open_elf(reader, stream);
     check_header(reader);
     read_entry(reader);
@@ -102,6 +101,13 @@ void input_file::load_elf(std::istream& stream)
     //         * Well basically entries must be in IWRAM or EWRAM. Or, more specifically, inside the
     //           memory area occupied by the binary. But then, that's probably too much to worry about
     //       * Thing is, all of this is mostly target specific and does not belong into input_file
+}
+
+void input_file::reset()
+{
+    m_entry = 0;
+    m_load_address = 0;
+    std::vector<unsigned char>().swap(m_data);
 }
 
 void input_file::read_entry(elfio& reader)
