@@ -30,7 +30,7 @@
 
 using namespace shrinklergba;
 
-static void process()
+static void process(const options& /*options*/)
 {
     // TODO: process input file
     //       * Set options
@@ -51,7 +51,7 @@ int main(int argc, char* argv[])
             case command_action::exit_success:
                 return EXIT_SUCCESS;
             case command_action::process:
-                process();
+                process(options);
                 return EXIT_SUCCESS;
             default:
                 throw std::runtime_error("Unknown action returned by command line parser");
