@@ -52,6 +52,7 @@ public:
             return 0;
         case 'v':
             m_options.verbose(true);
+            m_options.shrinkler_parameters().verbose = true;
             return 0;
         case 'a':
             return parse_int("same length count", arg, 1, 100000, state, m_options.shrinkler_parameters().same_length);
@@ -130,7 +131,7 @@ private:
 
         if (!parse_result)
         {
-            m_options.shrinkler_parameters(shrinkler::shrinkler_parameters(preset));
+            m_options.shrinkler_parameters().preset(preset);
         }
 
         return parse_result;
