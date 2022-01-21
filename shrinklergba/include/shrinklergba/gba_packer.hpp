@@ -24,6 +24,7 @@
 #ifndef SHRINKLERGBA_GBA_PACKER_HPP
 #define SHRINKLERGBA_GBA_PACKER_HPP
 
+#include <filesystem>
 #include <vector>
 #include "shrinklergba/options.hpp"
 
@@ -37,6 +38,7 @@ class gba_packer
 public:
     void pack(const options& options);
 private:
+    void write_to_disk(const std::vector<unsigned char>& data, const std::filesystem::path& filename);
     std::vector<unsigned char> make_shrinklered_cart(const input_file& input_file, const options& options);
 };
 

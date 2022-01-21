@@ -21,6 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -48,7 +49,23 @@ void gba_packer::pack(const options& options)
     input_file input_file(console);
     input_file.load(options.input_file());
 
-    make_shrinklered_cart(input_file, options);
+    std::vector<unsigned char> cart = make_shrinklered_cart(input_file, options);
+    // TODO: check sum
+    write_to_disk(cart, options.output_file());
+}
+
+void gba_packer::write_to_disk(const std::vector<unsigned char>& data, const std::filesystem::path& filename)
+{
+    // TODO: write to disk
+    //       * error handling (exceptions?)
+    //       * Which IOS flags do I need?
+    //       * Opening fails: handle
+    //       * Writing fails: handle
+    //       * Is using write as below really the correct way to do things?
+    //       * At the very least do not use a C cast
+    std::ofstream file;
+    file.open(filename.string(), std::ios::binary | std::ios::trunc);
+    file.write((char*)&data[0], data.size());
 }
 
 std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& input_file, const options& options)
