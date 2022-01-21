@@ -50,8 +50,14 @@ void gba_packer::pack(const options& options)
     input_file.load(options.input_file());
 
     std::vector<unsigned char> cart = make_shrinklered_cart(input_file, options);
-    // TODO: check sum
+    write_checksum(cart);
     write_to_disk(cart, options.output_file());
+}
+
+void gba_packer::write_checksum(const std::vector<unsigned char>& /*cart*/)
+{
+    // TODO: calculate checksum (from..to?)
+    // TODO: write at correct location. Test: real BIOS boots the cart
 }
 
 void gba_packer::write_to_disk(const std::vector<unsigned char>& data, const std::filesystem::path& filename)
