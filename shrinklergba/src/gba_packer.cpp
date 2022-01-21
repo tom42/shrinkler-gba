@@ -58,9 +58,15 @@ void gba_packer::make_shrinklered_cart(const input_file& input_file, const optio
 
     // TODO: implement:
     //       * Create a shrinklered intro, taking into account
-    //         * The load address
-    //         * The entry point
-    //         * Whether entry is ARM or Thumb
+    //         * The load address (currently hardcoded to 0x03000000, not good)
+    //         * The entry point (currently hardcoded to be the same as load address, not good)
+    //         * Whether entry is ARM or Thumb (currently assumed to be ARM, but we want to support ARM/Thumb)
+    //         * Preserve registers?
+    //         * Preserve memory contents?
+    //         * Calculate checksum (is currently hardcoded)
+    //           * Fix it up
+    //           * Remove comment on testing below
+    //         * Stick code into header
     shrinkler::shrinkler_compressor compressor;
     compressor.set_parameters(options.shrinkler_parameters());
     std::vector<unsigned char> compressed_program = compressor.compress(input_file.data());
