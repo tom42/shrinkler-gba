@@ -36,13 +36,7 @@ namespace shrinklergba
 
 void gba_packer::pack(const options& options)
 {
-    // TODO: Do work
-    //       * Load input file (ELF only, no other format such as raw binary)
-    //       * Compress (try Shrinkler and LZSS+H4/H8), select which is better
-    //         * Shrinkler also needs to have verbose mode configured
-    //       * Assemble compressed GBA ROM image
-    //       * Fix up header (checksum)
-    //       * Write to disk
+    // TODO: Try Shrinkler and LZSS+H4/H8 compression, select which is better
     console console;
     console.verbose(options.verbose() ? &std::cout : nullptr);
 
@@ -54,10 +48,15 @@ void gba_packer::pack(const options& options)
     write_to_disk(cart, options.output_file());
 }
 
-void gba_packer::write_checksum(const std::vector<unsigned char>& /*cart*/)
+void gba_packer::write_checksum(std::vector<unsigned char>& cart)
 {
-    // TODO: calculate checksum (from..to?)
-    // TODO: write at correct location. Test: real BIOS boots the cart
+    char complement = 0;
+    for (size_t n = 0xa0; n < 0xbd; ++n)
+    {
+        complement += cart[n];
+    }
+
+    cart[0xbd] = -(0x19 + complement);
 }
 
 void gba_packer::write_to_disk(const std::vector<unsigned char>& data, const std::filesystem::path& filename)
