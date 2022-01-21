@@ -29,12 +29,14 @@
 namespace shrinklergba
 {
 
+class input_file;
+
 class gba_packer
 {
 public:
     void pack(const options& options);
 private:
-    void make_gba_cart();
+    void make_shrinklered_cart(const input_file& input_file, const options& options);
 };
 
 }
