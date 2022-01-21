@@ -71,6 +71,7 @@ void gba_packer::write_to_disk(const std::vector<unsigned char>& data, const std
     std::ofstream file;
     file.open(filename.string(), std::ios::binary | std::ios::trunc);
     file.write((char*)&data[0], data.size());
+    file.close();
 }
 
 std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& input_file, const options& options)
