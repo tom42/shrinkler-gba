@@ -22,6 +22,7 @@
 // SOFTWARE.
 
 #include <iostream>
+#include "shrinkler/shrinkler.hpp"
 #include "shrinklergba/console.hpp"
 #include "shrinklergba/gba_packer.hpp"
 #include "shrinklergba/input_file.hpp"
@@ -43,6 +44,11 @@ void gba_packer::pack(const options& options)
 
     input_file input_file(console);
     input_file.load(options.input_file());
+
+    // TODO: somehow must also enable verbose mode for shrinkler
+    shrinkler::shrinkler_compressor compressor;
+    compressor.set_parameters(options.shrinkler_parameters());
+    compressor.compress(input_file.data());
 }
 
 }
