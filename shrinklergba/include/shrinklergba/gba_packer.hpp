@@ -24,6 +24,7 @@
 #ifndef SHRINKLERGBA_GBA_PACKER_HPP
 #define SHRINKLERGBA_GBA_PACKER_HPP
 
+#include <vector>
 #include "shrinklergba/options.hpp"
 
 namespace shrinklergba
@@ -36,7 +37,7 @@ class gba_packer
 public:
     void pack(const options& options);
 private:
-    void make_shrinklered_cart(const input_file& input_file, const options& options);
+    std::vector<unsigned char> make_shrinklered_cart(const input_file& input_file, const options& options);
 };
 
 }

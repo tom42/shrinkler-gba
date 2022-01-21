@@ -51,7 +51,7 @@ void gba_packer::pack(const options& options)
     make_shrinklered_cart(input_file, options);
 }
 
-void gba_packer::make_shrinklered_cart(const input_file& input_file, const options& options)
+std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& input_file, const options& options)
 {
     using namespace lzasm::arm::arm32;
     using namespace std::literals::string_literals;
@@ -328,6 +328,8 @@ void gba_packer::make_shrinklered_cart(const input_file& input_file, const optio
     a.align(2);
     a.label("packed_intro"s);
     a.incbin(compressed_program.begin(), compressed_program.end());
+
+    return a.link(0x08000000);
 }
 
 }
