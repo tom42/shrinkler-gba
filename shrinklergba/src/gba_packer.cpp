@@ -133,10 +133,8 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
     a.byte(0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
     // Game version
     a.byte(0x00);
-    // Complement
-    // For testing we assemble the correct complement.
-    // Normally we'd fix this after building using gbafix.
-    a.byte(0x51);
+    // Complement (will have to be fixed, so that checksum is 0)
+    a.byte(0x00);
     // Checksum
     a.byte(0x00, 0x00);
 
