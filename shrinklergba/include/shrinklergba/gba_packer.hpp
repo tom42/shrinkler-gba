@@ -33,6 +33,8 @@ class gba_packer
 {
 public:
     void pack(const options& options);
+private:
+    void make_gba_cart();
 };
 
 }

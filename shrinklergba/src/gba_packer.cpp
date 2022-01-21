@@ -22,6 +22,7 @@
 // SOFTWARE.
 
 #include <iostream>
+#include "lzasm/arm/arm32/divided_thumb_assembler.hpp"
 #include "shrinkler/shrinkler.hpp"
 #include "shrinklergba/console.hpp"
 #include "shrinklergba/gba_packer.hpp"
@@ -48,6 +49,18 @@ void gba_packer::pack(const options& options)
     shrinkler::shrinkler_compressor compressor;
     compressor.set_parameters(options.shrinkler_parameters());
     compressor.compress(input_file.data());
+
+    make_gba_cart();
+}
+
+void gba_packer::make_gba_cart()
+{
+    // TODO: implement
+    //       * This needs the compressed data as input
+    //       * And it also needs the input file as input, so's it knows the entry point and the ARM/Thumb state at entry
+    //       * Well that means maybe this method should be called make_shrinklered cart
+    //       * And it should only receive the ELF file
+    //       * It can then create a precanned binary, and the final header fixup is done by somebody else
 }
 
 }
