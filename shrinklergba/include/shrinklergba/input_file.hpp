@@ -41,7 +41,7 @@ class section;
 namespace shrinklergba
 {
 
-class input_file
+class input_file final
 {
 public:
     input_file() : input_file(console()) {}

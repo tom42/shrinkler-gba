@@ -33,7 +33,7 @@ namespace shrinklergba
 
 class input_file;
 
-class gba_packer
+class gba_packer final
 {
 public:
     void pack(const options& options);

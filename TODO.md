@@ -1,5 +1,3 @@
-* classes
-  * Declare classes as final?
 * Do not forget to have a look at README.md from shrinkler-arm
   * And also at the depacker source from shrinkler-arm
   * For instance, the depacker is not yet preserving registers!

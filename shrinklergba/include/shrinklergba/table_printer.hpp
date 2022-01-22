@@ -32,7 +32,7 @@
 namespace shrinklergba
 {
 
-class table_printer
+class table_printer final
 {
 public:
     void add_row(std::vector<std::string> row);

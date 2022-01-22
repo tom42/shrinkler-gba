@@ -30,7 +30,7 @@
 namespace shrinklergba
 {
 
-class options
+class options final
 {
 public:
     bool verbose() const { return m_verbose; }

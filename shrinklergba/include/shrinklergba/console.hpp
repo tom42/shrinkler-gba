@@ -29,7 +29,7 @@
 namespace shrinklergba
 {
 
-class console
+class console final
 {
 public:
     std::ostream* out() const { return m_out; }

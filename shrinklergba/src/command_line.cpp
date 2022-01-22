@@ -38,7 +38,7 @@ enum option
     usage
 };
 
-class parser
+class parser final
 {
 public:
     parser(options& options, bool silent) : m_options(options), m_silent(silent) {}
