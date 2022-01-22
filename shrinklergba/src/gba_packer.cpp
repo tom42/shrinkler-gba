@@ -67,10 +67,6 @@ void gba_packer::write_checksum(std::vector<unsigned char>& cart)
 void gba_packer::write_to_disk(const std::vector<unsigned char>& data, const std::filesystem::path& filename)
 {
     // TODO: write to disk
-    //       * error handling (exceptions?)
-    //       * Which IOS flags do I need?
-    //       * Opening fails: handle
-    //       * Writing fails: handle
     //       * Is using write as below really the correct way to do things?
     //       * At the very least do not use a C cast
 
@@ -85,6 +81,14 @@ void gba_packer::write_to_disk(const std::vector<unsigned char>& data, const std
         }
 
         file.write((char*)&data[0], data.size());
+        if (!file)
+        {
+            auto e = errno;
+            throw std::system_error(e, std::generic_category());
+        }
+
+        // TODO: check number of bytes written?
+
         file.close();
     }
     catch (const std::system_error& e)
