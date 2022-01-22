@@ -1,6 +1,8 @@
 * Somewhere, have some documentation of the depacker, including blueberrys explanation what he does with all the contexts (and the odd stack hack)
 * Do not forget to have a look at README.md from shrinkler-arm
   * And also at the depacker source from shrinkler-arm
+    * The ARM implementation (although that's somewhat obsolete)
+    * The Thumb implementation
   * For instance, the depacker is not yet preserving registers!
   * And, on the gba, if we generate code, do we need to flush a cache of some sort or does jumping to the code suffice since that invalidates the prefetch queue?
 * For deploying windows binaries, do we need to take care to distribute runtime libraries? Or do we link statically?
