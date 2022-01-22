@@ -21,10 +21,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include <cerrno>
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <system_error>
 #include <vector>
+#include "fmt/core.h"
 #include "lzasm/arm/arm32/divided_thumb_assembler.hpp"
 #include "shrinkler/shrinkler.hpp"
 #include "shrinklergba/console.hpp"
@@ -33,6 +36,8 @@
 
 namespace shrinklergba
 {
+
+using fmt::format;
 
 void gba_packer::pack(const options& options)
 {
@@ -68,10 +73,24 @@ void gba_packer::write_to_disk(const std::vector<unsigned char>& data, const std
     //       * Writing fails: handle
     //       * Is using write as below really the correct way to do things?
     //       * At the very least do not use a C cast
-    std::ofstream file;
-    file.open(filename.string(), std::ios::binary | std::ios::trunc);
-    file.write((char*)&data[0], data.size());
-    file.close();
+
+    try
+    {
+        std::ofstream file;
+        file.open(filename.string(), std::ios::binary | std::ios::trunc);
+        if (!file)
+        {
+            auto e = errno;
+            throw std::system_error(e, std::generic_category());
+        }
+
+        file.write((char*)&data[0], data.size());
+        file.close();
+    }
+    catch (const std::system_error& e)
+    {
+        throw std::runtime_error(format("could not write {}: {}", filename.string(), e.what()));
+    }
 }
 
 std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& input_file, const options& options)
