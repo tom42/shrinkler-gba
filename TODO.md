@@ -1,3 +1,4 @@
+* Somewhere, have some documentation of the depacker, including blueberrys explanation what he does with all the contexts (and the odd stack hack)
 * Do not forget to have a look at README.md from shrinkler-arm
   * And also at the depacker source from shrinkler-arm
   * For instance, the depacker is not yet preserving registers!
