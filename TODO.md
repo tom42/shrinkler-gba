@@ -1,3 +1,11 @@
+* classes
+  * Declare classes as final?
+* Do not forget to have a look at README.md from shrinkler-arm
+  * And also at the depacker source from shrinkler-arm
+  * For instance, the depacker is not yet preserving registers!
+  * And, on the gba, if we generate code, do we need to flush a cache of some sort or does jumping to the code suffice since that invalidates the prefetch queue?
+* For deploying windows binaries, do we need to take care to distribute runtime libraries? Or do we link statically?
+* Eventually, get rid of the fmt library (yeah, right)
 * NEXT:
   * https://stackoverflow.com/questions/57103912/how-does-objcopy-compute-what-sections-for-the-elf-file-to-insert-into-the-outpu
     * Maybe write a semi-helpful answer here?
