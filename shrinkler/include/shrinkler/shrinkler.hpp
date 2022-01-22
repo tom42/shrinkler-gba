@@ -35,7 +35,7 @@ class RefEdgeFactory;
 namespace shrinkler
 {
 
-class shrinkler_parameters
+class shrinkler_parameters final
 {
 public:
     explicit shrinkler_parameters(int preset = 2)
@@ -62,7 +62,7 @@ public:
     int skip_length;
 };
 
-class shrinkler_compressor
+class shrinkler_compressor final
 {
 public:
     std::vector<unsigned char> compress(const std::vector<unsigned char>& data) const;
