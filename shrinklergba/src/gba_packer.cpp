@@ -83,7 +83,7 @@ void gba_packer::write_to_disk(const std::vector<unsigned char>& data, const std
             throw std::system_error(e, std::generic_category());
         }
 
-        // TODO: check number of bytes written?
+        // TODO: if the file has been created, but writing failed, should we delete it?
 
         file.close();
     }
