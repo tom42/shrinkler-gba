@@ -66,10 +66,6 @@ void gba_packer::write_checksum(std::vector<unsigned char>& cart)
 
 void gba_packer::write_to_disk(const std::vector<unsigned char>& data, const std::filesystem::path& filename)
 {
-    // TODO: write to disk
-    //       * Is using write as below really the correct way to do things?
-    //       * At the very least do not use a C cast
-
     try
     {
         std::ofstream file;
@@ -80,7 +76,7 @@ void gba_packer::write_to_disk(const std::vector<unsigned char>& data, const std
             throw std::system_error(e, std::generic_category());
         }
 
-        file.write((char*)&data[0], data.size());
+        file.write(reinterpret_cast<const char*>(&data[0]), data.size());
         if (!file)
         {
             auto e = errno;
