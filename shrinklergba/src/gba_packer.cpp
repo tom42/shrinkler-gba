@@ -105,9 +105,6 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
     //         * Whether entry is ARM or Thumb (currently assumed to be ARM, but we want to support ARM/Thumb)
     //         * Preserve registers?
     //         * Preserve memory contents?
-    //         * Calculate checksum (is currently hardcoded)
-    //           * Fix it up
-    //           * Remove comment on testing below
     //         * Stick code into header
     shrinkler::shrinkler_compressor compressor;
     compressor.set_parameters(options.shrinkler_parameters());
