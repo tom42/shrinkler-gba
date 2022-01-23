@@ -43,13 +43,6 @@
         since NOBIT sections can have alloc set too. But they are not part of the raw binary image.
   * Verification
     * Either when reading the ELF or writing the raw binary, should we check that sh_addralign/sh_addr match?
-  * Port input_file:
-    * This will require a note because we must adapt the depacker code because it does not support that scenario yet
-      * Should probably start writing real test binaries for the GBA then, so that we can actually test stuff
-    * Tests:
-      * File with entry different from load address (so we can see we have not messed anything up)
-  * Archive open issues from
-    * Old gbaic
 * Open issues
   * Final binary generation/depacker
     * Should be updated, so that it can execute ARM and Thumb entry points. Detection is done by input_file
