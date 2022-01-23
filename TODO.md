@@ -2,7 +2,6 @@
   * Old Thumb data depacker (shrinkler_decompress_thumb.s)
     @ * Document plces that need adjust of CTX_TABLE_OFFSET if mpdified?
     @ * ATTENTION: when continuing development, keep in mind that CTX_TABLE_OFFSET may get wrong again. Do we need a frame pointer?
-    @ * Size measuring code in Makefile is broken for thumb.
     @ * Might actually want to try the following: write a simpler (than depacker.cpp) one file depacker,
     @   and see what gcc -Os comes up with?
     @ * Eventually we should definitely also compare original and decompressed data
@@ -11,24 +10,12 @@
     @     Well we could have a debug mode where we check this, no? Some sort of assertion?
     @ * Test: does this code also work when the output buffer is at an odd address?
     @ * Since the ultimate goal is to produce a GBA 4k cruncher, do we need to
-    @   * Preserve register contents in some way?
-    @   * Preserve RAM contents in some way?
     @   * Can we save some bits if we do not have our data on stack but in EWRAM?
-    @ * If we do not need to support interworking, then returning gets simpler because we can just pop pc => Configuration option?
-    @   * Also, calling the callback gets smaller!
-    @ * Are we assembling everything with warning==error? (-Wa,--fatal-warnings)
   * Old ARM data depacker (shrinkler_decompress_arm.s)
-    @ * Eventually we should definitely also compare original and decompressed data
-    @   * And the number of bytes decompressed
-    @   * And we should make sure we do not write anywhere past the conext array
-    @     Well we could have a debug mode where we check this, no? Some sort of assertion?
-    @ * Clean up main.cpp (there are some ugly casts in there)
-    @ * Fix Makefile to have proper dependency tracking?
     @ * Document the odd addressing of the contexts? In principle we can copypaste Blueberrys explanations.
     @   - Yes we want the table with the context groups
     @   - And the explanation of the addressing in getbit
   * The old Thumb prototype:
-    @ * Fix lost marbles to build with latest devkitpro
     @ * For starters, keep the contexts on the stack.
     @   Later we can always investigate whether having them e.g. in EWRAM is smaller.
     @   But this would require an additional register. Which we don't have.
@@ -38,7 +25,6 @@
     @ * Review getbit
     @   * Are we pushing too many registers?
     @   * Can we simplify it somehow, particularly since the endianness swap has gone?
-    @ * Stick some code into the header
     @ * Check whether the context table is really where we believe it is and we are
     @   not overwriting anything. Currently I am not sure this is the case.
     @   We can e.g. do so by writing something into the single bit context and then inspecting memory.
