@@ -83,14 +83,20 @@ void gba_packer::write_to_disk(const std::vector<unsigned char>& data, const std
             throw std::system_error(e, std::generic_category());
         }
 
-        // TODO: if the file has been created, but writing failed, should we delete it?
-
         file.close();
     }
     catch (const std::system_error& e)
     {
+        remove_output_file(filename);
         throw std::runtime_error(format("could not write {}: {}", filename.string(), e.what()));
     }
+}
+
+void gba_packer::remove_output_file(const std::filesystem::path& filename)
+{
+    // Delete file, ignore any error. Use overload of remove that does not throw.
+    std::error_code e;
+    std::filesystem::remove(filename, e);
 }
 
 std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& input_file, const options& options)
