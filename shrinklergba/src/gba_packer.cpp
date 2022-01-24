@@ -112,6 +112,9 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
     //         * Preserve registers? (optional)
     //         * Preserve memory contents? (optional, maybe in a later version)
     //         * Stick code into header
+    //         * Possible optimizations:
+    //           * If load address and entry point are the same
+    //           * If load address and/or entry point can be constructed using mov/lsl
     shrinkler::shrinkler_compressor compressor;
     compressor.set_parameters(options.shrinkler_parameters());
     std::vector<unsigned char> compressed_program = compressor.compress(input_file.data());
@@ -202,9 +205,9 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
 
     // Initialize output pointer(0x03000000 = IWRAM).
     // Save it for later since this is also the entry point.
-    a.mov(outp, 3);
-    a.lsl(outp, outp, 24);
-    a.mov(depacked_entry, outp);
+    a.mov(outp, 3);                 // TODO: fix comment above
+    a.lsl(outp, outp, 24);          // TODO: load load address and entry point from input_file.
+    a.mov(depacked_entry, outp);    //       Problem: input_file returns them as 64 bit integers, which is silly and which needs a cast here.
 
     // Initialize range decoder state.
     // rvalue will be set to 0 by the loop that follows.
