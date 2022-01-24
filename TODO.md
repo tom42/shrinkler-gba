@@ -1,7 +1,5 @@
 * Notes from various old sources:
   * Old Thumb data depacker (shrinkler_decompress_thumb.s)
-    @ * Document plces that need adjust of CTX_TABLE_OFFSET if mpdified?
-    @ * ATTENTION: when continuing development, keep in mind that CTX_TABLE_OFFSET may get wrong again. Do we need a frame pointer?
     @ * Might actually want to try the following: write a simpler (than depacker.cpp) one file depacker,
     @   and see what gcc -Os comes up with?
     @ * Eventually we should definitely also compare original and decompressed data
