@@ -30,15 +30,6 @@
 * For deploying windows binaries, do we need to take care to distribute runtime libraries? Or do we link statically?
 * Eventually, get rid of the fmt library (yeah, right)
 * NEXT:
-  * https://stackoverflow.com/questions/57103912/how-does-objcopy-compute-what-sections-for-the-elf-file-to-insert-into-the-outpu
-    * Maybe write a semi-helpful answer here?
-      * Naive implementation: just use PT_LOAD segments
-      * However, that's not what objcopy appears to do
-        * My sample ELF file
-        * Objcopy documentation, where it says that the dump starts with the lowest section.
-          * I believe they really mean section and not segment.
-      * Some people claim looking at the alloc flag is enough, but I think it is not,
-        since NOBIT sections can have alloc set too. But they are not part of the raw binary image.
   * Verification
     * Either when reading the ELF or writing the raw binary, should we check that sh_addralign/sh_addr match?
 * Open issues
