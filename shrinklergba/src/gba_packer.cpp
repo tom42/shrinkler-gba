@@ -264,8 +264,7 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
     a.mov(offset, tmp1);
     a.bne("readlength"s);
     a.label("donedecompressing"s);
-    a.mov(r0, depacked_entry);
-    a.bx(r0);
+    a.bx(depacked_entry);
 
     ////////////////////////////////////////////////////////////////////////////
     // getnumber: decode variable length number
