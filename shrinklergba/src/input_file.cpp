@@ -97,6 +97,8 @@ void input_file::load_elf(std::istream& stream)
     //       * what do we do if the resulting raw binary is too big?
     //         * If it goes into IWRAM it can be at most 32K, and even that is too big due to stack and BIOS reserved area
     //         * If it goes into EWRAM it can be at most 256K
+    //         * Moreover, maximum size does not only depend on where the binary is loaded to, but also how large the binary itself is,
+    //           and how much memory is used by other things, including the depacker in the case of IWRAM.
     //       * Do we limit the entry points we are going to accept? Well perhaps, but not in this class.
     //         * Well basically entries must be in IWRAM or EWRAM. Or, more specifically, inside the
     //           memory area occupied by the binary. But then, that's probably too much to worry about
