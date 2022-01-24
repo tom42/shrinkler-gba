@@ -42,6 +42,12 @@
   * Verification
     * Either when reading the ELF or writing the raw binary, should we check that sh_addralign/sh_addr match?
 * Open issues
+  * LZASM needs fixage again:
+    * There is some unsigned comparison (< 0), which gcc complains about but not when compiling lzasm, only when compiling shrinkler-gba
+    * Need to fix this in LZASM
+      * Fix it in LZASM github
+      * New version? ()
+      * Update in shrinkler-gba (how?)
   * Final binary generation/depacker
     * Should be updated, so that it can execute ARM and Thumb entry points. Detection is done by input_file
       * Do we check whether the entry point is valid?
