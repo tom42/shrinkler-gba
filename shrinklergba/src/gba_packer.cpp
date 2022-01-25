@@ -156,13 +156,18 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
     a.byte(0xd6, 0x25, 0xe4, 0x8b, 0x38, 0x0a, 0xac, 0x72);
     a.byte(0x21, 0xd4, 0xf8, 0x07);
     // Game title (12 bytes), game code (4 bytes) and maker code (2 bytes).
-    // These can be freely used, so we stick code into them.
+    // In total 18 bytes that can be freely used, so we stick code into them.
     a.label("code_start"s);
     assert(current_pc(a) == 0xa0); // TODO: make a constant for 0xa0. Besides, this is already duplicated, the checksum calculation code uses it too.
-    a.byte(0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
-    a.byte(0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
-    a.byte(0x00, 0x00, 0x00, 0x00);
-    a.byte(0x00, 0x00);
+    a.hword(0);
+    a.hword(0);
+    a.hword(0);
+    a.hword(0);
+    a.hword(0);
+    a.hword(0);
+    a.hword(0);
+    a.hword(0);
+    a.hword(0);
     // Fixed byte of value 0x96, followed by unit code which can be freely chosen.
     assert(current_pc(a) == 0xb2); // TODO: make a constant for 0xb2. We'll later need it again, to also check the contents of this byte
     a.byte(0x96);
