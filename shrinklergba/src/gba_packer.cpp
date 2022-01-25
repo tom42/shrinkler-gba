@@ -130,6 +130,33 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
     divided_thumb_assembler a;
 
     ////////////////////////////////////////////////////////////////////////////
+    // Constants
+    ////////////////////////////////////////////////////////////////////////////
+
+    // 1536 contexts would be sufficient, but 2048 is smaller.
+    //constexpr auto INIT_ONE_PROB = 0x8000;
+    constexpr auto ADJUST_SHIFT = 4;
+    constexpr auto SINGLE_BIT_CONTEXTS = 1;
+    //constexpr auto NUM_CONTEXTS = 2048;
+
+    // Register aliases
+    constexpr auto inp = r0;                // Compressed data
+    constexpr auto outp = r1;               // Decompressed data
+    constexpr auto tmp0 = r2;               // Scratch register 0
+    constexpr auto tmp1 = r3;               // Scratch register 1
+    constexpr auto rvalue = r4;             // Range value
+    constexpr auto isize = r5;              // Interval size
+    constexpr auto bitbuf = r6;             // Input bit buffer
+    constexpr auto bitctx = r7;             // Bit context index
+    constexpr auto offset = r8;             // Offset
+
+    constexpr auto getnumber_push_list = make_push_list(outp, lr);
+    constexpr auto getbit_push_list = make_push_list(outp, tmp0, tmp1, lr);
+
+    // Offset for accessing the context table relative to SP.
+    constexpr auto CTX_TABLE_OFFSET = 4 * getbit_push_list.size() + 4 * getnumber_push_list.size() + 2 * SINGLE_BIT_CONTEXTS;
+
+    ////////////////////////////////////////////////////////////////////////////
     // Cartridge header
     ////////////////////////////////////////////////////////////////////////////
 
@@ -185,29 +212,6 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
     ////////////////////////////////////////////////////////////////////////////
     // Decompression code
     ////////////////////////////////////////////////////////////////////////////
-
-    // 1536 contexts would be sufficient, but 2048 is smaller.
-    //constexpr auto INIT_ONE_PROB = 0x8000;
-    constexpr auto ADJUST_SHIFT = 4;
-    constexpr auto SINGLE_BIT_CONTEXTS = 1;
-    //constexpr auto NUM_CONTEXTS = 2048;
-
-    // Register aliases
-    constexpr auto inp = r0;                // Compressed data
-    constexpr auto outp = r1;               // Decompressed data
-    constexpr auto tmp0 = r2;               // Scratch register 0
-    constexpr auto tmp1 = r3;               // Scratch register 1
-    constexpr auto rvalue = r4;             // Range value
-    constexpr auto isize = r5;              // Interval size
-    constexpr auto bitbuf = r6;             // Input bit buffer
-    constexpr auto bitctx = r7;             // Bit context index
-    constexpr auto offset = r8;             // Offset
-
-    constexpr auto getnumber_push_list = make_push_list(outp, lr);
-    constexpr auto getbit_push_list = make_push_list(outp, tmp0, tmp1, lr);
-
-    // Offset for accessing the context table relative to SP.
-    constexpr auto CTX_TABLE_OFFSET = 4 * getbit_push_list.size() + 4 * getnumber_push_list.size() + 2 * SINGLE_BIT_CONTEXTS;
 
     a.align(2);
     // Initially the GBA is in ARM state. Switch to Thumb state first.
