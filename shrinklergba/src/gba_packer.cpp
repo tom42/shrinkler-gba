@@ -212,10 +212,6 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
 
     a.align(2);
     a.label("code_start_old"s); // TODO: rename/remove
-    a.adr(inp, "packed_intro"s);
-
-    // Initialize output pointer with load address of program.
-    a.ldr(outp, input_file.load_address());
 
     // Initialize range decoder state.
     // rvalue will be set to 0 by the loop that follows.
@@ -231,6 +227,10 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
     a.sub(rvalue, 1);
     a.bne("init"s);
     // Now rvalue is 0
+
+    // Initialize input and output pointer
+    a.adr(inp, "packed_intro"s);
+    a.ldr(outp, input_file.load_address());
 
     // Main decompression loop.
     a.label("literal"s);
