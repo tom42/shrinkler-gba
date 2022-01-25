@@ -186,7 +186,7 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
     // In total 18 bytes that can be freely used, so we stick code into them.
     a.label("code_start"s);
     assert(current_pc(a) == 0xa0); // TODO: make a constant for 0xa0. Besides, this is already duplicated, the checksum calculation code uses it too.
-    a.arm_to_thumb(inp);
+    a.arm_to_thumb(inp);            // Switch to Thumb state
     a.hword(0);
     a.hword(0);
     a.hword(0);
@@ -211,7 +211,6 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
     ////////////////////////////////////////////////////////////////////////////
 
     a.align(2);
-    // Initially the GBA is in ARM state. Switch to Thumb state first.
     a.label("code_start_old"s); // TODO: rename/remove
     a.adr(inp, "packed_intro"s);
 
