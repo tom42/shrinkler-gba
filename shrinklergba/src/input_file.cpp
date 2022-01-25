@@ -35,6 +35,7 @@
 namespace shrinklergba
 {
 
+using boost::numeric_cast;
 using ELFIO::elfio;
 using ELFIO::Elf64_Addr;
 using ELFIO::Elf_Half;
@@ -114,7 +115,7 @@ void input_file::reset()
 
 void input_file::read_entry(elfio& reader)
 {
-    m_entry = reader.get_entry();
+    m_entry = numeric_cast<uint32_t>(reader.get_entry());
 }
 
 void input_file::log_program_headers(elfio& reader) const
@@ -213,7 +214,7 @@ void input_file::convert_to_binary(ELFIO::elfio& reader)
             {
                 // There is a hole between the current and the last section.
                 // Pad it with zeros. Zeros are required by ELF.
-                m_data.insert(m_data.end(), boost::numeric_cast<size_t>(npadding_bytes), 0);
+                m_data.insert(m_data.end(), numeric_cast<size_t>(npadding_bytes), 0);
                 output_address += npadding_bytes;
             }
         }
@@ -221,7 +222,7 @@ void input_file::convert_to_binary(ELFIO::elfio& reader)
         {
             // No bytes written to output yet. Record initial output address and load address.
             output_address = s->get_address();
-            m_load_address = output_address;
+            m_load_address = numeric_cast<uint32_t>(output_address);
         }
 
         // Copy section data to output.

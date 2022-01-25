@@ -52,11 +52,11 @@ public:
 
     void load(std::istream& stream);
 
-    uint_fast64_t entry() const { return m_entry; }
+    uint32_t entry() const { return m_entry; }
 
     bool is_thumb_entry() const { return entry() & 1; }
 
-    uint_fast64_t load_address() const { return m_load_address; }
+    uint32_t load_address() const { return m_load_address; }
 
     const std::vector<unsigned char>& data() const { return m_data; }
 
@@ -81,8 +81,8 @@ private:
     static void sort_sections_by_address(std::vector<const ELFIO::section*>& sections);
 
     const console m_console;
-    uint_fast64_t m_entry = 0;
-    uint_fast64_t m_load_address = 0;
+    uint32_t m_entry = 0;
+    uint32_t m_load_address = 0;
     std::vector<unsigned char> m_data;
 };
 
