@@ -1,3 +1,4 @@
+* NEXT: NOW WITH THE CODE IN HEADER, A test on real hardware is in order!
 * Notes from various old sources:
   * Old Thumb data depacker (shrinkler_decompress_thumb.s)
     @ * Might actually want to try the following: write a simpler (than depacker.cpp) one file depacker,
