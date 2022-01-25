@@ -21,6 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include <cassert>
 #include <cerrno>
 #include <fstream>
 #include <iostream>
@@ -163,6 +164,7 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
     a.byte(0x00, 0x00, 0x00, 0x00);
     a.byte(0x00, 0x00);
     // Fixed byte of value 0x96, followed by unit code which can be freely chosen.
+    assert(current_pc(a) == 0xb2); // TODO: make a constant for 0xb2. We'll later need it again, to also check the contents of this byte
     a.byte(0x96);
     a.byte(0x00);
     // Device type (1 byte), followed by 7 unused bytes.
