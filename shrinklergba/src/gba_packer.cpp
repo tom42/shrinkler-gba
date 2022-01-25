@@ -209,7 +209,7 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
     // Complement (will have to be fixed, so that checksum is 0)
     a.byte(0x00);
     // Checksum
-    a.byte(0x00, 0x00);
+    a.byte(0x00, 0x00);             // TODO: does this REALLY have to be zero, or can we make use of it?
 
     ////////////////////////////////////////////////////////////////////////////
     // Decompression code
