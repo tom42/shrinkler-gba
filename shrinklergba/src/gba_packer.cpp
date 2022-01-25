@@ -39,6 +39,16 @@ namespace shrinklergba
 
 using fmt::format;
 
+static lzasm::arm::arm32::address_t current_pc(lzasm::arm::arm32::divided_thumb_assembler & a)
+{
+    // TODO: this has a number of problems:
+    //       * It modifies the state of the assembler (that is, it is non-const)
+    //       * This IS a problem if there is an unplaced pool, because this causes the pool to be placed.
+    //       * It needs a cast from size_t to address_t
+    //       * We need to know the load address, although we do not care here. And the constant is duplicated.
+    return static_cast<lzasm::arm::arm32::address_t>(a.link(0x08000000).size());
+}
+
 void gba_packer::pack(const options& options)
 {
     // TODO: Try Shrinkler and LZSS+H4/H8 compression, select which is better
