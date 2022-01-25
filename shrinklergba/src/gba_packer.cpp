@@ -205,7 +205,7 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
     a.sub(rvalue, 1);
     a.bne("init"s);
     // Now rvalue is 0
-    a.hword(0); // TODO: use this to jump over hame version
+    a.hword(0); // TODO: use this to jump over game version. Either that, or analyze what the next instruction is. If it is harmless, stomp over it. But if we do that we must use an assertion of some sort.
     // Game version (1 byte). Hard to make use of, since it's followed by the complement.
     assert(current_pc(a) == 0xbc);  // TODO: make constant
     a.byte(0x00);
