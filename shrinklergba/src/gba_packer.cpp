@@ -198,6 +198,7 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
     assert(current_pc(a) == 0xb2); // TODO: make a constant for 0xb2. We'll later need it again, to also check the contents of this byte
     a.mov(tmp0, 0x96);
     // Device type (1 byte), followed by 7 unused bytes.
+    assert(current_pc(a) == 0xb4);  // TODO: constant for 0xb4. Also TODO: is it really legal to have a nonzero device type?
     a.byte(0x00);
     a.byte(0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
     // Game version (1 byte). Hard to make use of, since it's followed by the complement.
