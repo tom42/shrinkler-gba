@@ -34,6 +34,11 @@
     * Either when reading the ELF or writing the raw binary, should we check that sh_addralign/sh_addr match?
 * Open issues
   * LZASM needs fixage again:
+    * New feature:
+      * expose current_pc in the assembler
+      * rationale: I would like to have this in order to put assertions into shrinkler-gba's code generation code
+        * E.g. I'd have an assertion that asserts that the fixed byte in the header is exactly where I want it to be
+        * Currently this is possible only through roundabout ways (i'd have to preliminary assemble, and that won't work if there are undefined labels)
     * There is some unsigned comparison (< 0), which gcc complains about but not when compiling lzasm, only when compiling shrinkler-gba
     * Need to fix this in LZASM
       * Fix it in LZASM github
