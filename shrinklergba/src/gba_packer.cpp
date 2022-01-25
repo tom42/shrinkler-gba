@@ -106,9 +106,6 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
 
     // TODO: implement:
     //       * Create a shrinklered intro, taking into account
-    //         * The load address (currently hardcoded to 0x03000000, not good)
-    //         * The entry point (currently hardcoded to be the same as load address, not good)
-    //         * Whether entry is ARM or Thumb (currently assumed to be ARM, but we want to support ARM/Thumb)
     //         * Preserve registers? (optional)
     //         * Preserve memory contents? (optional, maybe in a later version)
     //         * Stick code into header
@@ -189,7 +186,6 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
     constexpr auto bitbuf = r6;             // Input bit buffer
     constexpr auto bitctx = r7;             // Bit context index
     constexpr auto offset = r8;             // Offset
-    constexpr auto depacked_entry = r9;     // Entry point of depacked code
 
     constexpr auto getnumber_push_list = make_push_list(outp, lr);
     constexpr auto getbit_push_list = make_push_list(outp, tmp0, tmp1, lr);
@@ -203,11 +199,8 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
     a.arm_to_thumb(inp);
     a.adr(inp, "packed_intro"s);
 
-    // Initialize output pointer(0x03000000 = IWRAM).
-    // Save it for later since this is also the entry point.
-    a.mov(outp, 3);                 // TODO: fix comment above
-    a.lsl(outp, outp, 24);          // TODO: load load address and entry point from input_file.
-    a.mov(depacked_entry, outp);    //       Problem: input_file returns them as 64 bit integers, which is silly and which needs a cast here.
+    // Initialize output pointer with load address of program.
+    a.ldr(outp, input_file.load_address());
 
     // Initialize range decoder state.
     // rvalue will be set to 0 by the loop that follows.
@@ -267,7 +260,8 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
     a.mov(offset, tmp1);
     a.bne("readlength"s);
     a.label("donedecompressing"s);
-    a.bx(depacked_entry);
+    a.ldr(outp, input_file.entry());
+    a.bx(outp);
 
     ////////////////////////////////////////////////////////////////////////////
     // getnumber: decode variable length number
