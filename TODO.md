@@ -40,15 +40,6 @@
       * New version? ()
       * Update in shrinkler-gba (how?)
   * Final binary generation/depacker
-    * Should be updated, so that it can execute ARM and Thumb entry points. Detection is done by input_file
-      * Do we check whether the entry point is valid?
-      * Do we attempt to optimize loading of the entry point? (ldr= vs. some move/shift/rotate combo)?
-      * Attention: load address != entry point. The case where they're the same is a special case!
-        * The binary must be decompressed to the load address
-        * Execution must start at the entry point
-    * GBA HEADER
-      * The checksum must be calculated!
-      * Do we stick code into it? If so, what code? Ideally it is code that does not normally need to be modified!
     * Depacker code
       * Register state: do we care? Do we preserve registers as the BIOS leaves them? Or do we have this as an option?
       * We never really validated it, particularly not the stack data mess
