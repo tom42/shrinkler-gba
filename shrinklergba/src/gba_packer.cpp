@@ -193,9 +193,10 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
     a.hword(0);
     a.hword(0);
     // Fixed byte of value 0x96, followed by unit code which can be freely chosen.
+    // We insert an instruction here that contains the required value and that
+    // does not bother us otherwise, so that we can execute it rather than jump over it.
     assert(current_pc(a) == 0xb2); // TODO: make a constant for 0xb2. We'll later need it again, to also check the contents of this byte
-    a.byte(0x96);
-    a.byte(0x00);
+    a.mov(tmp0, 0x96);
     // Device type (1 byte), followed by 7 unused bytes.
     a.byte(0x00);
     a.byte(0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
