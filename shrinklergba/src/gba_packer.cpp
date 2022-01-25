@@ -187,8 +187,8 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
     a.label("code_start"s);
     assert(current_pc(a) == 0xa0); // TODO: make a constant for 0xa0. Besides, this is already duplicated, the checksum calculation code uses it too.
     a.arm_to_thumb(inp);            // Switch to Thumb state
-    a.hword(0);
-    a.hword(0);
+    a.mov(isize, 1);                // Initialize range decoder state. rvalue will be set to 0 by the loop that follows.
+    a.lsl(bitbuf, isize, 31);       // Bit buffer is empty. Only the sentinel bit is set.
     a.hword(0);
     a.hword(0);
     a.hword(0);
@@ -217,11 +217,6 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
 
     a.align(2);
     a.label("code_start_old"s); // TODO: rename/remove
-
-    // Initialize range decoder state.
-    // rvalue will be set to 0 by the loop that follows.
-    a.mov(isize, 1);
-    a.lsl(bitbuf, isize, 31);
 
     // Initialize probabilities, writing two contexts per iteration.
     a.lsl(rvalue, isize, 10);       // rvalue = NUM_CONTEXTS / 2
