@@ -200,10 +200,12 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
     a.mov(tmp0, 0x96);
     // Device type (1 byte), followed by 7 unused bytes.
     assert(current_pc(a) == 0xb4);  // TODO: constant for 0xb4. Also TODO: is it really legal to have a nonzero device type?
-    a.hword(0);
-    a.hword(0);
-    a.hword(0);
-    a.hword(0);
+    a.label("init"s);
+    a.push(bitctx);
+    a.sub(rvalue, 1);
+    a.bne("init"s);
+    // Now rvalue is 0
+    a.hword(0); // TODO: use this to jump over hame version
     // Game version (1 byte). Hard to make use of, since it's followed by the complement.
     assert(current_pc(a) == 0xbc);  // TODO: make constant
     a.byte(0x00);
@@ -218,12 +220,6 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
 
     a.align(2);
     a.label("code_start_old"s); // TODO: rename/remove
-
-    a.label("init"s);
-    a.push(bitctx);
-    a.sub(rvalue, 1);
-    a.bne("init"s);
-    // Now rvalue is 0
 
     // Initialize input and output pointer
     a.adr(inp, "packed_intro"s);
