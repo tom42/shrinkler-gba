@@ -157,7 +157,7 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
     constexpr auto CTX_TABLE_OFFSET = 4 * getbit_push_list.size() + 4 * getnumber_push_list.size() + 2 * SINGLE_BIT_CONTEXTS;
 
     ////////////////////////////////////////////////////////////////////////////
-    // Cartridge header
+    // Cartridge header, with beginning of decompression code
     ////////////////////////////////////////////////////////////////////////////
 
     a.arm_branch("code_start"s);
@@ -189,9 +189,10 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
     a.arm_to_thumb(inp);            // Switch to Thumb state
     a.mov(isize, 1);                // Initialize range decoder state. rvalue will be set to 0 by the loop that follows.
     a.lsl(bitbuf, isize, 31);       // Bit buffer is empty. Only the sentinel bit is set.
-    a.hword(0);
-    a.hword(0);
-    a.hword(0);
+    // Initialize probabilities, writing two contexts per iteration.
+    a.lsl(rvalue, isize, 10);       // rvalue = NUM_CONTEXTS / 2
+    a.lsl(bitctx, isize, 15);       // bitctx = (INIT_ONE_PROB << 16) | INIT_ONE_PROB
+    a.orr(bitctx, bitbuf);          // That is, 0x80008000, so that we can write two contexts at once
     // Fixed byte of value 0x96, followed by unit code which can be freely chosen.
     // We insert an instruction here that contains the required value and that
     // does not bother us otherwise, so that we can execute it rather than jump over it.
@@ -212,16 +213,12 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
     a.byte(0x00, 0x00);             // TODO: does this REALLY have to be zero, or can we make use of it?
 
     ////////////////////////////////////////////////////////////////////////////
-    // Decompression code
+    // Remaining decompression code
     ////////////////////////////////////////////////////////////////////////////
 
     a.align(2);
     a.label("code_start_old"s); // TODO: rename/remove
 
-    // Initialize probabilities, writing two contexts per iteration.
-    a.lsl(rvalue, isize, 10);       // rvalue = NUM_CONTEXTS / 2
-    a.lsl(bitctx, isize, 15);       // bitctx = (INIT_ONE_PROB << 16) | INIT_ONE_PROB
-    a.orr(bitctx, bitbuf);
     a.label("init"s);
     a.push(bitctx);
     a.sub(rvalue, 1);
