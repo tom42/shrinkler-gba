@@ -40,6 +40,9 @@ namespace shrinklergba
 
 using fmt::format;
 
+// Offsets in GBA cartridge header
+constexpr size_t ofs_game_title = 0xa0;
+
 static lzasm::arm::arm32::address_t current_pc(lzasm::arm::arm32::divided_thumb_assembler & a)
 {
     // TODO: this has a number of problems:
@@ -67,7 +70,7 @@ void gba_packer::pack(const options& options)
 void gba_packer::write_checksum(std::vector<unsigned char>& cart)
 {
     char complement = 0;
-    for (size_t n = 0xa0; n < 0xbd; ++n)
+    for (size_t n = ofs_game_title; n < 0xbd; ++n)
     {
         complement += cart[n];
     }
@@ -182,10 +185,11 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
     a.byte(0x65, 0xc0, 0x7c, 0x63, 0x87, 0xf0, 0x3c, 0xaf);
     a.byte(0xd6, 0x25, 0xe4, 0x8b, 0x38, 0x0a, 0xac, 0x72);
     a.byte(0x21, 0xd4, 0xf8, 0x07);
+
     // Game title (12 bytes), game code (4 bytes) and maker code (2 bytes).
     // In total 18 bytes that can be freely used, so we stick code into them.
     a.label("code_start"s);
-    assert(current_pc(a) == 0xa0); // TODO: make a constant for 0xa0. Besides, this is already duplicated, the checksum calculation code uses it too.
+    assert(current_pc(a) == ofs_game_title);
     a.arm_to_thumb(inp);            // Switch to Thumb state
     a.mov(isize, 1);                // Initialize range decoder state. rvalue will be set to 0 by the loop that follows.
     a.lsl(bitbuf, isize, 31);       // Bit buffer is empty. Only the sentinel bit is set.
