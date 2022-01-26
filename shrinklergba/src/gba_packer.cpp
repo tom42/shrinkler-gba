@@ -43,6 +43,7 @@ using fmt::format;
 // Offsets in GBA cartridge header
 constexpr size_t ofs_game_title = 0xa0;
 constexpr size_t ofs_fixed_byte = 0xb2;
+constexpr size_t ofs_device_type = 0xb4;
 
 static lzasm::arm::arm32::address_t current_pc(lzasm::arm::arm32::divided_thumb_assembler & a)
 {
@@ -208,18 +209,21 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
     a.mov(tmp0, 0x96);
 
     // Device type (1 byte), followed by 7 unused bytes.
-    assert(current_pc(a) == 0xb4);  // TODO: constant for 0xb4. Also TODO: is it really legal to have a nonzero device type?
+    assert(current_pc(a) == ofs_device_type);
     a.label("init"s);
     a.push(bitctx);
     a.sub(rvalue, 1);
     a.bne("init"s);
     // Now rvalue is 0
     a.hword(0); // TODO: use this to jump over game version. Either that, or analyze what the next instruction is. If it is harmless, stomp over it. But if we do that we must use an assertion of some sort.
+
     // Game version (1 byte). Hard to make use of, since it's followed by the complement.
     assert(current_pc(a) == 0xbc);  // TODO: make constant
     a.byte(0x00);
+
     // Complement (will have to be fixed, so that checksum is 0)
     a.byte(0x00);
+
     // Checksum
     a.byte(0x00, 0x00);             // TODO: does this REALLY have to be zero, or can we make use of it?
 
