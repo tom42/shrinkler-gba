@@ -45,18 +45,18 @@ class object final
 public:
     void add_reference(reference_type type, const immediate<TSymbolName>& value)
     {
-        references.emplace_back(type, current_pc(), value);
+        references.emplace_back(type, current_lc(), value);
     }
 
     void add_reference_to_literal(const immediate<TSymbolName>& imm)
     {
         auto literal_name = get_name_of_new_or_existing_literal(imm);
-        literal_references.emplace_back(current_pc(), literal_name);
+        literal_references.emplace_back(current_lc(), literal_name);
     }
 
     void add_symbol(const symbol<TSymbolName>& symbol)
     {
-        auto insertion_result = symbols.insert(std::make_pair(symbol, current_pc()));
+        auto insertion_result = symbols.insert(std::make_pair(symbol, current_lc()));
         if (!insertion_result.second)
         {
             report_error("Symbol is already defined");
@@ -68,10 +68,15 @@ public:
         check_alignment_is_in_range(alignment);
 
         auto byte_alignment = get_byte_alignment(alignment);
-        while (current_pc() % byte_alignment != 0)
+        while (current_lc() % byte_alignment != 0)
         {
             emit8(0);
         }
+    }
+
+    address_t current_lc() const
+    {
+        return static_cast<address_t>(data.size());
     }
 
     void emit8(uint_fast8_t u8)
@@ -132,7 +137,7 @@ public:
         // Dump the literals into the pool, and record their addresses.
         for (auto& literal : literals)
         {
-            literal.address = current_pc();
+            literal.address = current_lc();
 
             if (literal.value.is_symbol_reference())
             {
@@ -175,11 +180,6 @@ public:
     bytevector to_bytevector() const { return data; }
 
 private:
-    address_t current_pc() const
-    {
-        return static_cast<address_t>(data.size());
-    }
-
     auto get_name_of_new_or_existing_literal(const immediate<TSymbolName>& imm)
     {
         auto iter = std::find_if(literals.begin(), literals.end(), [&](const auto& literal) { return literal.value == imm; });
@@ -392,7 +392,7 @@ private:
 
     void check_origin(address_t origin)
     {
-        if (max_address - current_pc() < origin)
+        if (max_address - current_lc() < origin)
         {
             report_error("Origin too large");
         }
@@ -400,7 +400,7 @@ private:
 
     static void check_alignment_is_in_range(address_t alignment)
     {
-        if ((alignment < 0) || (alignment > max_alignment))
+        if (alignment > max_alignment)
         {
             report_error("Alignment out of range");
         }
