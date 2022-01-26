@@ -47,17 +47,6 @@ constexpr size_t ofs_device_type = 0xb4;
 constexpr size_t ofs_game_version = 0xbc;
 constexpr size_t ofs_complement = 0xbd;
 
-static lzasm::arm::arm32::address_t current_pc(lzasm::arm::arm32::divided_thumb_assembler & a)
-{
-    // TODO: this has a number of problems:
-    //       * It modifies the state of the assembler (that is, it is non-const)
-    //       * This IS a problem if there is an unplaced pool, because this causes the pool to be placed.
-    //         * It is also a problem if there are references to not yet defined symbols
-    //       * It needs a cast from size_t to address_t
-    //       * We need to know the load address, although we do not care here. And the constant is duplicated.
-    return static_cast<lzasm::arm::arm32::address_t>(a.link(0x08000000).size());
-}
-
 void gba_packer::pack(const options& options)
 {
     // TODO: Try Shrinkler and LZSS+H4/H8 compression, select which is better
@@ -194,7 +183,7 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
     // Game title (12 bytes), game code (4 bytes) and maker code (2 bytes).
     // In total 18 bytes that can be freely used, so we stick code into them.
     a.label("code_start"s);
-    assert(current_pc(a) == ofs_game_title);
+    assert(a.current_lc() == ofs_game_title);
     a.arm_to_thumb(inp);            // Switch to Thumb state
     a.mov(isize, 1);                // Initialize range decoder state. rvalue will be set to 0 by the loop that follows.
     a.lsl(bitbuf, isize, 31);       // Bit buffer is empty. Only the sentinel bit is set.
@@ -207,11 +196,11 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
     // Fixed byte of value 0x96, followed by unit code which can be freely chosen.
     // We insert an instruction here that contains the required value and that
     // does not bother us otherwise, so that we can execute it rather than jump over it.
-    assert(current_pc(a) == ofs_fixed_byte);
+    assert(a.current_lc() == ofs_fixed_byte);
     a.mov(tmp0, 0x96);
 
     // Device type (1 byte), followed by 7 unused bytes.
-    assert(current_pc(a) == ofs_device_type);
+    assert(a.current_lc() == ofs_device_type);
     a.label("init"s);
     a.push(bitctx);
     a.sub(rvalue, 1);
@@ -223,7 +212,7 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
     // If the checksum was known ahead we could place a harmless Thumb instruction here,
     // but the only instructions we've currently left are those to load the input and
     // output pointers, and those are not constant.
-    assert(current_pc(a) == ofs_game_version);
+    assert(a.current_lc() == ofs_game_version);
     a.byte(0x00, 0x00);
 
     // Reserved

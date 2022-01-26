@@ -36,17 +36,6 @@
   * Verification
     * Either when reading the ELF or writing the raw binary, should we check that sh_addralign/sh_addr match?
 * Open issues
-  * LZASM needs fixage again:
-    * New feature:
-      * expose current_pc in the assembler
-      * rationale: I would like to have this in order to put assertions into shrinkler-gba's code generation code
-        * E.g. I'd have an assertion that asserts that the fixed byte in the header is exactly where I want it to be
-        * Currently this is possible only through roundabout ways (i'd have to preliminary assemble, and that won't work if there are undefined labels)
-    * There is some unsigned comparison (< 0), which gcc complains about but not when compiling lzasm, only when compiling shrinkler-gba
-    * Need to fix this in LZASM
-      * Fix it in LZASM github
-      * New version? ()
-      * Update in shrinkler-gba (how?)
   * Final binary generation/depacker
     * Depacker code
       * Register state: do we care? Do we preserve registers as the BIOS leaves them? Or do we have this as an option?
@@ -71,6 +60,8 @@
     * git subtree add --prefix 3rdparty/ELFIO https://github.com/serge1/ELFIO Release_3.9 --squash
     * git subtree add --prefix 3rdparty/fmt https://github.com/fmtlib/fmt 8.0.1 --squash
     * git subtree add --prefix 3rdparty/lzasm https://github.com/tom42/lzasm v0.1.0 --squash
+  * And also document how to update, e.g:
+    * git subtree pull --prefix 3rdparty/lzasm https://github.com/tom42/lzasm v0.2.0 --squash
 * Be clear about licensing (top level README.md)
   * shrinkler-gba code: MIT license
   * libshrinkler: MIT, except actual shrinkler code, which is Blueberry's
