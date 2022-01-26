@@ -206,14 +206,14 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
     a.sub(rvalue, 1);
     a.bne("init"s);
     // Now rvalue is 0
-    a.hword(0); // TODO: use this to jump over game version. Either that, or analyze what the next instruction is. If it is harmless, stomp over it. But if we do that we must use an assertion of some sort.
+    a.b("code_start_old"s);         // Jump over game version and complement
 
     // Game version (1 byte), followed by the complement/checksum (1 byte).
     // If the checksum was known ahead we could place a harmless Thumb instruction here,
     // but the only instructions we've currently left are those to load the input and
     // output pointers, and those are not constant.
     assert(a.current_lc() == ofs_game_version);
-    a.byte(0x00, 0x00);
+    a.byte(0x69, 0x00);             // Game version can be freely chosen
 
     // Reserved
     a.byte(0x00, 0x00);             // TODO: does this REALLY have to be zero, or can we make use of it?
