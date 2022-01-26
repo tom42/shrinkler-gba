@@ -68,11 +68,11 @@ void gba_packer::pack(const options& options)
     input_file.load(options.input_file());
 
     std::vector<unsigned char> cart = make_shrinklered_cart(input_file, options);
-    write_checksum(cart);
+    write_complement(cart);
     write_to_disk(cart, options.output_file());
 }
 
-void gba_packer::write_checksum(std::vector<unsigned char>& cart)
+void gba_packer::write_complement(std::vector<unsigned char>& cart)
 {
     char complement = 0;
     for (size_t n = ofs_game_title; n < ofs_complement; ++n)
