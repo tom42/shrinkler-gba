@@ -42,12 +42,14 @@ using fmt::format;
 
 // Offsets in GBA cartridge header
 constexpr size_t ofs_game_title = 0xa0;
+constexpr size_t ofs_fixed_byte = 0xb2;
 
 static lzasm::arm::arm32::address_t current_pc(lzasm::arm::arm32::divided_thumb_assembler & a)
 {
     // TODO: this has a number of problems:
     //       * It modifies the state of the assembler (that is, it is non-const)
     //       * This IS a problem if there is an unplaced pool, because this causes the pool to be placed.
+    //         * It is also a problem if there are references to not yet defined symbols
     //       * It needs a cast from size_t to address_t
     //       * We need to know the load address, although we do not care here. And the constant is duplicated.
     return static_cast<lzasm::arm::arm32::address_t>(a.link(0x08000000).size());
@@ -193,15 +195,18 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
     a.arm_to_thumb(inp);            // Switch to Thumb state
     a.mov(isize, 1);                // Initialize range decoder state. rvalue will be set to 0 by the loop that follows.
     a.lsl(bitbuf, isize, 31);       // Bit buffer is empty. Only the sentinel bit is set.
+
     // Initialize probabilities, writing two contexts per iteration.
     a.lsl(rvalue, isize, 10);       // rvalue = NUM_CONTEXTS / 2
     a.lsl(bitctx, isize, 15);       // bitctx = (INIT_ONE_PROB << 16) | INIT_ONE_PROB
     a.orr(bitctx, bitbuf);          // That is, 0x80008000, so that we can write two contexts at once
+
     // Fixed byte of value 0x96, followed by unit code which can be freely chosen.
     // We insert an instruction here that contains the required value and that
     // does not bother us otherwise, so that we can execute it rather than jump over it.
-    assert(current_pc(a) == 0xb2); // TODO: make a constant for 0xb2. We'll later need it again, to also check the contents of this byte
+    assert(current_pc(a) == ofs_fixed_byte);
     a.mov(tmp0, 0x96);
+
     // Device type (1 byte), followed by 7 unused bytes.
     assert(current_pc(a) == 0xb4);  // TODO: constant for 0xb4. Also TODO: is it really legal to have a nonzero device type?
     a.label("init"s);
@@ -381,7 +386,7 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
     a.incbin(compressed_program.begin(), compressed_program.end());
 
     auto program = a.link(0x08000000);
-    assert(program[0xb2] == 0x96);  // TODO: unhardcode 0xb2 and 0x96 (both are used elsewhere)
+    assert(program[ofs_fixed_byte] == 0x96);
     return program;
 }
 
