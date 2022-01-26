@@ -45,6 +45,7 @@ constexpr size_t ofs_game_title = 0xa0;
 constexpr size_t ofs_fixed_byte = 0xb2;
 constexpr size_t ofs_device_type = 0xb4;
 constexpr size_t ofs_game_version = 0xbc;
+constexpr size_t ofs_complement = 0xbd;
 
 static lzasm::arm::arm32::address_t current_pc(lzasm::arm::arm32::divided_thumb_assembler & a)
 {
@@ -74,12 +75,12 @@ void gba_packer::pack(const options& options)
 void gba_packer::write_checksum(std::vector<unsigned char>& cart)
 {
     char complement = 0;
-    for (size_t n = ofs_game_title; n < 0xbd; ++n)
+    for (size_t n = ofs_game_title; n < ofs_complement; ++n)
     {
         complement += cart[n];
     }
 
-    cart[0xbd] = -(0x19 + complement);
+    cart[ofs_complement] = -(0x19 + complement);
 }
 
 void gba_packer::write_to_disk(const std::vector<unsigned char>& data, const std::filesystem::path& filename)
