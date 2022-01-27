@@ -380,9 +380,9 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
     a.label("packed_intro"s);
     a.incbin(compressed_program.begin(), compressed_program.end());
 
-    auto program = a.link(0x08000000);
-    assert(program[ofs_fixed_byte] == 0x96);
-    return program;
+    auto cart = a.link(0x08000000);
+    assert(cart[ofs_fixed_byte] == 0x96);
+    return cart;
 }
 
 }
