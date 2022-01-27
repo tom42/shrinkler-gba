@@ -46,6 +46,7 @@ constexpr size_t ofs_fixed_byte = 0xb2;
 constexpr size_t ofs_device_type = 0xb4;
 constexpr size_t ofs_game_version = 0xbc;
 constexpr size_t ofs_complement = 0xbd;
+constexpr size_t ofs_reserved2 = 0xbe;
 
 void gba_packer::pack(const options& options)
 {
@@ -216,6 +217,7 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
     a.byte(0x69, 0x00);             // Game version can be freely chosen
 
     // Reserved
+    assert(a.current_lc() == ofs_reserved2);
     a.byte(0x00, 0x00);             // TODO: does this REALLY have to be zero, or can we make use of it?
 
     ////////////////////////////////////////////////////////////////////////////
