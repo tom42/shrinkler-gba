@@ -21,7 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <cassert> // TODO: consider replacing all assertions with runtime checks that are also in release builds
+#include <cassert>
 #include <cerrno>
 #include <fstream>
 #include <iostream>
