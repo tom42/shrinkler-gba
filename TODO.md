@@ -1,6 +1,8 @@
 * NEXT: NOW WITH THE CODE IN HEADER, A test on real hardware is in order!
   * Questions:
     * Is it really legal to have a nonzero device type? (value at header offset 0xb4)
+    * Is it really required that the reserved area at the end of the header (at 0xbe) is zero?
+
 * Notes from various old sources:
   * Old Thumb data depacker (shrinkler_decompress_thumb.s)
     @ * Might actually want to try the following: write a simpler (than depacker.cpp) one file depacker,

@@ -207,28 +207,28 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
     a.sub(rvalue, 1);
     a.bne("init"s);
     // Now rvalue is 0
-    a.b("code_start_old"s);         // Jump over game version and complement
+    a.b("reserved2"s);              // Jump over game version and complement
 
     // Game version (1 byte), followed by the complement/checksum (1 byte).
-    // If the checksum was known ahead we could place a harmless Thumb instruction here,
-    // but the only instructions we've currently left are those to load the input and
-    // output pointers, and those are not constant.
+    // If the complement was known ahead we could attempt to place a harmless
+    // Thumb instruction here, but the only instructions we've currently left are
+    // those to load the input and output pointers, and those are not constant.
+    // Another problem is that the complement goes into the high byte of the instruction
+    // and thus dictates the kind of instruction generated, otherwise we could just
+    // set up things for this to be a harmless mov instruction.
     assert(a.current_lc() == ofs_game_version);
     a.byte(0x69, 0x00);             // Game version can be freely chosen
 
     // Reserved
     assert(a.current_lc() == ofs_reserved2);
-    a.byte(0x00, 0x00);             // TODO: does this REALLY have to be zero, or can we make use of it?
+    a.label("reserved2"s);
+    a.adr(inp, "packed_intro"s);    // Initialize input pointer
 
     ////////////////////////////////////////////////////////////////////////////
-    // Remaining decompression code
+    // Remaining decompression code, outside of header
     ////////////////////////////////////////////////////////////////////////////
 
-    a.align(2);
-    a.label("code_start_old"s); // TODO: rename/remove
-
-    // Initialize input and output pointer
-    a.adr(inp, "packed_intro"s);
+    // Initialize output pointer
     a.ldr(outp, input_file.load_address());
 
     // Main decompression loop.
