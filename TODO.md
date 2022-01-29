@@ -3,6 +3,14 @@
     * Is it really legal to have a nonzero device type? (value at header offset 0xb4)
     * Is it really required that the reserved area at the end of the header (at 0xbe) is zero?
 
+* Implement relevant GBA BIOS compressors
+  * Can do decoders first, we'll need them for verification
+    * Huffman decoder
+    * LZSS decoder (does not need to be VRAM safe)
+  * Then do encoders
+    * Huffman
+    * LZSS
+    * Eventually do optimal LZSS
 * Notes from various old sources:
   * Old Thumb data depacker (shrinkler_decompress_thumb.s)
     @ * Might actually want to try the following: write a simpler (than depacker.cpp) one file depacker,
