@@ -30,12 +30,14 @@ set(
   include/shrinklergba/elfio_wrapper.hpp
   include/shrinklergba/elf_strings.hpp
   include/shrinklergba/gba_packer.hpp
+  include/shrinklergba/huffman.hpp
   include/shrinklergba/input_file.hpp
   include/shrinklergba/options.hpp
   include/shrinklergba/table_printer.hpp
   src/command_line.cpp
   src/elf_strings.cpp
   src/gba_packer.cpp
+  src/huffman.cpp
   src/input_file.cpp
   src/table_printer.cpp)
 
@@ -61,6 +63,7 @@ if(BUILD_TESTING)
   set(
     UNITTEST_SOURCES
     unittest/command_line_test.cpp
+    unittest/huffman_decoder_test.cpp
     unittest/input_file_test.cpp
     unittest/main.cpp
     unittest/options_test.cpp
