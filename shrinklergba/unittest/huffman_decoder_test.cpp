@@ -34,6 +34,7 @@ namespace shrinklergba_unittest
         E,                                                              \
         [](const auto& e) { BOOST_TEST(e.what() == M); return true; });
 
+// TODO: also test with h4, h2 and h1
 static const std::vector<unsigned char> h8_encoded_data
 {
     0x28, 0x1b, 0x00, 0x00, 0x0d, 0x00, 0x00, 0xc1, 0x41, 0x02, 0x20, 0x6f,
@@ -60,6 +61,12 @@ BOOST_FIXTURE_TEST_SUITE(huffman_decoder_test, huffman_decoder_test_fixture)
     {
         std::vector<unsigned char> data{ 0x38, 0x00, 0x00, 0x00 };
         CHECK_EXCEPTION(decoder.decode(data), std::runtime_error, "invalid compression type");
+    }
+
+    BOOST_AUTO_TEST_CASE(decode_when_symbol_size_is_wrong_then_throws)
+    {
+        std::vector<unsigned char> data{ 0x27, 0x00, 0x00, 0x00 };
+        CHECK_EXCEPTION(decoder.decode(data), std::runtime_error, "invalid symbol size");
     }
 
     BOOST_AUTO_TEST_CASE(decode_h8)
