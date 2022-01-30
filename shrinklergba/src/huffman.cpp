@@ -21,6 +21,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include <algorithm>
+#include <array>
 #include <iostream> // TODO: remove
 #include "shrinklergba/huffman.hpp"
 
@@ -59,9 +61,14 @@ void huffman_decoder::check_compression_type(unsigned char compression_type) con
     }
 }
 
-void huffman_decoder::check_symbol_size(int /*symbol_size*/) const
+void huffman_decoder::check_symbol_size(int symbol_size) const
 {
-    // TODO: throw if wrong symbol width (that is, neither of 1, 2, 4, 8? Probably? For starters we could probably also go for just 8, and then later 4)
+    static const std::array valid_sizes{ 1, 2, 4, 8 };
+
+    if (std::find(valid_sizes.begin(), valid_sizes.end(), symbol_size) == valid_sizes.end())
+    {
+        throw std::runtime_error("invalid symbol size");
+    }
 }
 
 }
