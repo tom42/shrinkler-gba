@@ -35,7 +35,7 @@ class huffman_decoder
 public:
     std::vector<unsigned char> decode(const std::vector<unsigned char>& data) const;
 private:
-    void throw_if_wrong_compression_type(unsigned char compression_type) const;
+    void check_compression_type(unsigned char compression_type) const;
 };
 
 }
