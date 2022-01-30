@@ -33,10 +33,8 @@ std::vector<unsigned char> huffman_decoder::decode(const std::vector<unsigned ch
 
     check_compression_type(*input >> 4);
 
-    // TODO: read symbol width
-    // TODO: throw if wrong symbol width (that is, neither of 1, 2, 4, 8? Probably? For starters we could probably also go for just 8, and then later 4)
-    auto symbol_width = *input++ & 15;
-    std::cout << symbol_width << std::endl; // TODO: remove
+    auto symbol_size = *input++ & 15;
+    check_symbol_size(symbol_size);
 
     // TODO: read size of decompressed data
     // TODO: this is broken (UB, for one thing) => Own method, and maybe unit test it?
@@ -59,6 +57,11 @@ void huffman_decoder::check_compression_type(unsigned char compression_type) con
     {
         throw std::runtime_error("invalid compression type");
     }
+}
+
+void huffman_decoder::check_symbol_size(int /*symbol_size*/) const
+{
+    // TODO: throw if wrong symbol width (that is, neither of 1, 2, 4, 8? Probably? For starters we could probably also go for just 8, and then later 4)
 }
 
 }

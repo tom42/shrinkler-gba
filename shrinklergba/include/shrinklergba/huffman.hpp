@@ -36,6 +36,7 @@ public:
     std::vector<unsigned char> decode(const std::vector<unsigned char>& data) const;
 private:
     void check_compression_type(unsigned char compression_type) const;
+    void check_symbol_size(int symbol_size) const;
 };
 
 }
