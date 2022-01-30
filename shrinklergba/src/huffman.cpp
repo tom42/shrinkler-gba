@@ -21,13 +21,37 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include <iostream> // TODO: remove
 #include "shrinklergba/huffman.hpp"
 
 namespace shrinklergba
 {
 
-std::vector<unsigned char> huffman_decoder::decode(const std::vector<unsigned char>&)
+std::vector<unsigned char> huffman_decoder::decode(const std::vector<unsigned char>& data)
 {
+    auto input = data.begin();
+
+    // TODO: read first part of header: compression type
+    // TODO: throw if wrong compression type
+    auto compression_type = *input >> 4;
+    std::cout << compression_type << std::endl; // TODO: remove
+
+    // TODO: read symbol width
+    // TODO: throw if wrong symbol width (that is, neither of 1, 2, 4, 8? Probably? For starters we could probably also go for just 8, and then later 4)
+    auto symbol_width = *input++ & 15;
+    std::cout << symbol_width << std::endl; // TODO: remove
+
+    // TODO: read size of decompressed data
+    // TODO: this is broken (UB, for one thing) => Own method, and maybe unit test it?
+    // TODO: also it is maybe time to stop using auto here. Anyway it is not needed to use auto all over the place here
+    auto decompressed_size = *input++ + *input++ * 256 + *input++ * 65536;
+    std::cout << decompressed_size << std::endl; // TODO: Remove
+
+    // TODO: decode data
+    //       * We know the input data size, so we can have a loop for this
+    //       * Get symbol (we need to be able to read the input bit wise)
+    //       * Write symbol (we need to be able to write the output bit wise)
+
     return std::vector<unsigned char>();
 }
 
