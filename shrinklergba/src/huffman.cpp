@@ -41,8 +41,11 @@ std::vector<unsigned char> huffman_decoder::decode(const std::vector<unsigned ch
     // TODO: read size of decompressed data
     // TODO: this is broken (UB, for one thing) => Own method, and maybe unit test it?
     // TODO: also it is maybe time to stop using auto here. Anyway it is not needed to use auto all over the place here
-    size_t decompressed_size = *input++ + *input++ * 256 + *input++ * 65536;
+    size_t decompressed_size = *input++ + *input++ * 256 + *input++ * 65536; // TODO: UB. And get rid of silly "sub-expression may overflow being assigned to a wider type intellisense warning"
     std::cout << decompressed_size << std::endl; // TODO: Remove
+
+    // TODO: remember address to root of tree
+    // TODO: skip to beginning of compressed data
 
     // TODO: decode data
     //       * We know the input data size, so we can have a loop for this
