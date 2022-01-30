@@ -27,14 +27,11 @@
 namespace shrinklergba
 {
 
-std::vector<unsigned char> huffman_decoder::decode(const std::vector<unsigned char>& data)
+std::vector<unsigned char> huffman_decoder::decode(const std::vector<unsigned char>& data) const
 {
     auto input = data.begin();
 
-    // TODO: read first part of header: compression type
-    // TODO: throw if wrong compression type
-    auto compression_type = *input >> 4;
-    std::cout << compression_type << std::endl; // TODO: remove
+    throw_if_wrong_compression_type(*input >> 4);
 
     // TODO: read symbol width
     // TODO: throw if wrong symbol width (that is, neither of 1, 2, 4, 8? Probably? For starters we could probably also go for just 8, and then later 4)
@@ -53,6 +50,14 @@ std::vector<unsigned char> huffman_decoder::decode(const std::vector<unsigned ch
     //       * Write symbol (we need to be able to write the output bit wise)
 
     return std::vector<unsigned char>();
+}
+
+void huffman_decoder::throw_if_wrong_compression_type(unsigned char compression_type) const
+{
+    if (compression_type != 2)
+    {
+        throw std::runtime_error("invalid compression type");
+    }
 }
 
 }

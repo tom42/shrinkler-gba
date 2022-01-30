@@ -28,6 +28,12 @@
 namespace shrinklergba_unittest
 {
 
+#define CHECK_EXCEPTION(S, E, M)                                        \
+    BOOST_CHECK_EXCEPTION(                                              \
+        S,                                                              \
+        E,                                                              \
+        [](const auto& e) { BOOST_TEST(e.what() == M); return true; });
+
 static const std::vector<unsigned char> h8_encoded_data
 {
     0x28, 0x1b, 0x00, 0x00, 0x0d, 0x00, 0x00, 0xc1, 0x41, 0x02, 0x20, 0x6f,
@@ -42,11 +48,22 @@ static const std::vector<unsigned char> unencoded_data
     's', 't', ' ', 'f', 'o', 'o', 's', ' ', 'b', 'e', 's', 't', '.',
 };
 
-BOOST_AUTO_TEST_SUITE(huffman_decoder_test)
+class huffman_decoder_test_fixture
+{
+public:
+    shrinklergba::huffman_decoder decoder;
+};
+
+BOOST_FIXTURE_TEST_SUITE(huffman_decoder_test, huffman_decoder_test_fixture)
+
+    BOOST_AUTO_TEST_CASE(decode_when_compression_type_is_wrong_then_throws)
+    {
+        std::vector<unsigned char> data{ 0x38, 0x00, 0x00, 0x00 };
+        CHECK_EXCEPTION(decoder.decode(data), std::runtime_error, "invalid compression type");
+    }
 
     BOOST_AUTO_TEST_CASE(decode_h8)
     {
-        shrinklergba::huffman_decoder decoder;
         BOOST_TEST(unencoded_data == decoder.decode(h8_encoded_data), boost::test_tools::per_element());
     }
 
