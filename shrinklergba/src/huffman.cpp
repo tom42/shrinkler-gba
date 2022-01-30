@@ -46,6 +46,7 @@ std::vector<unsigned char> huffman_decoder::decode(const std::vector<unsigned ch
 
     // TODO: decode data
     //       * We know the input data size, so we can have a loop for this
+    //         * Yes that's OK, but remember, we have total size in bytes, but symbols which may be smaller than 8 bits!
     //       * Get symbol (we need to be able to read the input bit wise)
     //       * Write symbol (we need to be able to write the output bit wise)
 
