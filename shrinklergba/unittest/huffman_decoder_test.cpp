@@ -22,16 +22,32 @@
 // SOFTWARE.
 
 #include <boost/test/unit_test.hpp>
+#include <vector>
 #include "shrinklergba/huffman.hpp"
 
 namespace shrinklergba_unittest
 {
 
+static const std::vector<unsigned char> h8_encoded_data
+{
+    0x28, 0x1b, 0x00, 0x00, 0x0d, 0x00, 0x00, 0xc1, 0x41, 0x02, 0x20, 0x6f,
+    0x41, 0x73, 0x01, 0xc2, 0x42, 0x65, 0xc2, 0xc3, 0x66, 0x74, 0xc2, 0x2e,
+    0x6c, 0x77, 0x62, 0x68, 0x48, 0x61, 0x00, 0x00, 0x9b, 0xaf, 0x64, 0x00,
+    0xcd, 0x4b, 0x80, 0xcc, 0x08, 0x97, 0x50, 0xe6
+};
+
+static const std::vector<unsigned char> unencoded_data
+{
+    'H', 'e', ' ', 'w', 'h', 'o', ' ', 'f', 'o', 'o', 's', ' ', 'l', 'a',
+    's', 't', ' ', 'f', 'o', 'o', 's', ' ', 'b', 'e', 's', 't', '.',
+};
+
 BOOST_AUTO_TEST_SUITE(huffman_decoder_test)
 
-    BOOST_AUTO_TEST_CASE(decode)
+    BOOST_AUTO_TEST_CASE(decode_h8)
     {
-        BOOST_FAIL("YIKES");
+        shrinklergba::huffman_decoder decoder;
+        BOOST_TEST(unencoded_data == decoder.decode(h8_encoded_data), boost::test_tools::per_element());
     }
 
 BOOST_AUTO_TEST_SUITE_END()

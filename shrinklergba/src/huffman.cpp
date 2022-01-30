@@ -25,4 +25,10 @@
 
 namespace shrinklergba
 {
+
+std::vector<unsigned char> huffman_decoder::decode(const std::vector<unsigned char>&)
+{
+    return std::vector<unsigned char>();
+}
+
 }
