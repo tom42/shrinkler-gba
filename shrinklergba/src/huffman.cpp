@@ -35,13 +35,13 @@ std::vector<unsigned char> huffman_decoder::decode(const std::vector<unsigned ch
 
     check_compression_type(*input >> 4);
 
-    auto symbol_size = *input++ & 15;
+    int symbol_size = *input++ & 15;
     check_symbol_size(symbol_size);
 
     // TODO: read size of decompressed data
     // TODO: this is broken (UB, for one thing) => Own method, and maybe unit test it?
     // TODO: also it is maybe time to stop using auto here. Anyway it is not needed to use auto all over the place here
-    auto decompressed_size = *input++ + *input++ * 256 + *input++ * 65536;
+    size_t decompressed_size = *input++ + *input++ * 256 + *input++ * 65536;
     std::cout << decompressed_size << std::endl; // TODO: Remove
 
     // TODO: decode data
