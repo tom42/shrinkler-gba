@@ -35,13 +35,13 @@ std::vector<unsigned char> huffman_decoder::decode(const std::vector<unsigned ch
 
     check_compression_type(*input >> 4);
 
-    int symbol_size = *input++ & 15;
+    const int symbol_size = *input++ & 15;
     check_symbol_size(symbol_size);
 
-    size_t decompressed_size = get_decompressed_size(input);
-    std::cout << decompressed_size << std::endl; // TODO: remove
+    const size_t decompressed_size = get_decompressed_size(input);
+    const size_t tree_size = get_tree_size(input);
 
-    const auto huffman_tree_root = input;
+    const auto tree_root = input;
 
     // TODO: skip to beginning of compressed data
 
@@ -50,6 +50,10 @@ std::vector<unsigned char> huffman_decoder::decode(const std::vector<unsigned ch
     //         * Yes that's OK, but remember, we have total size in bytes, but symbols which may be smaller than 8 bits!
     //       * Get symbol (we need to be able to read the input bit wise)
     //       * Write symbol (we need to be able to write the output bit wise)
+
+    // TODO: remove all logging
+    std::cout << "Decompressed size: " << decompressed_size << " bytes" << std::endl;
+    std::cout << "Tree size:         " << tree_size << " bytes" << std::endl;
 
     return std::vector<unsigned char>();
 }
@@ -80,6 +84,15 @@ size_t huffman_decoder::get_decompressed_size(std::vector<unsigned char>::const_
 
     // TODO: this ought to be tested also for bits 8..23!
     auto size = b0 + (b1 << 8) + (b2 << 16);
+    return size;
+}
+
+size_t huffman_decoder::get_tree_size(std::vector<unsigned char>::const_iterator& i) const
+{
+    auto size = *i++;
+    // TODO: this is NOT the real size. We must calculate that. Problem: is it
+    //       * (size + 1) * 2
+    //       * Or (size * 2) + 1
     return size;
 }
 
