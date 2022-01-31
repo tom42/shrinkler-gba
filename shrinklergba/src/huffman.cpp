@@ -41,7 +41,8 @@ std::vector<unsigned char> huffman_decoder::decode(const std::vector<unsigned ch
     size_t decompressed_size = get_decompressed_size(input);
     std::cout << decompressed_size << std::endl; // TODO: remove
 
-    // TODO: remember address to root of tree
+    const auto huffman_tree_root = input;
+
     // TODO: skip to beginning of compressed data
 
     // TODO: decode data
