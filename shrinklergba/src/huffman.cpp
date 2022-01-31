@@ -31,6 +31,10 @@ namespace shrinklergba
 
 std::vector<unsigned char> huffman_decoder::decode(const std::vector<unsigned char>& data) const
 {
+    // TODO: this is not getting us anywhere
+    //       * Stop using iterators. We will not use this on non-contiguous memory anyway, so we can just as well use pointers, or array indexes. Much simpler to deal with.
+    //       * Get a reference implementation going, so we can more easily reverse engineer crap. No need to decode gbatek once more by ourselves.
+
     auto input = data.begin();
 
     check_compression_type(*input >> 4);
