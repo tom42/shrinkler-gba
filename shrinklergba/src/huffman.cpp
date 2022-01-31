@@ -40,10 +40,9 @@ std::vector<unsigned char> huffman_decoder::decode(const std::vector<unsigned ch
 
     const size_t decompressed_size = get_decompressed_size(input);
     const size_t tree_size = get_tree_size(input);
+    input += tree_size - 1; // TODO: it is a mess what we have atm, where iterators are incremented. Should we maybe fix this?
 
     const auto tree_root = input;
-
-    // TODO: skip to beginning of compressed data
 
     // TODO: decode data
     //       * We know the input data size, so we can have a loop for this
@@ -54,6 +53,7 @@ std::vector<unsigned char> huffman_decoder::decode(const std::vector<unsigned ch
     // TODO: remove all logging
     std::cout << "Decompressed size: " << decompressed_size << " bytes" << std::endl;
     std::cout << "Tree size:         " << tree_size << " bytes" << std::endl;
+    std::cout << "First byte:        " << (int)(*input) << std::endl;
 
     return std::vector<unsigned char>();
 }
