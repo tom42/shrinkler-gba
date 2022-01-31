@@ -4,6 +4,16 @@
     * Is it really required that the reserved area at the end of the header (at 0xbe) is zero?
 
 * Implement relevant GBA BIOS compressors
+  * Try disabling intellisense for 3rd party libraries in visual studio:
+    * Intellisense IS useful
+    * See here:
+      * https://social.msdn.microsoft.com/Forums/windowsdesktop/en-US/afeb3c2a-9502-43c0-801c-dd81cbf60a7e/disabling-intellisense-warnings-for-third-party-libraries?forum=visualstudiogeneral
+      * https://docs.microsoft.com/en-us/visualstudio/ide/how-to-suppress-compiler-warnings?view=vs-2019#suppress-specific-warnings-for-visual-c
+    * It looks like we can do this for entire directories, not sure starting from which visual studio version, though
+      * The question is then, can we do this using CMake?
+        * Sure, if all else figure out the required compiler flags and add them manually.
+          * For boost, I guess
+          * For everything below 3rdparty
   * Can do decoders first, we'll need them for verification
     * Huffman decoder
     * LZSS decoder (does not need to be VRAM safe)
