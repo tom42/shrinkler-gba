@@ -87,12 +87,13 @@ size_t huffman_decoder::get_decompressed_size(std::vector<unsigned char>::const_
     return size;
 }
 
+// TODO: not sure this is the right name: not sure this is a size, or actually an offset
+//       * I think it is the latter, an offset, because data is processed 32 bit wise
+//       * Well if this turns out to be the case, rename this method
 size_t huffman_decoder::get_tree_size(std::vector<unsigned char>::const_iterator& i) const
 {
-    auto size = *i++;
-    // TODO: this is NOT the real size. We must calculate that. Problem: is it
-    //       * (size + 1) * 2
-    //       * Or (size * 2) + 1
+    auto size = (*i + 1) * 2;
+    ++i;
     return size;
 }
 
