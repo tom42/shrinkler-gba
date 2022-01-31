@@ -9,7 +9,10 @@
     * LZSS decoder (does not need to be VRAM safe)
   * Then do encoders
     * Huffman
+      * Do we need to do any alignment/padding here?
+        * For instance inside the data, for the raw data stream? Is this guaranteed to always be 32 bit aligned automatically?
     * LZSS
+      * Do we need to do any alignment/padding here?
     * Eventually do optimal LZSS
 * Notes from various old sources:
   * Old Thumb data depacker (shrinkler_decompress_thumb.s)
