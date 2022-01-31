@@ -77,6 +77,7 @@ size_t huffman_decoder::get_decompressed_size(std::vector<unsigned char>::const_
     unsigned char b1 = *i++;
     unsigned char b2 = *i++;
 
+    // TODO: this ought to be tested also for bits 8..23!
     auto size = b0 + (b1 << 8) + (b2 << 16);
     return size;
 }
