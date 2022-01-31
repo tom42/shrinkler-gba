@@ -38,11 +38,8 @@ std::vector<unsigned char> huffman_decoder::decode(const std::vector<unsigned ch
     int symbol_size = *input++ & 15;
     check_symbol_size(symbol_size);
 
-    // TODO: read size of decompressed data
-    // TODO: this is broken (UB, for one thing) => Own method, and maybe unit test it?
-    // TODO: also it is maybe time to stop using auto here. Anyway it is not needed to use auto all over the place here
-    size_t decompressed_size = *input++ + *input++ * 256 + *input++ * 65536; // TODO: UB. And get rid of silly "sub-expression may overflow being assigned to a wider type intellisense warning"
-    std::cout << decompressed_size << std::endl; // TODO: Remove
+    size_t decompressed_size = get_decompressed_size(input);
+    std::cout << decompressed_size << std::endl; // TODO: remove
 
     // TODO: remember address to root of tree
     // TODO: skip to beginning of compressed data
@@ -72,6 +69,17 @@ void huffman_decoder::check_symbol_size(int symbol_size) const
     {
         throw std::runtime_error("invalid symbol size");
     }
+}
+
+size_t huffman_decoder::get_decompressed_size(std::vector<unsigned char>::const_iterator& i) const
+{
+    // TODO: read size of decompressed data
+    // TODO: this is broken (UB, for one thing) => Own method, and maybe unit test it?
+    // TODO: also it is maybe time to stop using auto here. Anyway it is not needed to use auto all over the place here
+//    size_t decompressed_size = *input++ + *input++ * 256 + *input++ * 65536; // TODO: UB. And get rid of silly "sub-expression may overflow being assigned to a wider type intellisense warning"
+    //throw std::runtime_error("GAAH");
+    size_t s = *i++ + *i++ * 256 + *i++ * 65536; // TODO: UB. And get rid of silly "sub-expression may overflow being assigned to a wider type intellisense warning"
+    return s;
 }
 
 }
