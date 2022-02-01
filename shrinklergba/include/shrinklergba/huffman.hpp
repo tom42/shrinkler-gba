@@ -33,6 +33,7 @@ namespace shrinklergba
 class huffman_decoder
 {
 public:
+    std::vector<unsigned char> decode_c(const std::vector<unsigned char>& data) const; // TODO: delete this, this is the C prototype
     std::vector<unsigned char> decode(const std::vector<unsigned char>& data) const;
 private:
     void check_compression_type(unsigned char compression_type) const;

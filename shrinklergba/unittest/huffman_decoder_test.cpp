@@ -69,6 +69,11 @@ BOOST_FIXTURE_TEST_SUITE(huffman_decoder_test, huffman_decoder_test_fixture)
         CHECK_EXCEPTION(decoder.decode(data), std::runtime_error, "invalid symbol size");
     }
 
+    BOOST_AUTO_TEST_CASE(decode_c_h8)
+    {
+        BOOST_TEST(unencoded_data == decoder.decode_c(h8_encoded_data), boost::test_tools::per_element());
+    }
+
     BOOST_AUTO_TEST_CASE(decode_h8)
     {
         BOOST_TEST(unencoded_data == decoder.decode(h8_encoded_data), boost::test_tools::per_element());
