@@ -31,7 +31,6 @@ namespace shrinklergba
 
 std::vector<unsigned char> huffman_decoder::decode_c(const std::vector<unsigned char>& data) const
 {
-    #define _CUE_MODES_21_22_
     #define CMD_CODE_28   0x28       // 8-bits Huffman magic number
     #define CMD_CODE_24   0x24       // 4-bits Huffman magic number
     #define CMD_CODE_22   0x22       // 2-bits Huffman magic number (test mode)
@@ -57,9 +56,7 @@ std::vector<unsigned char> huffman_decoder::decode_c(const std::vector<unsigned 
     pak_len = data.size();
 
     header = *pak_buffer;
-#ifdef _CUE_MODES_21_22_
     if ((header != CMD_CODE_22) && (header != CMD_CODE_21))
-#endif
         if ((header != CMD_CODE_24) && (header != CMD_CODE_28)) {
             free((void*)pak_buffer);
             throw std::runtime_error("WARNING: file is not Huffman encoded!");
