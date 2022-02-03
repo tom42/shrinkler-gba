@@ -31,18 +31,18 @@ namespace shrinklergba
 
 std::vector<unsigned char> huffman_decoder::decode_c(const std::vector<unsigned char>& data) const
 {
-    #define CMD_CODE_28   0x28       // 8-bits Huffman magic number
-    #define CMD_CODE_24   0x24       // 4-bits Huffman magic number
-    #define CMD_CODE_22   0x22       // 2-bits Huffman magic number (test mode)
-    #define CMD_CODE_21   0x21       // 1-bit  Huffman magic number (test mode)
-    #define HUF_MINIM     0x00000004 // empty RAW file (header only)
-    #define HUF_MAXIM     0x01400000 // 0x01000203, padded to 20MB:
-    #define HUF_SHIFT     1          // bits to shift
-    #define HUF_MASK4     0x80000000 // first bit to check (HUF_RNODE << 31)
-    #define HUF_LCHAR     0x80       // next lnode is a char, bit 7, (1 << 7)
-    #define HUF_RCHAR     0x40       // next rnode is a char, bit 6, (1 << 6)
-    #define HUF_NEXT      0x3F       // inc to next node/char (nwords+1), bits 5-0
-                                     // * (0xFF & ~(HUF_LCHAR | HUF_RCHAR))
+    constexpr auto CMD_CODE_28 = 0x28;      // 8-bits Huffman magic number
+    constexpr auto CMD_CODE_24 = 0x24;      // 4-bits Huffman magic number
+    constexpr auto CMD_CODE_22 = 0x22;      // 2-bits Huffman magic number (test mode)
+    constexpr auto CMD_CODE_21 = 0x21;      // 1-bit  Huffman magic number (test mode)
+    //constexpr auto HUF_MINIM = 0x00000004;  // empty RAW file (header only)
+    //constexpr auto HUF_MAXIM = 0x01400000;  // 0x01000203, padded to 20MB:
+    constexpr auto HUF_SHIFT = 1;           // bits to shift
+    constexpr auto HUF_MASK4 = 0x80000000;  // first bit to check (HUF_RNODE << 31)
+    constexpr auto HUF_LCHAR = 0x80;        // next lnode is a char, bit 7, (1 << 7)
+    constexpr auto HUF_RCHAR = 0x40;        // next rnode is a char, bit 6, (1 << 6)
+    constexpr auto HUF_NEXT = 0x3F;         // inc to next node/char (nwords+1), bits 5-0
+                                            // * (0xFF & ~(HUF_LCHAR | HUF_RCHAR))
 
     const unsigned char* pak_buffer, * pak, * pak_end;
     unsigned char  *raw_buffer, *raw, *raw_end;
