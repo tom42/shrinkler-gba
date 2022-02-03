@@ -21,9 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <algorithm>
-#include <array>
-#include <iostream> // TODO: remove
+#include <stdexcept>
 #include "shrinklergba/huffman.hpp"
 
 namespace shrinklergba
@@ -74,7 +72,7 @@ std::vector<unsigned char> huffman_decoder::decode_c(const std::vector<unsigned 
     raw_end = raw_buffer + raw_len;
 
     tree = pak; // Note: tree does intentionally not point to the tree root, but one byte in front of it.
-    pak += (*pak + 1) << 1;
+    pak += (size_t)(*pak + 1) << 1;
 
     nbits = 0;
 
@@ -128,8 +126,10 @@ std::vector<unsigned char> huffman_decoder::decode_c(const std::vector<unsigned 
     return result;
 }
 
-std::vector<unsigned char> huffman_decoder::decode(const std::vector<unsigned char>& data) const
+std::vector<unsigned char> huffman_decoder::decode(const std::vector<unsigned char>& /*data*/) const
 {
+    throw std::runtime_error("YIKES");
+/*
     // TODO: this is not getting us anywhere
     //       * Stop using iterators. We will not use this on non-contiguous memory anyway, so we can just as well use pointers, or array indexes. Much simpler to deal with.
     //       * Get a reference implementation going, so we can more easily reverse engineer crap. No need to decode gbatek once more by ourselves.
@@ -159,8 +159,11 @@ std::vector<unsigned char> huffman_decoder::decode(const std::vector<unsigned ch
     std::cout << "First byte:        " << (int)(*input) << std::endl;
 
     return std::vector<unsigned char>();
+*/
 }
 
+// TODO: remove
+/*
 void huffman_decoder::check_compression_type(unsigned char compression_type) const
 {
     if (compression_type != 2)
@@ -168,7 +171,10 @@ void huffman_decoder::check_compression_type(unsigned char compression_type) con
         throw std::runtime_error("invalid compression type");
     }
 }
+*/
 
+// TODO: remove
+/*
 void huffman_decoder::check_symbol_size(int symbol_size) const
 {
     static const std::array valid_sizes{ 1, 2, 4, 8 };
@@ -178,7 +184,10 @@ void huffman_decoder::check_symbol_size(int symbol_size) const
         throw std::runtime_error("invalid symbol size");
     }
 }
+*/
 
+// TODO: remove
+/*
 size_t huffman_decoder::get_decompressed_size(std::vector<unsigned char>::const_iterator& i) const
 {
     unsigned char b0 = *i++;
@@ -189,15 +198,19 @@ size_t huffman_decoder::get_decompressed_size(std::vector<unsigned char>::const_
     auto size = b0 + (b1 << 8) + (b2 << 16);
     return size;
 }
+*/
 
+// TODO: remove
 // TODO: not sure this is the right name: not sure this is a size, or actually an offset
 //       * I think it is the latter, an offset, because data is processed 32 bit wise
 //       * Well if this turns out to be the case, rename this method
+/*
 size_t huffman_decoder::get_tree_size(std::vector<unsigned char>::const_iterator& i) const
 {
     auto size = (*i + 1) * 2;
     ++i;
     return size;
 }
+*/
 
 }

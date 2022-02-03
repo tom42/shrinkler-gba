@@ -36,10 +36,6 @@ public:
     std::vector<unsigned char> decode_c(const std::vector<unsigned char>& data) const; // TODO: delete this, this is the C prototype
     std::vector<unsigned char> decode(const std::vector<unsigned char>& data) const;
 private:
-    void check_compression_type(unsigned char compression_type) const;
-    void check_symbol_size(int symbol_size) const;
-    size_t get_decompressed_size(std::vector<unsigned char>::const_iterator& i) const;
-    size_t get_tree_size(std::vector<unsigned char>::const_iterator& i) const;
 };
 
 }
