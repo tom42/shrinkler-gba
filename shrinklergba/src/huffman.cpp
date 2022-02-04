@@ -126,9 +126,9 @@ std::vector<unsigned char> huffman_decoder::decode_c(const std::vector<unsigned 
     return result;
 }
 
-std::vector<unsigned char> huffman_decoder::decode(const std::vector<unsigned char>& /*data*/) const
+std::vector<unsigned char> huffman_decoder::decode(const std::vector<unsigned char>& data) const
 {
-    throw std::runtime_error("YIKES");
+    return decode(data.data(), data.size());
 /*
     // TODO: this is not getting us anywhere
     //       * Stop using iterators. We will not use this on non-contiguous memory anyway, so we can just as well use pointers, or array indexes. Much simpler to deal with.
@@ -160,6 +160,11 @@ std::vector<unsigned char> huffman_decoder::decode(const std::vector<unsigned ch
 
     return std::vector<unsigned char>();
 */
+}
+
+std::vector<unsigned char> huffman_decoder::decode(const unsigned char* /*data*/, std::size_t /*size*/) const
+{
+    throw std::runtime_error("YIKES");
 }
 
 // TODO: remove

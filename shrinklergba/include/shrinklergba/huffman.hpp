@@ -24,6 +24,7 @@
 #ifndef SHRINKLERGBA_HUFFMAN_HPP
 #define SHRINKLERGBA_HUFFMAN_HPP
 
+#include <cstddef>
 #include <vector>
 
 namespace shrinklergba
@@ -35,6 +36,7 @@ class huffman_decoder
 public:
     std::vector<unsigned char> decode_c(const std::vector<unsigned char>& data) const; // TODO: delete this, this is the C prototype
     std::vector<unsigned char> decode(const std::vector<unsigned char>& data) const;
+    std::vector<unsigned char> decode(const unsigned char* data, std::size_t size) const;
 private:
 };
 
