@@ -32,6 +32,8 @@ enum class compression_type : unsigned char
     huffman = 2
 };
 
+constexpr size_t ofs_compression_type = 0;
+
 std::vector<unsigned char> huffman_decoder::decode_c(const std::vector<unsigned char>& data) const
 {
     constexpr auto CMD_CODE_28 = 0x28;      // 8-bits Huffman magic number
@@ -170,7 +172,7 @@ std::vector<unsigned char> huffman_decoder::decode(const std::vector<unsigned ch
 std::vector<unsigned char> huffman_decoder::decode(const unsigned char* compressed_data, std::size_t /*size*/) const
 {
     // TODO: in principle should check a minimum size here, since we're going to access the header right away
-    check_compression_type(compressed_data[0] >> 4); // TODO: constant (e.g. OFS_COMPRESSION_TYPE or smth)
+    check_compression_type(compressed_data[ofs_compression_type] >> 4);
 
     throw std::runtime_error("YIKES");
 }
