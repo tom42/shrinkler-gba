@@ -27,6 +27,11 @@
 namespace shrinklergba
 {
 
+enum class compression_type : unsigned char
+{
+    huffman = 2
+};
+
 std::vector<unsigned char> huffman_decoder::decode_c(const std::vector<unsigned char>& data) const
 {
     constexpr auto CMD_CODE_28 = 0x28;      // 8-bits Huffman magic number
@@ -126,9 +131,9 @@ std::vector<unsigned char> huffman_decoder::decode_c(const std::vector<unsigned 
     return result;
 }
 
-std::vector<unsigned char> huffman_decoder::decode(const std::vector<unsigned char>& data) const
+std::vector<unsigned char> huffman_decoder::decode(const std::vector<unsigned char>& compressed_data) const
 {
-    return decode(data.data(), data.size());
+    return decode(compressed_data.data(), compressed_data.size());
 /*
     // TODO: this is not getting us anywhere
     //       * Stop using iterators. We will not use this on non-contiguous memory anyway, so we can just as well use pointers, or array indexes. Much simpler to deal with.
@@ -162,21 +167,21 @@ std::vector<unsigned char> huffman_decoder::decode(const std::vector<unsigned ch
 */
 }
 
-std::vector<unsigned char> huffman_decoder::decode(const unsigned char* /*data*/, std::size_t /*size*/) const
+std::vector<unsigned char> huffman_decoder::decode(const unsigned char* compressed_data, std::size_t /*size*/) const
 {
+    // TODO: in principle should check a minimum size here, since we're going to access the header right away
+    check_compression_type(compressed_data[0] >> 4); // TODO: constant (e.g. OFS_COMPRESSION_TYPE or smth)
+
     throw std::runtime_error("YIKES");
 }
 
-// TODO: remove
-/*
-void huffman_decoder::check_compression_type(unsigned char compression_type) const
+void huffman_decoder::check_compression_type(unsigned char type) const
 {
-    if (compression_type != 2)
+    if (static_cast<compression_type>(type) != compression_type::huffman)
     {
         throw std::runtime_error("invalid compression type");
     }
 }
-*/
 
 // TODO: remove
 /*
