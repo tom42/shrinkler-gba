@@ -39,6 +39,7 @@ public:
     std::vector<unsigned char> decode(const unsigned char* compressed_data, std::size_t size) const;
 private:
     void check_compression_type(unsigned char type) const;
+    int check_symbol_size(int symbol_size) const;
 };
 
 }

@@ -21,6 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include <array>
 #include <stdexcept>
 #include "shrinklergba/huffman.hpp"
 
@@ -141,13 +142,6 @@ std::vector<unsigned char> huffman_decoder::decode(const std::vector<unsigned ch
     //       * Stop using iterators. We will not use this on non-contiguous memory anyway, so we can just as well use pointers, or array indexes. Much simpler to deal with.
     //       * Get a reference implementation going, so we can more easily reverse engineer crap. No need to decode gbatek once more by ourselves.
 
-    auto input = data.begin();
-
-    check_compression_type(*input >> 4);
-
-    const int symbol_size = *input++ & 15;
-    check_symbol_size(symbol_size);
-
     const size_t decompressed_size = get_decompressed_size(input);
     const size_t tree_size = get_tree_size(input);
     input += tree_size - 1; // TODO: it is a mess what we have atm, where iterators are incremented. Should we maybe fix this?
@@ -173,6 +167,7 @@ std::vector<unsigned char> huffman_decoder::decode(const unsigned char* compress
 {
     // TODO: in principle should check a minimum size here, since we're going to access the header right away
     check_compression_type(compressed_data[ofs_compression_type] >> 4);
+    check_symbol_size(compressed_data[ofs_compression_type] & 15);
 
     throw std::runtime_error("YIKES");
 }
@@ -185,9 +180,7 @@ void huffman_decoder::check_compression_type(unsigned char type) const
     }
 }
 
-// TODO: remove
-/*
-void huffman_decoder::check_symbol_size(int symbol_size) const
+int huffman_decoder::check_symbol_size(int symbol_size) const
 {
     static const std::array valid_sizes{ 1, 2, 4, 8 };
 
@@ -195,8 +188,9 @@ void huffman_decoder::check_symbol_size(int symbol_size) const
     {
         throw std::runtime_error("invalid symbol size");
     }
+
+    return symbol_size;
 }
-*/
 
 // TODO: remove
 /*
