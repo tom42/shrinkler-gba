@@ -22,6 +22,7 @@
 // SOFTWARE.
 
 #include <array>
+#include <iostream> // TODO: remove
 #include <stdexcept>
 #include "shrinklergba/huffman.hpp"
 
@@ -33,7 +34,8 @@ enum class compression_type : unsigned char
     huffman = 2
 };
 
-constexpr size_t ofs_compression_type = 0;
+constexpr std::size_t ofs_compression_type = 0;
+constexpr std::size_t ofs_decompressed_size = 1;
 
 std::vector<unsigned char> huffman_decoder::decode_c(const std::vector<unsigned char>& data) const
 {
@@ -53,7 +55,7 @@ std::vector<unsigned char> huffman_decoder::decode_c(const std::vector<unsigned 
     const unsigned char* pak_buffer, * pak, * pak_end;
     unsigned char  *raw_buffer, *raw, *raw_end;
     unsigned int   header;
-    size_t pak_len, raw_len;
+    std::size_t pak_len, raw_len;
     const unsigned char* tree;
     unsigned int   pos, next, mask4, code, ch, nbits;
     unsigned int    num_bits;
@@ -80,7 +82,7 @@ std::vector<unsigned char> huffman_decoder::decode_c(const std::vector<unsigned 
     raw_end = raw_buffer + raw_len;
 
     tree = pak; // Note: tree does intentionally not point to the tree root, but one byte in front of it.
-    pak += (size_t)(*pak + 1) << 1;
+    pak += (std::size_t)(*pak + 1) << 1;
 
     nbits = 0;
 
@@ -142,8 +144,8 @@ std::vector<unsigned char> huffman_decoder::decode(const std::vector<unsigned ch
     //       * Stop using iterators. We will not use this on non-contiguous memory anyway, so we can just as well use pointers, or array indexes. Much simpler to deal with.
     //       * Get a reference implementation going, so we can more easily reverse engineer crap. No need to decode gbatek once more by ourselves.
 
-    const size_t decompressed_size = get_decompressed_size(input);
-    const size_t tree_size = get_tree_size(input);
+    const std::size_t decompressed_size = get_decompressed_size(input);
+    const std::size_t tree_size = get_tree_size(input);
     input += tree_size - 1; // TODO: it is a mess what we have atm, where iterators are incremented. Should we maybe fix this?
 
     const auto tree_root = input;
@@ -168,6 +170,10 @@ std::vector<unsigned char> huffman_decoder::decode(const unsigned char* compress
     // TODO: in principle should check a minimum size here, since we're going to access the header right away
     check_compression_type(compressed_data[ofs_compression_type] >> 4);
     check_symbol_size(compressed_data[ofs_compression_type] & 15);
+    std::size_t decompressed_size = get_decompressed_size(compressed_data);
+
+    // TODO: remove all logging
+    std::cout << "decompressed size: " << decompressed_size << std::endl;
 
     throw std::runtime_error("YIKES");
 }
@@ -192,26 +198,23 @@ int huffman_decoder::check_symbol_size(int symbol_size) const
     return symbol_size;
 }
 
-// TODO: remove
-/*
-size_t huffman_decoder::get_decompressed_size(std::vector<unsigned char>::const_iterator& i) const
+std::size_t huffman_decoder::get_decompressed_size(const unsigned char* compressed_data) const
 {
-    unsigned char b0 = *i++;
-    unsigned char b1 = *i++;
-    unsigned char b2 = *i++;
+    unsigned char b0 = compressed_data[ofs_decompressed_size + 0];
+    unsigned char b1 = compressed_data[ofs_decompressed_size + 1];
+    unsigned char b2 = compressed_data[ofs_decompressed_size + 2];
 
-    // TODO: this ought to be tested also for bits 8..23!
+    // TODO: at the very least manually check this for bits 8..23, no?
     auto size = b0 + (b1 << 8) + (b2 << 16);
     return size;
 }
-*/
 
 // TODO: remove
 // TODO: not sure this is the right name: not sure this is a size, or actually an offset
 //       * I think it is the latter, an offset, because data is processed 32 bit wise
 //       * Well if this turns out to be the case, rename this method
 /*
-size_t huffman_decoder::get_tree_size(std::vector<unsigned char>::const_iterator& i) const
+std::size_t huffman_decoder::get_tree_size(std::vector<unsigned char>::const_iterator& i) const
 {
     auto size = (*i + 1) * 2;
     ++i;

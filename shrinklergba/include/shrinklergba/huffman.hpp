@@ -40,6 +40,7 @@ public:
 private:
     void check_compression_type(unsigned char type) const;
     int check_symbol_size(int symbol_size) const;
+    std::size_t get_decompressed_size(const unsigned char* compressed_data) const;
 };
 
 }
