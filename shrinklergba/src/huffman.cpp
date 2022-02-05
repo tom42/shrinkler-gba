@@ -138,7 +138,7 @@ std::vector<unsigned char> huffman_decoder::decode_c(const std::vector<unsigned 
     return result;
 }
 
-std::vector<unsigned char> huffman_decoder::decode(const std::vector<unsigned char>& compressed_data) const
+std::vector<unsigned char> huffman_decoder::decode(const std::vector<unsigned char>& compressed_data)
 {
     return decode(compressed_data.data(), compressed_data.size());
 /*
@@ -167,7 +167,7 @@ std::vector<unsigned char> huffman_decoder::decode(const std::vector<unsigned ch
 */
 }
 
-std::vector<unsigned char> huffman_decoder::decode(const unsigned char* compressed_data, std::size_t /*size*/) const
+std::vector<unsigned char> huffman_decoder::decode(const unsigned char* compressed_data, std::size_t /*size*/)
 {
     // TODO: in principle should check a minimum size here, since we're going to access the header right away
     check_compression_type(compressed_data[ofs_compression_type] >> 4);
@@ -175,6 +175,7 @@ std::vector<unsigned char> huffman_decoder::decode(const unsigned char* compress
     std::size_t decompressed_size = get_decompressed_size(compressed_data);
 
     const unsigned char* read_ptr = compressed_data + ofs_tree_size + 2 * (compressed_data[ofs_tree_size] + 1);
+    bitbuffer = 0;
 
     // TODO: remove all logging
     std::cout << "decompressed size: " << decompressed_size << std::endl;

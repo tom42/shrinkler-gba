@@ -35,13 +35,16 @@ class huffman_decoder
 {
 public:
     std::vector<unsigned char> decode_c(const std::vector<unsigned char>& data) const; // TODO: delete this, this is the C prototype
-    std::vector<unsigned char> decode(const std::vector<unsigned char>& compressed_data) const;
-    std::vector<unsigned char> decode(const unsigned char* compressed_data, std::size_t size) const;
+    std::vector<unsigned char> decode(const std::vector<unsigned char>& compressed_data);
+    std::vector<unsigned char> decode(const unsigned char* compressed_data, std::size_t size);
 private:
     void check_compression_type(unsigned char type) const;
     int check_symbol_size(int symbol_size) const;
     std::size_t get_decompressed_size(const unsigned char* compressed_data) const;
     unsigned char decode_symbol() const;
+
+    // TODO: use bit buffer or bit mask?
+    unsigned int bitbuffer;
 };
 
 }
