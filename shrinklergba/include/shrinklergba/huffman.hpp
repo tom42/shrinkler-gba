@@ -25,6 +25,7 @@
 #define SHRINKLERGBA_HUFFMAN_HPP
 
 #include <cstddef>
+#include <cstdint>
 #include <vector>
 
 namespace shrinklergba
@@ -41,10 +42,11 @@ private:
     void check_compression_type(unsigned char type) const;
     int check_symbol_size(int symbol_size) const;
     std::size_t get_decompressed_size(const unsigned char* compressed_data) const;
-    unsigned char decode_symbol() const;
+    unsigned char decode_symbol();
 
-    // TODO: use bit buffer or bit mask?
-    unsigned int bitbuffer;
+    const uint32_t* readptr;
+    uint32_t bitbuffer;
+    uint32_t bitmask;
 };
 
 }
