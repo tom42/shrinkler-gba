@@ -180,6 +180,12 @@ std::vector<unsigned char> huffman_decoder::decode(const unsigned char* compress
     std::cout << "decompressed size: " << decompressed_size << std::endl;
     std::cout << "*read_ptr        : 0x" << std::hex << static_cast<int>(*read_ptr) << std::endl;
 
+    // TODO: this needs a decompression loop, but for starters I am happy if I can decode a single character
+    unsigned char symbol = decode_symbol();
+
+    // TODO: remove all logging
+    std::cout << "symbol: " << std::hex << static_cast<int>(symbol) << std::endl;
+
     throw std::runtime_error("YIKES");
 }
 
@@ -212,6 +218,12 @@ std::size_t huffman_decoder::get_decompressed_size(const unsigned char* compress
     // TODO: at the very least manually check this for bits 8..23, no?
     auto size = b0 + (b1 << 8) + (b2 << 16);
     return size;
+}
+
+unsigned char huffman_decoder::decode_symbol() const
+{
+    // TODO: real implementation
+    return 0;
 }
 
 // TODO: remove
