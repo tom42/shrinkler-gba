@@ -174,8 +174,11 @@ std::vector<unsigned char> huffman_decoder::decode(const unsigned char* compress
     check_symbol_size(compressed_data[ofs_compression_type] & 15);
     std::size_t decompressed_size = get_decompressed_size(compressed_data);
 
+    const unsigned char* read_ptr = compressed_data + ofs_tree_size + 2 * (compressed_data[ofs_tree_size] + 1);
+
     // TODO: remove all logging
     std::cout << "decompressed size: " << decompressed_size << std::endl;
+    std::cout << "*read_ptr        : 0x" << std::hex << static_cast<int>(*read_ptr) << std::endl;
 
     throw std::runtime_error("YIKES");
 }
