@@ -174,18 +174,23 @@ std::vector<unsigned char> huffman_decoder::decode(const unsigned char* compress
     check_symbol_size(compressed_data[ofs_compression_type] & 15);
     std::size_t decompressed_size = get_decompressed_size(compressed_data);
 
-    const unsigned char* read_ptr = compressed_data + ofs_tree_size + 2 * (compressed_data[ofs_tree_size] + 1);
+    // TODO: is this legal?
+    // TODO: maybe at least have an assertion that readptr is aligned? (then again, the CPU will complain I guess)
+    readptr = reinterpret_cast<const uint32_t*>(compressed_data + ofs_tree_size + 2 * (compressed_data[ofs_tree_size] + 1));
     bitbuffer = 0;
+    bitmask = 0;
 
     // TODO: remove all logging
     std::cout << "decompressed size: " << decompressed_size << std::endl;
-    std::cout << "*read_ptr        : 0x" << std::hex << static_cast<int>(*read_ptr) << std::endl;
+    std::cout << "*readptr:          0x" << std::hex << *readptr << std::endl;
 
     // TODO: this needs a decompression loop, but for starters I am happy if I can decode a single character
     unsigned char symbol = decode_symbol();
 
     // TODO: remove all logging
-    std::cout << "symbol: " << std::hex << static_cast<int>(symbol) << std::endl;
+    std::cout << "symbol:            " << std::hex << static_cast<int>(symbol) << std::endl;
+    std::cout << "bitmask:           " << std::hex << bitmask << std::endl;
+    std::cout << "bitbuffer:         " << std::hex << bitbuffer << std::endl;
 
     throw std::runtime_error("YIKES");
 }
@@ -221,9 +226,16 @@ std::size_t huffman_decoder::get_decompressed_size(const unsigned char* compress
     return size;
 }
 
-unsigned char huffman_decoder::decode_symbol() const
+unsigned char huffman_decoder::decode_symbol()
 {
     // TODO: real implementation
+    if (!bitmask)
+    {
+        bitmask = 0x80000000;   // TODO: constant?
+        // TODO: should check whether we do not read past end of compressed data before performing this read! (if we do, throw)
+        bitbuffer = *readptr++; // TODO: little/big endian: source data is little endian; if we're on a big endian machine we must perform little to big endian conversion here.
+    }
+
     return 0;
 }
 
