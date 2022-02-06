@@ -238,12 +238,33 @@ std::size_t huffman_decoder::get_decompressed_size(const unsigned char* compress
 unsigned char huffman_decoder::decode_symbol()
 {
     // TODO: real implementation
-    bitmask >>= 1;
-    if (!bitmask)
+    const unsigned char* current_node = tree_root;
+
+    while (true)
     {
-        bitmask = 0x80000000;   // TODO: constant?
-        // TODO: should check whether we do not read past end of compressed data before performing this read! (if we do, throw)
-        bitbuffer = *readptr++; // TODO: little/big endian: source data is little endian; if we're on a big endian machine we must perform little to big endian conversion here.
+        bitmask >>= 1;
+        if (!bitmask)
+        {
+            bitmask = 0x80000000;   // TODO: constant?
+            // TODO: should check whether we do not read past end of compressed data before performing this read! (if we do, throw)
+            bitbuffer = *readptr++; // TODO: little/big endian: source data is little endian; if we're on a big endian machine we must perform little to big endian conversion here.
+        }
+
+        bool found_character;
+        if (!(bitbuffer & bitmask))
+        {
+            // TODO: OK, this seems to work, it's just ugly as sin
+            found_character = *current_node & 0x80;
+            auto ofs = *current_node & 63;
+            uintptr_t foo = (uintptr_t)current_node;
+            foo = (foo & ~1) + ofs * 2 + 2;
+            current_node = (unsigned char*)foo;
+            // TODO: now, in principle when we've found the character we can return it
+        }
+        else
+        {
+            throw std::runtime_error("TODO: implement this branch");
+        }
     }
 
     return 0;
