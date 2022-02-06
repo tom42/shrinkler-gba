@@ -106,13 +106,13 @@ std::vector<unsigned char> huffman_decoder::decode_c(const std::vector<unsigned 
 
         unsigned int found_pos;
         if (!(code & mask4)) {
-            std::cout << "moving left" << std::endl;
+            std::cout << "moving left, pos is " << pos << std::endl;
             ch = pos & HUF_LCHAR;
             pos = *(tree + next);
             found_pos = next;
         }
         else {
-            std::cout << "moving right" << std::endl;
+            std::cout << "moving right, pos is " << pos << std::endl;
             ch = pos & HUF_RCHAR;
             pos = *(tree + next + 1);
             found_pos = next + 1;
