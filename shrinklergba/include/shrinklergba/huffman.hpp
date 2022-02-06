@@ -44,6 +44,7 @@ private:
     std::size_t get_decompressed_size(const unsigned char* compressed_data) const;
     unsigned char decode_symbol();
 
+    const unsigned char* tree_root;
     const uint32_t* readptr;
     uint32_t bitbuffer;
     uint32_t bitmask;

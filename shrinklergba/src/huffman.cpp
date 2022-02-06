@@ -38,6 +38,7 @@ enum class compression_type : unsigned char
 constexpr std::size_t ofs_compression_type = 0;
 constexpr std::size_t ofs_decompressed_size = 1;
 constexpr std::size_t ofs_tree_size = 4;
+constexpr std::size_t ofs_tree_root = 5;
 
 std::vector<unsigned char> huffman_decoder::decode_c(const std::vector<unsigned char>& data) const
 {
@@ -175,6 +176,7 @@ std::vector<unsigned char> huffman_decoder::decode(const unsigned char* compress
     check_symbol_size(compressed_data[ofs_compression_type] & 15);
     std::size_t decompressed_size = get_decompressed_size(compressed_data);
 
+    tree_root = compressed_data + ofs_tree_root;
     // TODO: is this legal?
     // TODO: maybe at least have an assertion that readptr is aligned? (then again, the CPU will complain I guess)
     readptr = reinterpret_cast<const uint32_t*>(compressed_data + ofs_tree_size + 2 * (compressed_data[ofs_tree_size] + 1));
