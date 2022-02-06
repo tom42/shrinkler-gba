@@ -105,15 +105,18 @@ std::vector<unsigned char> huffman_decoder::decode_c(const std::vector<unsigned 
         next += ((pos & HUF_NEXT) + 1) << 1;
 
         if (!(code & mask4)) {
+            std::cout << "moving left" << std::endl;
             ch = pos & HUF_LCHAR;
             pos = *(tree + next);
         }
         else {
+            std::cout << "moving right" << std::endl;
             ch = pos & HUF_RCHAR;
             pos = *(tree + next + 1);
         }
 
         if (ch) {
+            std::cout << "found <" << (char)pos << ">" << std::endl;
             *raw |= pos << nbits;
             ////  *raw = (*raw << num_bits) | pos; 
             nbits = (nbits + num_bits) & 7;
