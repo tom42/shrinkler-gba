@@ -238,6 +238,7 @@ std::size_t huffman_decoder::get_decompressed_size(const unsigned char* compress
 unsigned char huffman_decoder::decode_symbol()
 {
     // TODO: real implementation
+    bitmask >>= 1;
     if (!bitmask)
     {
         bitmask = 0x80000000;   // TODO: constant?
