@@ -195,6 +195,8 @@ std::vector<unsigned char> huffman_decoder::decode(const unsigned char* compress
 
     // TODO: this needs a decompression loop, but for starters I am happy if I can decode a single character
     unsigned char symbol = decode_symbol();
+    std::cout << (char)symbol << std::endl; // TODO: remove all logging
+    // TODO: write symbol to output. Later we must take into account that symbol size may be < 8 bits
 
     // TODO: remove all logging
     std::cout << "symbol:            " << std::hex << static_cast<int>(symbol) << std::endl;
@@ -260,6 +262,10 @@ unsigned char huffman_decoder::decode_symbol()
             foo = (foo & ~1) + ofs * 2 + 2;
             current_node = (unsigned char*)foo;
             // TODO: now, in principle when we've found the character we can return it
+            if (found_character)
+            {
+                break;
+            }
         }
         else
         {
@@ -267,7 +273,8 @@ unsigned char huffman_decoder::decode_symbol()
         }
     }
 
-    return 0;
+    // TODO: Data (upper bits should be zero if Data Size is less than 8)
+    return *current_node;
 }
 
 }
