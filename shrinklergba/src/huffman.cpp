@@ -169,6 +169,7 @@ std::vector<unsigned char> huffman_decoder::decode(const std::vector<unsigned ch
 
 std::vector<unsigned char> huffman_decoder::decode(const unsigned char* compressed_data, std::size_t /*size*/)
 {
+    // TODO: assert address is a multiple of 4?
     // TODO: in principle should check a minimum size here, since we're going to access the header right away
     check_compression_type(compressed_data[ofs_compression_type] >> 4);
     check_symbol_size(compressed_data[ofs_compression_type] & 15);
@@ -238,18 +239,5 @@ unsigned char huffman_decoder::decode_symbol()
 
     return 0;
 }
-
-// TODO: remove
-// TODO: not sure this is the right name: not sure this is a size, or actually an offset
-//       * I think it is the latter, an offset, because data is processed 32 bit wise
-//       * Well if this turns out to be the case, rename this method
-/*
-std::size_t huffman_decoder::get_tree_size(std::vector<unsigned char>::const_iterator& i) const
-{
-    auto size = (*i + 1) * 2;
-    ++i;
-    return size;
-}
-*/
 
 }
