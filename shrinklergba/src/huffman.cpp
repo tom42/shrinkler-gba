@@ -40,6 +40,10 @@ constexpr std::size_t ofs_decompressed_size = 1;
 constexpr std::size_t ofs_tree_size = 4;
 constexpr std::size_t ofs_tree_root = 5;
 
+// TODO: what is this?
+constexpr unsigned char mask_left = 0x80;
+constexpr unsigned char mask_right = 0x40;
+
 std::vector<unsigned char> huffman_decoder::decode_c(const std::vector<unsigned char>& data) const
 {
     constexpr auto CMD_CODE_28 = 0x28;      // 8-bits Huffman magic number
@@ -228,7 +232,7 @@ unsigned char huffman_decoder::decode_symbol()
         if (!(bitbuffer & bitmask))
         {
             // TODO: OK, this seems to work, it's just ugly as sin
-            found_character = *current_node & 0x80;     // TODO: constant: 0x80
+            found_character = *current_node & mask_left;
             auto ofs = *current_node & 63;              // TODO: constant: 63. Also, line is duplicated
             // TODO: ugly pointer castery, should be possible without this
             uintptr_t foo = (uintptr_t)current_node;
@@ -242,7 +246,7 @@ unsigned char huffman_decoder::decode_symbol()
         }
         else
         {
-            found_character = *current_node & 0x40;     // TODO: constant: 0x40
+            found_character = *current_node & mask_right;
             auto ofs = *current_node & 63;              // TODO: constant: 63. Also, line is duplicated
             // TODO: ugly pointer castery, should be possible without this
             uintptr_t foo = (uintptr_t)current_node;
