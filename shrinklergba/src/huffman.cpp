@@ -43,6 +43,7 @@ constexpr std::size_t ofs_tree_root = 5;
 // TODO: what is this?
 constexpr unsigned char mask_left = 0x80;
 constexpr unsigned char mask_right = 0x40;
+constexpr unsigned char mask_next_node_offset = 63;
 
 std::vector<unsigned char> huffman_decoder::decode_c(const std::vector<unsigned char>& data) const
 {
@@ -228,7 +229,7 @@ unsigned char huffman_decoder::decode_symbol()
             bitbuffer = *readptr++; // TODO: little/big endian: source data is little endian; if we're on a big endian machine we must perform little to big endian conversion here.
         }
 
-        auto ofs = *current_node & 63;              // TODO: constant: 63. Also, line is duplicated
+        auto ofs = *current_node & mask_next_node_offset;
 
         if (!(bitbuffer & bitmask))
         {
