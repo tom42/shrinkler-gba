@@ -148,30 +148,6 @@ std::vector<unsigned char> huffman_decoder::decode_c(const std::vector<unsigned 
 std::vector<unsigned char> huffman_decoder::decode(const std::vector<unsigned char>& compressed_data)
 {
     return decode(compressed_data.data(), compressed_data.size());
-/*
-    // TODO: this is not getting us anywhere
-    //       * Stop using iterators. We will not use this on non-contiguous memory anyway, so we can just as well use pointers, or array indexes. Much simpler to deal with.
-    //       * Get a reference implementation going, so we can more easily reverse engineer crap. No need to decode gbatek once more by ourselves.
-
-    const std::size_t decompressed_size = get_decompressed_size(input);
-    const std::size_t tree_size = get_tree_size(input);
-    input += tree_size - 1; // TODO: it is a mess what we have atm, where iterators are incremented. Should we maybe fix this?
-
-    const auto tree_root = input;
-
-    // TODO: decode data
-    //       * We know the input data size, so we can have a loop for this
-    //         * Yes that's OK, but remember, we have total size in bytes, but symbols which may be smaller than 8 bits!
-    //       * Get symbol (we need to be able to read the input bit wise)
-    //       * Write symbol (we need to be able to write the output bit wise)
-
-    // TODO: remove all logging
-    std::cout << "Decompressed size: " << decompressed_size << " bytes" << std::endl;
-    std::cout << "Tree size:         " << tree_size << " bytes" << std::endl;
-    std::cout << "First byte:        " << (int)(*input) << std::endl;
-
-    return std::vector<unsigned char>();
-*/
 }
 
 std::vector<unsigned char> huffman_decoder::decode(const unsigned char* compressed_data, std::size_t /*size*/)
