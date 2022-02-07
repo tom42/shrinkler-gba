@@ -237,7 +237,6 @@ std::size_t huffman_decoder::get_decompressed_size(const unsigned char* compress
 
 unsigned char huffman_decoder::decode_symbol()
 {
-    // TODO: real implementation
     const unsigned char* current_node = tree_root;
 
     // TODO: better loop with sane end condition
