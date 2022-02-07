@@ -216,8 +216,8 @@ std::size_t huffman_decoder::get_decompressed_size(const unsigned char* compress
 unsigned char huffman_decoder::decode_symbol()
 {
     const unsigned char* current_node = tree_root;
-
     bool character_found = false;
+
     while (!character_found)
     {
         bitmask >>= 1;
@@ -228,11 +228,12 @@ unsigned char huffman_decoder::decode_symbol()
             bitbuffer = *readptr++; // TODO: little/big endian: source data is little endian; if we're on a big endian machine we must perform little to big endian conversion here.
         }
 
+        auto ofs = *current_node & 63;              // TODO: constant: 63. Also, line is duplicated
+
         if (!(bitbuffer & bitmask))
         {
             // TODO: OK, this seems to work, it's just ugly as sin
             character_found = *current_node & mask_left;
-            auto ofs = *current_node & 63;              // TODO: constant: 63. Also, line is duplicated
             // TODO: ugly pointer castery, should be possible without this
             uintptr_t foo = (uintptr_t)current_node;
             foo = (foo & ~1) + ofs * 2 + 2;
@@ -241,7 +242,6 @@ unsigned char huffman_decoder::decode_symbol()
         else
         {
             character_found = *current_node & mask_right;
-            auto ofs = *current_node & 63;              // TODO: constant: 63. Also, line is duplicated
             // TODO: ugly pointer castery, should be possible without this
             uintptr_t foo = (uintptr_t)current_node;
             foo = (foo & ~1) + ofs * 2 + 2 + 1;         // TODO: watch out: +1, compared to branch above
