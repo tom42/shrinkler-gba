@@ -217,8 +217,8 @@ unsigned char huffman_decoder::decode_symbol()
 {
     const unsigned char* current_node = tree_root;
 
-    // TODO: better loop with sane end condition
-    while (true)
+    bool character_found = false;
+    while (!character_found)
     {
         bitmask >>= 1;
         if (!bitmask)
@@ -228,35 +228,24 @@ unsigned char huffman_decoder::decode_symbol()
             bitbuffer = *readptr++; // TODO: little/big endian: source data is little endian; if we're on a big endian machine we must perform little to big endian conversion here.
         }
 
-        bool found_character;
         if (!(bitbuffer & bitmask))
         {
             // TODO: OK, this seems to work, it's just ugly as sin
-            found_character = *current_node & mask_left;
+            character_found = *current_node & mask_left;
             auto ofs = *current_node & 63;              // TODO: constant: 63. Also, line is duplicated
             // TODO: ugly pointer castery, should be possible without this
             uintptr_t foo = (uintptr_t)current_node;
             foo = (foo & ~1) + ofs * 2 + 2;
             current_node = (unsigned char*)foo;
-            // TODO: now, in principle when we've found the character we can return it
-            if (found_character)
-            {
-                break;
-            }
         }
         else
         {
-            found_character = *current_node & mask_right;
+            character_found = *current_node & mask_right;
             auto ofs = *current_node & 63;              // TODO: constant: 63. Also, line is duplicated
             // TODO: ugly pointer castery, should be possible without this
             uintptr_t foo = (uintptr_t)current_node;
             foo = (foo & ~1) + ofs * 2 + 2 + 1;         // TODO: watch out: +1, compared to branch above
             current_node = (unsigned char*)foo;
-            // TODO: now, in principle when we've found the character we can return it
-            if (found_character)
-            {
-                break;
-            }
         }
     }
 
