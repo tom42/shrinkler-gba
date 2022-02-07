@@ -255,8 +255,9 @@ unsigned char huffman_decoder::decode_symbol()
         if (!(bitbuffer & bitmask))
         {
             // TODO: OK, this seems to work, it's just ugly as sin
-            found_character = *current_node & 0x80;
-            auto ofs = *current_node & 63;
+            found_character = *current_node & 0x80;     // TODO: constant: 0x80
+            auto ofs = *current_node & 63;              // TODO: constant: 63. Also, line is duplicated
+            // TODO: ugly pointer castery, should be possible without this
             uintptr_t foo = (uintptr_t)current_node;
             foo = (foo & ~1) + ofs * 2 + 2;
             current_node = (unsigned char*)foo;
@@ -268,7 +269,17 @@ unsigned char huffman_decoder::decode_symbol()
         }
         else
         {
-            throw std::runtime_error("TODO: implement this branch");
+            found_character = *current_node & 0x40;     // TODO: constant: 0x40
+            auto ofs = *current_node & 63;              // TODO: constant: 63. Also, line is duplicated
+            // TODO: ugly pointer castery, should be possible without this
+            uintptr_t foo = (uintptr_t)current_node;
+            foo = (foo & ~1) + ofs * 2 + 2 + 1;         // TODO: watch out: +1, compared to branch above
+            current_node = (unsigned char*)foo;
+            // TODO: now, in principle when we've found the character we can return it
+            if (found_character)
+            {
+                break;
+            }
         }
     }
 
