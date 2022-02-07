@@ -193,7 +193,16 @@ std::vector<unsigned char> huffman_decoder::decode(const unsigned char* compress
     std::cout << "decompressed size: " << decompressed_size << std::endl;
     std::cout << "*readptr:          0x" << std::hex << *readptr << std::endl;
 
-    // TODO: this needs a decompression loop, but for starters I am happy if I can decode a single character
+    // TODO: real decompression loop: honor decompressed data size
+    for (int i = 0; i < 27; ++i)
+    {
+        // TODO: instead of printing the character, stick it into the output buffer
+        std::cout << decode_symbol(); // TODO: no logging
+    }
+    std::cout << std::endl; // TODO: no logging
+
+
+
     std::cout << (char)decode_symbol() << std::endl; // TODO: remove all logging
     std::cout << (char)decode_symbol() << std::endl; // TODO: remove all logging
     // TODO: write symbol to output. Later we must take into account that symbol size may be < 8 bits
@@ -241,6 +250,7 @@ unsigned char huffman_decoder::decode_symbol()
     // TODO: real implementation
     const unsigned char* current_node = tree_root;
 
+    // TODO: better loop with sane end condition
     while (true)
     {
         bitmask >>= 1;
