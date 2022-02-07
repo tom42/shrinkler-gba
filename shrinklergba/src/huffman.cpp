@@ -194,12 +194,11 @@ std::vector<unsigned char> huffman_decoder::decode(const unsigned char* compress
     std::cout << "*readptr:          0x" << std::hex << *readptr << std::endl;
 
     // TODO: this needs a decompression loop, but for starters I am happy if I can decode a single character
-    unsigned char symbol = decode_symbol();
-    std::cout << (char)symbol << std::endl; // TODO: remove all logging
+    std::cout << (char)decode_symbol() << std::endl; // TODO: remove all logging
+    std::cout << (char)decode_symbol() << std::endl; // TODO: remove all logging
     // TODO: write symbol to output. Later we must take into account that symbol size may be < 8 bits
 
     // TODO: remove all logging
-    std::cout << "symbol:            " << std::hex << static_cast<int>(symbol) << std::endl;
     std::cout << "bitmask:           " << std::hex << bitmask << std::endl;
     std::cout << "bitbuffer:         " << std::hex << bitbuffer << std::endl;
 
@@ -273,7 +272,9 @@ unsigned char huffman_decoder::decode_symbol()
         }
     }
 
-    // TODO: Data (upper bits should be zero if Data Size is less than 8)
+    // TODO: Data (upper bits should be zero if Data Size is less than 8) => So we have two possibilities here:
+    //       * Safe mode: we bark, because it is an error
+    //       * Robust mode: we mask out high bits that should be 0
     return *current_node;
 }
 
