@@ -106,20 +106,20 @@ std::vector<unsigned char> huffman_decoder::decode_c(const std::vector<unsigned 
 
         unsigned int found_pos;
         if (!(code & mask4)) {
-            std::cout << "moving left, pos is " << pos << std::endl;
+            //std::cout << "moving left, pos is " << pos << std::endl;
             ch = pos & HUF_LCHAR;
             pos = *(tree + next);
             found_pos = next;
         }
         else {
-            std::cout << "moving right, pos is " << pos << std::endl;
+            //std::cout << "moving right, pos is " << pos << std::endl;
             ch = pos & HUF_RCHAR;
             pos = *(tree + next + 1);
             found_pos = next + 1;
         }
 
         if (ch) {
-            std::cout << "found <" << (char)pos << "> at " << found_pos << std::endl;
+            //std::cout << "found <" << (char)pos << "> at " << found_pos << std::endl;
             *raw |= pos << nbits;
             ////  *raw = (*raw << num_bits) | pos; 
             nbits = (nbits + num_bits) & 7;
@@ -186,32 +186,22 @@ std::vector<unsigned char> huffman_decoder::decode(const unsigned char* compress
     // TODO: is this legal?
     // TODO: maybe at least have an assertion that readptr is aligned? (then again, the CPU will complain I guess)
     readptr = reinterpret_cast<const uint32_t*>(compressed_data + ofs_tree_size + 2 * (compressed_data[ofs_tree_size] + 1));
+    std::vector<unsigned char> decompressed_data;   // TODO: set capacity
     bitbuffer = 0;
     bitmask = 0;
 
     // TODO: remove all logging
     std::cout << "decompressed size: " << decompressed_size << std::endl;
-    std::cout << "*readptr:          0x" << std::hex << *readptr << std::endl;
 
     // TODO: real decompression loop: honor decompressed data size
     for (int i = 0; i < 27; ++i)
     {
         // TODO: instead of printing the character, stick it into the output buffer
-        std::cout << decode_symbol(); // TODO: no logging
+        // TODO: write symbol to output. Later we must take into account that symbol size may be < 8 bits
+        decompressed_data.push_back(decode_symbol());
     }
-    std::cout << std::endl; // TODO: no logging
 
-
-
-    std::cout << (char)decode_symbol() << std::endl; // TODO: remove all logging
-    std::cout << (char)decode_symbol() << std::endl; // TODO: remove all logging
-    // TODO: write symbol to output. Later we must take into account that symbol size may be < 8 bits
-
-    // TODO: remove all logging
-    std::cout << "bitmask:           " << std::hex << bitmask << std::endl;
-    std::cout << "bitbuffer:         " << std::hex << bitbuffer << std::endl;
-
-    throw std::runtime_error("YIKES");
+    return decompressed_data;
 }
 
 void huffman_decoder::check_compression_type(unsigned char type) const
