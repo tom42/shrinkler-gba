@@ -160,7 +160,7 @@ std::vector<unsigned char> huffman_decoder::decode(const unsigned char* compress
     // TODO: assert address is a multiple of 4?
     // TODO: in principle should check a minimum size here, since we're going to access the header right away
     check_compression_type(compressed_data[ofs_compression_type] >> 4);
-    check_symbol_size(compressed_data[ofs_compression_type] & 15);
+    const int symbol_size = get_symbol_size(compressed_data[ofs_compression_type] & 15);
     std::size_t decompressed_size = get_decompressed_size(compressed_data);
 
     tree_root = compressed_data + ofs_tree_root;
@@ -172,12 +172,14 @@ std::vector<unsigned char> huffman_decoder::decode(const unsigned char* compress
     bitbuffer = 0;
     bitmask = 0;
 
-    // TODO: real decompression loop: honor decompressed data size
-    for (int i = 0; i < 27; ++i)
+    for (size_t i = 0; i < decompressed_size; ++i)
     {
-        // TODO: instead of printing the character, stick it into the output buffer
-        // TODO: write symbol to output. Later we must take into account that symbol size may be < 8 bits
-        decompressed_data.push_back(decode_symbol());
+        unsigned char decoded_byte = 0;
+        for (int nbits = 0; nbits < 8; nbits += symbol_size)
+        {
+            decoded_byte |= decode_symbol() << nbits;
+        }
+        decompressed_data.push_back(decoded_byte);
     }
 
     return decompressed_data;
@@ -191,7 +193,7 @@ void huffman_decoder::check_compression_type(unsigned char type) const
     }
 }
 
-int huffman_decoder::check_symbol_size(int symbol_size) const
+int huffman_decoder::get_symbol_size(int symbol_size) const
 {
     static const std::array valid_sizes{ 1, 2, 4, 8 };
 
