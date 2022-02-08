@@ -36,6 +36,12 @@ namespace shrinklergba_unittest
 
 // TODO: also test with h4, h2 and h1
 
+static const std::vector<unsigned char> h2_encoded_data
+{
+    0x22, 0x0c, 0x00, 0x00, 0x03, 0x00, 0xc0, 0xc1, 0x01, 0x03, 0x02, 0x00,
+    0xfb, 0xdb, 0xe8, 0x5c, 0xe8, 0xfb, 0x98, 0x38, 0x9b, 0xf4, 0x58, 0x58
+};
+
 static const std::vector<unsigned char> h4_encoded_data
 {
     0x24, 0x1a, 0x00, 0x00, 0x0d, 0x00, 0x00, 0x81, 0x41, 0x82, 0x06, 0xc2,
@@ -53,16 +59,21 @@ static const std::vector<unsigned char> h8_encoded_data
     0xcd, 0x4b, 0x80, 0xcc, 0x08, 0x97, 0x50, 0xe6
 };
 
+static const std::vector<unsigned char> h2_decoded_data
+{
+    'O', 'h', ',', ' ', 'a', 'n', ' ', 'h', 'o', 'o', 'p', '.'
+};
+
 static const std::vector<unsigned char> h4_decoded_data
 {
     'I', ' ', 'w', 'a', 'n', 't', ' ', 't', 'o', ' ', 'b', 'u', 'y',
-    ' ', 's', 'o', 'm', 'e', ' ', 'c', 'h', 'e', 'e', 's', 'e', '.',
+    ' ', 's', 'o', 'm', 'e', ' ', 'c', 'h', 'e', 'e', 's', 'e', '.'
 };
 
 static const std::vector<unsigned char> h8_decoded_data
 {
     'H', 'e', ' ', 'w', 'h', 'o', ' ', 'f', 'o', 'o', 's', ' ', 'l', 'a',
-    's', 't', ' ', 'f', 'o', 'o', 's', ' ', 'b', 'e', 's', 't', '.',
+    's', 't', ' ', 'f', 'o', 'o', 's', ' ', 'b', 'e', 's', 't', '.'
 };
 
 class huffman_decoder_test_fixture
@@ -85,6 +96,11 @@ BOOST_FIXTURE_TEST_SUITE(huffman_decoder_test, huffman_decoder_test_fixture)
         CHECK_EXCEPTION(decoder.decode(data), std::runtime_error, "invalid symbol size");
     }
 
+    BOOST_AUTO_TEST_CASE(decode_c_h2)
+    {
+        BOOST_TEST(h2_decoded_data == decoder.decode_c(h2_encoded_data), boost::test_tools::per_element());
+    }
+
     BOOST_AUTO_TEST_CASE(decode_c_h4)
     {
         BOOST_TEST(h4_decoded_data == decoder.decode_c(h4_encoded_data), boost::test_tools::per_element());
@@ -93,6 +109,11 @@ BOOST_FIXTURE_TEST_SUITE(huffman_decoder_test, huffman_decoder_test_fixture)
     BOOST_AUTO_TEST_CASE(decode_c_h8)
     {
         BOOST_TEST(h8_decoded_data == decoder.decode_c(h8_encoded_data), boost::test_tools::per_element());
+    }
+
+    BOOST_AUTO_TEST_CASE(decode_h2)
+    {
+        BOOST_TEST(h2_decoded_data == decoder.decode(h2_encoded_data), boost::test_tools::per_element());
     }
 
     BOOST_AUTO_TEST_CASE(decode_h4)
