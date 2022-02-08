@@ -231,7 +231,7 @@ unsigned char huffman_decoder::decode_symbol()
             bitbuffer = *readptr++; // TODO: little/big endian: source data is little endian; if we're on a big endian machine we must perform little to big endian conversion here.
         }
 
-        auto ofs = *current_node & mask_next_node_offset;
+        auto ofs = 2 * ((*current_node & mask_next_node_offset) + 1);
 
         if (!(bitbuffer & bitmask))
         {
@@ -239,7 +239,7 @@ unsigned char huffman_decoder::decode_symbol()
             character_found = *current_node & mask_left;
             // TODO: ugly pointer castery, should be possible without this
             uintptr_t foo = (uintptr_t)current_node;
-            foo = (foo & ~1) + 2 * (ofs + 1);
+            foo = (foo & ~1) + ofs;
             current_node = (unsigned char*)foo;
         }
         else
@@ -247,7 +247,7 @@ unsigned char huffman_decoder::decode_symbol()
             character_found = *current_node & mask_right;
             // TODO: ugly pointer castery, should be possible without this
             uintptr_t foo = (uintptr_t)current_node;
-            foo = (foo & ~1) + 2 * (ofs + 1) + 1;         // TODO: watch out: +1, compared to branch above
+            foo = (foo & ~1) + ofs + 1;         // TODO: watch out: +1, compared to branch above
             current_node = (unsigned char*)foo;
         }
     }
