@@ -36,6 +36,13 @@ namespace shrinklergba_unittest
 
 // TODO: also test with h4, h2 and h1
 
+static const std::vector<unsigned char> h1_encoded_data
+{
+    0x21, 0x1a, 0x00, 0x00, 0x01, 0xc0, 0x00, 0x01, 0x04, 0x34, 0x16, 0xf2,
+    0xe4, 0xae, 0xf6, 0x9e, 0x76, 0x04, 0xa6, 0x4e, 0xae, 0x66, 0x04, 0xf6,
+    0x76, 0x86, 0x04, 0x76, 0x4e, 0xf6, 0xb6, 0x9e, 0x00, 0x00, 0x74, 0xa6
+};
+
 static const std::vector<unsigned char> h2_encoded_data
 {
     0x22, 0x0c, 0x00, 0x00, 0x03, 0x00, 0xc0, 0xc1, 0x01, 0x03, 0x02, 0x00,
@@ -57,6 +64,12 @@ static const std::vector<unsigned char> h8_encoded_data
     0x41, 0x73, 0x01, 0xc2, 0x42, 0x65, 0xc2, 0xc3, 0x66, 0x74, 0xc2, 0x2e,
     0x6c, 0x77, 0x62, 0x68, 0x48, 0x61, 0x00, 0x00, 0x9b, 0xaf, 0x64, 0x00,
     0xcd, 0x4b, 0x80, 0xcc, 0x08, 0x97, 0x50, 0xe6
+};
+
+static const std::vector<unsigned char> h1_decoded_data
+{
+    'O', 'h', ',', ' ', 'y', 'o', 'u', '\'', 'r', 'e', ' ', 'n', 'o',
+    ' ', 'f', 'u', 'n', ' ', 'a', 'n', 'y', 'm', 'o', 'r', 'e', '.'
 };
 
 static const std::vector<unsigned char> h2_decoded_data
@@ -96,6 +109,11 @@ BOOST_FIXTURE_TEST_SUITE(huffman_decoder_test, huffman_decoder_test_fixture)
         CHECK_EXCEPTION(decoder.decode(data), std::runtime_error, "invalid symbol size");
     }
 
+    BOOST_AUTO_TEST_CASE(decode_c_h1)
+    {
+        BOOST_TEST(h1_decoded_data == decoder.decode_c(h1_encoded_data), boost::test_tools::per_element());
+    }
+
     BOOST_AUTO_TEST_CASE(decode_c_h2)
     {
         BOOST_TEST(h2_decoded_data == decoder.decode_c(h2_encoded_data), boost::test_tools::per_element());
@@ -109,6 +127,11 @@ BOOST_FIXTURE_TEST_SUITE(huffman_decoder_test, huffman_decoder_test_fixture)
     BOOST_AUTO_TEST_CASE(decode_c_h8)
     {
         BOOST_TEST(h8_decoded_data == decoder.decode_c(h8_encoded_data), boost::test_tools::per_element());
+    }
+
+    BOOST_AUTO_TEST_CASE(decode_h1)
+    {
+        BOOST_TEST(h1_decoded_data == decoder.decode(h1_encoded_data), boost::test_tools::per_element());
     }
 
     BOOST_AUTO_TEST_CASE(decode_h2)
