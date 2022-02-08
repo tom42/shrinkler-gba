@@ -34,8 +34,6 @@ namespace shrinklergba_unittest
         E,                                                              \
         [](const auto& e) { BOOST_TEST(e.what() == M); return true; });
 
-// TODO: also test with h4, h2 and h1
-
 static const std::vector<unsigned char> h1_encoded_data
 {
     0x21, 0x1a, 0x00, 0x00, 0x01, 0xc0, 0x00, 0x01, 0x04, 0x34, 0x16, 0xf2,
