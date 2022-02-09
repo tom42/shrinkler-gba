@@ -118,17 +118,9 @@ unsigned char huffman_decoder::decode_symbol()
 
     while (!character_found)
     {
-        bitmask >>= 1;
-        if (!bitmask)
-        {
-            bitmask = 0x80000000;   // TODO: constant?
-            // TODO: should check whether we do not read past end of compressed data before performing this read! (if we do, throw)
-            bitbuffer = *readptr++; // TODO: little/big endian: source data is little endian; if we're on a big endian machine we must perform little to big endian conversion here.
-        }
-
         current_node_index += 2 * ((current_node_value & mask_next_node_offset) + 1);
 
-        if (!(bitbuffer & bitmask))
+        if (!get_bit())
         {
             character_found = current_node_value & mask_left;
             current_node_value = *(tree_root - 1 + current_node_index);
@@ -144,6 +136,19 @@ unsigned char huffman_decoder::decode_symbol()
     //       * Safe mode: we bark, because it is an error
     //       * Robust mode: we mask out high bits that should be 0
     return current_node_value;
+}
+
+bool huffman_decoder::get_bit()
+{
+    bitmask >>= 1;
+    if (!bitmask)
+    {
+        bitmask = 0x80000000;   // TODO: constant?
+        // TODO: should check whether we do not read past end of compressed data before performing this read! (if we do, throw)
+        bitbuffer = *readptr++; // TODO: little/big endian: source data is little endian; if we're on a big endian machine we must perform little to big endian conversion here.
+    }
+
+    return bitbuffer & bitmask;
 }
 
 }

@@ -43,6 +43,7 @@ private:
     int get_symbol_size(int symbol_size) const;
     std::size_t get_decompressed_size(const unsigned char* compressed_data) const;
     unsigned char decode_symbol();
+    bool get_bit();
 
     const unsigned char* tree_root;
     const uint32_t* readptr;
