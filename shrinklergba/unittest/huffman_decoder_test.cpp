@@ -107,26 +107,6 @@ BOOST_FIXTURE_TEST_SUITE(huffman_decoder_test, huffman_decoder_test_fixture)
         CHECK_EXCEPTION(decoder.decode(data), std::runtime_error, "invalid symbol size");
     }
 
-    BOOST_AUTO_TEST_CASE(decode_c_h1)
-    {
-        BOOST_TEST(h1_decoded_data == decoder.decode_c(h1_encoded_data), boost::test_tools::per_element());
-    }
-
-    BOOST_AUTO_TEST_CASE(decode_c_h2)
-    {
-        BOOST_TEST(h2_decoded_data == decoder.decode_c(h2_encoded_data), boost::test_tools::per_element());
-    }
-
-    BOOST_AUTO_TEST_CASE(decode_c_h4)
-    {
-        BOOST_TEST(h4_decoded_data == decoder.decode_c(h4_encoded_data), boost::test_tools::per_element());
-    }
-
-    BOOST_AUTO_TEST_CASE(decode_c_h8)
-    {
-        BOOST_TEST(h8_decoded_data == decoder.decode_c(h8_encoded_data), boost::test_tools::per_element());
-    }
-
     BOOST_AUTO_TEST_CASE(decode_h1)
     {
         BOOST_TEST(h1_decoded_data == decoder.decode(h1_encoded_data), boost::test_tools::per_element());
