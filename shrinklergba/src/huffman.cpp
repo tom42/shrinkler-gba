@@ -218,7 +218,8 @@ std::size_t huffman_decoder::get_decompressed_size(const unsigned char* compress
 
 unsigned char huffman_decoder::decode_symbol()
 {
-    const unsigned char* current_node = tree_root;
+    std::size_t current_node_index = 0;
+    unsigned char current_node_value = *tree_root; // TODO: initialize this with address of tree size instead?
     bool character_found = false;
 
     while (!character_found)
@@ -231,31 +232,24 @@ unsigned char huffman_decoder::decode_symbol()
             bitbuffer = *readptr++; // TODO: little/big endian: source data is little endian; if we're on a big endian machine we must perform little to big endian conversion here.
         }
 
-        auto ofs = 2 * ((*current_node & mask_next_node_offset) + 1);
+        current_node_index += 2 * ((current_node_value & mask_next_node_offset) + 1);
 
         if (!(bitbuffer & bitmask))
         {
-            // TODO: OK, this seems to work, it's just ugly as sin
-            character_found = *current_node & mask_left;
-            // TODO: ugly pointer castery, should be possible without this
-            uintptr_t foo = (uintptr_t)current_node;
-            foo = (foo & ~1) + ofs;
-            current_node = (unsigned char*)foo;
+            character_found = current_node_value & mask_left;
+            current_node_value = *(tree_root - 1 + current_node_index);
         }
         else
         {
-            character_found = *current_node & mask_right;
-            // TODO: ugly pointer castery, should be possible without this
-            uintptr_t foo = (uintptr_t)current_node;
-            foo = (foo & ~1) + ofs + 1;         // TODO: watch out: +1, compared to branch above
-            current_node = (unsigned char*)foo;
+            character_found = current_node_value & mask_right;
+            current_node_value = *(tree_root - 1 + current_node_index + 1);
         }
     }
 
     // TODO: Data (upper bits should be zero if Data Size is less than 8) => So we have two possibilities here:
     //       * Safe mode: we bark, because it is an error
     //       * Robust mode: we mask out high bits that should be 0
-    return *current_node;
+    return current_node_value;
 }
 
 }
