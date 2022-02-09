@@ -22,6 +22,7 @@
 // SOFTWARE.
 
 #include <array>
+#include <boost/endian/conversion.hpp>
 #include <stdexcept>
 #include "shrinklergba/huffman.hpp"
 
@@ -145,7 +146,7 @@ bool huffman_decoder::get_bit()
     {
         bitmask = 0x80000000;   // TODO: constant?
         // TODO: should check whether we do not read past end of compressed data before performing this read! (if we do, throw)
-        bitbuffer = *readptr++; // TODO: little/big endian: source data is little endian; if we're on a big endian machine we must perform little to big endian conversion here.
+        bitbuffer = boost::endian::little_to_native(*readptr++);
     }
 
     return bitbuffer & bitmask;
