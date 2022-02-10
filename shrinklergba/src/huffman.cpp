@@ -106,7 +106,6 @@ std::size_t huffman_decoder::get_decompressed_size(const unsigned char* compress
     unsigned char b1 = compressed_data[ofs_decompressed_size + 1];
     unsigned char b2 = compressed_data[ofs_decompressed_size + 2];
 
-    // TODO: at the very least manually check this for bits 8..23, no?
     auto size = b0 + (b1 << 8) + (b2 << 16);
     return size;
 }
