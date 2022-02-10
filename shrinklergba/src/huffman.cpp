@@ -39,7 +39,7 @@ constexpr std::size_t ofs_compression_type = 0;
 constexpr std::size_t ofs_decompressed_size = 1;
 constexpr std::size_t ofs_tree_size = 4;
 
-// TODO: what is this?
+// Bit masks
 constexpr unsigned char mask_left = 0x80;
 constexpr unsigned char mask_right = 0x40;
 constexpr unsigned char mask_next_node_offset = 63;
@@ -51,14 +51,12 @@ std::vector<unsigned char> huffman_decoder::decode(const std::vector<unsigned ch
 
 std::vector<unsigned char> huffman_decoder::decode(const unsigned char* compressed_data, std::size_t /*size*/)
 {
-    // TODO: assert address is a multiple of 4?
     // TODO: in principle should check a minimum size here, since we're going to access the header right away
     check_compression_type(compressed_data[ofs_compression_type] >> 4);
     const int symbol_size = get_symbol_size(compressed_data[ofs_compression_type] & 15);
     std::size_t decompressed_size = get_decompressed_size(compressed_data);
 
     tree_size = compressed_data + ofs_tree_size;
-    // TODO: maybe at least have an assertion that readptr is aligned? (then again, the CPU will complain I guess)
     readptr = reinterpret_cast<const uint32_t*>(compressed_data + ofs_tree_size + 2 * (compressed_data[ofs_tree_size] + 1));
     std::vector<unsigned char> decompressed_data;
     decompressed_data.reserve(decompressed_size);
