@@ -45,7 +45,7 @@ private:
     unsigned char decode_symbol();
     bool get_bit();
 
-    const unsigned char* tree_root;
+    const unsigned char* tree_size;
     const uint32_t* readptr;
     uint32_t bitbuffer;
     uint32_t bitmask;

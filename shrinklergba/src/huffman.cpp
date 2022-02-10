@@ -38,7 +38,6 @@ enum class compression_type : unsigned char
 constexpr std::size_t ofs_compression_type = 0;
 constexpr std::size_t ofs_decompressed_size = 1;
 constexpr std::size_t ofs_tree_size = 4;
-constexpr std::size_t ofs_tree_root = 5;
 
 // TODO: what is this?
 constexpr unsigned char mask_left = 0x80;
@@ -58,7 +57,7 @@ std::vector<unsigned char> huffman_decoder::decode(const unsigned char* compress
     const int symbol_size = get_symbol_size(compressed_data[ofs_compression_type] & 15);
     std::size_t decompressed_size = get_decompressed_size(compressed_data);
 
-    tree_root = compressed_data + ofs_tree_root;
+    tree_size = compressed_data + ofs_tree_size;
     // TODO: is this legal?
     // TODO: maybe at least have an assertion that readptr is aligned? (then again, the CPU will complain I guess)
     readptr = reinterpret_cast<const uint32_t*>(compressed_data + ofs_tree_size + 2 * (compressed_data[ofs_tree_size] + 1));
@@ -113,7 +112,7 @@ std::size_t huffman_decoder::get_decompressed_size(const unsigned char* compress
 unsigned char huffman_decoder::decode_symbol()
 {
     std::size_t current_node_index = 0;
-    unsigned char current_node_value = *tree_root; // TODO: initialize this with address of tree size instead?
+    unsigned char current_node_value = tree_size[1];
     bool character_found = false;
 
     while (!character_found)
@@ -123,12 +122,12 @@ unsigned char huffman_decoder::decode_symbol()
         if (!get_bit())
         {
             character_found = current_node_value & mask_left;
-            current_node_value = *(tree_root - 1 + current_node_index);
+            current_node_value = tree_size[current_node_index];
         }
         else
         {
             character_found = current_node_value & mask_right;
-            current_node_value = *(tree_root - 1 + current_node_index + 1);
+            current_node_value = tree_size[current_node_index + 1];
         }
     }
 
