@@ -58,7 +58,6 @@ std::vector<unsigned char> huffman_decoder::decode(const unsigned char* compress
     std::size_t decompressed_size = get_decompressed_size(compressed_data);
 
     tree_size = compressed_data + ofs_tree_size;
-    // TODO: is this legal?
     // TODO: maybe at least have an assertion that readptr is aligned? (then again, the CPU will complain I guess)
     readptr = reinterpret_cast<const uint32_t*>(compressed_data + ofs_tree_size + 2 * (compressed_data[ofs_tree_size] + 1));
     std::vector<unsigned char> decompressed_data;
