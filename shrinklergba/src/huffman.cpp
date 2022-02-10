@@ -59,6 +59,7 @@ std::vector<unsigned char> huffman_decoder::decode(const unsigned char* compress
     std::size_t decompressed_size = get_decompressed_size(compressed_data);
 
     tree_size = compressed_data + ofs_tree_size;
+    // TODO: check on SO: is this legal?
     readptr = reinterpret_cast<const uint32_t*>(compressed_data + ofs_tree_size + 2 * (compressed_data[ofs_tree_size] + 1));
     std::vector<unsigned char> decompressed_data;
     decompressed_data.reserve(decompressed_size);
