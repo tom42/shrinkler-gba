@@ -45,6 +45,8 @@ private:
     unsigned char decode_symbol();
     bool get_bit();
 
+    static void check_compressed_size(std::size_t compressed_size);
+
     const unsigned char* tree_size;
     const uint32_t* readptr;
     uint32_t bitbuffer;

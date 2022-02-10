@@ -49,10 +49,11 @@ std::vector<unsigned char> huffman_decoder::decode(const std::vector<unsigned ch
     return decode(compressed_data.data(), compressed_data.size());
 }
 
-std::vector<unsigned char> huffman_decoder::decode(const unsigned char* compressed_data, std::size_t /*size*/)
+std::vector<unsigned char> huffman_decoder::decode(const unsigned char* compressed_data, std::size_t size)
 {
     // TODO: in principle should check a minimum size here, since we're going to access the header right away
     //       * Yes but then can just as well check max size, which is 4 + 8 * 8 * 8
+    check_compressed_size(size);
     check_compression_type(compressed_data[ofs_compression_type] >> 4);
     const int symbol_size = get_symbol_size(compressed_data[ofs_compression_type] & 15);
     std::size_t decompressed_size = get_decompressed_size(compressed_data);
@@ -146,6 +147,11 @@ bool huffman_decoder::get_bit()
     }
 
     return bitbuffer & bitmask;
+}
+
+void huffman_decoder::check_compressed_size(std::size_t /*compressed_size*/)
+{
+    // TODO: perform check (and test this)
 }
 
 }
