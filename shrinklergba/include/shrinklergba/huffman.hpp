@@ -21,6 +21,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+// Description of huffman encoded data as understood by the GBA BIOS from gbatek:
+//
+// Data Header (32 bit)
+//   Bit 0-3    Data size in bit units (normally 4 or 8)
+//   Bit 4-7    Compressed type (must be 2 for Huffman)
+//   Bit 8-31   24 bit size of decompressed data in bytes
+// Tree size (8 bit)
+//   Bit 0-7    Size of tree table / 2 - 1 (ie. offset to compressed bitstream)
+// Tree table (list of 8 bit nodes, starting with the root node)
+//   Root node and non-data child nodes are:
+//   Bit 0-5    Offset to next child node,
+//              Next child node0 is at (CurrentAddr AND NOT 1) + Offset * 2 + 2
+//              Next child node1 is at (CurrentAddr AND NOT 1) + Offset * 2 + 2 + 1
+//   Bit 6      Node1 end flag (1 = next child node is data)
+//   Bit 7      Node0 end flag (1 = next child node is data)
+// Data nodes are (when end flag was set in parent node):
+//   Bit 0-7    Data (upper bits should be zero if data size is less than 8)
+// Compressed bitstream (stored in units of 32bits)
+//   Bit 0-31   Node bits (bit 31 = first bit) (0=node0, 1=node1)
+
 #ifndef SHRINKLERGBA_HUFFMAN_HPP
 #define SHRINKLERGBA_HUFFMAN_HPP
 
@@ -31,7 +51,6 @@
 namespace shrinklergba
 {
 
-// TODO: document huffman compression header somewhere, for our own reference
 class huffman_decoder
 {
 public:
