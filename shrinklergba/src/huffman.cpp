@@ -110,7 +110,7 @@ bool huffman_decoder::get_bit()
     bitmask >>= 1;
     if (!bitmask)
     {
-        bitmask = 0x80000000;   // TODO: constant?
+        bitmask = 0x80000000;
         // TODO: should check whether we do not read past end of compressed data before performing this read! (if we do, throw)
         bitbuffer = boost::endian::little_to_native(*readptr++);
     }
