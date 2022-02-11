@@ -51,9 +51,6 @@ std::vector<unsigned char> huffman_decoder::decode(const std::vector<unsigned ch
 
 std::vector<unsigned char> huffman_decoder::decode(const unsigned char* compressed_data, std::size_t size)
 {
-    // TODO: in principle should check a minimum size here, since we're going to access the header right away
-    //       * Well watch out: the minimum size is > 4, since below we access ofs_tree_size!
-    //       * Yes but then can just as well check max size, which is 4 + 8 * 8 * 8
     check_compressed_size(size);
     check_compression_type(compressed_data[ofs_compression_type] >> 4);
     const int symbol_size = get_symbol_size(compressed_data[ofs_compression_type] & 15);
@@ -151,9 +148,17 @@ bool huffman_decoder::get_bit()
     return bitbuffer & bitmask;
 }
 
-void huffman_decoder::check_compressed_size(std::size_t /*compressed_size*/)
+void huffman_decoder::check_compressed_size(std::size_t compressed_size)
 {
-    // TODO: perform check (and test this)
+    // Check the bare minimum size required for the compression header.
+    // In reality it's more complicated. If the decompressed size is 0, then 4 bytes is enough.
+    // If the decompressed size is nonzero, then the minimum size is more than 4 bytes.
+    if (compressed_size < 4)
+    {
+        throw std::runtime_error("invalid compressed data");
+    }
+    // TODO: more size checks? For instance, the size should be a multiple of 4 since encoded data is 32 bit aligned, no?
+    //       * Yes but then should probably also check the pointer to the compressed data, no?
 }
 
 }
