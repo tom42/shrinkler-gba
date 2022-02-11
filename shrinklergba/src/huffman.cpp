@@ -53,7 +53,7 @@ std::vector<unsigned char> huffman_decoder::decode(const unsigned char* compress
 {
     check_compressed_size(size);
     check_compression_type(compressed_data[ofs_compression_type] >> 4);
-    const int symbol_size = get_symbol_size(compressed_data[ofs_compression_type] & 15);
+    const int symbol_size = check_symbol_size(compressed_data[ofs_compression_type] & 15);
     std::size_t decompressed_size = get_decompressed_size(compressed_data);
 
     tree_size = compressed_data + ofs_tree_size;
@@ -75,18 +75,6 @@ std::vector<unsigned char> huffman_decoder::decode(const unsigned char* compress
     }
 
     return decompressed_data;
-}
-
-int huffman_decoder::get_symbol_size(int symbol_size) const
-{
-    static const std::array valid_sizes{ 1, 2, 4, 8 };
-
-    if (std::find(valid_sizes.begin(), valid_sizes.end(), symbol_size) == valid_sizes.end())
-    {
-        throw std::runtime_error("invalid symbol size");
-    }
-
-    return symbol_size;
 }
 
 std::size_t huffman_decoder::get_decompressed_size(const unsigned char* compressed_data) const
@@ -159,6 +147,18 @@ void huffman_decoder::check_compression_type(unsigned char type)
     {
         throw std::runtime_error("invalid compression type");
     }
+}
+
+int huffman_decoder::check_symbol_size(int symbol_size)
+{
+    static const std::array valid_sizes{ 1, 2, 4, 8 };
+
+    if (std::find(valid_sizes.begin(), valid_sizes.end(), symbol_size) == valid_sizes.end())
+    {
+        throw std::runtime_error("invalid symbol size");
+    }
+
+    return symbol_size;
 }
 
 }
