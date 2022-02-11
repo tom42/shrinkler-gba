@@ -77,14 +77,6 @@ std::vector<unsigned char> huffman_decoder::decode(const unsigned char* compress
     return decompressed_data;
 }
 
-void huffman_decoder::check_compression_type(unsigned char type) const
-{
-    if (static_cast<compression_type>(type) != compression_type::huffman)
-    {
-        throw std::runtime_error("invalid compression type");
-    }
-}
-
 int huffman_decoder::get_symbol_size(int symbol_size) const
 {
     static const std::array valid_sizes{ 1, 2, 4, 8 };
@@ -159,6 +151,14 @@ void huffman_decoder::check_compressed_size(std::size_t compressed_size)
     }
     // TODO: more size checks? For instance, the size should be a multiple of 4 since encoded data is 32 bit aligned, no?
     //       * Yes but then should probably also check the pointer to the compressed data, no?
+}
+
+void huffman_decoder::check_compression_type(unsigned char type)
+{
+    if (static_cast<compression_type>(type) != compression_type::huffman)
+    {
+        throw std::runtime_error("invalid compression type");
+    }
 }
 
 }
