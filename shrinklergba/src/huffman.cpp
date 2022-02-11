@@ -52,6 +52,7 @@ std::vector<unsigned char> huffman_decoder::decode(const std::vector<unsigned ch
 std::vector<unsigned char> huffman_decoder::decode(const unsigned char* compressed_data, std::size_t size)
 {
     // TODO: in principle should check a minimum size here, since we're going to access the header right away
+    //       * Well watch out: the minimum size is > 4, since below we access ofs_tree_size!
     //       * Yes but then can just as well check max size, which is 4 + 8 * 8 * 8
     check_compressed_size(size);
     check_compression_type(compressed_data[ofs_compression_type] >> 4);
