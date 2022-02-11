@@ -72,6 +72,14 @@ private:
     uint32_t bitmask;
 };
 
+class huffman_encoder
+{
+public:
+    std::vector<unsigned char> encode(const std::vector<unsigned char>& data);
+    std::vector<unsigned char> encode(const unsigned char* data, std::size_t size);
+private:
+};
+
 }
 
 #endif
