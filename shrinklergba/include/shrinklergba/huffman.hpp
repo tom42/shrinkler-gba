@@ -67,6 +67,7 @@ private:
 
     const unsigned char* tree_size;
     const uint32_t* readptr;
+    int symbol_mask;
     uint32_t bitbuffer;
     uint32_t bitmask;
 };

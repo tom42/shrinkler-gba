@@ -63,6 +63,7 @@ std::vector<unsigned char> huffman_decoder::decode(const unsigned char* compress
     readptr = reinterpret_cast<const uint32_t*>(compressed_data + ofs_tree_size + 2 * (compressed_data[ofs_tree_size] + 1));
     std::vector<unsigned char> decompressed_data;
     decompressed_data.reserve(decompressed_size);
+    symbol_mask = ~((1 << symbol_size) - 1);
     bitbuffer = 0;
     bitmask = 0;
 
@@ -101,9 +102,11 @@ unsigned char huffman_decoder::decode_symbol()
         }
     }
 
-    // TODO: Data (upper bits should be zero if Data Size is less than 8) => So we have two possibilities here:
-    //       * Safe mode: we bark, because it is an error
-    //       * Robust mode: we mask out high bits that should be 0
+    if (current_node_value & symbol_mask)
+    {
+        throw std::runtime_error("data node contains garbage in upper bits");
+    }
+
     return current_node_value;
 }
 
