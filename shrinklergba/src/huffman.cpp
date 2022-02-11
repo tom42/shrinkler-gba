@@ -58,6 +58,8 @@ std::vector<unsigned char> huffman_decoder::decode(const unsigned char* compress
 
     tree_size = compressed_data + ofs_tree_size;
     // TODO: check on SO: is this legal?
+    // TODO: do we want to check here whether the compressed data starts at a multiple of 4 (index inside buffer?)
+    //       That is, readptr should point to an address that is a multiple of 4 (we can check this before we cast to uint32_t*)
     readptr = reinterpret_cast<const uint32_t*>(compressed_data + ofs_tree_size + 2 * (compressed_data[ofs_tree_size] + 1));
     std::vector<unsigned char> decompressed_data;
     decompressed_data.reserve(decompressed_size);
@@ -128,7 +130,6 @@ void huffman_decoder::check_compressed_size(std::size_t compressed_size)
         throw std::runtime_error("invalid compressed data");
     }
     // TODO: more size checks? For instance, the size should be a multiple of 4 since encoded data is 32 bit aligned, no?
-    //       * Yes but then should probably also check the pointer to the compressed data, no?
 }
 
 void huffman_decoder::check_compression_type(unsigned char type)
