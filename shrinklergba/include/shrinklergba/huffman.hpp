@@ -57,14 +57,13 @@ public:
     std::vector<unsigned char> decode(const std::vector<unsigned char>& compressed_data);
     std::vector<unsigned char> decode(const unsigned char* compressed_data, std::size_t size);
 private:
-    // TODO: some of these could either be made static, or directly write to members
-    std::size_t get_decompressed_size(const unsigned char* compressed_data) const;
     unsigned char decode_symbol();
     bool get_bit();
 
     static void check_compressed_size(std::size_t compressed_size);
     static void check_compression_type(unsigned char type);
     static int check_symbol_size(int symbol_size);
+    static std::size_t get_decompressed_size(const unsigned char* compressed_data);
 
     const unsigned char* tree_size;
     const uint32_t* readptr;

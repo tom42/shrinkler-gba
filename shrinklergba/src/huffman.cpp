@@ -77,16 +77,6 @@ std::vector<unsigned char> huffman_decoder::decode(const unsigned char* compress
     return decompressed_data;
 }
 
-std::size_t huffman_decoder::get_decompressed_size(const unsigned char* compressed_data) const
-{
-    unsigned char b0 = compressed_data[ofs_decompressed_size + 0];
-    unsigned char b1 = compressed_data[ofs_decompressed_size + 1];
-    unsigned char b2 = compressed_data[ofs_decompressed_size + 2];
-
-    auto size = b0 + (b1 << 8) + (b2 << 16);
-    return size;
-}
-
 unsigned char huffman_decoder::decode_symbol()
 {
     std::size_t current_node_index = 0;
@@ -159,6 +149,16 @@ int huffman_decoder::check_symbol_size(int symbol_size)
     }
 
     return symbol_size;
+}
+
+std::size_t huffman_decoder::get_decompressed_size(const unsigned char* compressed_data)
+{
+    unsigned char b0 = compressed_data[ofs_decompressed_size + 0];
+    unsigned char b1 = compressed_data[ofs_decompressed_size + 1];
+    unsigned char b2 = compressed_data[ofs_decompressed_size + 2];
+
+    auto size = b0 + (b1 << 8) + (b2 << 16);
+    return size;
 }
 
 }
