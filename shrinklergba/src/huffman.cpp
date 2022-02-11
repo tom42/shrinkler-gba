@@ -127,7 +127,7 @@ void huffman_decoder::check_compressed_size(std::size_t compressed_size)
     // If the decompressed size is nonzero, then the minimum size is more than 4 bytes.
     if (compressed_size < 4)
     {
-        throw std::runtime_error("invalid compressed data");
+        throw std::runtime_error("compressed data is too short");
     }
     // TODO: more size checks? For instance, the size should be a multiple of 4 since encoded data is 32 bit aligned, no?
 }
