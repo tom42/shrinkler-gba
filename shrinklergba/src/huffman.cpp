@@ -129,7 +129,11 @@ void huffman_decoder::check_compressed_size(std::size_t compressed_size)
     {
         throw std::runtime_error("compressed data is too short");
     }
-    // TODO: more size checks? For instance, the size should be a multiple of 4 since encoded data is 32 bit aligned, no?
+
+    if (compressed_size % 4 != 0)
+    {
+        throw std::runtime_error("compressed data size is not a multiple of 4 bytes");
+    }
 }
 
 void huffman_decoder::check_compression_type(unsigned char type)

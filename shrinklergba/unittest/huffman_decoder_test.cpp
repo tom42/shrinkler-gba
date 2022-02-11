@@ -101,6 +101,12 @@ BOOST_FIXTURE_TEST_SUITE(huffman_decoder_test, huffman_decoder_test_fixture)
         CHECK_EXCEPTION(decoder.decode(data), std::runtime_error, "compressed data is too short");
     }
 
+    BOOST_AUTO_TEST_CASE(decode_when_compressed_data_size_is_not_aligned_then_throws)
+    {
+        std::vector<unsigned char> data{ 0x28, 0x00, 0x00, 0x00, 0x00 };
+        CHECK_EXCEPTION(decoder.decode(data), std::runtime_error, "compressed data size is not a multiple of 4 bytes");
+    }
+
     BOOST_AUTO_TEST_CASE(decode_when_compression_type_is_wrong_then_throws)
     {
         std::vector<unsigned char> data{ 0x38, 0x00, 0x00, 0x00 };
