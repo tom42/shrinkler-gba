@@ -29,8 +29,10 @@
 namespace shrinklergba
 {
 
+// TODO: move this to common header. compression_type.hpp will do for starters.
 enum class compression_type : unsigned char
 {
+    lzss = 1,
     huffman = 2
 };
 
