@@ -5,7 +5,6 @@
 
 * Implement relevant GBA BIOS compressors
   * Can do decoders first, we'll need them for verification
-    * Huffman decoder
     * LZSS decoder (does not need to be VRAM safe)
   * Then do encoders
     * Huffman
