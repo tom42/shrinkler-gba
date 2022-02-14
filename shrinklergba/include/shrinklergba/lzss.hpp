@@ -21,15 +21,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+// TODO: add LZSS description, similar as in huffman.hpp
+
 #ifndef SHRINKLERGBA_LZSS_HPP
 #define SHRINKLERGBA_LZSS_HPP
 
-// TODO: add LZSS description, similar as in huffman.hpp
+#include <cstddef>
+#include <vector>
 
 namespace shrinklergba
 {
 
 // TODO: add LZSS decoder, with interface similar as in huffman.hpp
+class lzss_decoder
+{
+public:
+    std::vector<unsigned char> decode(const std::vector<unsigned char>& compressed_data);
+    std::vector<unsigned char> decode(const unsigned char* compressed_data, std::size_t size);
+private:
+};
 
 }
 
