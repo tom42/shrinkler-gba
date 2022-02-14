@@ -32,6 +32,7 @@ set(
   include/shrinklergba/gba_packer.hpp
   include/shrinklergba/huffman.hpp
   include/shrinklergba/input_file.hpp
+  include/shrinklergba/lzss.hpp
   include/shrinklergba/options.hpp
   include/shrinklergba/table_printer.hpp
   src/command_line.cpp
