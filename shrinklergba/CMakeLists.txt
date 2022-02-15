@@ -66,6 +66,7 @@ if(BUILD_TESTING)
     unittest/command_line_test.cpp
     unittest/huffman_decoder_test.cpp
     unittest/input_file_test.cpp
+    unittest/lzss_decoder_test.cpp
     unittest/main.cpp
     unittest/options_test.cpp
     unittest/test_utilities.cpp
