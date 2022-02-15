@@ -46,7 +46,6 @@
 namespace shrinklergba
 {
 
-// TODO: add LZSS decoder, with interface similar as in huffman.hpp
 class lzss_decoder
 {
 public:
