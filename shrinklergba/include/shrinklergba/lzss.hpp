@@ -21,7 +21,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-// TODO: add LZSS description, similar as in huffman.hpp
+// Description of LZSS encoded data as understood by the GBA BIOS, from gbatek:
+//
+// Data header (32bit)
+//   Bit 0-3    Reserved (0)
+//   Bit 4-7    Compressed type (must be 1 for LZ77)
+//   Bit 8-31   Size of decompressed data
+// Repeat below. Each Flag Byte followed by eight Blocks.
+// Flag data (8bit)
+//   Bit 0-7    Type Flags for next 8 Blocks, MSB first
+// Block Type 0 - Uncompressed - Copy 1 Byte from Source to Dest
+//   Bit 0-7    One data byte to be copied to dest
+// Block Type 1 - Compressed - Copy N+3 Bytes from Dest-Disp-1 to Dest
+//   Bit 0-3    Disp MSBs
+//   Bit 4-7    Number of bytes to copy (minus 3)
+//   Bit 8-15   Disp LSBs
 
 #ifndef SHRINKLERGBA_LZSS_HPP
 #define SHRINKLERGBA_LZSS_HPP
