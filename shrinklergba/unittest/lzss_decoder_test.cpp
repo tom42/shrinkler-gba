@@ -34,6 +34,13 @@ public:
 };
 
 BOOST_FIXTURE_TEST_SUITE(lzss_decoder_test, lzss_decoder_test_fixture)
+
+// TODO: tests:
+//       * compressed data size (min/max)
+//       * compressed data size (alignment?)
+//       * reserved bits in header must be 0
+//       * compression type (that one would be a good start)
+
 BOOST_AUTO_TEST_SUITE_END()
 
 }
