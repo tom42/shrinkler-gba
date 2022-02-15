@@ -21,7 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-// Description of huffman encoded data as understood by the GBA BIOS from gbatek:
+// Description of Huffman encoded data as understood by the GBA BIOS from gbatek:
 //
 // Data Header (32 bit)
 //   Bit 0-3    Data size in bit units (normally 4 or 8)
