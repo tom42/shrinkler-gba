@@ -21,8 +21,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include <stdexcept>
 #include "shrinklergba/lzss.hpp"
 
 namespace shrinklergba
 {
+
+std::vector<unsigned char> lzss_decoder::decode(const std::vector<unsigned char>& /*compressed_data*/)
+{
+    // TODO: delegate to overload using C array
+    throw std::runtime_error("YIKES");
+}
+
 }

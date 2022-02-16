@@ -27,6 +27,13 @@
 namespace shrinklergba_unittest
 {
 
+// TODO: copypasted from huffman_decoder_test.cpp => move to test_utilities.hpp
+#define CHECK_EXCEPTION(S, E, M)                                        \
+    BOOST_CHECK_EXCEPTION(                                              \
+        S,                                                              \
+        E,                                                              \
+        [](const auto& e) { BOOST_TEST(e.what() == M); return true; });
+
 class lzss_decoder_test_fixture
 {
 public:
@@ -40,6 +47,11 @@ BOOST_FIXTURE_TEST_SUITE(lzss_decoder_test, lzss_decoder_test_fixture)
 //       * compressed data size (alignment?)
 //       * reserved bits in header must be 0
 //       * compression type (that one would be a good start)
+    BOOST_AUTO_TEST_CASE(decode_when_compression_type_is_wrong_then_throws)
+    {
+        std::vector<unsigned char> data{ 0x00 };
+        CHECK_EXCEPTION(decoder.decode(data), std::runtime_error, "invalid compression type");
+    }
 
 BOOST_AUTO_TEST_SUITE_END()
 
