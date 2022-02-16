@@ -22,6 +22,7 @@
 // SOFTWARE.
 
 #include <boost/test/unit_test.hpp>
+#include <stdexcept>
 #include <vector>
 #include "shrinklergba/huffman.hpp"
 
