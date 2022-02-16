@@ -40,6 +40,7 @@ set(
   src/gba_packer.cpp
   src/huffman.cpp
   src/input_file.cpp
+  src/lzss.cpp
   src/table_printer.cpp)
 
 source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${SOURCES})
