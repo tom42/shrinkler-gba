@@ -23,16 +23,10 @@
 
 #include <boost/test/unit_test.hpp>
 #include "shrinklergba/lzss.hpp"
+#include "test_utilities.hpp"
 
 namespace shrinklergba_unittest
 {
-
-// TODO: copypasted from huffman_decoder_test.cpp => move to test_utilities.hpp
-#define CHECK_EXCEPTION(S, E, M)                                        \
-    BOOST_CHECK_EXCEPTION(                                              \
-        S,                                                              \
-        E,                                                              \
-        [](const auto& e) { BOOST_TEST(e.what() == M); return true; });
 
 class lzss_decoder_test_fixture
 {

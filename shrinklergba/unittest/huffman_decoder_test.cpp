@@ -25,15 +25,10 @@
 #include <stdexcept>
 #include <vector>
 #include "shrinklergba/huffman.hpp"
+#include "test_utilities.hpp"
 
 namespace shrinklergba_unittest
 {
-
-#define CHECK_EXCEPTION(S, E, M)                                        \
-    BOOST_CHECK_EXCEPTION(                                              \
-        S,                                                              \
-        E,                                                              \
-        [](const auto& e) { BOOST_TEST(e.what() == M); return true; });
 
 static const std::vector<unsigned char> h1_encoded_data
 {

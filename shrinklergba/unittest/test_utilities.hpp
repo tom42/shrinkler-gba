@@ -27,6 +27,12 @@
 #include <filesystem>
 #include <vector>
 
+#define CHECK_EXCEPTION(S, E, M)                                        \
+    BOOST_CHECK_EXCEPTION(                                              \
+        S,                                                              \
+        E,                                                              \
+        [](const auto& e) { BOOST_TEST(e.what() == M); return true; });
+
 namespace shrinklergba_unittest
 {
 
