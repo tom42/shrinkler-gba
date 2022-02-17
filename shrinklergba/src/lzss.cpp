@@ -27,9 +27,13 @@
 namespace shrinklergba
 {
 
-std::vector<unsigned char> lzss_decoder::decode(const std::vector<unsigned char>& /*compressed_data*/)
+std::vector<unsigned char> lzss_decoder::decode(const std::vector<unsigned char>& compressed_data)
 {
-    // TODO: delegate to overload using C array
+    return decode(compressed_data.data(), compressed_data.size());
+}
+
+std::vector<unsigned char> lzss_decoder::decode(const unsigned char* /*compressed_data*/, std::size_t /*size*/)
+{
     throw std::runtime_error("YIKES");
 }
 
