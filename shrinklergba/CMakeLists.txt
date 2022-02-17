@@ -38,6 +38,7 @@ set(
   include/shrinklergba/table_printer.hpp
   src/command_line.cpp
   src/elf_strings.cpp
+  src/gba_bios_common.cpp
   src/gba_packer.cpp
   src/huffman.cpp
   src/input_file.cpp

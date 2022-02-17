@@ -48,7 +48,7 @@ std::vector<unsigned char> huffman_decoder::decode(const std::vector<unsigned ch
 std::vector<unsigned char> huffman_decoder::decode(const unsigned char* compressed_data, std::size_t size)
 {
     check_compressed_size(size);
-    check_compression_type(compressed_data[ofs_compression_type] >> 4);
+    check_compression_type(compression_type::huffman, compressed_data[ofs_compression_type] >> 4);
     const int symbol_size = check_symbol_size(compressed_data[ofs_compression_type] & 15);
     std::size_t decompressed_size = get_decompressed_size(compressed_data);
 
@@ -132,14 +132,6 @@ void huffman_decoder::check_compressed_size(std::size_t compressed_size)
     if (compressed_size % 4 != 0)
     {
         throw std::runtime_error("compressed data size is not a multiple of 4 bytes");
-    }
-}
-
-void huffman_decoder::check_compression_type(unsigned char type)
-{
-    if (static_cast<compression_type>(type) != compression_type::huffman)
-    {
-        throw std::runtime_error("invalid compression type");
     }
 }
 

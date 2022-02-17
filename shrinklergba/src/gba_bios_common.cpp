@@ -21,20 +21,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef SHRINKLERGBA_GBA_BIOS_COMMON_HPP
-#define SHRINKLERGBA_GBA_BIOS_COMMON_HPP
+#include <stdexcept>
+#include "shrinklergba/gba_bios_common.hpp"
 
 namespace shrinklergba
 {
 
-enum class compression_type : unsigned char
+// TODO: should be called throw_if, no?
+void check_compression_type(compression_type expected, int actual)
 {
-    lzss = 1,
-    huffman = 2
-};
-
-void check_compression_type(compression_type expected, int actual);
-
+    // TODO: use to_underlying. Not a C cast
+    if ((int)expected != actual)
+    {
+        throw std::runtime_error("invalid compression type");
+    }
 }
 
-#endif
+}

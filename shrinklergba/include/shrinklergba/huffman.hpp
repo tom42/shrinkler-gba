@@ -61,7 +61,6 @@ private:
     bool get_bit();
 
     static void check_compressed_size(std::size_t compressed_size);
-    static void check_compression_type(unsigned char type);
     static int check_symbol_size(int symbol_size);
     static std::size_t get_decompressed_size(const unsigned char* compressed_data);
 
