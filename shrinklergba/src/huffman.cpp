@@ -24,17 +24,11 @@
 #include <array>
 #include <boost/endian/conversion.hpp>
 #include <stdexcept>
+#include "shrinklergba/gba_bios_common.hpp"
 #include "shrinklergba/huffman.hpp"
 
 namespace shrinklergba
 {
-
-// TODO: move this to common header. compression_type.hpp will do for starters.
-enum class compression_type : unsigned char
-{
-    lzss = 1,
-    huffman = 2
-};
 
 // Offsets relative to start of header
 constexpr std::size_t ofs_compression_type = 0;

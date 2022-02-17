@@ -29,6 +29,7 @@ set(
   include/shrinklergba/console.hpp
   include/shrinklergba/elfio_wrapper.hpp
   include/shrinklergba/elf_strings.hpp
+  include/shrinklergba/gba_bios_common.hpp
   include/shrinklergba/gba_packer.hpp
   include/shrinklergba/huffman.hpp
   include/shrinklergba/input_file.hpp
