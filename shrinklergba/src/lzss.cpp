@@ -22,6 +22,7 @@
 // SOFTWARE.
 
 #include <stdexcept>
+#include "shrinklergba/gba_bios_common.hpp"
 #include "shrinklergba/lzss.hpp"
 
 namespace shrinklergba
@@ -32,8 +33,10 @@ std::vector<unsigned char> lzss_decoder::decode(const std::vector<unsigned char>
     return decode(compressed_data.data(), compressed_data.size());
 }
 
-std::vector<unsigned char> lzss_decoder::decode(const unsigned char* /*compressed_data*/, std::size_t /*size*/)
+std::vector<unsigned char> lzss_decoder::decode(const unsigned char* compressed_data, std::size_t /*size*/)
 {
+    // TODO: check compressed size first here
+    check_compression_type(compression_type::lzss, compressed_data[0]); // TODO: constant. Possibly share with huffman.cpp?
     throw std::runtime_error("YIKES");
 }
 
