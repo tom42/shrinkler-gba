@@ -2,7 +2,8 @@
   * Questions:
     * Is it really legal to have a nonzero device type? (value at header offset 0xb4)
     * Is it really required that the reserved area at the end of the header (at 0xbe) is zero?
-
+* BEFORE WE DO ANY ADDITIONAL WORK ON THE DECODER
+  * TURN IT AROUND ONCE, SO THAT E.G: getnumber is in the header rather than the beginning of the main loop
 * Implement relevant GBA BIOS compressors
   * Can do decoders first, we'll need them for verification
     * LZSS decoder (does not need to be VRAM safe)

@@ -115,12 +115,19 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
 
     // TODO: implement:
     //       * Create a shrinklered intro, taking into account
-    //         * Preserve registers? (optional)
-    //         * Preserve memory contents? (optional, maybe in a later version)
+    //         * RESTORE STACK POINTER (maybe check all registers)
+    //           * As an idea we can have this as an option, since it saves at least one instruction
+    //         * Possibly optional features
+    //           * Preserve registers? Low registers are easy (sure?, what about high registers?
+    //             * Well probably register contents as left by the BIOS are known, so we could just mov/ldr original values (I think there is no smaller instruction)
+    //           * Preserve memory contents?
     //         * Stick code into header
     //         * Possible optimizations:
     //           * If load address and entry point are the same
     //           * If load address and/or entry point can be constructed using mov/lsl
+    //         * Note: getnumber/getkind/getbit are less likely to be changed by binary dependend optimizations or user options such as whether registers should be saved
+    //           * So if we turn around the decoder and stick e.g. getnumber into the header, the main decoding loop will be outside the header, making it more easy to apply optimizations.
+    //           * By doing so we will not lose anything size-wise, since at the cartridge beginning we need to have a branch anyway
     shrinkler::shrinkler_compressor compressor;
     compressor.set_parameters(options.shrinkler_parameters());
     std::vector<unsigned char> compressed_program = compressor.compress(input_file.data());
