@@ -31,8 +31,6 @@ namespace shrinklergba
 {
 
 // Offsets relative to start of header
-constexpr std::size_t ofs_compression_type = 0;
-constexpr std::size_t ofs_decompressed_size = 1;
 constexpr std::size_t ofs_tree_size = 4;
 
 // Bit masks
