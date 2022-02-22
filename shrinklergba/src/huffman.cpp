@@ -47,7 +47,7 @@ std::vector<unsigned char> huffman_decoder::decode(const std::vector<unsigned ch
 
 std::vector<unsigned char> huffman_decoder::decode(const unsigned char* compressed_data, std::size_t size)
 {
-    check_compressed_size(size);
+    throw_if_wrong_compressed_size(size);
     throw_if_wrong_compression_type(compression_type::huffman, compressed_data[ofs_compression_type] >> 4);
     const int symbol_size = check_symbol_size(compressed_data[ofs_compression_type] & 15);
     std::size_t decompressed_size = get_decompressed_size(compressed_data);
@@ -117,22 +117,6 @@ bool huffman_decoder::get_bit()
     }
 
     return bitbuffer & bitmask;
-}
-
-void huffman_decoder::check_compressed_size(std::size_t compressed_size)
-{
-    // Check the bare minimum size required for the compression header.
-    // In reality it's more complicated. If the decompressed size is 0, then 4 bytes is enough.
-    // If the decompressed size is nonzero, then the minimum size is more than 4 bytes.
-    if (compressed_size < 4)
-    {
-        throw std::runtime_error("compressed data is too short");
-    }
-
-    if (compressed_size % 4 != 0)
-    {
-        throw std::runtime_error("compressed data size is not a multiple of 4 bytes");
-    }
 }
 
 int huffman_decoder::check_symbol_size(int symbol_size)

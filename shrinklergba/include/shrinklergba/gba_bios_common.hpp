@@ -24,6 +24,8 @@
 #ifndef SHRINKLERGBA_GBA_BIOS_COMMON_HPP
 #define SHRINKLERGBA_GBA_BIOS_COMMON_HPP
 
+#include <cstddef>
+
 namespace shrinklergba
 {
 
@@ -33,6 +35,7 @@ enum class compression_type : unsigned char
     huffman = 2
 };
 
+void throw_if_wrong_compressed_size(std::size_t compressed_size);
 void throw_if_wrong_compression_type(compression_type expected, int actual);
 
 }
