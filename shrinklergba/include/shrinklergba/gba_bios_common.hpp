@@ -33,7 +33,7 @@ enum class compression_type : unsigned char
     huffman = 2
 };
 
-void check_compression_type(compression_type expected, int actual);
+void throw_if_wrong_compression_type(compression_type expected, int actual);
 
 }
 

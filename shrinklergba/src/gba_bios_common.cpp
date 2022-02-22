@@ -27,8 +27,7 @@
 namespace shrinklergba
 {
 
-// TODO: should be called throw_if, no?
-void check_compression_type(compression_type expected, int actual)
+void throw_if_wrong_compression_type(compression_type expected, int actual)
 {
     // TODO: use to_underlying. Not a C cast
     if ((int)expected != actual)
