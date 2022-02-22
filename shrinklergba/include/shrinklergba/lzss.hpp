@@ -36,6 +36,8 @@
 //   Bit 0-3    Disp MSBs
 //   Bit 4-7    Number of bytes to copy (minus 3)
 //   Bit 8-15   Disp LSBs
+//
+// TODO: document alignment of compressed data size
 
 #ifndef SHRINKLERGBA_LZSS_HPP
 #define SHRINKLERGBA_LZSS_HPP
