@@ -27,10 +27,15 @@
 namespace shrinklergba
 {
 
+template <typename E>
+constexpr auto to_underlying(E enumerator) noexcept
+{
+    return static_cast<std::underlying_type_t<E>>(enumerator);
+}
+
 void throw_if_wrong_compression_type(compression_type expected, int actual)
 {
-    // TODO: use to_underlying. Not a C cast
-    if ((int)expected != actual)
+    if (to_underlying(expected) != actual)
     {
         throw std::runtime_error("invalid compression type");
     }
