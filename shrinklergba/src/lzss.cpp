@@ -37,7 +37,10 @@ std::vector<unsigned char> lzss_decoder::decode(const unsigned char* compressed_
 {
     throw_if_wrong_compressed_size(size);
     throw_if_wrong_compression_type(compression_type::lzss, compressed_data[0] >> 4); // TODO: constant. Possibly share with huffman.cpp?
-    throw std::runtime_error("YIKES");
+
+    // TODO: real LZSS decoding loop
+
+    return std::vector<unsigned char>();
 }
 
 }
