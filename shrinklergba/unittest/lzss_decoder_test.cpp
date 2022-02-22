@@ -47,7 +47,6 @@ BOOST_FIXTURE_TEST_SUITE(lzss_decoder_test, lzss_decoder_test_fixture)
 // TODO: tests:
 //       * reserved bits in header must be 0 (orly?)
 //       * Actually decompress something
-//         * 0 bytes
 //         * 1 byte (?)
 //         * 7 bytes (with literals, with references)
 //         * Larger run of data with literals and references and whatnot
