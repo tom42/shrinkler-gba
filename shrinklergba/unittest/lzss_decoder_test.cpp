@@ -36,6 +36,16 @@ static const std::vector<unsigned char> zero_bytes_encoded_data
 
 static const std::vector<unsigned char> zero_bytes_decoded_data;
 
+static const std::vector<unsigned char> one_byte_encoded_data
+{
+    0x10, 0x01, 0x00, 0x00, 0x00, 0x41, 0x00, 0x00
+};
+
+static const std::vector<unsigned char> one_byte_decoded_data
+{
+    'A'
+};
+
 class lzss_decoder_test_fixture
 {
 public:
@@ -72,6 +82,11 @@ BOOST_FIXTURE_TEST_SUITE(lzss_decoder_test, lzss_decoder_test_fixture)
     BOOST_AUTO_TEST_CASE(decode_zero_bytes)
     {
         BOOST_TEST(zero_bytes_decoded_data == decoder.decode(zero_bytes_encoded_data), boost::test_tools::per_element());
+    }
+
+    BOOST_AUTO_TEST_CASE(decode_one_byte)
+    {
+        BOOST_TEST(one_byte_decoded_data == decoder.decode(one_byte_encoded_data), boost::test_tools::per_element());
     }
 
 BOOST_AUTO_TEST_SUITE_END()
