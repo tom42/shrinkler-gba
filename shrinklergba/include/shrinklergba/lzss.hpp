@@ -37,7 +37,9 @@
 //   Bit 4-7    Number of bytes to copy (minus 3)
 //   Bit 8-15   Disp LSBs
 //
-// TODO: document alignment of compressed data size
+// "If the size of the compressed data is not a multiple of 4, please adjust it
+// as much as possible by padding with 0. Align the source address to a 4-Byte
+// boundary."
 
 #ifndef SHRINKLERGBA_LZSS_HPP
 #define SHRINKLERGBA_LZSS_HPP
