@@ -22,11 +22,19 @@
 // SOFTWARE.
 
 #include <boost/test/unit_test.hpp>
+#include <vector>
 #include "shrinklergba/lzss.hpp"
 #include "test_utilities.hpp"
 
 namespace shrinklergba_unittest
 {
+
+static const std::vector<unsigned char> zero_bytes_encoded_data
+{
+    0x10, 0x00, 0x00, 0x00
+};
+
+static const std::vector<unsigned char> zero_bytes_decoded_data;
 
 class lzss_decoder_test_fixture
 {
@@ -60,6 +68,11 @@ BOOST_FIXTURE_TEST_SUITE(lzss_decoder_test, lzss_decoder_test_fixture)
     {
         std::vector<unsigned char> data{ 0x00, 0x00, 0x00, 0x00 };
         CHECK_EXCEPTION(decoder.decode(data), std::runtime_error, "invalid compression type");
+    }
+
+    BOOST_AUTO_TEST_CASE(decode_zero_bytes)
+    {
+        BOOST_TEST(zero_bytes_decoded_data == decoder.decode(zero_bytes_encoded_data), boost::test_tools::per_element());
     }
 
 BOOST_AUTO_TEST_SUITE_END()
