@@ -41,6 +41,7 @@ constexpr std::size_t ofs_decompressed_size = 1;
 
 void throw_if_wrong_compressed_size(std::size_t compressed_size);
 void throw_if_wrong_compression_type(compression_type expected, int actual);
+std::size_t get_decompressed_size(const unsigned char* compressed_data);
 
 }
 

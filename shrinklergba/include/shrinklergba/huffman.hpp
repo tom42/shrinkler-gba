@@ -61,7 +61,6 @@ private:
     bool get_bit();
 
     static int check_symbol_size(int symbol_size);
-    static std::size_t get_decompressed_size(const unsigned char* compressed_data);
 
     const unsigned char* tree_size;
     const uint32_t* readptr;
