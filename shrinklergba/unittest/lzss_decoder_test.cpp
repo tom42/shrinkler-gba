@@ -45,6 +45,15 @@ static const std::vector<unsigned char> nine_literals_encoded_data
     0x44, 0x45, 0x46, 0x47, 0x48, 0x00, 0x49, 0x00
 };
 
+static const std::vector<unsigned char> literals_and_references_encoded_data
+{
+    0x10, 0x37, 0x00, 0x00, 0x00, 0x48, 0x65, 0x20,
+    0x77, 0x68, 0x6f, 0x20, 0x66, 0x00, 0x6f, 0x6f,
+    0x73, 0x20, 0x6c, 0x61, 0x73, 0x74, 0x81, 0x30,
+    0x09, 0x62, 0x65, 0x73, 0x74, 0x2e, 0x20, 0xf0,
+    0x1b, 0x80, 0x60, 0x1b,
+};
+
 static const std::vector<unsigned char> zero_bytes_decoded_data;
 
 static const std::vector<unsigned char> one_literal_decoded_data
@@ -56,6 +65,9 @@ static const std::vector<unsigned char> nine_literals_decoded_data
 {
     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'
 };
+
+// TODO: real data
+static const std::vector<unsigned char> literals_and_references_decoded_data;
 
 class lzss_decoder_test_fixture
 {
@@ -101,6 +113,11 @@ BOOST_FIXTURE_TEST_SUITE(lzss_decoder_test, lzss_decoder_test_fixture)
     BOOST_AUTO_TEST_CASE(decode_nine_literals)
     {
         BOOST_TEST(nine_literals_decoded_data == decoder.decode(nine_literals_encoded_data), boost::test_tools::per_element());
+    }
+
+    BOOST_AUTO_TEST_CASE(decode_literals_and_references)
+    {
+        BOOST_TEST(literals_and_references_decoded_data == decoder.decode(literals_and_references_encoded_data), boost::test_tools::per_element());
     }
 
 BOOST_AUTO_TEST_SUITE_END()
