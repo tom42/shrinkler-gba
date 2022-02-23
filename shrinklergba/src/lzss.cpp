@@ -37,10 +37,24 @@ std::vector<unsigned char> lzss_decoder::decode(const unsigned char* compressed_
 {
     throw_if_wrong_compressed_size(size);
     throw_if_wrong_compression_type(compression_type::lzss, compressed_data[ofs_compression_type] >> 4);
+    std::size_t decompressed_size = get_decompressed_size(compressed_data);
+    
+    std::vector<unsigned char> decompressed_data;
+    decompressed_data.reserve(decompressed_size);
 
-    // TODO: real LZSS decoding loop
+    // TODO: real decoding loop must look different, due to references.
+    //       if these are bad we can jump beyond the decompressed size, so we must catch this too
+    for (size_t i = 0; i < decompressed_size; ++i)
+    {
+        // TODO:
+        // * Get next tag bit. If tag bit buffer is empty, refill it
+        // * Either
+        //   * Write literal
+        //   * Write reference
+        decompressed_data.push_back('A'); // TODO: hardcoded literal. Unhardcode.
+    }
 
-    return std::vector<unsigned char>();
+    return decompressed_data;
 }
 
 }
