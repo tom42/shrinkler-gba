@@ -44,14 +44,30 @@ std::vector<unsigned char> lzss_decoder::decode(const unsigned char* compressed_
 
     // TODO: real decoding loop must look different, due to references.
     //       if these are bad we can jump beyond the decompressed size, so we must catch this too
+
+    unsigned char tagbits = 0;
+    unsigned char bitmask = 0;
+    const unsigned char* readptr = compressed_data + 4; // TODO: constant for magic number 4
+
     for (size_t i = 0; i < decompressed_size; ++i)
     {
-        // TODO:
-        // * Get next tag bit. If tag bit buffer is empty, refill it
-        // * Either
-        //   * Write literal
-        //   * Write reference
-        decompressed_data.push_back('A'); // TODO: hardcoded literal. Unhardcode.
+        bitmask >>= 1;
+        if (!bitmask)
+        {
+            tagbits = *readptr++; // TODO: catch read past end of data?
+            bitmask = 0x80;
+        }
+
+        if (tagbits & bitmask)
+        {
+            throw std::runtime_error("TODO: implement reference");
+        }
+        else
+        {
+            // TODO: catch read past end of data?
+            // TODO: do we need to catch read past decompressed_size? (do not think so, though)
+            decompressed_data.push_back(*readptr++);
+        }
     }
 
     return decompressed_data;
