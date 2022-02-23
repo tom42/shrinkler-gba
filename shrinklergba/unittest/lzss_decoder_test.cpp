@@ -34,16 +34,27 @@ static const std::vector<unsigned char> zero_bytes_encoded_data
     0x10, 0x00, 0x00, 0x00
 };
 
-static const std::vector<unsigned char> zero_bytes_decoded_data;
-
-static const std::vector<unsigned char> one_byte_encoded_data
+static const std::vector<unsigned char> one_literal_encoded_data
 {
     0x10, 0x01, 0x00, 0x00, 0x00, 0x41, 0x00, 0x00
 };
 
-static const std::vector<unsigned char> one_byte_decoded_data
+static const std::vector<unsigned char> nine_literals_encoded_data
+{
+    0x10, 0x09, 0x00, 0x00, 0x00, 0x41, 0x42, 0x43,
+    0x44, 0x45, 0x46, 0x47, 0x48, 0x00, 0x49, 0x00
+};
+
+static const std::vector<unsigned char> zero_bytes_decoded_data;
+
+static const std::vector<unsigned char> one_literal_decoded_data
 {
     'A'
+};
+
+static const std::vector<unsigned char> nine_literals_decoded_data
+{
+    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'
 };
 
 class lzss_decoder_test_fixture
@@ -57,8 +68,6 @@ BOOST_FIXTURE_TEST_SUITE(lzss_decoder_test, lzss_decoder_test_fixture)
 // TODO: tests:
 //       * reserved bits in header must be 0 (orly?)
 //       * Actually decompress something
-//         * 1 byte (?)
-//         * 7 bytes (with literals, with references)
 //         * Larger run of data with literals and references and whatnot
 
     BOOST_AUTO_TEST_CASE(decode_when_compressed_data_is_too_short_then_throws)
@@ -84,9 +93,14 @@ BOOST_FIXTURE_TEST_SUITE(lzss_decoder_test, lzss_decoder_test_fixture)
         BOOST_TEST(zero_bytes_decoded_data == decoder.decode(zero_bytes_encoded_data), boost::test_tools::per_element());
     }
 
-    BOOST_AUTO_TEST_CASE(decode_one_byte)
+    BOOST_AUTO_TEST_CASE(decode_one_literal)
     {
-        BOOST_TEST(one_byte_decoded_data == decoder.decode(one_byte_encoded_data), boost::test_tools::per_element());
+        BOOST_TEST(one_literal_decoded_data == decoder.decode(one_literal_encoded_data), boost::test_tools::per_element());
+    }
+
+    BOOST_AUTO_TEST_CASE(decode_nine_literals)
+    {
+        BOOST_TEST(nine_literals_decoded_data == decoder.decode(nine_literals_encoded_data), boost::test_tools::per_element());
     }
 
 BOOST_AUTO_TEST_SUITE_END()
