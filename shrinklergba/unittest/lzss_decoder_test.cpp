@@ -63,15 +63,11 @@ static const std::vector<unsigned char> literals_and_references_encoded_data
 
 static const std::vector<unsigned char> zero_bytes_decoded_data;
 
-static const std::vector<unsigned char> one_literal_decoded_data
-{
-    'A'
-};
+static const std::vector<unsigned char> one_literal_decoded_data =
+    make_bytevector("A");
 
-static const std::vector<unsigned char> nine_literals_decoded_data
-{
-    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'
-};
+static const std::vector<unsigned char> nine_literals_decoded_data =
+    make_bytevector("ABCDEFGHI");
 
 static const std::vector<unsigned char> literals_and_references_decoded_data =
     make_bytevector("He who foos last foos best. He who foos last foos best.");
