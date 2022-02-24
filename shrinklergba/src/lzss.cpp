@@ -67,14 +67,20 @@ std::vector<unsigned char> lzss_decoder::decode(const unsigned char* compressed_
             std::size_t length = ((b0 >> 4) & 15) + 3;
             std::size_t offset = ((b0 & 15) << 8) | b1;
 
-            if (length||b0||b1||offset) {}//TODO: remove
-
-            throw std::runtime_error("TODO: implement reference");
+            i += length; // TODO: ugly abort condition
+            while (length--)
+            {
+                // TODO: do we need to catch write past decompressed_size? (do not think so, though => can do finally, no?)
+                // TODO: remove temporary variable
+                unsigned char b = decompressed_data[decompressed_data.size() - offset - 1];
+                std::cout << b; // TODO: remove
+                decompressed_data.push_back(b);
+            }
         }
         else
         {
             // TODO: catch read past end of compressed data?
-            // TODO: do we need to catch read past decompressed_size? (do not think so, though)
+            // TODO: do we need to catch write past decompressed_size? (do not think so, though => can do finally, no?)
             decompressed_data.push_back(*readptr++);
             std::cout << (char)*(readptr - 1); // TODO: remove logging
         }
