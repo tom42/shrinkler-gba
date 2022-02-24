@@ -55,17 +55,25 @@ std::vector<unsigned char> lzss_decoder::decode(const unsigned char* compressed_
         bitmask >>= 1;
         if (!bitmask)
         {
-            tagbits = *readptr++; // TODO: catch read past end of data?
+            tagbits = *readptr++; // TODO: catch read past end of compressed data?
             bitmask = 0x80;
         }
 
         if (tagbits & bitmask)
         {
+            // TODO: catch read past end of compressed data?
+            unsigned char b0 = *readptr++;
+            unsigned char b1 = *readptr++;
+            std::size_t length = ((b0 >> 4) & 15) + 3;
+            std::size_t offset = ((b0 & 15) << 8) | b1;
+
+            if (length||b0||b1||offset) {}//TODO: remove
+
             throw std::runtime_error("TODO: implement reference");
         }
         else
         {
-            // TODO: catch read past end of data?
+            // TODO: catch read past end of compressed data?
             // TODO: do we need to catch read past decompressed_size? (do not think so, though)
             decompressed_data.push_back(*readptr++);
             std::cout << (char)*(readptr - 1); // TODO: remove logging
