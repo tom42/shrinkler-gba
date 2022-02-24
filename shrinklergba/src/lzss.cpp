@@ -21,6 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include <iostream> // TODO: remove
 #include <stdexcept>
 #include "shrinklergba/gba_bios_common.hpp"
 #include "shrinklergba/lzss.hpp"
@@ -67,8 +68,11 @@ std::vector<unsigned char> lzss_decoder::decode(const unsigned char* compressed_
             // TODO: catch read past end of data?
             // TODO: do we need to catch read past decompressed_size? (do not think so, though)
             decompressed_data.push_back(*readptr++);
+            std::cout << (char)*(readptr - 1); // TODO: remove logging
         }
     }
+
+    std::cout << std::endl; // TODO: remove
 
     return decompressed_data;
 }
