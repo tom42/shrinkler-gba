@@ -30,9 +30,8 @@
 namespace shrinklergba_unittest
 {
 
-// TODO: name
 // TODO: share with huffman_decoder_test?
-static const std::vector<unsigned char> foo(const char* s)
+static const std::vector<unsigned char> make_bytevector(const char* s)
 {
     return std::vector<unsigned char>(s, s + std::strlen(s));
 }
@@ -75,7 +74,7 @@ static const std::vector<unsigned char> nine_literals_decoded_data
 };
 
 static const std::vector<unsigned char> literals_and_references_decoded_data =
-    foo("He who foos last foos best. He who foos last foos best.");
+    make_bytevector("He who foos last foos best. He who foos last foos best.");
 
 class lzss_decoder_test_fixture
 {
