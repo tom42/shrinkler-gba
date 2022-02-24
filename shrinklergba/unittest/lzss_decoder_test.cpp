@@ -74,8 +74,8 @@ static const std::vector<unsigned char> nine_literals_decoded_data
     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'
 };
 
-// TODO: real data
-static const std::vector<unsigned char> literals_and_references_decoded_data;
+static const std::vector<unsigned char> literals_and_references_decoded_data =
+    foo("He who foos last foos best. He who foos last foos best.");
 
 class lzss_decoder_test_fixture
 {
