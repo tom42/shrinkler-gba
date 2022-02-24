@@ -22,12 +22,20 @@
 // SOFTWARE.
 
 #include <boost/test/unit_test.hpp>
+#include <cstring>
 #include <vector>
 #include "shrinklergba/lzss.hpp"
 #include "test_utilities.hpp"
 
 namespace shrinklergba_unittest
 {
+
+// TODO: name
+// TODO: share with huffman_decoder_test?
+static const std::vector<unsigned char> foo(const char* s)
+{
+    return std::vector<unsigned char>(s, s + std::strlen(s));
+}
 
 static const std::vector<unsigned char> zero_bytes_encoded_data
 {
