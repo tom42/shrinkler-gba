@@ -37,7 +37,7 @@ std::vector<unsigned char> lzss_decoder::decode(const unsigned char* compressed_
 {
     throw_if_wrong_compressed_size(size);
     throw_if_wrong_compression_type(compression_type::lzss, compressed_data[ofs_compression_type] >> 4);
-    std::size_t decompressed_size = get_decompressed_size(compressed_data);
+    const std::size_t decompressed_size = get_decompressed_size(compressed_data);
     
     std::vector<unsigned char> decompressed_data;
     decompressed_data.reserve(decompressed_size);
@@ -49,7 +49,7 @@ std::vector<unsigned char> lzss_decoder::decode(const unsigned char* compressed_
     unsigned char bitmask = 0;
     const unsigned char* readptr = compressed_data + 4; // TODO: constant for magic number 4
 
-    for (size_t i = 0; i < decompressed_size; ++i)
+    while (decompressed_data.size() < decompressed_size)
     {
         bitmask >>= 1;
         if (!bitmask)
@@ -66,7 +66,6 @@ std::vector<unsigned char> lzss_decoder::decode(const unsigned char* compressed_
             std::size_t length = ((b0 >> 4) & 15) + 3;
             std::size_t offset = ((b0 & 15) << 8) | b1;
 
-            i += length; // TODO: ugly abort condition
             while (length--)
             {
                 // TODO: do we need to catch write past decompressed_size? (do not think so, though => can do finally, no?)
@@ -82,6 +81,8 @@ std::vector<unsigned char> lzss_decoder::decode(const unsigned char* compressed_
             decompressed_data.push_back(*readptr++);
         }
     }
+
+    // TODO: sanity check: actually decompressed size = desired decompressed size?
 
     return decompressed_data;
 }
