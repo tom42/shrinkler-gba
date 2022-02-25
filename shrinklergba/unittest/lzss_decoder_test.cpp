@@ -80,11 +80,6 @@ public:
 
 BOOST_FIXTURE_TEST_SUITE(lzss_decoder_test, lzss_decoder_test_fixture)
 
-// TODO: tests:
-//       * reserved bits in header must be 0 (orly?)
-//       * Actually decompress something
-//         * Larger run of data with literals and references and whatnot
-
     BOOST_AUTO_TEST_CASE(decode_when_compressed_data_is_too_short_then_throws)
     {
         std::vector<unsigned char> data{ 0x10, 0x00, 0x00 };
