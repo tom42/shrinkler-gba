@@ -79,7 +79,6 @@ std::vector<unsigned char> lzss_decoder::decode(const unsigned char* compressed_
         }
         else
         {
-            // TODO: do we need to catch write past decompressed_size? (do not think so, though => can do finally, no?)
             decompressed_data.push_back(read_byte());
         }
     }
