@@ -69,9 +69,7 @@ std::vector<unsigned char> lzss_decoder::decode(const unsigned char* compressed_
             while (length--)
             {
                 // TODO: do we need to catch write past decompressed_size? (do not think so, though => can do finally, no?)
-                // TODO: remove temporary variable
-                unsigned char b = decompressed_data[decompressed_data.size() - offset - 1];
-                decompressed_data.push_back(b);
+                decompressed_data.push_back(decompressed_data[decompressed_data.size() - offset - 1]);
             }
         }
         else
