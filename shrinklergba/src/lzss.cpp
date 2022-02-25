@@ -28,6 +28,8 @@
 namespace shrinklergba
 {
 
+constexpr std::size_t ofs_compressed_data_stream = 4;
+
 std::vector<unsigned char> lzss_decoder::decode(const std::vector<unsigned char>& compressed_data)
 {
     return decode(compressed_data.data(), compressed_data.size());
@@ -44,7 +46,7 @@ std::vector<unsigned char> lzss_decoder::decode(const unsigned char* compressed_
 
     unsigned char tagbits = 0;
     unsigned char bitmask = 0;
-    readptr = compressed_data + 4; // TODO: constant for magic number 4
+    readptr = compressed_data + ofs_compressed_data_stream;
     readptr_end = compressed_data + size;
 
     while (decompressed_data.size() < decompressed_size)
