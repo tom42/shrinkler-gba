@@ -60,13 +60,13 @@ static const std::vector<unsigned char> h8_encoded_data
     0xcd, 0x4b, 0x80, 0xcc, 0x08, 0x97, 0x50, 0xe6
 };
 
-static const std::vector<unsigned char> h1_decoded_data = make_bytevector("Oh, you're no fun anymore.");
+static auto h1_decoded_data = make_bytevector("Oh, you're no fun anymore.");
 
-static const std::vector<unsigned char> h2_decoded_data = make_bytevector("Oh, an hoop.");
+static auto h2_decoded_data = make_bytevector("Oh, an hoop.");
 
-static const std::vector<unsigned char> h4_decoded_data = make_bytevector("I want to buy some cheese.");
+static auto h4_decoded_data = make_bytevector("I want to buy some cheese.");
 
-static const std::vector<unsigned char> h8_decoded_data = make_bytevector("He who foos last foos best");
+static auto h8_decoded_data = make_bytevector("He who foos last foos best.");
 
 class huffman_decoder_test_fixture
 {
