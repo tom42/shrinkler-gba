@@ -86,7 +86,11 @@ std::vector<unsigned char> lzss_decoder::decode(const unsigned char* compressed_
 
 unsigned char lzss_decoder::read_byte()
 {
-    // TODO: catch read past end of compressed data?
+    if (readptr >= readptr_end)
+    {
+        throw std::runtime_error("unexpected end of compressed data");
+    }
+
     return *readptr++;
 }
 
