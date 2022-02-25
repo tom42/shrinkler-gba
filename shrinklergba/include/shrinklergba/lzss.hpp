@@ -56,6 +56,10 @@ public:
     std::vector<unsigned char> decode(const std::vector<unsigned char>& compressed_data);
     std::vector<unsigned char> decode(const unsigned char* compressed_data, std::size_t size);
 private:
+    unsigned char read_byte();
+
+    const unsigned char* readptr;
+    const unsigned char* readptr_end;
 };
 
 }

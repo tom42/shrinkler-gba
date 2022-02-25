@@ -47,22 +47,22 @@ std::vector<unsigned char> lzss_decoder::decode(const unsigned char* compressed_
 
     unsigned char tagbits = 0;
     unsigned char bitmask = 0;
-    const unsigned char* readptr = compressed_data + 4; // TODO: constant for magic number 4
+    readptr = compressed_data + 4; // TODO: constant for magic number 4
+    readptr_end = compressed_data + size;
 
     while (decompressed_data.size() < decompressed_size)
     {
         bitmask >>= 1;
         if (!bitmask)
         {
-            tagbits = *readptr++; // TODO: catch read past end of compressed data?
+            tagbits = read_byte();
             bitmask = 0x80;
         }
 
         if (tagbits & bitmask)
         {
-            // TODO: catch read past end of compressed data?
-            unsigned char b0 = *readptr++;
-            unsigned char b1 = *readptr++;
+            unsigned char b0 = read_byte();
+            unsigned char b1 = read_byte();
             std::size_t length = ((b0 >> 4) & 15) + 3;
             std::size_t offset = ((b0 & 15) << 8) | b1;
 
@@ -74,15 +74,20 @@ std::vector<unsigned char> lzss_decoder::decode(const unsigned char* compressed_
         }
         else
         {
-            // TODO: catch read past end of compressed data?
             // TODO: do we need to catch write past decompressed_size? (do not think so, though => can do finally, no?)
-            decompressed_data.push_back(*readptr++);
+            decompressed_data.push_back(read_byte());
         }
     }
 
     // TODO: sanity check: actually decompressed size = desired decompressed size?
 
     return decompressed_data;
+}
+
+unsigned char lzss_decoder::read_byte()
+{
+    // TODO: catch read past end of compressed data?
+    return *readptr++;
 }
 
 }
