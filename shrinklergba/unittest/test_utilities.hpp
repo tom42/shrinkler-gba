@@ -37,6 +37,7 @@ namespace shrinklergba_unittest
 {
 
 std::vector<unsigned char> load_binary_file(const std::filesystem::path& filename);
+const std::vector<unsigned char> make_bytevector(const char* s);
 
 }
 

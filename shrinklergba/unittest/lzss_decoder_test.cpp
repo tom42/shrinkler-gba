@@ -30,12 +30,6 @@
 namespace shrinklergba_unittest
 {
 
-// TODO: share with huffman_decoder_test?
-static const std::vector<unsigned char> make_bytevector(const char* s)
-{
-    return std::vector<unsigned char>(s, s + std::strlen(s));
-}
-
 static const std::vector<unsigned char> zero_bytes_encoded_data
 {
     0x10, 0x00, 0x00, 0x00
