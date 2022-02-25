@@ -66,6 +66,11 @@ std::vector<unsigned char> lzss_decoder::decode(const unsigned char* compressed_
             std::size_t length = ((b0 >> 4) & 15) + 3;
             std::size_t offset = ((b0 & 15) << 8) | b1;
 
+            if (decompressed_data.size() + length > decompressed_size)
+            {
+                throw std::runtime_error("wrong match length");
+            }
+
             while (length--)
             {
                 // TODO: do we need to catch write past decompressed_size? (do not think so, though => can do finally, no?)
