@@ -42,9 +42,6 @@ std::vector<unsigned char> lzss_decoder::decode(const unsigned char* compressed_
     std::vector<unsigned char> decompressed_data;
     decompressed_data.reserve(decompressed_size);
 
-    // TODO: real decoding loop must look different, due to references.
-    //       if these are bad we can jump beyond the decompressed size, so we must catch this too
-
     unsigned char tagbits = 0;
     unsigned char bitmask = 0;
     readptr = compressed_data + 4; // TODO: constant for magic number 4
@@ -73,7 +70,6 @@ std::vector<unsigned char> lzss_decoder::decode(const unsigned char* compressed_
 
             while (length--)
             {
-                // TODO: do we need to catch write past decompressed_size? (do not think so, though => can do finally, no?)
                 decompressed_data.push_back(decompressed_data[decompressed_data.size() - offset - 1]);
             }
         }
@@ -82,8 +78,6 @@ std::vector<unsigned char> lzss_decoder::decode(const unsigned char* compressed_
             decompressed_data.push_back(read_byte());
         }
     }
-
-    // TODO: sanity check: actually decompressed size = desired decompressed size?
 
     return decompressed_data;
 }
