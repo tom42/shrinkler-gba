@@ -60,28 +60,13 @@ static const std::vector<unsigned char> h8_encoded_data
     0xcd, 0x4b, 0x80, 0xcc, 0x08, 0x97, 0x50, 0xe6
 };
 
-static const std::vector<unsigned char> h1_decoded_data
-{
-    'O', 'h', ',', ' ', 'y', 'o', 'u', '\'', 'r', 'e', ' ', 'n', 'o',
-    ' ', 'f', 'u', 'n', ' ', 'a', 'n', 'y', 'm', 'o', 'r', 'e', '.'
-};
+static const std::vector<unsigned char> h1_decoded_data = make_bytevector("Oh, you're no fun anymore.");
 
-static const std::vector<unsigned char> h2_decoded_data
-{
-    'O', 'h', ',', ' ', 'a', 'n', ' ', 'h', 'o', 'o', 'p', '.'
-};
+static const std::vector<unsigned char> h2_decoded_data = make_bytevector("Oh, an hoop.");
 
-static const std::vector<unsigned char> h4_decoded_data
-{
-    'I', ' ', 'w', 'a', 'n', 't', ' ', 't', 'o', ' ', 'b', 'u', 'y',
-    ' ', 's', 'o', 'm', 'e', ' ', 'c', 'h', 'e', 'e', 's', 'e', '.'
-};
+static const std::vector<unsigned char> h4_decoded_data = make_bytevector("I want to buy some cheese.");
 
-static const std::vector<unsigned char> h8_decoded_data
-{
-    'H', 'e', ' ', 'w', 'h', 'o', ' ', 'f', 'o', 'o', 's', ' ', 'l', 'a',
-    's', 't', ' ', 'f', 'o', 'o', 's', ' ', 'b', 'e', 's', 't', '.'
-};
+static const std::vector<unsigned char> h8_decoded_data = make_bytevector("He who foos last foos best");
 
 class huffman_decoder_test_fixture
 {

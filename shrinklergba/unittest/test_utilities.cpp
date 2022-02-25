@@ -59,7 +59,6 @@ std::vector<unsigned char> load_binary_file(const std::filesystem::path& filenam
     return data;
 }
 
-// TODO: share with huffman_decoder_test?
 const std::vector<unsigned char> make_bytevector(const char* s)
 {
     return std::vector<unsigned char>(s, s + std::strlen(s));
