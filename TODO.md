@@ -5,8 +5,6 @@
 * BEFORE WE DO ANY ADDITIONAL WORK ON THE DECODER
   * TURN IT AROUND ONCE, SO THAT E.G: getnumber is in the header rather than the beginning of the main loop
 * Implement relevant GBA BIOS compressors
-  * Can do decoders first, we'll need them for verification
-    * LZSS decoder (does not need to be VRAM safe)
   * Then do encoders
     * Huffman
       * Do we need to do any alignment/padding here?
