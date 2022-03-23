@@ -11,6 +11,10 @@
         * For instance inside the data, for the raw data stream? Is this guaranteed to always be 32 bit aligned automatically?
     * LZSS
       * Do we need to do any alignment/padding here?
+      * Is the GBA BIOS able to decode references into the lookahead buffer?
+        * Well that would make it necessary to treat the lookahead buffer as part of the sliding window.
+        * Should investigate it, since it allows for some additional improvements
+        * See data compression book page 218/219
     * Eventually do optimal LZSS
 * Notes from various old sources:
   * Old Thumb data depacker (shrinkler_decompress_thumb.s)
