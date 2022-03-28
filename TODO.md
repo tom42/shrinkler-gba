@@ -61,6 +61,7 @@
   * The message about the -r option for instance should NOT be hidden if verbose mode is not used
 * Licensing of shrinkler.cpp:
   * Since this file is mostly copypasted Shrinkler code it ought to be using the Shrinkler license, no?
+    * Yes, but remove non-shrinkler code, so that we can have it MIT licensed
 * Ensure all source files are using spaces, not tabs
 * Set up libshrinkler
   * README.md in libshrinkler, explaining what it is
