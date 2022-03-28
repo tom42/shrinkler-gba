@@ -66,8 +66,6 @@
   * README.md in libshrinkler, explaining what it is
   * Do we add that new bytes parameter thing?
 * Add README.md (or 3rdparty.md)
-  * Document what's inside this directory
-    * Also add link to our main source of documentation: https://www.atlassian.com/git/tutorials/git-subtree
   * Also document how to create subtrees, since I forget how to do this:
     * git subtree add --prefix 3rdparty/Shrinkler https://github.com/askeksa/Shrinkler master --squash
       * Important: do not have ./ in front of 3rdparty, Windows does not like this!
