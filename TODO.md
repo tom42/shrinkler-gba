@@ -1,3 +1,11 @@
+* Evaluate gba-hpp: https://github.com/felixjones/gba-hpp
+  * Possibly we can use this to implement huffman and lzss encoding
+    * It would speed up the process
+    * The LZSS encoder does not do optimal parsing, though.
+    * Try it out:
+      * Create a temporary subtree of gba-hpp
+      * See whether its huffman encoder writes stuff that our decoder can read
+      * See whether its LZSS encoder writes stuff that our decoder can read
 * NEXT: NOW WITH THE CODE IN HEADER, A test on real hardware is in order!
   * Questions:
     * Is it really legal to have a nonzero device type? (value at header offset 0xb4)
