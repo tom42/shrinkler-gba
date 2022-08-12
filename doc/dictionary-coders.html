@@ -1,0 +1,169 @@
+
+<!-- saved from url=(0039)https://cbloom.com/algs/dictionary.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Algorithms : Dictionary Coders</title>
+</head>
+<body>
+
+<h1> Compression : Algorithms : Dictionary Coders </h1>
+<p>
+</p><p>
+
+</p><hr>
+<p>
+</p><p>
+
+</p><ul>
+<li> <a href="https://cbloom.com/algs/dictionary.html#intro"> The Dictionary Idea </a>
+</li><li> <a href="https://cbloom.com/algs/dictionary.html#lz77"> LZ77 : the sliding window </a>
+<ul>
+<li> <a href="https://cbloom.com/algs/dictionary.html#lazy"> Lazy Evaluation </a>
+</li></ul>
+</li><li> <a href="https://cbloom.com/algs/dictionary.html#optimal"> Optimal Parsing </a>
+</li></ul>
+
+<p>
+</p><p>
+</p><hr>
+
+<p>
+</p><h2><a name="intro"> Introduction </a> </h2>
+<p>
+** not done
+</p><p>
+</p><h2><a name="lz77"> Lempel-Zif, 1977 : Sliding Windows </a> </h2>
+<p>
+** not done
+</p><p>
+</p><h2><a name="lazy"> Lazy vs. Greedy Matching </a> </h2>
+<p>
+The scheme we have described is the obvious one : making the best match
+possible at every opportunity.  This is called "greedy matching" for obvious
+reasons; this is actually not optimal, as some simple intuition can easily
+convince you.  By making a long match at any given byte, we might ruin an
+even longer match at the next byte.  Thus we introduce the idea of lazy
+evaluation : find the maximum possible match length at the current byte, but
+don't necessarily use it - instead look at the next few bytes to see if an
+even longer match is forthcoming.  Some simple math will be all we need:
+</p><p> </p><pre>Let L be the number of bits needed to code a literal	(about 5)
+Let M be the number of bits needed to code a match		(about 16)
+Let ml[n] be the best match length at byte n
+
+We start at byte 0.  We must decide whether to code ml[0] , or send
+a literal and code some future byte.  So, we want to maximimize the
+number of characters coded per output bit.  Thus, we compute:
+
+	R[n] = ( n + ml[n] )/( (L * n) + M)
+
+Obviously R (the rating for making n steps) is the quantity we desire.  We
+want the n &gt;= 0 which maximizes R.  Now, obviously R will peak at some
+small value of n and then rapidly decrease.  This is partly because we're
+using an approximate scheme where we only code literals between the current
+position (0) and the source of the match (n).  More optimal would be to
+possibly code a short match between 0 and n (we'll adress this in the next
+section).  So, to lowest order, we can examine only R[0] : the ordinary way
+to match, and R[1] : don't match now if
+
+	(1 + ml[1]) / (L + M) &gt; ( ml[0] / M )
+
+or
+
+	ml[1] &gt; ml[0] * (1 + L/M) - 1
+	ml[1] &gt;= ml[0] * (1 + L/M)
+
+This is a very pretty little condition : ml[1] must be slightly bigger than ml[0] by
+a multiplicative fraction, in order for us to abandon the current match in favor of
+the following one.
+</pre>
+This is the "Lazy Evalution" scheme, so-called because we don't jump on every match
+we see, but take our time to choose the match we code.  Of course, the values of L and M
+need to be tuned properly, and in a real coder you have other details like : are the literals
+coded in runs?  Does it cost bits to enter or exit literal runs?
+<p>
+In my LZCB coders, I use literal-runs, and lazy evaluation is never done *outside* of a literal
+run : that is, we use lazy evaluation to decide when to jump out of the literal run, but we
+do not code short literal runs just to get better matches.
+</p><p>
+</p><h2><a name="optimal"> Optimal Parsing </a> </h2>
+<p>
+The natural extension past lazy evalution is Optimal Parsing.  This basically lets us
+implement our desire of possible coding a short match to step n bytes to find a nice long
+match.
+</p><p>
+First, I'll describe the old idea of Storer and Szymanski, which is quite beautiful.
+</p><p>
+We run through the entire file and create an array, ml[n], storing the maximum match length
+at each position.  The trick is now to run *backwards* through the file to find the optimal
+way to choose literals and matches throughout.  This is intended for an archaic LZ coders and
+there are subtelties in modern implementations which I will address at the end.  As above,
+we assume literals and matches are coded in L and M bits.
+</p><p>
+We run backwards, creating several arrays as we go.  Let me first describe the basic idea.
+At each byte, we store the best choice : literal or match : and the number of bytes needed
+to code all the data from that point on (to the end of the file).  Then, at some preceding byte
+we choose literal or match based on the minimum total output length resulting.  Obviously, when
+we get back to the first byte, we have chosen the optimal coding for the file.  Here's how
+it works:
+</p><p></p><pre>Let out[n] be the total output length to code from byte n to the EOF.
+Let cml[n] be the chosen match length for byte n; (1 &lt;= cml[n] &lt;= ml[n])
+	where 1 indicates a literal
+Let N be the last byte in the file, and c the current pos.
+
+A.	out[N] = 0
+	cml[N] = 1
+	c = N-1
+
+B.	for all 2 &lt;= l &lt;= ml[c] , compute :
+		output[l] = M + out[c+l]
+	output[1] = L + out[c+1]
+	find the 1 &lt;= l &lt;= ml[c] which miminizes output[l]
+
+	cml[c] = l
+	out[c] = output[l]
+	c -= 1
+
+C. if c &gt; 0 , goto B
+
+	create the output :
+		c = 0
+		send cml[c]
+		c += cml[c]
+		repeat
+
+</pre>
+Hopefully you see the beauty and simplicity of this scheme.
+This finds the optimal coding, by construction, but only if
+our assumptions are true : matches are coded in M bits, and literals in L bits.
+<p>
+Of course, those assumptions are wrong.  Even neglecting things like
+match flags which could be successfully incorporated into the counting,
+we want to use statistical coders for our matches and literals.  This means
+that M and L are not constant : for example, I might be able to send an 'e'
+literal in 2 bits, but to send a '~' might take 10 bits, so my choice of
+match of no-match varies.  The real problem is that I can't make these
+assumptions before hand : you might even suggest that we do a first-pass of
+the file to compute the histograms for the characters so that instead of just L,
+we have L[character], an array, and M[match length], an array.  This is better,
+but still not optimal, because the *actual* histogram depends on my parsing
+choice.  Furthermore, since the literal coding is done *forward* adaptively,
+and the optimal parsing goes *backwards* there is no way to optimally parse.
+</p><p>
+There's an even more subtle problem : modern optimal parsing might involve
+intentional skewing.  For example,  I might want to intentionally abandon a
+longer match in favor of a shorter one, + some common literals.  Or, I might
+want to choose a shorter match which has a smaller offset.  Both of these are
+intended to skew the statistical distribution.  Favoring more recent matches
+is done forcably in some of my LZ coders by adding "PMR's" : previous match
+references, and we try to code from PMR's instead of bare offsets.
+</p><p></p><hr><p>
+</p><address> Charles Bloom / cb at my domain </address>
+<a href="mailto:cb%20at%20my%20domain">Send Me Email</a>
+<p>
+<a href="https://cbloom.com/algs/index.html"> Back to the Algorithm Index </a>
+</p><p>
+The <a href="http://www.digits.com/web_counter"> free web counter </a> says you are visitor number <img align="absmiddle" border="none" src="http://counter.digits.com/wc?charles_raymond_bloom">
+</p><p>
+
+
+
+</p></body></html>
