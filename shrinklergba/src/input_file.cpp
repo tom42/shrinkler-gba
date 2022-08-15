@@ -40,7 +40,6 @@ using ELFIO::elfio;
 using ELFIO::Elf64_Addr;
 using ELFIO::Elf_Half;
 using ELFIO::segment;
-using fmt::format;
 using std::runtime_error;
 
 static table_printer create_table_printer()
@@ -75,9 +74,9 @@ void input_file::load(std::istream& stream)
 {
     load_elf(stream);
 
-    CONSOLE_VERBOSE(m_console) << format("Entry: {:#x}", m_entry) << std::endl;
-    CONSOLE_VERBOSE(m_console) << format("Load address: {:#x}", m_load_address) << std::endl;
-    CONSOLE_VERBOSE(m_console) << format("Total size of loaded data: {0:#x} ({0})", m_data.size()) << std::endl;
+    CONSOLE_VERBOSE(m_console) << fmt::format("Entry: {:#x}", m_entry) << std::endl;
+    CONSOLE_VERBOSE(m_console) << fmt::format("Load address: {:#x}", m_load_address) << std::endl;
+    CONSOLE_VERBOSE(m_console) << fmt::format("Total size of loaded data: {0:#x} ({0})", m_data.size()) << std::endl;
 }
 
 void input_file::load_elf(std::istream& stream)
@@ -269,7 +268,7 @@ void input_file::check_elf_version(elfio& reader)
     auto ei_version = reader.get_elf_version();
     if (ei_version != expected_elf_version)
     {
-        throw runtime_error(format("unknown ELF format version {}. Expected {}", ei_version, expected_elf_version));
+        throw runtime_error(fmt::format("unknown ELF format version {}. Expected {}", ei_version, expected_elf_version));
     }
 }
 
@@ -280,7 +279,7 @@ void input_file::check_os_abi(elfio& reader)
     auto ei_osabi = reader.get_os_abi();
     if (ei_osabi != expected_abi)
     {
-        throw runtime_error(format("unknown ELF OS ABI {}. Expected none ({})", ei_osabi, expected_abi));
+        throw runtime_error(fmt::format("unknown ELF OS ABI {}. Expected none ({})", ei_osabi, expected_abi));
     }
 }
 
@@ -291,7 +290,7 @@ void input_file::check_abi_version(elfio& reader)
     auto ei_abiversion = reader.get_abi_version();
     if (ei_abiversion != expected_abi_version)
     {
-        throw runtime_error(format("unknown ABI version {}. Expected {}", ei_abiversion, expected_abi_version));
+        throw runtime_error(fmt::format("unknown ABI version {}. Expected {}", ei_abiversion, expected_abi_version));
     }
 }
 
@@ -302,7 +301,7 @@ void input_file::check_object_file_version(elfio& reader)
     auto e_version = reader.get_version();
     if (e_version != expected_object_file_version)
     {
-        throw runtime_error(format("unknown object file version {}. Expected {}", e_version, expected_object_file_version));
+        throw runtime_error(fmt::format("unknown object file version {}. Expected {}", e_version, expected_object_file_version));
     }
 }
 

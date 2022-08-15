@@ -38,8 +38,6 @@
 namespace shrinklergba
 {
 
-using fmt::format;
-
 // Offsets in GBA cartridge header
 constexpr size_t ofs_game_title = 0xa0;
 constexpr size_t ofs_fixed_byte = 0xb2;
@@ -97,7 +95,7 @@ void gba_packer::write_to_disk(const std::vector<unsigned char>& data, const std
     catch (const std::system_error& e)
     {
         remove_output_file(filename);
-        throw std::runtime_error(format("could not write {}: {}", filename.string(), e.what()));
+        throw std::runtime_error(fmt::format("could not write {}: {}", filename.string(), e.what()));
     }
 }
 

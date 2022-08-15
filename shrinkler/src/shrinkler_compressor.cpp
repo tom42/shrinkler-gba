@@ -37,7 +37,6 @@ namespace shrinkler
 {
 
 using boost::numeric_cast;
-using fmt::format;
 using std::endl;
 using std::runtime_error;
 using std::vector;
@@ -86,10 +85,10 @@ vector<unsigned char> shrinkler_compressor::compress(const vector<unsigned char>
     // Not worth the trouble for the time being.
     auto packed_bytes = crunch(data, pack_params, edge_factory, false);
 
-    CONSOLE << format("References considered: {}", edge_factory.max_edge_count) << endl;
-    CONSOLE << format("References discarded: {}", edge_factory.max_cleaned_edges) << endl;
-    CONSOLE << format("Uncompressed data size: {} bytes", data.size()) << endl;
-    CONSOLE << format("Compressed data size: {} bytes", packed_bytes.size()) << endl;
+    CONSOLE << fmt::format("References considered: {}", edge_factory.max_edge_count) << endl;
+    CONSOLE << fmt::format("References discarded: {}", edge_factory.max_cleaned_edges) << endl;
+    CONSOLE << fmt::format("Uncompressed data size: {} bytes", data.size()) << endl;
+    CONSOLE << fmt::format("Compressed data size: {} bytes", packed_bytes.size()) << endl;
 
     if (edge_factory.max_edge_count > parameters.references)
     {
@@ -149,7 +148,7 @@ ptrdiff_t shrinkler_compressor::verify(std::vector<unsigned char>& data, std::ve
     // Check length
     if (numeric_cast<size_t>(verifier.size()) != data.size())
     {
-        throw runtime_error(format("INTERNAL ERROR: decompressed data has incorrect length ({}, should have been {})", verifier.size(), data.size()));
+        throw runtime_error(fmt::format("INTERNAL ERROR: decompressed data has incorrect length ({}, should have been {})", verifier.size(), data.size()));
     }
 
     return verifier.front_overlap_margin + pack_buffer.size() * 4 - data.size();
@@ -195,7 +194,7 @@ void shrinkler_compressor::packData(unsigned char* data, int data_length, int ze
         }
 
         // Print size
-        CONSOLE << format("Pass {}: {:.3f}", i + 1, real_size / (double)(8 << Coder::BIT_PRECISION)) << endl;
+        CONSOLE << fmt::format("Pass {}: {:.3f}", i + 1, real_size / (double)(8 << Coder::BIT_PRECISION)) << endl;
 
         // Count symbol frequencies
         CountingCoder* new_counting_coder = new CountingCoder(LZEncoder::NUM_CONTEXTS);
