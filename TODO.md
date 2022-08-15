@@ -6,6 +6,9 @@
       * Create a temporary subtree of gba-hpp
       * See whether its huffman encoder writes stuff that our decoder can read
       * See whether its LZSS encoder writes stuff that our decoder can read
+    * Meh: no, that's not what we need.
+      * But it's MIT licensed and looks somewhat clean, so maybe we can base huffman and lz77 encoders on it.
+      * Eventually, remove the subtree!
 * NEXT: NOW WITH THE CODE IN HEADER, A test on real hardware is in order!
   * Questions:
     * Is it really legal to have a nonzero device type? (value at header offset 0xb4)
