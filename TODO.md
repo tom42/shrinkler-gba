@@ -1,3 +1,14 @@
+* Meh: will probably roll our own standalopne gba compression library
+  * gbapack
+  * 4 bit huffman, 8 bit huffman
+    * The very first thing to figure out, by testing:
+      * Does the GBA BIOS support 2 bits? If so, implement it. If not, don't bother
+  * lzss:
+    * No speed up for starters
+      * Later: search tree, for the fun of it?
+    * No parsing optimization for starters
+      * Later: maybe 1 byte lookahead
+      * Even more later: optimal parse
 * Evaluate gba-hpp: https://github.com/felixjones/gba-hpp
   * Possibly we can use this to implement huffman and lzss encoding
     * It would speed up the process
