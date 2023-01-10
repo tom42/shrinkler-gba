@@ -19,6 +19,7 @@
       * See whether its LZSS encoder writes stuff that our decoder can read
     * Meh: no, that's not what we need.
       * But it's MIT licensed and looks somewhat clean, so maybe we can base huffman and lz77 encoders on it.
+        * Uh, last time I checked it was zlib, not MIT.
       * Eventually, remove the subtree!
 * NEXT: NOW WITH THE CODE IN HEADER, A test on real hardware is in order!
   * Questions:
