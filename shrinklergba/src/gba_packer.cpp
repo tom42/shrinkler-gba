@@ -57,6 +57,8 @@ void gba_packer::pack(const options& options)
 
     std::vector<unsigned char> cart = make_shrinklered_cart(input_file, options);
     write_complement(cart);
+
+    CONSOLE_VERBOSE(console) << "Writing: " << options.output_file().string() << std::endl;
     write_to_disk(cart, options.output_file());
 }
 
