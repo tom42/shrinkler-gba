@@ -128,6 +128,8 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
     //         * Note: getnumber/getkind/getbit are less likely to be changed by binary dependend optimizations or user options such as whether registers should be saved
     //           * So if we turn around the decoder and stick e.g. getnumber into the header, the main decoding loop will be outside the header, making it more easy to apply optimizations.
     //           * By doing so we will not lose anything size-wise, since at the cartridge beginning we need to have a branch anyway
+    //         * Debug mode: selectable through command line
+    //           * E.g. check stack pointer before branching to depacked intro
     shrinkler::shrinkler_compressor compressor;
     compressor.set_parameters(options.shrinkler_parameters());
     std::vector<unsigned char> compressed_program = compressor.compress(input_file.data());
