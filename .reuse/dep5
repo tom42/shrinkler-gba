@@ -1,0 +1,8 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: shrinkler-gba
+Upstream-Contact: Thomas Mathys <>
+Source: https://github.com/tom42/shrinkler-gba
+
+Files: 3rdparty/ELFIO/*
+Copyright: 2001-present Serge Lamikhov-Center <>
+License: MIT
