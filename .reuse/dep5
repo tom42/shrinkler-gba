@@ -6,3 +6,7 @@ Source: https://github.com/tom42/shrinkler-gba
 Files: 3rdparty/ELFIO/*
 Copyright: 2001-present Serge Lamikhov-Center <>
 License: MIT
+
+Files: 3rdparty/fmt/*
+Copyright: 2012-present Victor Zverovich
+License: MIT
