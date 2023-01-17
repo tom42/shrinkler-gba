@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2021 Thomas Mathys
+SPDX-License-Identifier: MIT
+lzasm: a runtime assembler
+-->
+
 # lzasm
 lzasm is a lightweight runtime assembler written in C++.
 
@@ -8,6 +14,9 @@ Moreover, only little endian CPUs are supported.
 
 The name lzasm stands for Laufzeitassembler - runtime assembler in German.
 lzasm has nothing to do with LZASM (Lazy Assembler, some sort of TASM clone/replacement).
+
+# License
+lzasm is licensed under the MIT license.
 
 # Supported platforms
 
