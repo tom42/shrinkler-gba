@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2021 Thomas Mathys
+SPDX-License-Identifier: MIT
+shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
+-->
+
 # 3rd party code
 
 This directory contains 3rd party libraries as Git subtrees.

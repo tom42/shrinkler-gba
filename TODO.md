@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2021 Thomas Mathys
+SPDX-License-Identifier: MIT
+shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
+-->
+
 * Use SPDX, but first do so for lzasm
 * Meh: will probably roll our own standalopne gba compression library
   * gbapack
