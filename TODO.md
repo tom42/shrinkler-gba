@@ -4,6 +4,15 @@ SPDX-License-Identifier: MIT
 shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
 -->
 
+* Rename projects. It's currently confusing. First idea:
+  What is it                          |Old name               | New name
+  ------------------------------------+-----------------------+------------------------------
+  Wrapper library                     | shrinkler             | shrinklerwrapper
+  Wrapper library's unit tests        | shrinkler-unittest    | shrinklerwrapper-unittests
+  Our own domain library              | shrinklergba          | shrinklergbacore
+  Our own domain library's unit tests | shrinklergba-unittest | shrinklergbacore-unittests
+  Our main program                    | shrinkler-gba         | shrinkler-gba (or just main?)
+
 * Use SPDX, but first do so for lzasm
 * Meh: will probably roll our own standalopne gba compression library
   * gbapack
