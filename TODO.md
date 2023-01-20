@@ -106,3 +106,7 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
     * Well, Amiga Shrinkler supports this for data only, not code. We can start like that too, if we see that an intro packs better with that option
       we can always provide it for code and assemble an appropriate depacker for that.
   * Are we going to have a data option? (pack/write raw data, little endian for starters, maybe later with a big endian option? [does anybody need this?])
+* See whether upgrading Shrinkler is worthwile.
+  * I am not even sure, but I think we are not yet at 4.7. Possibly 4.6, or something in between 4.6 and 4.7.
+  * If we do upgrade, ensure we also upgrade the packer if required
+  * And also if we do upgrade: apparently the Shrinkler license has slightly changed, so we'd need to update that too
