@@ -4,16 +4,7 @@ SPDX-License-Identifier: MIT
 shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
 -->
 
-* Rename projects. It's currently confusing. First idea:
-  What is it                          |Old name               | New name                      | Status
-  ------------------------------------+-----------------------+-------------------------------+-------
-  Our main program                    | shrinkler-gba         | shrinkler-gba (or just main?) |
-  * Note: we'll have to rename quite a few things:
-    * Directories
-    * Headers (?)
-    * Namespaces
-    * ...
-* Meh: will probably roll our own standalopne gba compression library
+* Meh: will probably roll our own standalone gba compression library
   * gbapack
   * 4 bit huffman, 8 bit huffman
     * The very first thing to figure out, by testing:
