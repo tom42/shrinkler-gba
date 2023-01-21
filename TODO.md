@@ -5,8 +5,6 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
 -->
 
 * Wrap up shrinkler library:
-  * Use preset 3 as default, as Blueberry does these days
-    * Can we unhardcode this from the command line parser, if not already done so?
   * Fix all TODOs
   * Separate code in shrinkler_compressor.cpp:
     * Put code that is fully written by me into own file
@@ -130,3 +128,5 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
   * I am not even sure, but I think we are not yet at 4.7. Possibly 4.6, or something in between 4.6 and 4.7.
   * If we do upgrade, ensure we also upgrade the packer if required
   * And also if we do upgrade: apparently the Shrinkler license has slightly changed, so we'd need to update that too
+  * Use preset 3 as default, as Blueberry does these days
+    * Can we unhardcode this from the command line parser, if not already done so? Well, not easily, with default/min/max values all over the place. Time to write an argp c++ wrapper, really.

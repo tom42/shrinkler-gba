@@ -5,7 +5,7 @@
 set(
   SOURCES
   include/shrinklerwrapper/shrinklerwrapper.hpp
-  src/shrinkler_compressor.cpp)
+  src/shrinkler_compressor_internal.cpp)
 
 source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${SOURCES})
 

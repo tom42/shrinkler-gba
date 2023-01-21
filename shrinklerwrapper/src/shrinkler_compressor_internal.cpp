@@ -18,6 +18,7 @@
 
 #define CONSOLE if (!parameters.verbose); else std::cout
 
+// TODO: would this need to be some detail namespace?
 namespace shrinklerwrapper
 {
 
