@@ -7,8 +7,6 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
 * Rename projects. It's currently confusing. First idea:
   What is it                          |Old name               | New name                      | Status
   ------------------------------------+-----------------------+-------------------------------+-------
-  Our own domain library              | shrinklergba          | shrinklergbacore              |
-  Our own domain library's unit tests | shrinklergba-unittest | shrinklergbacore-unittests    |
   Our main program                    | shrinkler-gba         | shrinkler-gba (or just main?) |
   * Note: we'll have to rename quite a few things:
     * Directories

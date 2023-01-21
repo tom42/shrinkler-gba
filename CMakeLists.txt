@@ -54,5 +54,5 @@ else()
 endif()
 
 add_subdirectory(shrinklerwrapper)
-add_subdirectory(shrinklergba)
+add_subdirectory(shrinklergbacore)
 add_subdirectory(shrinkler-gba)

@@ -5,11 +5,11 @@
 #include <cstdlib>
 #include <iostream>
 #include <stdexcept>
-#include "shrinklergba/command_line.hpp"
-#include "shrinklergba/gba_packer.hpp"
-#include "shrinklergba/options.hpp"
+#include "shrinklergbacore/command_line.hpp"
+#include "shrinklergbacore/gba_packer.hpp"
+#include "shrinklergbacore/options.hpp"
 
-using namespace shrinklergba;
+using namespace shrinklergbacore;
 
 static void process(const options& options)
 {
