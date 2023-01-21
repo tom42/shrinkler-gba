@@ -5,7 +5,6 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
 -->
 
 * Wrap up shrinkler library:
-  * Fix all TODOs
   * Separate code in shrinkler_compressor.cpp:
     * Put code that is fully written by me into own file
     * Keep code that is mostly patched Shrinkler stuff in ther, and attribute it to Blueberry and keep it under the Shrinkler license.
