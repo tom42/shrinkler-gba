@@ -5,12 +5,11 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
 -->
 
 * Wrap up shrinkler library:
-  * Fix all SPDX tags
+  * Rename it first: if we are going to add more files, then we want to have proper naming first
   * Fix all TODOs
   * Separate code in shrinkler_compressor.cpp:
     * Put code that is fully written by me into own file
     * Keep code that is mostly patched Shrinkler stuff in ther, and attribute it to Blueberry and keep it under the Shrinkler license.
-* Add SPDX tags to my remaining other stuff
 
 * Rename projects. It's currently confusing. First idea:
   What is it                          |Old name               | New name
