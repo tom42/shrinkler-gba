@@ -104,12 +104,7 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
     * Yes, but remove non-shrinkler code, so that we can have it MIT licensed
 * Ensure all source files are using spaces, not tabs
 * Set up libshrinkler
-  * README.md in libshrinkler, explaining what it is
   * Do we add that new bytes parameter thing?
-* Be clear about licensing (top level README.md)
-  * shrinkler-gba code: MIT license
-  * libshrinkler: MIT, except actual shrinkler code, which is Blueberry's
-  * 3rd party code: has their own license (Shrinkler in particular)
 * Redo our own code:
   * Do we provide the parity context option?
     * Well maybe not at first. It would mean we have to update the decompressor
