@@ -4,16 +4,9 @@ SPDX-License-Identifier: MIT
 shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
 -->
 
-* Wrap up shrinkler library:
-  * Separate code in shrinkler_compressor.cpp:
-    * Put code that is fully written by me into own file
-    * Keep code that is mostly patched Shrinkler stuff in ther, and attribute it to Blueberry and keep it under the Shrinkler license.
-
 * Rename projects. It's currently confusing. First idea:
   What is it                          |Old name               | New name                      | Status
   ------------------------------------+-----------------------+-------------------------------+-------
-  Wrapper library                     | shrinkler             | shrinklerwrapper              | DONE
-  Wrapper library's unit tests        | shrinkler-unittest    | shrinklerwrapper-unittests    | DONE
   Our own domain library              | shrinklergba          | shrinklergbacore              |
   Our own domain library's unit tests | shrinklergba-unittest | shrinklergbacore-unittests    |
   Our main program                    | shrinkler-gba         | shrinkler-gba (or just main?) |
