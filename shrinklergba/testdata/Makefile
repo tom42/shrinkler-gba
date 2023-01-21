@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2021 Thomas Mathys
+# SPDX-License-Identifier: MIT
+# shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
+
 # Using devkitPro, but any ARM GNU assembler should do.
 AS := arm-none-eabi-as
 LD := arm-none-eabi-ld
