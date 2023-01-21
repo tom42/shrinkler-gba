@@ -3,12 +3,12 @@
 // shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
 
 #include <boost/test/unit_test.hpp>
-#include "shrinkler/shrinkler.hpp"
+#include "shrinklerwrapper/shrinklerwrapper.hpp"
 
-namespace shrinkler_unittest
+namespace shrinklerwrapper_unittest
 {
 
-using namespace shrinkler;
+using namespace shrinklerwrapper;
 
 static std::vector<unsigned char> make_vector(const char* s)
 {

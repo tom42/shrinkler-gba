@@ -9,5 +9,5 @@
 #define _POSIX_C_SOURCE 200112L
 #endif
 
-#define BOOST_TEST_MODULE shrinkler-unittest
+#define BOOST_TEST_MODULE shrinklerwrapper-unittest
 #include <boost/test/included/unit_test.hpp>

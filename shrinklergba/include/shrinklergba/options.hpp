@@ -6,7 +6,7 @@
 #define SHRINKLERGBA_OPTIONS_HPP
 
 #include <filesystem>
-#include "shrinkler/shrinkler.hpp"
+#include "shrinklerwrapper/shrinklerwrapper.hpp"
 
 namespace shrinklergba
 {
@@ -39,18 +39,18 @@ public:
         m_output_file_set = true;
     }
 
-    const shrinkler::shrinkler_parameters& shrinkler_parameters() const { return m_shrinkler_parameters; }
+    const shrinklerwrapper::shrinkler_parameters& shrinkler_parameters() const { return m_shrinkler_parameters; }
 
-    shrinkler::shrinkler_parameters& shrinkler_parameters() { return m_shrinkler_parameters; }
+    shrinklerwrapper::shrinkler_parameters& shrinkler_parameters() { return m_shrinkler_parameters; }
 
-    void shrinkler_parameters(const shrinkler::shrinkler_parameters& p) { m_shrinkler_parameters = p; }
+    void shrinkler_parameters(const shrinklerwrapper::shrinkler_parameters& p) { m_shrinkler_parameters = p; }
 
 private:
     bool m_verbose = false;
     bool m_output_file_set = false;
     std::filesystem::path m_input_file;
     std::filesystem::path m_output_file;
-    shrinkler::shrinkler_parameters m_shrinkler_parameters;
+    shrinklerwrapper::shrinkler_parameters m_shrinkler_parameters;
 };
 
 }

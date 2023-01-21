@@ -53,6 +53,6 @@ else()
   add_compile_options(-Wall -Wextra -pedantic -Werror)
 endif()
 
-add_subdirectory(shrinkler)
+add_subdirectory(shrinklerwrapper)
 add_subdirectory(shrinklergba)
 add_subdirectory(shrinkler-gba)

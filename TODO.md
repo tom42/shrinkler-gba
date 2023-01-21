@@ -5,20 +5,21 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
 -->
 
 * Wrap up shrinkler library:
-  * Rename it first: if we are going to add more files, then we want to have proper naming first
+  * Use preset 3 as default, as Blueberry does these days
+    * Can we unhardcode this from the command line parser, if not already done so?
   * Fix all TODOs
   * Separate code in shrinkler_compressor.cpp:
     * Put code that is fully written by me into own file
     * Keep code that is mostly patched Shrinkler stuff in ther, and attribute it to Blueberry and keep it under the Shrinkler license.
 
 * Rename projects. It's currently confusing. First idea:
-  What is it                          |Old name               | New name
-  ------------------------------------+-----------------------+------------------------------
-  Wrapper library                     | shrinkler             | shrinklerwrapper
-  Wrapper library's unit tests        | shrinkler-unittest    | shrinklerwrapper-unittests
-  Our own domain library              | shrinklergba          | shrinklergbacore
-  Our own domain library's unit tests | shrinklergba-unittest | shrinklergbacore-unittests
-  Our main program                    | shrinkler-gba         | shrinkler-gba (or just main?)
+  What is it                          |Old name               | New name                      | Status
+  ------------------------------------+-----------------------+-------------------------------+-------
+  Wrapper library                     | shrinkler             | shrinklerwrapper              | DONE
+  Wrapper library's unit tests        | shrinkler-unittest    | shrinklerwrapper-unittests    | DONE
+  Our own domain library              | shrinklergba          | shrinklergbacore              |
+  Our own domain library's unit tests | shrinklergba-unittest | shrinklergbacore-unittests    |
+  Our main program                    | shrinkler-gba         | shrinkler-gba (or just main?) |
   * Note: we'll have to rename quite a few things:
     * Directories
     * Headers (?)

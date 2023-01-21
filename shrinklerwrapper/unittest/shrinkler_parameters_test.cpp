@@ -3,12 +3,12 @@
 // shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
 
 #include <boost/test/unit_test.hpp>
-#include "shrinkler/shrinkler.hpp"
+#include "shrinklerwrapper/shrinklerwrapper.hpp"
 
-namespace shrinkler_unittest
+namespace shrinklerwrapper_unittest
 {
 
-using namespace shrinkler;
+using namespace shrinklerwrapper;
 
 BOOST_AUTO_TEST_SUITE(shrinkler_parameters_test)
 

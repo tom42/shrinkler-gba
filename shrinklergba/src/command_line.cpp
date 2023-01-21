@@ -6,7 +6,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <argp.h>
-#include "shrinkler/shrinkler.hpp"
+#include "shrinklerwrapper/shrinklerwrapper.hpp"
 #include "shrinklergba/command_line.hpp"
 #include "shrinklergba_version.hpp"
 

@@ -4,14 +4,14 @@
 
 set(
   SOURCES
-  include/shrinkler/shrinkler.hpp
+  include/shrinklerwrapper/shrinklerwrapper.hpp
   src/shrinkler_compressor.cpp)
 
 source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${SOURCES})
 
-add_library(shrinkler ${SOURCES})
+add_library(shrinklerwrapper ${SOURCES})
 target_include_directories(
-  shrinkler
+  shrinklerwrapper
   PUBLIC
   include
   PRIVATE
@@ -23,15 +23,15 @@ target_include_directories(
   # If the directory containing Shrinkler's assert.h is in the search path,
   # then that will not work. Not with MSVC anyway.
   "${PROJECT_SOURCE_DIR}/3rdparty/Shrinkler/decrunchers_bin")
-target_link_libraries(shrinkler PRIVATE fmt)
+target_link_libraries(shrinklerwrapper PRIVATE fmt)
 
 if(BUILD_TESTING)
   add_executable(
-    shrinkler-unittest
+    shrinklerwrapper-unittest
     unittest/main.cpp
     unittest/shrinkler_parameters_test.cpp
     unittest/shrinkler_compressor_test.cpp)
-  target_include_directories(shrinkler-unittest PRIVATE "${Boost_INCLUDE_DIRS}")
-  target_link_libraries(shrinkler-unittest PRIVATE shrinkler)
-  add_test(NAME shrinkler-unittest COMMAND shrinkler-unittest)
+  target_include_directories(shrinklerwrapper-unittest PRIVATE "${Boost_INCLUDE_DIRS}")
+  target_link_libraries(shrinklerwrapper-unittest PRIVATE shrinklerwrapper)
+  add_test(NAME shrinklerwrapper-unittest COMMAND shrinklerwrapper-unittest)
 endif()

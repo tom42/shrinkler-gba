@@ -11,7 +11,7 @@
 #include <vector>
 #include "fmt/core.h"
 #include "lzasm/arm/arm32/divided_thumb_assembler.hpp"
-#include "shrinkler/shrinkler.hpp"
+#include "shrinklerwrapper/shrinklerwrapper.hpp"
 #include "shrinklergba/console.hpp"
 #include "shrinklergba/gba_packer.hpp"
 #include "shrinklergba/input_file.hpp"
@@ -111,7 +111,7 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
     //           * By doing so we will not lose anything size-wise, since at the cartridge beginning we need to have a branch anyway
     //         * Debug mode: selectable through command line
     //           * E.g. check stack pointer before branching to depacked intro
-    shrinkler::shrinkler_compressor compressor;
+    shrinklerwrapper::shrinkler_compressor compressor;
     compressor.set_parameters(options.shrinkler_parameters());
     std::vector<unsigned char> compressed_program = compressor.compress(input_file.data());
 

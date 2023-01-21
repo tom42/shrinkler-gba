@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: MIT
 // shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
 
-#ifndef SHRINKLER_SHRINKLER_HPP
-#define SHRINKLER_SHRINKLER_HPP
+#ifndef SHRINKLERWRAPPER_SHRINKLERWRAPPER_HPP
+#define SHRINKLERWRAPPER_SHRINKLERWRAPPER_HPP
 
 #include <cstddef>
 #include <cstdint>
@@ -16,7 +16,7 @@ class Coder;
 struct PackParams;
 class RefEdgeFactory;
 
-namespace shrinkler
+namespace shrinklerwrapper
 {
 
 class shrinkler_parameters final
