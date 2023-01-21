@@ -15,6 +15,7 @@
 #include <stdexcept>
 #include "fmt/core.h"
 #include "shrinkler_compressor_impl.hpp"
+#include "util.hpp"
 
 #define CONSOLE if (!parameters.verbose); else std::cout
 
@@ -37,22 +38,6 @@ static PackParams create_pack_params(const shrinkler_parameters& parameters)
         .match_patience = parameters.effort,
         .max_same_length = parameters.same_length
     };
-}
-
-static vector<unsigned char> to_little_endian(const vector<uint32_t>& pack_buffer)
-{
-    vector<unsigned char> packed_bytes;
-    packed_bytes.reserve(pack_buffer.size() * sizeof(pack_buffer[0]));
-
-    for (auto word : pack_buffer)
-    {
-        packed_bytes.push_back(word & 0xff);
-        packed_bytes.push_back((word >> 8) & 0xff);
-        packed_bytes.push_back((word >> 16) & 0xff);
-        packed_bytes.push_back((word >> 24) & 0xff);
-    }
-
-    return packed_bytes;
 }
 
 // Corresponds to main in Shrinkler.
