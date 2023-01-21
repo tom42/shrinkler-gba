@@ -46,8 +46,6 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
     * Eventually do optimal LZSS
 * Notes from various old sources:
   * Old Thumb data depacker (shrinkler_decompress_thumb.s)
-    @ * Might actually want to try the following: write a simpler (than depacker.cpp) one file depacker,
-    @   and see what gcc -Os comes up with?
     @ * Eventually we should definitely also compare original and decompressed data
     @   * And the number of bytes decompressed
     @   * And we should make sure we do not write anywhere past the conext array
@@ -74,7 +72,6 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
     @   We can e.g. do so by writing something into the single bit context and then inspecting memory.
 * Somewhere, have some documentation of the depacker, including blueberrys explanation what he does with all the contexts (and the odd stack hack)
 * For deploying windows binaries, do we need to take care to distribute runtime libraries? Or do we link statically?
-* Eventually, get rid of the fmt library (yeah, right)
 * NEXT:
   * Verification
     * Either when reading the ELF or writing the raw binary, should we check that sh_addralign/sh_addr match?
