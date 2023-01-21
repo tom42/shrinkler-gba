@@ -2,6 +2,9 @@
 // SPDX-License-Identifier: MIT
 // shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
 
+#ifndef SHRINKLERWRAPPER_SHRINKLER_COMPRESSOR_IMPL_HPP
+#define SHRINKLERWRAPPER_SHRINKLER_COMPRESSOR_IMPL_HPP
+
 #include <vector>
 #include "shrinklerwrapper/shrinklerwrapper.hpp"
 
@@ -31,3 +34,5 @@ private:
 };
 
 }
+
+#endif
