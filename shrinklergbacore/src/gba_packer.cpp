@@ -41,8 +41,8 @@ void gba_packer::pack(const options& options)
     // TODO: ugh: so how big IS our depacker? Compare to prototype again...
     CONSOLE_VERBOSE(console) << fmt::format("Uncompressed data size: {:4} bytes", input_file.data().size()) << std::endl;
     CONSOLE_VERBOSE(console) << fmt::format("Compressed data size  : {:4} bytes", compressed_program.size()) << std::endl;
-    CONSOLE_VERBOSE(console) << fmt::format("Depacker size         : {:4} bytes (excluding code in header)", cart_assembler.depacker_size()) << std::endl;
-    CONSOLE_VERBOSE(console) << fmt::format("Cart size             : {:4} bytes", cart_assembler.data().size()) << std::endl;
+    CONSOLE_VERBOSE(console) << fmt::format("Depacker size         : {:4} bytes (excluding code in cartridge header)", cart_assembler.depacker_size()) << std::endl;
+    CONSOLE_VERBOSE(console) << fmt::format("Cartridge size        : {:4} bytes", cart_assembler.data().size()) << std::endl;
     CONSOLE_VERBOSE(console) << "Writing: " << options.output_file().string() << std::endl;
     write_to_disk(cart_assembler.data(), options.output_file());
 }
