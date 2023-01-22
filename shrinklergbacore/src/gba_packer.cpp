@@ -10,9 +10,10 @@
 #include <system_error>
 #include <vector>
 #include "fmt/core.h"
-#include "lzasm/arm/arm32/divided_thumb_assembler.hpp"
+#include "lzasm/arm/arm32/divided_thumb_assembler.hpp" // TODO: can be removed?
 #include "shrinklerwrapper/shrinklerwrapper.hpp"
 #include "shrinklergbacore/console.hpp"
+#include "shrinklergbacore/depacker.hpp"
 #include "shrinklergbacore/gba_packer.hpp"
 #include "shrinklergbacore/input_file.hpp"
 
@@ -33,12 +34,25 @@ void gba_packer::pack(const options& options)
     console console;
     console.verbose(options.verbose() ? &std::cout : nullptr);
 
+    // Load program
     input_file input_file(console);
     input_file.load(options.input_file());
 
-    std::vector<unsigned char> cart = make_shrinklered_cart(input_file, options);
+    // Compress program
+    shrinklerwrapper::shrinkler_compressor compressor;
+    compressor.set_parameters(options.shrinkler_parameters());
+    auto compressed_program = compressor.compress(input_file.data());
+
+    // Assemble cart and write checksum.
+    auto cart = make_shrinklered_cart(input_file, compressed_program);
     write_complement(cart);
 
+    // TODO: print all stats here:
+    //       * Additionally print the depacking code size (this we need the assembler to tell us)
+    // TODO: ugh: so how big IS our depacker? Compare to prototype again...
+    CONSOLE_VERBOSE(console) << fmt::format("Uncompressed data size: {} bytes", input_file.data().size()) << std::endl;
+    CONSOLE_VERBOSE(console) << fmt::format("Compressed data size  : {} bytes", compressed_program.size()) << std::endl;
+    CONSOLE_VERBOSE(console) << fmt::format("Cart size             : {} bytes", cart.size()) << std::endl;
     CONSOLE_VERBOSE(console) << "Writing: " << options.output_file().string() << std::endl;
     write_to_disk(cart, options.output_file());
 }
@@ -89,7 +103,7 @@ void gba_packer::remove_output_file(const std::filesystem::path& filename)
     std::filesystem::remove(filename, e);
 }
 
-std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& input_file, const options& options)
+std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& input_file, const std::vector<unsigned char>& compressed_program)
 {
     using namespace lzasm::arm::arm32;
     using namespace std::literals::string_literals;
@@ -111,10 +125,6 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
     //           * By doing so we will not lose anything size-wise, since at the cartridge beginning we need to have a branch anyway
     //         * Debug mode: selectable through command line
     //           * E.g. check stack pointer before branching to depacked intro
-    shrinklerwrapper::shrinkler_compressor compressor;
-    compressor.set_parameters(options.shrinkler_parameters());
-    std::vector<unsigned char> compressed_program = compressor.compress(input_file.data());
-
     divided_thumb_assembler a;
 
     ////////////////////////////////////////////////////////////////////////////

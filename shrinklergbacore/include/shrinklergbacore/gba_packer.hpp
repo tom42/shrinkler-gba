@@ -22,7 +22,7 @@ private:
     void write_complement(std::vector<unsigned char>& cart);
     void write_to_disk(const std::vector<unsigned char>& data, const std::filesystem::path& filename);
     void remove_output_file(const std::filesystem::path& filename);
-    std::vector<unsigned char> make_shrinklered_cart(const input_file& input_file, const options& options);
+    std::vector<unsigned char> make_shrinklered_cart(const input_file& input_file, const std::vector<unsigned char>& compressed_program);
 };
 
 }

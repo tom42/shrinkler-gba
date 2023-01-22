@@ -8,6 +8,7 @@ set(
   SOURCES
   include/shrinklergbacore/command_line.hpp
   include/shrinklergbacore/console.hpp
+  include/shrinklergbacore/depacker.hpp
   include/shrinklergbacore/elfio_wrapper.hpp
   include/shrinklergbacore/elf_strings.hpp
   include/shrinklergbacore/gba_bios_common.hpp
@@ -18,6 +19,7 @@ set(
   include/shrinklergbacore/options.hpp
   include/shrinklergbacore/table_printer.hpp
   src/command_line.cpp
+  src/depacker.cpp
   src/elf_strings.cpp
   src/gba_bios_common.cpp
   src/gba_packer.cpp

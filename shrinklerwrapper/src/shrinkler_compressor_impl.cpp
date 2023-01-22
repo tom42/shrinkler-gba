@@ -57,8 +57,6 @@ vector<unsigned char> shrinkler_compressor_impl::compress(const vector<unsigned 
 
     CONSOLE << fmt::format("References considered: {}", edge_factory.max_edge_count) << endl;
     CONSOLE << fmt::format("References discarded: {}", edge_factory.max_cleaned_edges) << endl;
-    CONSOLE << fmt::format("Uncompressed data size: {} bytes", data.size()) << endl;
-    CONSOLE << fmt::format("Compressed data size: {} bytes", packed_bytes.size()) << endl;
 
     if (edge_factory.max_edge_count > parameters.references)
     {
