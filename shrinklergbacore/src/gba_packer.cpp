@@ -38,7 +38,6 @@ void gba_packer::pack(const options& options)
     // Assemble cart
     cart_assembler cart_assembler(input_file, compressed_program);
 
-    // TODO: ugh: so how big IS our depacker? Compare to prototype again...
     CONSOLE_VERBOSE(console) << fmt::format("Uncompressed data size: {:4} bytes", input_file.data().size()) << std::endl;
     CONSOLE_VERBOSE(console) << fmt::format("Compressed data size  : {:4} bytes", compressed_program.size()) << std::endl;
     CONSOLE_VERBOSE(console) << fmt::format("Depacker size         : {:4} bytes (excluding code in cartridge header)", cart_assembler.depacker_size()) << std::endl;
@@ -99,7 +98,7 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
     //           * Preserve memory contents?
     //         * Stick code into header
     //         * Possible optimizations:
-    //           * If load address and entry point are the same
+    //           * If load address and entry point are the same (in the simplest case lzasm optimizes this, so that only one literal is created in the pool, no? can gas do this?)
     //           * If load address and/or entry point can be constructed using mov/lsl
     //         * Note: getnumber/getkind/getbit are less likely to be changed by binary dependend optimizations or user options such as whether registers should be saved
     //           * So if we turn around the decoder and stick e.g. getnumber into the header, the main decoding loop will be outside the header, making it more easy to apply optimizations.
