@@ -8,6 +8,31 @@
 namespace shrinklergbacore
 {
 
+// Offsets in GBA cartridge header
+constexpr size_t ofs_game_title = 0xa0;
+constexpr size_t ofs_fixed_byte = 0xb2;
+constexpr size_t ofs_device_type = 0xb4;
+constexpr size_t ofs_game_version = 0xbc;
+constexpr size_t ofs_complement = 0xbd;
+constexpr size_t ofs_reserved2 = 0xbe;
+
+cart_assembler::cart_assembler(const input_file& input_file, const std::vector<unsigned char>& compressed_program)
+{
+    m_data = assemble(input_file, compressed_program);
+    write_complement();
+}
+
+void cart_assembler::write_complement()
+{
+    char complement = 0;
+    for (size_t n = ofs_game_title; n < ofs_complement; ++n)
+    {
+        complement += m_data[n];
+    }
+
+    m_data[ofs_complement] = -(0x19 + complement);
+}
+
 std::vector<unsigned char> cart_assembler::assemble(const input_file& input_file, const std::vector<unsigned char>& compressed_program)
 {
     using namespace lzasm::arm::arm32;

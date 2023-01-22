@@ -19,7 +19,13 @@ namespace shrinklergbacore
 class cart_assembler final : private lzasm::arm::arm32::divided_thumb_assembler
 {
 public:
+    cart_assembler(const input_file& input_file, const std::vector<unsigned char>& compressed_program);
+    const std::vector<unsigned char>& data() const { return m_data; }
+private:
     std::vector<unsigned char> assemble(const input_file& input_file, const std::vector<unsigned char>& compressed_program);
+    void write_complement();
+
+    std::vector<unsigned char> m_data;
 };
 
 }

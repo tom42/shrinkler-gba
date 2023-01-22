@@ -20,14 +20,6 @@
 namespace shrinklergbacore
 {
 
-// Offsets in GBA cartridge header
-constexpr size_t ofs_game_title = 0xa0;
-constexpr size_t ofs_fixed_byte = 0xb2;
-constexpr size_t ofs_device_type = 0xb4;
-constexpr size_t ofs_game_version = 0xbc;
-constexpr size_t ofs_complement = 0xbd;
-constexpr size_t ofs_reserved2 = 0xbe;
-
 void gba_packer::pack(const options& options)
 {
     // TODO: Try Shrinkler and LZSS+H4/H8 compression, select which is better
@@ -43,30 +35,17 @@ void gba_packer::pack(const options& options)
     compressor.set_parameters(options.shrinkler_parameters());
     auto compressed_program = compressor.compress(input_file.data());
 
-    // Assemble cart and write checksum.
-    cart_assembler cart_assembler;
-    auto cart = cart_assembler.assemble(input_file, compressed_program);
-    write_complement(cart);
+    // Assemble cart
+    cart_assembler cart_assembler(input_file, compressed_program);
 
     // TODO: print all stats here:
     //       * Additionally print the depacking code size (this we need the assembler to tell us)
     // TODO: ugh: so how big IS our depacker? Compare to prototype again...
     CONSOLE_VERBOSE(console) << fmt::format("Uncompressed data size: {} bytes", input_file.data().size()) << std::endl;
     CONSOLE_VERBOSE(console) << fmt::format("Compressed data size  : {} bytes", compressed_program.size()) << std::endl;
-    CONSOLE_VERBOSE(console) << fmt::format("Cart size             : {} bytes", cart.size()) << std::endl;
+    CONSOLE_VERBOSE(console) << fmt::format("Cart size             : {} bytes", cart_assembler.data().size()) << std::endl;
     CONSOLE_VERBOSE(console) << "Writing: " << options.output_file().string() << std::endl;
-    write_to_disk(cart, options.output_file());
-}
-
-void gba_packer::write_complement(std::vector<unsigned char>& cart)
-{
-    char complement = 0;
-    for (size_t n = ofs_game_title; n < ofs_complement; ++n)
-    {
-        complement += cart[n];
-    }
-
-    cart[ofs_complement] = -(0x19 + complement);
+    write_to_disk(cart_assembler.data(), options.output_file());
 }
 
 void gba_packer::write_to_disk(const std::vector<unsigned char>& data, const std::filesystem::path& filename)
@@ -105,6 +84,7 @@ void gba_packer::remove_output_file(const std::filesystem::path& filename)
 }
 
 // TODO: delete, but merge all useful stuff into depacker/cart_assembler (however it ends up being called)
+#if 0
 std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& input_file, const std::vector<unsigned char>& compressed_program)
 {
     using namespace lzasm::arm::arm32;
@@ -388,5 +368,6 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
     assert(cart[ofs_fixed_byte] == 0x96);
     return cart;
 }
+#endif
 
 }
