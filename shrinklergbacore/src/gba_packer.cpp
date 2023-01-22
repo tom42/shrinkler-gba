@@ -12,8 +12,8 @@
 #include "fmt/core.h"
 #include "lzasm/arm/arm32/divided_thumb_assembler.hpp" // TODO: can be removed?
 #include "shrinklerwrapper/shrinklerwrapper.hpp"
+#include "shrinklergbacore/cart_assembler.hpp"
 #include "shrinklergbacore/console.hpp"
-#include "shrinklergbacore/depacker.hpp"
 #include "shrinklergbacore/gba_packer.hpp"
 #include "shrinklergbacore/input_file.hpp"
 
@@ -44,7 +44,8 @@ void gba_packer::pack(const options& options)
     auto compressed_program = compressor.compress(input_file.data());
 
     // Assemble cart and write checksum.
-    auto cart = make_shrinklered_cart(input_file, compressed_program);
+    cart_assembler cart_assembler;
+    auto cart = cart_assembler.assemble(input_file, compressed_program);
     write_complement(cart);
 
     // TODO: print all stats here:
@@ -103,6 +104,7 @@ void gba_packer::remove_output_file(const std::filesystem::path& filename)
     std::filesystem::remove(filename, e);
 }
 
+// TODO: delete, but merge all useful stuff into depacker/cart_assembler (however it ends up being called)
 std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& input_file, const std::vector<unsigned char>& compressed_program)
 {
     using namespace lzasm::arm::arm32;
