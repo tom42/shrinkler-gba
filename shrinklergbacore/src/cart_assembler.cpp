@@ -8,6 +8,8 @@
 namespace shrinklergbacore
 {
 
+constexpr size_t gba_header_size = 192;
+
 // Offsets in GBA cartridge header
 constexpr size_t ofs_game_title = 0xa0;
 constexpr size_t ofs_fixed_byte = 0xb2;
@@ -282,6 +284,7 @@ std::vector<unsigned char> cart_assembler::assemble(const input_file& input_file
     // Must be word aligned, since the packer reads entire words from the bitstream.
     ////////////////////////////////////////////////////////////////////////////
     align(2);
+    m_depacker_size = current_lc() - gba_header_size;
     label("packed_intro"s);
     incbin(compressed_program.begin(), compressed_program.end());
 

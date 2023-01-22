@@ -38,12 +38,11 @@ void gba_packer::pack(const options& options)
     // Assemble cart
     cart_assembler cart_assembler(input_file, compressed_program);
 
-    // TODO: print all stats here:
-    //       * Additionally print the depacking code size (this we need the assembler to tell us)
     // TODO: ugh: so how big IS our depacker? Compare to prototype again...
-    CONSOLE_VERBOSE(console) << fmt::format("Uncompressed data size: {} bytes", input_file.data().size()) << std::endl;
-    CONSOLE_VERBOSE(console) << fmt::format("Compressed data size  : {} bytes", compressed_program.size()) << std::endl;
-    CONSOLE_VERBOSE(console) << fmt::format("Cart size             : {} bytes", cart_assembler.data().size()) << std::endl;
+    CONSOLE_VERBOSE(console) << fmt::format("Uncompressed data size: {:4} bytes", input_file.data().size()) << std::endl;
+    CONSOLE_VERBOSE(console) << fmt::format("Compressed data size  : {:4} bytes", compressed_program.size()) << std::endl;
+    CONSOLE_VERBOSE(console) << fmt::format("Depacker size         : {:4} bytes (excluding code in header)", cart_assembler.depacker_size()) << std::endl;
+    CONSOLE_VERBOSE(console) << fmt::format("Cart size             : {:4} bytes", cart_assembler.data().size()) << std::endl;
     CONSOLE_VERBOSE(console) << "Writing: " << options.output_file().string() << std::endl;
     write_to_disk(cart_assembler.data(), options.output_file());
 }
