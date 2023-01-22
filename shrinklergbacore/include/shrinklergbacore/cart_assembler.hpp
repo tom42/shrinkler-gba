@@ -14,6 +14,8 @@ namespace shrinklergbacore
 
 // TODO: stick code into header, but turn it around first so that uninteresting bits are there That is:
 //       * Turn around depacker code, so that the non-changing bits are at the beginning (AND CHECK THIS IN)
+//         * Do not forget that since the entry point is ARM code we most also move the align directive
+//           * This wastes then potentially 2 bytes. But we could even warn this case and throw, and worry about it later...
 //       * Then move these bits into the header.
 class cart_assembler final : private lzasm::arm::arm32::divided_thumb_assembler
 {
