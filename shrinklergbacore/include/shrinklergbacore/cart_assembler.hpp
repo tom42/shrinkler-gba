@@ -5,6 +5,7 @@
 #ifndef SHRINKLERGBACORE_CART_ASSEMBLER_HPP
 #define SHRINKLERGBACORE_CART_ASSEMBLER_HPP
 
+#include <string>
 #include <vector>
 #include "lzasm/arm/arm32/divided_thumb_assembler.hpp"
 #include "shrinklergbacore/input_file.hpp"
@@ -37,7 +38,7 @@ private:
     void write_complement();
 
     // Macro that calls the panic routine. The panic routine clobbers all registers and does not return.
-    void debug_call_panic_routine(bool debug, const char* message);
+    void debug_call_panic_routine(bool debug, const std::string& message);
 
     // Macro that emits the panic routine. The panic routine clobbers all registers and does not return.
     // The panic routine must be called with r2 pointing to a zero terminated error message.

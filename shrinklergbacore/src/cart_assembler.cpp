@@ -10,7 +10,6 @@
 
 #include <bit>
 #include <cstdint>
-#include <string>
 #include <type_traits>
 #include "shrinklergbacore/cart_assembler.hpp"
 
@@ -332,24 +331,26 @@ label("packed_intro"s);
     return link(0x08000000);
 }
 
-void cart_assembler::debug_call_panic_routine(bool debug, const char* message)
+void cart_assembler::debug_call_panic_routine(bool debug, const std::string& message)
 {
     if (!debug)
     {
         return;
     }
 
-    adr(r2, "panic_message"s);
+    adr(r2, message);
     bl("panic"s);
 
     // Embed panic message.
-    // Note: the adr pseudo op requires word alignment.
-    // TODO: if we call this more than once we get label redefinitions. Will worry about that later
+    // Note 1: the adr pseudo op requires word alignment.
+    // Note 2: since lzasm does not support local labels we use the message itself
+    //         also as label name. This is obviously totally awful, but works
+    //         as long as the macro is not called twice with the same message.
     align(2);
-label("panic_message"s);
-    for (; *message; ++message)
+label(message);
+    for (char c : message)
     {
-        byte(*message);
+        byte(c);
     }
     byte(0);
 
