@@ -342,7 +342,11 @@ void cart_assembler::debug_emit_panic_routine(bool debug)
     align(1);
     label("panic"s);
 
-    // TODO: output debug message to console using mappy/vba debug output mechanism
+    // Print panic message using Mappy / VisualBoyAdvance debug output.
+    // r2 must point to a zero terminated string.
+    ldr(r0, 0xc0ded00d);
+    mov(r1, 0);
+    and_(r0, r0);
 
     // Set video mode
     ldr(r0, MODE_4 | BG2_ON);

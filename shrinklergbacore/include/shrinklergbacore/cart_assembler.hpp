@@ -37,6 +37,8 @@ private:
     void write_complement();
 
     // Macro that emits the panic routine. The panic routine clobbers all registers and does not return.
+    // The panic routine must be called with r2 pointing to a zero terminated error message.
+    // This message will be printed using Mappy / VisualBoyAdvance debug output.
     void debug_emit_panic_routine(bool debug);
 
     std::vector<unsigned char> m_data;
