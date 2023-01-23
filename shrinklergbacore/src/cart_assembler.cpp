@@ -16,6 +16,9 @@
 namespace shrinklergbacore
 {
 
+using namespace lzasm::arm::arm32;
+using namespace std::literals::string_literals;
+
 constexpr size_t gba_header_size = 192;
 constexpr auto initial_sp = 0x03007f00;
 
@@ -26,6 +29,17 @@ constexpr size_t ofs_device_type = 0xb4;
 constexpr size_t ofs_game_version = 0xbc;
 constexpr size_t ofs_complement = 0xbd;
 constexpr size_t ofs_reserved2 = 0xbe;
+
+// Register aliases
+constexpr auto inp = r0;                // Compressed data
+constexpr auto outp = r1;               // Decompressed data
+constexpr auto tmp0 = r2;               // Scratch register 0
+constexpr auto tmp1 = r3;               // Scratch register 1
+constexpr auto rvalue = r4;             // Range value
+constexpr auto isize = r5;              // Interval size
+constexpr auto bitbuf = r6;             // Input bit buffer
+constexpr auto bitctx = r7;             // Bit context index
+constexpr auto offset = r8;             // Offset
 
 template <typename T>
 constexpr bool is_power_of_2(T n) noexcept
@@ -53,9 +67,6 @@ void cart_assembler::write_complement()
 
 std::vector<unsigned char> cart_assembler::assemble(const input_file& input_file, const std::vector<unsigned char>& compressed_program)
 {
-    using namespace lzasm::arm::arm32;
-    using namespace std::literals::string_literals;
-
     ////////////////////////////////////////////////////////////////////////////
     // Cartridge header
     ////////////////////////////////////////////////////////////////////////////
@@ -110,17 +121,6 @@ std::vector<unsigned char> cart_assembler::assemble(const input_file& input_file
     constexpr auto ADJUST_SHIFT = 4;
     constexpr auto SINGLE_BIT_CONTEXTS = 1;
     constexpr size_t NUM_CONTEXTS = 2048;
-
-    // Register aliases
-    constexpr auto inp = r0;                // Compressed data
-    constexpr auto outp = r1;               // Decompressed data
-    constexpr auto tmp0 = r2;               // Scratch register 0
-    constexpr auto tmp1 = r3;               // Scratch register 1
-    constexpr auto rvalue = r4;             // Range value
-    constexpr auto isize = r5;              // Interval size
-    constexpr auto bitbuf = r6;             // Input bit buffer
-    constexpr auto bitctx = r7;             // Bit context index
-    constexpr auto offset = r8;             // Offset
 
     constexpr auto getnumber_push_list = make_push_list(outp, lr);
     constexpr auto getbit_push_list = make_push_list(outp, tmp0, tmp1, lr);
