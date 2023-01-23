@@ -9,6 +9,7 @@
 //                                  Using unoptimized ldr instructions to load load address and entry point from pool.
 
 #include <bit>
+#include <cstdint>
 #include <string>
 #include <type_traits>
 #include "shrinklergbacore/cart_assembler.hpp"
@@ -21,6 +22,18 @@ using namespace std::literals::string_literals;
 
 constexpr size_t gba_header_size = 192;
 constexpr auto initial_sp = 0x03007f00;
+
+// GBA memory areas
+constexpr uint32_t mem_bg_palette = 0x05000000;
+constexpr uint32_t mem_vram = 0x06000000;
+
+// GBA register addresses
+constexpr uint32_t reg_base = 0x04000000; // TODO: should use a constant for this too, theoretically
+constexpr uint32_t reg_dispcnt = reg_base + 0x00;
+
+// DISPCNT bits
+constexpr uint32_t MODE_4 = 4;
+constexpr uint32_t BG2_ON = 1 << 10;
 
 // Offsets in GBA cartridge header
 constexpr size_t ofs_game_title = 0xa0;
@@ -37,9 +50,20 @@ constexpr bool is_power_of_2(T n) noexcept
     return std::popcount(n) == 1;
 }
 
+constexpr uint32_t rgb5(uint32_t r, uint32_t g, uint32_t b) noexcept
+{
+    return r | (g << 5) | (b << 10);
+}
+
+constexpr uint32_t rgb8(uint32_t r, uint32_t g, uint32_t b) noexcept
+{
+    return rgb5(r >> 3, g >> 3, b >> 3);
+}
+
 cart_assembler::cart_assembler(const input_file& input_file, const std::vector<unsigned char>& compressed_program)
 {
-    m_data = assemble(input_file, compressed_program);
+    // TODO: debug flag needs to come from command line
+    m_data = assemble(input_file, compressed_program, false);
     write_complement();
 }
 
@@ -54,7 +78,7 @@ void cart_assembler::write_complement()
     m_data[ofs_complement] = -(0x19 + complement);
 }
 
-std::vector<unsigned char> cart_assembler::assemble(const input_file& input_file, const std::vector<unsigned char>& compressed_program)
+std::vector<unsigned char> cart_assembler::assemble(const input_file& input_file, const std::vector<unsigned char>& compressed_program, bool debug)
 {
     // Register aliases
     constexpr auto inp = r0;                // Compressed data
@@ -304,8 +328,60 @@ label("done"s);
     m_depacker_size = current_lc() - gba_header_size;
 label("packed_intro"s);
     incbin(compressed_program.begin(), compressed_program.end());
-
+    debug_emit_panic_routine(debug);
     return link(0x08000000);
+}
+
+void cart_assembler::debug_emit_panic_routine(bool debug)
+{
+    if (!debug)
+    {
+        return;
+    }
+
+    align(1);
+    label("panic"s);
+
+    // TODO: output debug message to console using mappy/vba debug output mechanism
+
+    // Set video mode
+    ldr(r0, MODE_4 | BG2_ON);
+    ldr(r1, reg_dispcnt);
+    str(r0, r1, 0);
+
+    // Set palette
+    // Set color 0 and 1 using a single 32 bit write
+    ldr(r0, (rgb8(255, 255, 255) << 16) | rgb8(0, 119, 215));
+    ldr(r1, mem_bg_palette);
+    str(r0, r1, 0);
+
+    // Draw sad face
+    adr(r0, "sadface"s);
+    ldr(r1, mem_vram + 4 * 240 + 4);
+    mov(r4, 8);             // Copy 8 lines
+    label("copy_line"s);
+    ldmia(!r0, r2 - r3);    // Read 8 pixels
+    stmia(!r1, r2 - r3);    // Write 8 pixels
+    add(r1, 240 - 8);       // Move to next line
+    sub(r4, r4, 1);
+    bne("copy_line"s);
+
+    // Halt system
+    label("loop"s);
+    b("loop"s);
+
+    // 8x8 8bpp image of sad face
+    align(2);
+    label("sadface"s);
+    byte(0x00, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x00);
+    byte(0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01);
+    byte(0x01, 0x00, 0x01, 0x00, 0x00, 0x01, 0x00, 0x01);
+    byte(0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01);
+    byte(0x01, 0x00, 0x00, 0x01, 0x01, 0x00, 0x00, 0x01);
+    byte(0x01, 0x00, 0x01, 0x00, 0x00, 0x01, 0x00, 0x01);
+    byte(0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01);
+    byte(0x00, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x00);
+    pool();
 }
 
 }

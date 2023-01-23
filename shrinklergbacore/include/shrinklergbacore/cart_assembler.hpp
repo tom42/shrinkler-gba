@@ -33,9 +33,11 @@ public:
     }
 
 private:
-    std::vector<unsigned char> assemble(const input_file& input_file, const std::vector<unsigned char>& compressed_program);
-
+    std::vector<unsigned char> assemble(const input_file& input_file, const std::vector<unsigned char>& compressed_program, bool debug);
     void write_complement();
+
+    // Macro that emits the panic routine. The panic routine clobbers all registers and does not return.
+    void debug_emit_panic_routine(bool debug);
 
     std::vector<unsigned char> m_data;
     size_t m_depacker_size;
