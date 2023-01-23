@@ -10,7 +10,6 @@
 #include <system_error>
 #include <vector>
 #include "fmt/core.h"
-#include "lzasm/arm/arm32/divided_thumb_assembler.hpp" // TODO: can be removed?
 #include "shrinklerwrapper/shrinklerwrapper.hpp"
 #include "shrinklergbacore/cart_assembler.hpp"
 #include "shrinklergbacore/console.hpp"
