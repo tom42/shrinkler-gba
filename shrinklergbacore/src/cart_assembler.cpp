@@ -121,7 +121,7 @@ std::vector<unsigned char> cart_assembler::assemble(const input_file& input_file
 
     align(2);
     // Initially the GBA is in ARM state. Switch to Thumb state first.
-    label("code_start"s);
+label("code_start"s);
     arm_to_thumb(inp);
     adr(inp, "packed_intro"s);
 
@@ -137,16 +137,16 @@ std::vector<unsigned char> cart_assembler::assemble(const input_file& input_file
     lsl(rvalue, isize, 10);       // rvalue = NUM_CONTEXTS / 2
     lsl(bitctx, isize, 15);       // bitctx = (INIT_ONE_PROB << 16) | INIT_ONE_PROB
     orr(bitctx, bitbuf);
-    label("init"s);
+label("init"s);
     push(bitctx);
     sub(rvalue, 1);
     bne("init"s);
     // Now rvalue is 0
 
     // Main decompression loop.
-    label("literal"s);
+label("literal"s);
     mov(tmp0, 1);
-    label("getlit"s);
+label("getlit"s);
     lsl(bitctx, outp, 31);        // bitctx = ((outp & 1) << 8) | current_byte
     lsr(bitctx, bitctx, 23);
     orr(bitctx, tmp0);
@@ -156,7 +156,7 @@ std::vector<unsigned char> cart_assembler::assemble(const input_file& input_file
     bls("getlit"s);
     strb(tmp0, outp, 0);
     add(outp, 1);
-    label("switch"s);
+label("switch"s);
     // After literal
     bl("getkind"s);
     bcc("literal"s);
@@ -165,12 +165,12 @@ std::vector<unsigned char> cart_assembler::assemble(const input_file& input_file
     sub(bitctx, 1);
     bl("getbit"s);
     bcc("readoffset"s);
-    label("readlength"s);
+label("readlength"s);
     mov(tmp0, 4);
     bl("getnumber"s);
     mov(tmp0, offset);
     neg(tmp0, tmp0);
-    label("copyloop"s);
+label("copyloop"s);
     ldrb(bitctx, outp, tmp0);
     strb(bitctx, outp, 0);
     add(outp, 1);
@@ -179,13 +179,13 @@ std::vector<unsigned char> cart_assembler::assemble(const input_file& input_file
     // After reference
     bl("getkind"s);
     bcc("literal"s);
-    label("readoffset"s);
+label("readoffset"s);
     mov(tmp0, 3);
     bl("getnumber"s);
     sub(tmp1, 2);
     mov(offset, tmp1);
     bne("readlength"s);
-    label("donedecompressing"s);
+label("donedecompressing"s);
     ldr(outp, input_file.entry());
     bx(outp);
 
@@ -194,11 +194,11 @@ std::vector<unsigned char> cart_assembler::assemble(const input_file& input_file
     // In:  tmp0 = Base context / 256. That is, call with tmp0 = 3 or tmp0 = 4.
     // Out: tmp1 = Number
     ////////////////////////////////////////////////////////////////////////////
-    label("getnumber"s);
+label("getnumber"s);
     push(getnumber_push_list);
     lsl(tmp0, tmp0, 8);
     mov(outp, 0);
-    label("numberloop"s);
+label("numberloop"s);
     add(outp, 2);
     mov(bitctx, tmp0);
     orr(bitctx, outp);
@@ -206,7 +206,7 @@ std::vector<unsigned char> cart_assembler::assemble(const input_file& input_file
     bcs("numberloop"s);
     mov(tmp1, 1);
     sub(outp, 1);
-    label("bitsloop"s);
+label("bitsloop"s);
     mov(bitctx, tmp0);
     orr(bitctx, outp);
     bl("getbit"s);
@@ -221,7 +221,7 @@ std::vector<unsigned char> cart_assembler::assemble(const input_file& input_file
     // Out: C = 0 if the next symbol is a literal, C = 1 if it is a reference
     //      bitctx = parity
     ////////////////////////////////////////////////////////////////////////////
-    label("getkind"s);
+label("getkind"s);
     // Use parity as context : bitctx = (outp & 1) << 8
     lsl(bitctx, outp, 31);
     lsr(bitctx, bitctx, 23);
@@ -234,23 +234,23 @@ std::vector<unsigned char> cart_assembler::assemble(const input_file& input_file
     // Destroys: bitctx
     // Keeps its state in bitbuf, isize and rvalue. So these must not be modified.
     ////////////////////////////////////////////////////////////////////////////
-    label("getbit"s);
+label("getbit"s);
     push(getbit_push_list);
     b("loop_condition"s);
-    label("readbit"s);
+label("readbit"s);
     lsl(bitbuf, bitbuf, 1);
     bne("nonewword"s);
-    label("newword"s);
+label("newword"s);
     ldr(bitbuf, inp, 0);
     add(inp, 4);
     // Shift data bit into C and make bit 0 the new sentinel bit.
     add(bitbuf, bitbuf);
     mov(tmp0, 1);
     orr(bitbuf, tmp0);
-    label("nonewword"s);
+label("nonewword"s);
     adc(rvalue, rvalue);
     add(isize, isize);
-    label("loop_condition"s);
+label("loop_condition"s);
     lsr(tmp0, isize, 16);         // Loop while bit 15 is clear
     bcc("readbit"s);
 
@@ -272,16 +272,16 @@ std::vector<unsigned char> cart_assembler::assemble(const input_file& input_file
 
     sub(rvalue, rvalue, outp);
     bcc("one"s);
-    label("zero"s);
+label("zero"s);
     sub(isize, isize, outp);      // intervalsize -= threshold
     add(tmp1, 0);                 // C = 0, bit = 0
     b("done"s);
-    label("one"s);
+label("one"s);
     mov(isize, outp);
     ldr(bitctx, 0xffff >> ADJUST_SHIFT);
     add(tmp1, bitctx);
     add(rvalue, outp);            // C = 1, bit = 1
-    label("done"s);
+label("done"s);
     strh(tmp1, tmp0, CTX_TABLE_OFFSET);
     pop(to_pop_list(getbit_push_list));
     pool();
@@ -292,7 +292,7 @@ std::vector<unsigned char> cart_assembler::assemble(const input_file& input_file
     ////////////////////////////////////////////////////////////////////////////
     align(2);
     m_depacker_size = current_lc() - gba_header_size;
-    label("packed_intro"s);
+label("packed_intro"s);
     incbin(compressed_program.begin(), compressed_program.end());
 
     return link(0x08000000);
