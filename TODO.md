@@ -4,6 +4,17 @@ SPDX-License-Identifier: MIT
 shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
 -->
 
+* Next steps
+  * Add debug code. First check is: value of SP
+    * If something wrong:
+      * Red screen
+      * Halt system
+      * Message on VBA debug output? (color code should be sufficient for the time being, no)
+        * Well can't remember how mappy output worked...
+  * Must have a command line switch to enable generation of debug code
+  * Once this fails, actually restore SP
+  * Stick code in header (probably use old approach, that is, the init code)
+  * Wrap initial version up
 * Meh: will probably roll our own standalone gba compression library
   * gbapack
   * 4 bit huffman, 8 bit huffman
