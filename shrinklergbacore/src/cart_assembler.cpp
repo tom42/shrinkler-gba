@@ -30,17 +30,6 @@ constexpr size_t ofs_game_version = 0xbc;
 constexpr size_t ofs_complement = 0xbd;
 constexpr size_t ofs_reserved2 = 0xbe;
 
-// Register aliases
-constexpr auto inp = r0;                // Compressed data
-constexpr auto outp = r1;               // Decompressed data
-constexpr auto tmp0 = r2;               // Scratch register 0
-constexpr auto tmp1 = r3;               // Scratch register 1
-constexpr auto rvalue = r4;             // Range value
-constexpr auto isize = r5;              // Interval size
-constexpr auto bitbuf = r6;             // Input bit buffer
-constexpr auto bitctx = r7;             // Bit context index
-constexpr auto offset = r8;             // Offset
-
 template <typename T>
 constexpr bool is_power_of_2(T n) noexcept
 {
@@ -67,6 +56,17 @@ void cart_assembler::write_complement()
 
 std::vector<unsigned char> cart_assembler::assemble(const input_file& input_file, const std::vector<unsigned char>& compressed_program)
 {
+    // Register aliases
+    constexpr auto inp = r0;                // Compressed data
+    constexpr auto outp = r1;               // Decompressed data
+    constexpr auto tmp0 = r2;               // Scratch register 0
+    constexpr auto tmp1 = r3;               // Scratch register 1
+    constexpr auto rvalue = r4;             // Range value
+    constexpr auto isize = r5;              // Interval size
+    constexpr auto bitbuf = r6;             // Input bit buffer
+    constexpr auto bitctx = r7;             // Bit context index
+    constexpr auto offset = r8;             // Offset
+
     ////////////////////////////////////////////////////////////////////////////
     // Cartridge header
     ////////////////////////////////////////////////////////////////////////////
