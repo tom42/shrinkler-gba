@@ -28,7 +28,7 @@ constexpr uint32_t mem_bg_palette = 0x05000000;
 constexpr uint32_t mem_vram = 0x06000000;
 
 // GBA register addresses
-constexpr uint32_t reg_base = 0x04000000; // TODO: should use a constant for this too, theoretically
+constexpr uint32_t reg_base = 0x04000000;
 constexpr uint32_t reg_dispcnt = reg_base + 0x00;
 
 // DISPCNT bits
