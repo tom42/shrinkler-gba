@@ -340,7 +340,7 @@ void cart_assembler::debug_emit_panic_routine(bool debug)
     }
 
     align(1);
-    label("panic"s);
+label("panic"s);
 
     // Print panic message using Mappy / VisualBoyAdvance debug output.
     // r2 must point to a zero terminated string.
@@ -363,7 +363,7 @@ void cart_assembler::debug_emit_panic_routine(bool debug)
     adr(r0, "sadface"s);
     ldr(r1, mem_vram + 4 * 240 + 4);
     mov(r4, 8);             // Copy 8 lines
-    label("copy_line"s);
+label("copy_line"s);
     ldmia(!r0, r2 - r3);    // Read 8 pixels
     stmia(!r1, r2 - r3);    // Write 8 pixels
     add(r1, 240 - 8);       // Move to next line
@@ -371,12 +371,12 @@ void cart_assembler::debug_emit_panic_routine(bool debug)
     bne("copy_line"s);
 
     // Halt system
-    label("loop"s);
+label("loop"s);
     b("loop"s);
 
     // 8x8 8bpp image of sad face
     align(2);
-    label("sadface"s);
+label("sadface"s);
     byte(0x00, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x00);
     byte(0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01);
     byte(0x01, 0x00, 0x01, 0x00, 0x00, 0x01, 0x00, 0x01);
