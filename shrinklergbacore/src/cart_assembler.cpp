@@ -15,6 +15,7 @@ namespace shrinklergbacore
 {
 
 constexpr size_t gba_header_size = 192;
+constexpr auto initial_sp = 0x03007f00;
 
 // Offsets in GBA cartridge header
 constexpr size_t ofs_game_title = 0xa0;
