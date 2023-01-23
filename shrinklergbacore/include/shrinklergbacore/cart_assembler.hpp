@@ -36,6 +36,9 @@ private:
     std::vector<unsigned char> assemble(const input_file& input_file, const std::vector<unsigned char>& compressed_program, bool debug);
     void write_complement();
 
+    // Macro that calls the panic routine. The panic routine clobbers all registers and does not return.
+    void debug_call_panic_routine(bool debug, const char* message);
+
     // Macro that emits the panic routine. The panic routine clobbers all registers and does not return.
     // The panic routine must be called with r2 pointing to a zero terminated error message.
     // This message will be printed using Mappy / VisualBoyAdvance debug output.

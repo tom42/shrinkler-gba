@@ -332,6 +332,31 @@ label("packed_intro"s);
     return link(0x08000000);
 }
 
+void cart_assembler::debug_call_panic_routine(bool debug, const char* message)
+{
+    if (!debug)
+    {
+        return;
+    }
+
+    adr(r2, "panic_message"s);
+    bl("panic"s);
+
+    // Embed panic message.
+    // Note: the adr pseudo op requires word alignment.
+    // TODO: if we call this more than once we get label redefinitions. Will worry about that later
+    align(2);
+label("panic_message"s);
+    for (; *message; ++message)
+    {
+        byte(*message);
+    }
+    byte(0);
+
+    // Align for subsequent thumb code.
+    align(1);
+}
+
 void cart_assembler::debug_emit_panic_routine(bool debug)
 {
     if (!debug)
