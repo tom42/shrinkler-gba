@@ -21,7 +21,6 @@ namespace shrinklergbacore
 
 void gba_packer::pack(const options& options)
 {
-    // TODO: Try Shrinkler and LZSS+H4/H8 compression, select which is better
     console console;
     console.verbose(options.verbose() ? &std::cout : nullptr);
 

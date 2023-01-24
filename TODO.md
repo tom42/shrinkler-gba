@@ -10,6 +10,7 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
   * LZSS:
     * Start with simple lazy evaluation (e.g. 1 byte lookahead)
     * Eventually should try optimal parsing
+* Automatically figure out which compression scheme to use (Shrinkler or LZSS)
 * Leave the system in a cleaner state, with the option to omit cleanup in order to save space:
   * Preserve CPU registers (not that easy for high registers in Thumb state)
   * Clear memory used by depacker (IWRAM / EWRAM)
