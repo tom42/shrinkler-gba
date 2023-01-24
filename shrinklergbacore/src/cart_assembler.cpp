@@ -342,7 +342,7 @@ void cart_assembler::debug_check_sp_on_exit(bool debug)
     ldr(r0, initial_sp);
     cmp(r0, sp);
     beq("sp_ok"s);
-    debug_call_panic_routine(debug, "wrong sp after depacking\n");
+    debug_call_panic_routine(debug, "Wrong sp after depacking\n");
 label("sp_ok"s);
 }
 
