@@ -36,6 +36,9 @@ public:
             m_options.verbose(true);
             m_options.shrinkler_parameters().verbose = true;
             return 0;
+        case option::debug_checks:
+            m_options.debug_checks(true);
+            return 0;
         case 'a':
             return parse_int("same length count", arg, 1, 100000, state, m_options.shrinkler_parameters().same_length);
         case 'e':

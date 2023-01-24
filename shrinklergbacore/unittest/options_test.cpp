@@ -18,6 +18,7 @@ BOOST_AUTO_TEST_SUITE(options_test)
         BOOST_TEST(testee.input_file() == "");
         BOOST_TEST(testee.output_file() == "");
         BOOST_TEST(testee.verbose() == false);
+        BOOST_TEST(testee.debug_checks() == false);
     }
 
     BOOST_AUTO_TEST_CASE(input_file_sets_output_file_if_not_yet_set)

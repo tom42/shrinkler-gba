@@ -75,6 +75,7 @@ BOOST_FIXTURE_TEST_SUITE(command_line_test, command_line_test_fixture)
         BOOST_TEST(options.input_file() == "file1");
         BOOST_TEST(options.output_file() == "file1.gba");
         BOOST_TEST(options.verbose() == false);
+        BOOST_TEST(options.debug_checks() == false);
     }
 
     BOOST_AUTO_TEST_CASE(help_option)
@@ -119,6 +120,12 @@ BOOST_FIXTURE_TEST_SUITE(command_line_test, command_line_test_fixture)
         BOOST_TEST(options.verbose() == true);
         BOOST_TEST((parse_command_line("input --verbose") == command_action::process));
         BOOST_TEST(options.verbose() == true);
+    }
+
+    BOOST_AUTO_TEST_CASE(debug_checks_options)
+    {
+        BOOST_TEST((parse_command_line("input --debug-checks") == command_action::process));
+        BOOST_TEST(options.debug_checks() == true);
     }
 
     BOOST_AUTO_TEST_CASE(shrinkler_iterations_option)

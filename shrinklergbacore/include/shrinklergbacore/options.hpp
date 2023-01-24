@@ -39,6 +39,10 @@ public:
         m_output_file_set = true;
     }
 
+    bool debug_checks() const { return m_debug_checks; }
+
+    void debug_checks(bool debug_checks) { m_debug_checks = debug_checks; }
+
     const shrinklerwrapper::shrinkler_parameters& shrinkler_parameters() const { return m_shrinkler_parameters; }
 
     shrinklerwrapper::shrinkler_parameters& shrinkler_parameters() { return m_shrinkler_parameters; }
@@ -50,6 +54,7 @@ private:
     bool m_output_file_set = false;
     std::filesystem::path m_input_file;
     std::filesystem::path m_output_file;
+    bool m_debug_checks = false;
     shrinklerwrapper::shrinkler_parameters m_shrinkler_parameters;
 };
 
