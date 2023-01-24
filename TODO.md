@@ -5,12 +5,6 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
 -->
 
 * Next steps
-  * Add debug code. First check is: value of SP
-    * If something wrong:
-      * Red screen
-      * Halt system
-      * Message on VBA debug output? (color code should be sufficient for the time being, no)
-        * Well can't remember how mappy output worked...
   * Must have a command line switch to enable generation of debug code
   * Once this fails, actually restore SP
   * Stick code in header (probably use old approach, that is, the init code)
@@ -79,6 +73,7 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
   * Final binary generation/depacker
     * Depacker code
       * Register state: do we care? Do we preserve registers as the BIOS leaves them? Or do we have this as an option?
+      * For the desperate: we could even make the restoration of SP optional. That is, do not free stack used for contexts. Debug code must take this into account.
       * We never really validated it, particularly not the stack data mess
         * When we execute code, is the stack pointer pointing at the right place?
         * Did we have a buffer overrun on the stack? (In the contexts array)
