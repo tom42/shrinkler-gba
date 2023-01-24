@@ -122,7 +122,7 @@ BOOST_FIXTURE_TEST_SUITE(command_line_test, command_line_test_fixture)
         BOOST_TEST(options.verbose() == true);
     }
 
-    BOOST_AUTO_TEST_CASE(debug_checks_options)
+    BOOST_AUTO_TEST_CASE(debug_checks_option)
     {
         BOOST_TEST((parse_command_line("input --debug-checks") == command_action::process));
         BOOST_TEST(options.debug_checks() == true);
