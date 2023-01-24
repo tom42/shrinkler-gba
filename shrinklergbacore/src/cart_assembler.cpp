@@ -89,6 +89,7 @@ std::vector<unsigned char> cart_assembler::assemble(const input_file& input_file
     constexpr auto bitbuf = r6;             // Input bit buffer
     constexpr auto bitctx = r7;             // Bit context index
     constexpr auto offset = r8;             // Offset
+    constexpr auto saved_sp = r9;           // Saved stack pointer
 
     ////////////////////////////////////////////////////////////////////////////
     // Cartridge header
@@ -155,6 +156,7 @@ std::vector<unsigned char> cart_assembler::assemble(const input_file& input_file
     // Initially the GBA is in ARM state. Switch to Thumb state first.
 label("code_start"s);
     arm_to_thumb(inp);
+    mov(saved_sp, sp);
     adr(inp, "packed_intro"s);
 
     // Initialize output pointer with load address of program.
@@ -219,6 +221,7 @@ label("readoffset"s);
     mov(offset, tmp1);
     bne("readlength"s);
 label("donedecompressing"s);
+    mov(sp, saved_sp);
     debug_check_sp_on_exit(debug);
     ldr(outp, input_file.entry());
     bx(outp);
