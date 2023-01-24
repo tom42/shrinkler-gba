@@ -219,6 +219,7 @@ label("readoffset"s);
     mov(offset, tmp1);
     bne("readlength"s);
 label("donedecompressing"s);
+    debug_check_sp_on_exit(debug);
     ldr(outp, input_file.entry());
     bx(outp);
 
@@ -329,6 +330,20 @@ label("packed_intro"s);
     incbin(compressed_program.begin(), compressed_program.end());
     debug_emit_panic_routine(debug);
     return link(0x08000000);
+}
+
+void cart_assembler::debug_check_sp_on_exit(bool debug)
+{
+    if (!debug)
+    {
+        return;
+    }
+
+    ldr(r0, initial_sp);
+    cmp(r0, sp);
+    beq("sp_ok"s);
+    debug_call_panic_routine(debug, "wrong sp after depacking\n");
+label("sp_ok"s);
 }
 
 void cart_assembler::debug_call_panic_routine(bool debug, const std::string& message)

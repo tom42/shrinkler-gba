@@ -37,6 +37,11 @@ private:
     std::vector<unsigned char> assemble(const input_file& input_file, const std::vector<unsigned char>& compressed_program, bool debug);
     void write_complement();
 
+    // Macro that checks whether the stack pointer has been restored to its initial value.
+    // If the stack pointer has not been restored, the macro calls the panic routine.
+    // This macro clobbers all registers.
+    void debug_check_sp_on_exit(bool debug);
+
     // Macro that calls the panic routine. The panic routine clobbers all registers and does not return.
     void debug_call_panic_routine(bool debug, const std::string& message);
 
