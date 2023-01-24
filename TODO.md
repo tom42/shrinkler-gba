@@ -6,7 +6,13 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
 
 * Next steps
   * Must have a command line switch to enable generation of debug code
+    * Extend parser (option is present, only need to handle it)
+      * Do not forget to extend command_line_test.cpp!
+        * When the option is missing
+        * When the option is present
+    * Pass it along to the depacker, somehow
   * Once this fails, actually restore SP
+    * Ugh: we can only add max. 508 bytes to SP => Need to e.g. store value at the beginning of the depacker and then restore it using mov...
   * Stick code in header (probably use old approach, that is, the init code)
   * Wrap initial version up
 * Meh: will probably roll our own standalone gba compression library

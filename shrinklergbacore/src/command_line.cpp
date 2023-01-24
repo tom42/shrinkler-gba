@@ -16,6 +16,7 @@ namespace shrinklergbacore
 enum option
 {
     first = 256,
+    debug_checks,
     usage
 };
 
@@ -169,6 +170,10 @@ command_action parse_command_line(int argc, char* argv[], options& options, bool
         { 0, 0, 0, 0, "General options:", 0 },
         { "output-file", 'o', "FILE", 0, "Specify output filename. The default output filename is the input filename with the extension replaced by .gba", 0 },
         { "verbose", 'v', 0, 0, "Print verbose messages", 0 },
+
+        // Code generation options
+        { 0, 0, 0, 0, "Code generation options:", 0 },
+        { "debug-checks", option::debug_checks, 0, 0, "Add debug checks to depacker code", 0},
 
         // Shrinkler compression options
         { 0, 0, 0, 0, "Shrinkler compression options (default values in parentheses):", 0 },
