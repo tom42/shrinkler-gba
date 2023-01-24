@@ -35,7 +35,7 @@ void gba_packer::pack(const options& options)
     auto compressed_program = compressor.compress(input_file.data());
 
     // Assemble cart
-    cart_assembler cart_assembler(input_file, compressed_program);
+    cart_assembler cart_assembler(input_file, compressed_program, options.debug_checks());
 
     CONSOLE_VERBOSE(console) << fmt::format("Uncompressed data size: {:4} bytes", input_file.data().size()) << std::endl;
     CONSOLE_VERBOSE(console) << fmt::format("Compressed data size  : {:4} bytes", compressed_program.size()) << std::endl;
