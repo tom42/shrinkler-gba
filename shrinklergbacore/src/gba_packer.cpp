@@ -89,12 +89,6 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
 
     // TODO: implement:
     //       * Create a shrinklered intro, taking into account
-    //         * RESTORE STACK POINTER (maybe check all registers)
-    //           * As an idea we can have this as an option, since it saves at least one instruction
-    //         * Possibly optional features
-    //           * Preserve registers? Low registers are easy (sure?, what about high registers?
-    //             * Well probably register contents as left by the BIOS are known, so we could just mov/ldr original values (I think there is no smaller instruction)
-    //           * Preserve memory contents?
     //         * Stick code into header
     //         * Possible optimizations:
     //           * If load address and entry point are the same (in the simplest case lzasm optimizes this, so that only one literal is created in the pool, no? can gas do this?)

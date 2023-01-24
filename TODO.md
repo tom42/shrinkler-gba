@@ -4,9 +4,19 @@ SPDX-License-Identifier: MIT
 shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
 -->
 
+# Things to do
+## Depackers
+* For really small intros: use BIOS LZSS compression + Huffman encoding (4 or 8 bit, whichever is better)
+  * LZSS:
+    * Start with simple lazy evaluation (e.g. 1 byte lookahead)
+    * Eventually should try optimal parsing
+* Leave the system in a cleaner state, with the option to omit cleanup in order to save space:
+  * Preserve CPU registers (not that easy for high registers in Thumb state)
+  * Clear memory used by depacker (IWRAM / EWRAM)
+  * Preserve sp: already implemented, but could add option to omit this for the really desperate
+
+## Old stuff below, needs clean up
 * Next steps
-  * Once this fails, actually restore SP
-    * Ugh: we can only add max. 508 bytes to SP => Need to e.g. store value at the beginning of the depacker and then restore it using mov...
   * Stick code in header (probably use old approach, that is, the init code)
   * Wrap initial version up
 * Meh: will probably roll our own standalone gba compression library
