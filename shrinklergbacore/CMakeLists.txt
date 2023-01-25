@@ -11,21 +11,15 @@ set(
   include/shrinklergbacore/console.hpp
   include/shrinklergbacore/elfio_wrapper.hpp
   include/shrinklergbacore/elf_strings.hpp
-  include/shrinklergbacore/gba_bios_common.hpp
   include/shrinklergbacore/gba_packer.hpp
-  include/shrinklergbacore/huffman.hpp
   include/shrinklergbacore/input_file.hpp
-  include/shrinklergbacore/lzss.hpp
   include/shrinklergbacore/options.hpp
   include/shrinklergbacore/table_printer.hpp
   src/cart_assembler.cpp
   src/command_line.cpp
   src/elf_strings.cpp
-  src/gba_bios_common.cpp
   src/gba_packer.cpp
-  src/huffman.cpp
   src/input_file.cpp
-  src/lzss.cpp
   src/table_printer.cpp)
 
 source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${SOURCES})
@@ -50,9 +44,7 @@ if(BUILD_TESTING)
   set(
     UNITTEST_SOURCES
     unittest/command_line_test.cpp
-    unittest/huffman_decoder_test.cpp
     unittest/input_file_test.cpp
-    unittest/lzss_decoder_test.cpp
     unittest/main.cpp
     unittest/options_test.cpp
     unittest/test_utilities.cpp
