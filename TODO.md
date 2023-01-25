@@ -20,35 +20,12 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
 * Next steps
   * Stick code in header (probably use old approach, that is, the init code)
   * Wrap initial version up
-* Meh: will probably roll our own standalone gba compression library
-  * gbapack
-  * 4 bit huffman, 8 bit huffman
-    * The very first thing to figure out, by testing:
-      * Does the GBA BIOS support 2 bits? If so, implement it. If not, don't bother
-  * lzss:
-    * No speed up for starters
-      * Later: search tree, for the fun of it?
-    * No parsing optimization for starters
-      * Later: maybe 1 byte lookahead
-      * Even more later: optimal parse
 * NEXT: NOW WITH THE CODE IN HEADER, A test on real hardware is in order!
   * Questions:
     * Is it really legal to have a nonzero device type? (value at header offset 0xb4)
     * Is it really required that the reserved area at the end of the header (at 0xbe) is zero?
 * BEFORE WE DO ANY ADDITIONAL WORK ON THE DECODER
   * TURN IT AROUND ONCE, SO THAT E.G: getnumber is in the header rather than the beginning of the main loop
-* Implement relevant GBA BIOS compressors
-  * Then do encoders
-    * Huffman
-      * Do we need to do any alignment/padding here?
-        * For instance inside the data, for the raw data stream? Is this guaranteed to always be 32 bit aligned automatically?
-    * LZSS
-      * Do we need to do any alignment/padding here?
-      * Is the GBA BIOS able to decode references into the lookahead buffer?
-        * Well that would make it necessary to treat the lookahead buffer as part of the sliding window.
-        * Should investigate it, since it allows for some additional improvements
-        * See data compression book page 218/219
-    * Eventually do optimal LZSS
 * Notes from various old sources:
   * Old Thumb data depacker (shrinkler_decompress_thumb.s)
     @ * Eventually we should definitely also compare original and decompressed data
