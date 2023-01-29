@@ -15,6 +15,8 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
   * Preserve CPU registers (not that easy for high registers in Thumb state)
   * Clear memory used by depacker (IWRAM / EWRAM)
   * Preserve sp: already implemented, but could add option to omit this for the really desperate
+    * Debug stack check needs to be aware of this
+    * If we save/restore other registers, can we merge save/restore of sp into general register saving code?
 
 ## Input file loading
 * Support also loading of raw binaries, not only ELF: can do that once we need it
@@ -71,8 +73,6 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
 * Open issues
   * Final binary generation/depacker
     * Depacker code
-      * Register state: do we care? Do we preserve registers as the BIOS leaves them? Or do we have this as an option?
-      * For the desperate: we could even make the restoration of SP optional. That is, do not free stack used for contexts. Debug code must take this into account.
       * We never really validated it, particularly not the stack data mess
         * When we execute code, is the stack pointer pointing at the right place?
         * Did we have a buffer overrun on the stack? (In the contexts array)
