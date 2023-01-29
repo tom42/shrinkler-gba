@@ -16,6 +16,16 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
   * Clear memory used by depacker (IWRAM / EWRAM)
   * Preserve sp: already implemented, but could add option to omit this for the really desperate
 
+## Input file loading
+* Sanity checks of load address and entry point: not needed for operation, but nice to have:
+  * Note: these checks do *not* belong into input_file, which should remain target independent
+  * Load address must be either in IWRAM or EWRAM (not necessarily at the beginning of either area)
+    * Load address + size of loaded data must not go past end of memory (IWRAM or EWRAM)
+      * Max. size in IWRAM is 32K minus memory used by BIOS, and minus stack used by Shrinkler depacker, if loaded at beginning of IWRAM
+      * Max. size in EWRAM is 256K, if loaded at beginning of EWRAM
+      * Size of loaded data is obviously not the entire truth: in principle we'd also have to check bss section(s). Not sure whether that's worth the effort. After all it's well possible to even have bss sections in both EWRAM and IWRAM
+    * Entry point must be inside memory area occupied by the binary's loaded data
+
 ## Old stuff below, needs clean up
 * Next steps
   * Stick code in header (probably use old approach, that is, the init code)
