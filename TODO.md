@@ -78,9 +78,6 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
         * Did we have a buffer overrun on the stack? (In the contexts array)
 * See which output in shrinkler.cpp should be optional and which should not:
   * The message about the -r option for instance should NOT be hidden if verbose mode is not used
-* Licensing of shrinkler.cpp:
-  * Since this file is mostly copypasted Shrinkler code it ought to be using the Shrinkler license, no?
-    * Yes, but remove non-shrinkler code, so that we can have it MIT licensed
 * Ensure all source files are using spaces, not tabs
 * Set up libshrinkler
   * Do we add that new bytes parameter thing?
