@@ -17,6 +17,7 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
   * Preserve sp: already implemented, but could add option to omit this for the really desperate
 
 ## Input file loading
+* Support also loading of raw binaries, not only ELF: can do that once we need it
 * Sanity checks of load address and entry point: not needed for operation, but nice to have:
   * Note: these checks do *not* belong into input_file, which should remain target independent
   * Load address must be either in IWRAM or EWRAM (not necessarily at the beginning of either area)
