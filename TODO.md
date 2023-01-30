@@ -31,6 +31,14 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
 
 ## Old stuff below, needs clean up
 * Next steps
+  * Check decompressed data using something simple, e.g. adler32
+    * Write a *simple* adler32 implementation (simple. does not need to be fast)
+      * Test it with a couple of test vectors
+      * Maybe also test it using lostmarbles.bin
+      * Here is how to get the adler32 checksum:
+        * python -c "import zlib; print(zlib.adler32(\"${file}\"))"
+    * For this it would be useful if debug_check_decompressed_data_size did not destroy outp, no?
+      * Well, we already know the decompressed size is good, so we can hardcode it for the CRC check.
   * Stick code in header (probably use old approach, that is, the init code). RETEST! (Orly? Do we want to take that risk?)
     * Well, I have to recheck, but getkind+getbit is 34 Thumb instructions, or 68 bytes, which is a multiple of 4 bytes.
       So we could stick getkind into the header, followed by getbit, and end up with the entry aligned.
