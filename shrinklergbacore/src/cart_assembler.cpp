@@ -326,7 +326,10 @@ label("done"s);
 
     ////////////////////////////////////////////////////////////////////////////
     // Compressed intro.
-    // Must be word aligned, since the packer reads entire words from the bitstream.
+    // Must be word aligned, since
+    // * The packer reads entire words from the bitstream.
+    // * We use adr to load the address to the packed data,
+    //   which requires word alignment.
     ////////////////////////////////////////////////////////////////////////////
     align(2);
     m_depacker_size = current_lc() - gba_header_size;
