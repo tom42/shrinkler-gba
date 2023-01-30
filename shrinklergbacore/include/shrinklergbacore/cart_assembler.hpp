@@ -34,8 +34,12 @@ public:
     }
 
 private:
-    std::vector<unsigned char> assemble(const input_file& input_file, const std::vector<unsigned char>& compressed_program, bool debug);
     void write_complement();
+    std::vector<unsigned char> assemble(const input_file& input_file, const std::vector<unsigned char>& compressed_program, bool debug);
+
+    // Emit zero terminated string, similar to the GNU assembler's .asciz directive.
+    // The terminating zero is also emitted.
+    void asciz(const std::string& s);
 
     // Macro that checks whether the stack pointer has been restored to its initial value.
     // If the stack pointer has not been restored, the macro calls the panic routine.

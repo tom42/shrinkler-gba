@@ -336,6 +336,16 @@ label("packed_intro"s);
     return link(mem_rom);
 }
 
+void cart_assembler::asciz(const std::string& s)
+{
+    for (char c : s)
+    {
+        byte(c);
+    }
+
+    byte(0);
+}
+
 void cart_assembler::debug_check_sp_on_exit(bool debug)
 {
     if (!debug)
@@ -367,11 +377,7 @@ void cart_assembler::debug_call_panic_routine(bool debug, const std::string& mes
     //         as long as the macro is not called twice with the same message.
     align(2);
 label(message);
-    for (char c : message)
-    {
-        byte(c);
-    }
-    byte(0);
+    asciz(message);
 
     // Align for subsequent thumb code.
     align(1);
