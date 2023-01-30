@@ -32,6 +32,10 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
 ## Old stuff below, needs clean up
 * Next steps
   * Stick code in header (probably use old approach, that is, the init code). RETEST! (Orly? Do we want to take that risk?)
+    * Well, I have to recheck, but getkind+getbit is 34 Thumb instructions, or 68 bytes, which is a multiple of 4 bytes.
+      So we could stick getkind into the header, followed by getbit, and end up with the entry aligned.
+    * If we then have our entry in the middle of the depacker code, then we should not blindly align(2).
+      Instead, omit the align(2), but at runtime check and throw if current_lc() is not a multiple of 4 at the entry.
   * Wrap initial version up
 * BEFORE WE DO ANY ADDITIONAL WORK ON THE DECODER
   * TURN IT AROUND ONCE, SO THAT E.G: getnumber is in the header rather than the beginning of the main loop
