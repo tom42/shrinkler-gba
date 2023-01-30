@@ -38,6 +38,9 @@ A good strategy for placing code seems to be the following:
 [^1]: These two bytes are not particularly useful because of the fixed byte at 0xb2,
       but they can be used to form a Thumb instruction. If no useful instruction can be found,
       a dummy `mov` instruction can be inserted, e.g. `mov r0, 0x96`.
-[^2]: Bit 7 has a meaning for Nintendo's hardware debugger.
-      It seems to have no meaning for normal cartridges.
+[^2]: Bit 7 has a meaning for Nintendo's hardware debugger. Both GBATEK and devkitARM's
+      [gbafix.c](https://github.com/devkitPro/gba-tools/blob/master/src/gbafix.c)
+      seem to indicate that for this bit to do anything, debugging must be enabled by
+      setting bits 2 and 7 at 0x0800009c, which is a byte inside the Nintendo logo data.
+      It seems to have no meaning for normal cartridges. Tested with EZ-FLASH Omega only, though.
 [^3]: Can be freely chosen, but is hard to make use of since it's followed by the complement.

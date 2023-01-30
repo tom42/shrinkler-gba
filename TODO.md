@@ -31,8 +31,6 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
 
 ## Old stuff below, needs clean up
 * Next steps
-  * Test what we have without code in header!
-  * Before sticking code into header: ensure that the DACS bit has no meaning for normal carts. Test with real hardware!
   * Stick code in header (probably use old approach, that is, the init code)
   * Wrap initial version up
 * NEXT: NOW WITH THE CODE IN HEADER, A test on real hardware is in order!
