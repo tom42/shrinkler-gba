@@ -41,7 +41,6 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
     @   * And the number of bytes decompressed
     @   * And we should make sure we do not write anywhere past the conext array
     @     Well we could have a debug mode where we check this, no? Some sort of assertion?
-    @ * Test: does this code also work when the output buffer is at an odd address?
     @ * Since the ultimate goal is to produce a GBA 4k cruncher, do we need to
     @   * Can we save some bits if we do not have our data on stack but in EWRAM?
   * Old ARM data depacker (shrinkler_decompress_arm.s)
