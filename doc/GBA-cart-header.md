@@ -6,7 +6,19 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
 
 # GBA cart header
 
-The following table shows the fields of the GBA cart header and whether they can be abused to contain code.
+The table below shows the fields of the GBA cart header and whether they can be abused to contain code.
+
+A good strategy for placing code seems to be the following:
+
+* At 0x00, branch to 0xa0 (the game title).
+* At 0xa0, switch to Thumb state. This will need two ARM instructions, or 8 bytes.
+* At 0xa8 there is room for 5 Thumb instructions.
+* At 0xb3 try to form a useful or at least harmless instruction together with
+  the fixed byte at 0xb2, so that we can let the CPU run over these two bytes.
+* At 0xb4 there is room for 4 more Thumb instructions. The first 3 can be
+  freely chosen, the last is needed to branch over 0xbc/0xbd to 0xbe.
+* At 0xbe there is room for 1 more Thumb instruction which can be freely chosen.
+  After this instruction the normal cart ROM area begins.
 
 | Adress | Size (bytes) | Can contain code | Description                                        |
 |--------|--------------|------------------|----------------------------------------------------|
