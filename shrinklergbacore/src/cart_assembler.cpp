@@ -44,6 +44,18 @@ constexpr size_t ofs_game_version = 0xbc;
 constexpr size_t ofs_complement = 0xbd;
 constexpr size_t ofs_reserved2 = 0xbe;
 
+// Register aliases
+constexpr auto inp = r0;                // Compressed data
+constexpr auto outp = r1;               // Decompressed data
+constexpr auto tmp0 = r2;               // Scratch register 0
+constexpr auto tmp1 = r3;               // Scratch register 1
+constexpr auto rvalue = r4;             // Range value
+constexpr auto isize = r5;              // Interval size
+constexpr auto bitbuf = r6;             // Input bit buffer
+constexpr auto bitctx = r7;             // Bit context index
+constexpr auto offset = r8;             // Offset
+constexpr auto saved_sp = r9;           // Saved stack pointer
+
 template <typename T>
 constexpr bool is_power_of_2(T n) noexcept
 {
@@ -80,18 +92,6 @@ void cart_assembler::write_complement()
 
 std::vector<unsigned char> cart_assembler::assemble(const input_file& input_file, const std::vector<unsigned char>& compressed_program, bool debug)
 {
-    // Register aliases
-    constexpr auto inp = r0;                // Compressed data
-    constexpr auto outp = r1;               // Decompressed data
-    constexpr auto tmp0 = r2;               // Scratch register 0
-    constexpr auto tmp1 = r3;               // Scratch register 1
-    constexpr auto rvalue = r4;             // Range value
-    constexpr auto isize = r5;              // Interval size
-    constexpr auto bitbuf = r6;             // Input bit buffer
-    constexpr auto bitctx = r7;             // Bit context index
-    constexpr auto offset = r8;             // Offset
-    constexpr auto saved_sp = r9;           // Saved stack pointer
-
     ////////////////////////////////////////////////////////////////////////////
     // Cartridge header
     ////////////////////////////////////////////////////////////////////////////
@@ -223,6 +223,7 @@ label("readoffset"s);
     bne("readlength"s);
 label("donedecompressing"s);
     mov(sp, saved_sp);
+    debug_check_decompressed_data_size(input_file, debug);
     debug_check_sp_on_exit(debug);
     ldr(outp, input_file.entry());
     bx(outp);
@@ -347,6 +348,25 @@ void cart_assembler::asciz(const std::string& s)
     }
 
     byte(0);
+}
+
+void cart_assembler::debug_check_decompressed_data_size(const input_file& input_file, bool debug)
+{
+    if (!debug)
+    {
+        return;
+    }
+
+    // outp = outp - load_address = actual number of bytes depacked
+    ldr(tmp1, input_file.load_address());
+    sub(outp, outp, tmp1);
+
+    // Compare actual with expected number of bytes depacked
+    ldr(tmp1, static_cast<uint32_t>(input_file.data().size())); // TODO: cast: can we get rid of this? Or put it into input_file, somehow? (or, at the very least, use a numeric cast)
+    cmp(outp, tmp1);
+    beq("decompressed_data_size_ok"s);
+    debug_call_panic_routine(debug, "Wrong decompressed data size");
+label("decompressed_data_size_ok"s);
 }
 
 void cart_assembler::debug_check_sp_on_exit(bool debug)

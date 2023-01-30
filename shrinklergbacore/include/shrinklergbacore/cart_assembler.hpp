@@ -41,8 +41,12 @@ private:
     // The terminating zero is also emitted.
     void asciz(const std::string& s);
 
-    // Macro that checks whether the stack pointer has been restored to its initial value.
-    // If the stack pointer has not been restored, the macro calls the panic routine.
+    // Macro that calls the panic routine if the size of the decompressed data is incorrect.
+    // This macro expects outp (the output pointer) to point to the byte after the last decompressed byte.
+    // This macro clobbers all registers except sp.
+    void debug_check_decompressed_data_size(const input_file& input_file, bool debug);
+
+    // Macro that calls the panic routine if the stack pointer has not been restored to its initial value.
     // This macro clobbers all registers.
     void debug_check_sp_on_exit(bool debug);
 
