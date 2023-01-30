@@ -92,9 +92,6 @@ std::vector<unsigned char> gba_packer::make_shrinklered_cart(const input_file& i
     //         * Possible optimizations:
     //           * If load address and entry point are the same (in the simplest case lzasm optimizes this, so that only one literal is created in the pool, no? can gas do this?)
     //           * If load address and/or entry point can be constructed using mov/lsl
-    //         * Note: getnumber/getkind/getbit are less likely to be changed by binary dependend optimizations or user options such as whether registers should be saved
-    //           * So if we turn around the decoder and stick e.g. getnumber into the header, the main decoding loop will be outside the header, making it more easy to apply optimizations.
-    //           * By doing so we will not lose anything size-wise, since at the cartridge beginning we need to have a branch anyway
     divided_thumb_assembler a;
 
     ////////////////////////////////////////////////////////////////////////////
