@@ -31,12 +31,8 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
 
 ## Old stuff below, needs clean up
 * Next steps
-  * Stick code in header (probably use old approach, that is, the init code)
+  * Stick code in header (probably use old approach, that is, the init code). RETEST! (Orly? Do we want to take that risk?)
   * Wrap initial version up
-* NEXT: NOW WITH THE CODE IN HEADER, A test on real hardware is in order!
-  * Questions:
-    * Is it really legal to have a nonzero device type? (value at header offset 0xb4)
-    * Is it really required that the reserved area at the end of the header (at 0xbe) is zero?
 * BEFORE WE DO ANY ADDITIONAL WORK ON THE DECODER
   * TURN IT AROUND ONCE, SO THAT E.G: getnumber is in the header rather than the beginning of the main loop
 * Notes from various old sources:
