@@ -224,6 +224,7 @@ label("readoffset"s);
 label("donedecompressing"s);
     mov(sp, saved_sp);
     debug_check_decompressed_data_size(input_file, debug);
+    debug_check_decompressed_data(debug);
     debug_check_sp_on_exit(debug);
     ldr(outp, input_file.entry());
     bx(outp);
@@ -367,6 +368,20 @@ void cart_assembler::debug_check_decompressed_data_size(const input_file& input_
     beq("decompressed_data_size_ok"s);
     debug_call_panic_routine(debug, "Wrong decompressed data size");
 label("decompressed_data_size_ok"s);
+}
+
+void cart_assembler::debug_check_decompressed_data(bool debug)
+{
+    if (!debug)
+    {
+        return;
+    }
+
+    // TODO: implement checksum
+    //       * Emit code to calculate checksum
+    //       * Emit code to compare checksum. Embed the checksum as a literal constant, calculate it from input_file using adler32()
+    //       * Test check works including blue screen
+    //       * Test without debug check we still get the original binary
 }
 
 void cart_assembler::debug_check_sp_on_exit(bool debug)

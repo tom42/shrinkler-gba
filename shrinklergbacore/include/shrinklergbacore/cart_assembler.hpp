@@ -46,6 +46,10 @@ private:
     // This macro clobbers all registers except sp.
     void debug_check_decompressed_data_size(const input_file& input_file, bool debug);
 
+    // Macro that calls the panic routine if the checksum of the decompressed data is incorrect.
+    // This macro clobbers all registers except sp.
+    void debug_check_decompressed_data(bool debug);
+
     // Macro that calls the panic routine if the stack pointer has not been restored to its initial value.
     // This macro clobbers all registers.
     void debug_check_sp_on_exit(bool debug);
