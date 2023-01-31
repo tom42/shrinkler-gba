@@ -31,8 +31,6 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
 
 ## Old stuff below, needs clean up
 * Fix a few things:
-  * Create new lzasm version with bhs/blo instructions
-    * Integrate that, and make the depacker use it where it makes sense (well maybe only in the debug code we've just written)
   * Fix TODOs regarding input_file.data().size()
     * Input file deals with 32 bit binaries only, currently
     * Maybe check it does not try to load bigger files (or maybe not)
