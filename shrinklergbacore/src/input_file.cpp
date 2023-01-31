@@ -3,7 +3,6 @@
 // shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
 
 #include <algorithm>
-#include <boost/numeric/conversion/cast.hpp>
 #include <fstream>
 #include <stdexcept>
 #include <system_error>

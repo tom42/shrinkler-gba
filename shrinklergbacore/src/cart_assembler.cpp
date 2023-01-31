@@ -364,7 +364,7 @@ void cart_assembler::debug_check_decompressed_data_size(const input_file& input_
     sub(outp, outp, tmp1);
 
     // Compare actual with expected number of bytes depacked
-    ldr(tmp1, static_cast<uint32_t>(input_file.data().size())); // TODO: cast: can we get rid of this? Or put it into input_file, somehow? (or, at the very least, use a numeric cast)
+    ldr(tmp1, input_file.loaded_data_size());
     cmp(outp, tmp1);
     beq("decompressed_data_size_ok"s);
     debug_call_panic_routine(debug, "Wrong decompressed data size");
@@ -391,7 +391,7 @@ void cart_assembler::debug_check_decompressed_data(const input_file& input_file,
     ldr(decompressed_data, input_file.load_address());
     mov(s1, 1);
     mov(s2, 0);
-    ldr(loop_counter, static_cast<uint32_t>(input_file.data().size())); // TODO: cast: can we get rid of this? Or put it into input_file, somehow? (or, at the very least, use a numeric cast)
+    ldr(loop_counter, input_file.loaded_data_size());
 label("adler32_loop"s);
     ldrb(byte, decompressed_data, 0);
     add(s1, byte);

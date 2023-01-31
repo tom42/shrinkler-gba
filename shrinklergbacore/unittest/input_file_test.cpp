@@ -44,6 +44,7 @@ BOOST_AUTO_TEST_SUITE(input_file_test)
 
         BOOST_TEST(testee.entry() == 0u);
         BOOST_TEST(testee.load_address() == 0u);
+        BOOST_TEST(testee.loaded_data_size() == 0u);
         BOOST_TEST(testee.data().size() == 0u);
     }
 
@@ -65,12 +66,13 @@ BOOST_AUTO_TEST_SUITE(input_file_test)
 
     BOOST_AUTO_TEST_CASE(load)
     {
-        auto input_file = load_elf_file("lostmarbles.elf");
+        auto testee = load_elf_file("lostmarbles.elf");
 
-        BOOST_TEST(input_file.entry() == 0x03000000u);
-        BOOST_TEST(input_file.is_thumb_entry() == false);
-        BOOST_TEST(input_file.load_address() == 0x03000000u);
-        BOOST_TEST(input_file.data() == load_binary_file("lostmarbles.bin"), boost::test_tools::per_element());
+        BOOST_TEST(testee.entry() == 0x03000000u);
+        BOOST_TEST(testee.is_thumb_entry() == false);
+        BOOST_TEST(testee.load_address() == 0x03000000u);
+        BOOST_TEST(testee.data() == load_binary_file("lostmarbles.bin"), boost::test_tools::per_element());
+        BOOST_TEST(testee.data().size() == testee.loaded_data_size());
     }
 
     BOOST_AUTO_TEST_CASE(load_thumb_entry)
@@ -81,6 +83,7 @@ BOOST_AUTO_TEST_SUITE(input_file_test)
         BOOST_TEST(testee.is_thumb_entry() == true);
         BOOST_TEST(testee.load_address() == 0x8000u);
         BOOST_TEST(testee.data() == load_binary_file("thumb_entry.bin"), boost::test_tools::per_element());
+        BOOST_TEST(testee.data().size() == testee.loaded_data_size());
     }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -30,11 +30,6 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
     * Entry point must be inside memory area occupied by the binary's loaded data
 
 ## Old stuff below, needs clean up
-* Fix a few things:
-  * Fix TODOs regarding input_file.data().size()
-    * Input file deals with 32 bit binaries only, currently
-    * Maybe check it does not try to load bigger files (or maybe not)
-    * But above all, provide an API to get the load size without having to cast from 64 bit size_t to uint32_t
 * Next steps
   * Stick code in header (probably use old approach, that is, the init code). RETEST! (Orly? Do we want to take that risk?)
     * Well, I have to recheck, but getkind+getbit is 34 Thumb instructions, or 68 bytes, which is a multiple of 4 bytes.

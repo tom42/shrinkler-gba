@@ -6,6 +6,7 @@
 #define SHRINKLERGBACORE_INPUT_FILE_HPP
 
 #include <cstdint>
+#include <boost/numeric/conversion/cast.hpp>
 #include <filesystem>
 #include <iosfwd>
 #include <vector>
@@ -36,6 +37,8 @@ public:
     uint32_t entry() const { return m_entry; }
 
     bool is_thumb_entry() const { return entry() & 1; }
+
+    uint32_t loaded_data_size() const { return boost::numeric_cast<uint32_t>(m_data.size()); }
 
     uint32_t load_address() const { return m_load_address; }
 
