@@ -12,6 +12,7 @@
 #include <bit>
 #include <cstdint>
 #include <type_traits>
+#include "shrinklergbacore/adler32.hpp"
 #include "shrinklergbacore/cart_assembler.hpp"
 
 namespace shrinklergbacore
@@ -224,7 +225,7 @@ label("readoffset"s);
 label("donedecompressing"s);
     mov(sp, saved_sp);
     debug_check_decompressed_data_size(input_file, debug);
-    debug_check_decompressed_data(debug);
+    debug_check_decompressed_data(input_file, debug);
     debug_check_sp_on_exit(debug);
     ldr(outp, input_file.entry());
     bx(outp);
@@ -370,18 +371,51 @@ void cart_assembler::debug_check_decompressed_data_size(const input_file& input_
 label("decompressed_data_size_ok"s);
 }
 
-void cart_assembler::debug_check_decompressed_data(bool debug)
+void cart_assembler::debug_check_decompressed_data(const input_file& input_file, bool debug)
 {
     if (!debug)
     {
         return;
     }
 
-    // TODO: implement checksum
-    //       * Emit code to calculate checksum
-    //       * Emit code to compare checksum. Embed the checksum as a literal constant, calculate it from input_file using adler32()
-    //       * Test check works including blue screen
-    //       * Test without debug check we still get the original binary
+    constexpr auto decompressed_data = r0;
+    constexpr auto s1 = r1;
+    constexpr auto s2 = r2;
+    constexpr auto loop_counter = r3;
+    constexpr auto byte = r4;
+    constexpr auto base = r5;
+    constexpr auto expected_checksum = r6;
+
+    // Calculate adler32 checksum of depacked data
+    ldr(base, 65521);
+    ldr(decompressed_data, input_file.load_address());
+    mov(s1, 1);
+    mov(s2, 0);
+    ldr(loop_counter, static_cast<uint32_t>(input_file.data().size())); // TODO: cast: can we get rid of this? Or put it into input_file, somehow? (or, at the very least, use a numeric cast)
+label("adler32_loop"s);
+    ldrb(byte, decompressed_data, 0);
+    add(s1, byte);
+    cmp(s1, base);
+    bcc("s1_ok"s);
+    sub(s1, s1, base);
+label("s1_ok"s);
+    add(s2, s1);
+    cmp(s2, base);
+    bcc("s2_ok"s);
+    sub(s2, s2, base);
+label("s2_ok"s);
+    add(decompressed_data, 1);
+    sub(loop_counter, 1);
+    bne("adler32_loop"s);
+    lsl(s2, s2, 16);
+    orr(s1, s2);
+
+    // Compare expected and actual checksum
+    ldr(expected_checksum, adler32(input_file.data()));
+    cmp(s1, expected_checksum);
+    beq("checksum_ok"s);
+    debug_call_panic_routine(debug, "Wrong decompressed data checksum");
+label("checksum_ok"s);
 }
 
 void cart_assembler::debug_check_sp_on_exit(bool debug)

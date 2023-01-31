@@ -30,15 +30,14 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
     * Entry point must be inside memory area occupied by the binary's loaded data
 
 ## Old stuff below, needs clean up
+* Fix a few things:
+  * Create new lzasm version with bhs/blo instructions
+    * Integrate that, and make the depacker use it where it makes sense (well maybe only in the debug code we've just written)
+  * Fix TODOs regarding input_file.data().size()
+    * Input file deals with 32 bit binaries only, currently
+    * Maybe check it does not try to load bigger files (or maybe not)
+    * But above all, provide an API to get the load size without having to cast from 64 bit size_t to uint32_t
 * Next steps
-  * Check decompressed data using something simple, e.g. adler32
-    * Write a *simple* adler32 implementation (simple. does not need to be fast)
-      * Test it with a couple of test vectors
-      * Maybe also test it using lostmarbles.bin
-      * Here is how to get the adler32 checksum:
-        * python -c "import zlib; print(zlib.adler32(\"${file}\"))"
-    * For this it would be useful if debug_check_decompressed_data_size did not destroy outp, no?
-      * Well, we already know the decompressed size is good, so we can hardcode it for the CRC check.
   * Stick code in header (probably use old approach, that is, the init code). RETEST! (Orly? Do we want to take that risk?)
     * Well, I have to recheck, but getkind+getbit is 34 Thumb instructions, or 68 bytes, which is a multiple of 4 bytes.
       So we could stick getkind into the header, followed by getbit, and end up with the entry aligned.
@@ -49,10 +48,8 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
   * TURN IT AROUND ONCE, SO THAT E.G: getnumber is in the header rather than the beginning of the main loop
 * Notes from various old sources:
   * Old Thumb data depacker (shrinkler_decompress_thumb.s)
-    @ * Eventually we should definitely also compare original and decompressed data
-    @   * And the number of bytes decompressed
-    @   * And we should make sure we do not write anywhere past the conext array
-    @     Well we could have a debug mode where we check this, no? Some sort of assertion?
+    @ * We should make sure we do not write anywhere past the context array
+    @   * Well we could have a debug mode where we check this, no? Some sort of assertion?
     @ * Since the ultimate goal is to produce a GBA 4k cruncher, do we need to
     @   * Can we save some bits if we do not have our data on stack but in EWRAM?
   * Old ARM data depacker (shrinkler_decompress_arm.s)
