@@ -6,6 +6,7 @@ configure_file(shrinklergbacore_version.hpp.in shrinklergbacore_version.hpp)
 
 set(
   SOURCES
+  include/shrinklergbacore/adler32.hpp
   include/shrinklergbacore/cart_assembler.hpp
   include/shrinklergbacore/command_line.hpp
   include/shrinklergbacore/console.hpp
@@ -15,6 +16,7 @@ set(
   include/shrinklergbacore/input_file.hpp
   include/shrinklergbacore/options.hpp
   include/shrinklergbacore/table_printer.hpp
+  src/adler32.cpp
   src/cart_assembler.cpp
   src/command_line.cpp
   src/elf_strings.cpp
@@ -43,6 +45,7 @@ if(BUILD_TESTING)
 
   set(
     UNITTEST_SOURCES
+    unittest/adler32_test.cpp
     unittest/command_line_test.cpp
     unittest/input_file_test.cpp
     unittest/main.cpp
