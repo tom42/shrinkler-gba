@@ -161,9 +161,9 @@ std::vector<unsigned char> cart_assembler::assemble(const input_file& input_file
 label("code_start"s);
     arm_to_thumb(inp);
     mov(saved_sp, sp);
-    adr(inp, "packed_intro"s);
 
-    // Initialize output pointer with load address of program.
+    // Initialize input and output pointers.
+    adr(inp, "packed_intro"s);
     ldr(outp, input_file.load_address());
 
     // Initialize range decoder state.
