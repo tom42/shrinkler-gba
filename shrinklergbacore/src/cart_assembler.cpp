@@ -11,6 +11,7 @@
 
 #include <bit>
 #include <cstdint>
+#include <stdexcept>
 #include <type_traits>
 #include "shrinklergbacore/adler32.hpp"
 #include "shrinklergbacore/cart_assembler.hpp"
@@ -154,6 +155,7 @@ std::vector<unsigned char> cart_assembler::assemble(const input_file& input_file
     // Decompression code
     ////////////////////////////////////////////////////////////////////////////
 
+    throw_if_lc_is_not_word_aligned();
     align(2);
     // Initially the GBA is in ARM state. Switch to Thumb state first.
 label("code_start"s);
@@ -510,6 +512,14 @@ label("sadface"s);
     byte(0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01);
     byte(0x00, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x00);
     pool();
+}
+
+void cart_assembler::throw_if_lc_is_not_word_aligned() const
+{
+    if (current_lc() % 4)
+    {
+        throw std::runtime_error("INTERNAL ERROR: Location counter is not word aligned. We're wasting space");
+    }
 }
 
 }
