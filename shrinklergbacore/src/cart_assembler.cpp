@@ -143,10 +143,10 @@ std::vector<unsigned char> cart_assembler::assemble(const input_file& input_file
     ////////////////////////////////////////////////////////////////////////////
 
     // 1536 contexts would be sufficient, but 2048 is smaller.
-    //constexpr auto INIT_ONE_PROB = 0x8000;
+    constexpr auto INIT_ONE_PROB = 0x8000u;
     constexpr auto ADJUST_SHIFT = 4;
     constexpr auto SINGLE_BIT_CONTEXTS = 1;
-    constexpr size_t NUM_CONTEXTS = 2048;
+    constexpr auto NUM_CONTEXTS = 2048u;
 
     constexpr auto getnumber_push_list = make_push_list(outp, lr);
     constexpr auto getbit_push_list = make_push_list(outp, tmp0, tmp1, lr);
@@ -171,8 +171,9 @@ label("code_start"s);
 
     // Initialize probabilities, writing two contexts per iteration.
     static_assert(is_power_of_2(NUM_CONTEXTS), "NUM_CONTEXTS must be a power of 2");
+    static_assert(is_power_of_2(INIT_ONE_PROB), "INIT_ONE_PROB must be a power of 2");
     lsl(rvalue, isize, std::countr_zero(NUM_CONTEXTS / 2)); // rvalue = NUM_CONTEXTS / 2
-    lsl(bitctx, isize, 15);                                 // bitctx = (INIT_ONE_PROB << 16) | INIT_ONE_PROB
+    lsl(bitctx, isize, std::countr_zero(INIT_ONE_PROB));    // bitctx = (INIT_ONE_PROB << 16) | INIT_ONE_PROB
     orr(bitctx, bitbuf);
 label("init"s);
     push(bitctx);
