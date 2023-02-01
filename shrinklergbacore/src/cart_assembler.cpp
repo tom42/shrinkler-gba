@@ -113,6 +113,10 @@ std::vector<unsigned char> cart_assembler::assemble(const input_file& input_file
 
     arm_branch("code_start"s);
     emit_nintendo_logo();
+
+    // We're still inside the cartridge header, but most of the remaining fields
+    // can be abused to stick code into them, so we'll just do that.
+
     // Game title (12 bytes), game code (4 bytes) and maker code (2 bytes).
     // These can be freely used, so we stick code into them.
     byte(0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
@@ -121,7 +125,7 @@ std::vector<unsigned char> cart_assembler::assemble(const input_file& input_file
     byte(0x00, 0x00);
     // Fixed byte of value 0x96, followed by unit code which can be freely chosen.
     byte(0x96);
-    byte(0x00);
+    byte(0x00); // TODO: depending on which bit of code we're in here we cannot use an arbitrary mov instruction because the target register might be in use. Find a different instruction, or use tmp0/tmp1 as target, or even a dedicated register.
     // Device type (1 byte), followed by 7 unused bytes.
     byte(0x00);
     byte(0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
