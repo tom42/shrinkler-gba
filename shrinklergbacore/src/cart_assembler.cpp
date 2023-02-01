@@ -93,6 +93,18 @@ void cart_assembler::write_complement()
 
 std::vector<unsigned char> cart_assembler::assemble(const input_file& input_file, const std::vector<unsigned char>& compressed_program, bool debug)
 {
+    // 1536 contexts would be sufficient, but 2048 is smaller.
+    constexpr auto INIT_ONE_PROB = 0x8000u;
+    constexpr auto ADJUST_SHIFT = 4;
+    constexpr auto SINGLE_BIT_CONTEXTS = 1;
+    constexpr auto NUM_CONTEXTS = 2048u;
+
+    constexpr auto getnumber_push_list = make_push_list(outp, lr);
+    constexpr auto getbit_push_list = make_push_list(outp, tmp0, tmp1, lr);
+
+    // Offset for accessing the context table relative to SP.
+    constexpr auto CTX_TABLE_OFFSET = 4 * getbit_push_list.size() + 4 * getnumber_push_list.size() + 2 * SINGLE_BIT_CONTEXTS;
+
     ////////////////////////////////////////////////////////////////////////////
     // Cartridge header
     ////////////////////////////////////////////////////////////////////////////
@@ -141,18 +153,6 @@ std::vector<unsigned char> cart_assembler::assemble(const input_file& input_file
     ////////////////////////////////////////////////////////////////////////////
     // Decompression code
     ////////////////////////////////////////////////////////////////////////////
-
-    // 1536 contexts would be sufficient, but 2048 is smaller.
-    constexpr auto INIT_ONE_PROB = 0x8000u;
-    constexpr auto ADJUST_SHIFT = 4;
-    constexpr auto SINGLE_BIT_CONTEXTS = 1;
-    constexpr auto NUM_CONTEXTS = 2048u;
-
-    constexpr auto getnumber_push_list = make_push_list(outp, lr);
-    constexpr auto getbit_push_list = make_push_list(outp, tmp0, tmp1, lr);
-
-    // Offset for accessing the context table relative to SP.
-    constexpr auto CTX_TABLE_OFFSET = 4 * getbit_push_list.size() + 4 * getnumber_push_list.size() + 2 * SINGLE_BIT_CONTEXTS;
 
     align(2);
     // Initially the GBA is in ARM state. Switch to Thumb state first.
