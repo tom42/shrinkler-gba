@@ -152,7 +152,77 @@ std::vector<unsigned char> cart_assembler::assemble(const input_file& input_file
     byte(0x00, 0x00);
 
     ////////////////////////////////////////////////////////////////////////////
-    // Decompression code
+    // getkind: figure out whether the next symbol is a literal or a reference
+    // In:  Nothing, sets up bitctx itself
+    // Out: C = 0 if the next symbol is a literal, C = 1 if it is a reference
+    //      bitctx = parity
+    ////////////////////////////////////////////////////////////////////////////
+label("getkind"s);
+    // Use parity as context : bitctx = (outp & 1) << 8
+    lsl(bitctx, outp, 31);
+    lsr(bitctx, bitctx, 23);
+    // Fall through into getbit
+
+    ////////////////////////////////////////////////////////////////////////////
+    // getbit: decode a single bit
+    // In:       bit context index in bitctx
+    // Out:      Bit in C. That is, C=1 is a bit with value 1.
+    // Destroys: bitctx
+    // Keeps its state in bitbuf, isize and rvalue. So these must not be modified.
+    ////////////////////////////////////////////////////////////////////////////
+label("getbit"s);
+    push(getbit_push_list);
+    b("loop_condition"s);
+label("readbit"s);
+    lsl(bitbuf, bitbuf, 1);
+    bne("nonewword"s);
+label("newword"s);
+    ldr(bitbuf, inp, 0);
+    add(inp, 4);
+    // Shift data bit into C and make bit 0 the new sentinel bit.
+    add(bitbuf, bitbuf);
+    mov(tmp0, 1);
+    orr(bitbuf, tmp0);
+label("nonewword"s);
+    adc(rvalue, rvalue);
+    add(isize, isize);
+label("loop_condition"s);
+    lsr(tmp0, isize, 16);         // Loop while bit 15 is clear
+    bcc("readbit"s);
+
+    // Context is at : SP + CTX_TABLE_OFFSET + 2 * bitctx
+    add(tmp0, bitctx, bitctx);
+    add(tmp0, sp);
+
+    // tmp1 = probability
+    ldrh(tmp1, tmp0, CTX_TABLE_OFFSET);
+
+    // outp = threshold = (intervalsize * prob) >> 16
+    mov(outp, tmp1);
+    mul(outp, isize);
+    lsr(outp, outp, 16);
+
+    // prob = prob - (prob >> ADJUST_SHIFT)
+    lsr(bitctx, tmp1, ADJUST_SHIFT);
+    sub(tmp1, tmp1, bitctx);
+
+    sub(rvalue, rvalue, outp);
+    bcc("one"s);
+label("zero"s);
+    sub(isize, isize, outp);      // intervalsize -= threshold
+    add(tmp1, 0);                 // C = 0, bit = 0
+    b("done"s);
+label("one"s);
+    mov(isize, outp);
+    ldr(bitctx, 0xffff >> ADJUST_SHIFT);
+    add(tmp1, bitctx);
+    add(rvalue, outp);            // C = 1, bit = 1
+label("done"s);
+    strh(tmp1, tmp0, CTX_TABLE_OFFSET);
+    pop(to_pop_list(getbit_push_list));
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Main decompression code
     ////////////////////////////////////////////////////////////////////////////
 
     // Entry point. Initially the GBA is in ARM state.
@@ -259,76 +329,6 @@ label("bitsloop"s);
     sub(outp, 2);
     bcs("bitsloop"s);
     pop(to_pop_list(getnumber_push_list));
-
-    ////////////////////////////////////////////////////////////////////////////
-    // getkind: figure out whether the next symbol is a literal or a reference
-    // In:  Nothing, sets up bitctx itself
-    // Out: C = 0 if the next symbol is a literal, C = 1 if it is a reference
-    //      bitctx = parity
-    ////////////////////////////////////////////////////////////////////////////
-label("getkind"s);
-    // Use parity as context : bitctx = (outp & 1) << 8
-    lsl(bitctx, outp, 31);
-    lsr(bitctx, bitctx, 23);
-    // Fall through into getbit
-
-    ////////////////////////////////////////////////////////////////////////////
-    // getbit: decode a single bit
-    // In:       bit context index in bitctx
-    // Out:      Bit in C. That is, C=1 is a bit with value 1.
-    // Destroys: bitctx
-    // Keeps its state in bitbuf, isize and rvalue. So these must not be modified.
-    ////////////////////////////////////////////////////////////////////////////
-label("getbit"s);
-    push(getbit_push_list);
-    b("loop_condition"s);
-label("readbit"s);
-    lsl(bitbuf, bitbuf, 1);
-    bne("nonewword"s);
-label("newword"s);
-    ldr(bitbuf, inp, 0);
-    add(inp, 4);
-    // Shift data bit into C and make bit 0 the new sentinel bit.
-    add(bitbuf, bitbuf);
-    mov(tmp0, 1);
-    orr(bitbuf, tmp0);
-label("nonewword"s);
-    adc(rvalue, rvalue);
-    add(isize, isize);
-label("loop_condition"s);
-    lsr(tmp0, isize, 16);         // Loop while bit 15 is clear
-    bcc("readbit"s);
-
-    // Context is at : SP + CTX_TABLE_OFFSET + 2 * bitctx
-    add(tmp0, bitctx, bitctx);
-    add(tmp0, sp);
-
-    // tmp1 = probability
-    ldrh(tmp1, tmp0, CTX_TABLE_OFFSET);
-
-    // outp = threshold = (intervalsize * prob) >> 16
-    mov(outp, tmp1);
-    mul(outp, isize);
-    lsr(outp, outp, 16);
-
-    // prob = prob - (prob >> ADJUST_SHIFT)
-    lsr(bitctx, tmp1, ADJUST_SHIFT);
-    sub(tmp1, tmp1, bitctx);
-
-    sub(rvalue, rvalue, outp);
-    bcc("one"s);
-label("zero"s);
-    sub(isize, isize, outp);      // intervalsize -= threshold
-    add(tmp1, 0);                 // C = 0, bit = 0
-    b("done"s);
-label("one"s);
-    mov(isize, outp);
-    ldr(bitctx, 0xffff >> ADJUST_SHIFT);
-    add(tmp1, bitctx);
-    add(rvalue, outp);            // C = 1, bit = 1
-label("done"s);
-    strh(tmp1, tmp0, CTX_TABLE_OFFSET);
-    pop(to_pop_list(getbit_push_list));
     pool();
 
     ////////////////////////////////////////////////////////////////////////////
