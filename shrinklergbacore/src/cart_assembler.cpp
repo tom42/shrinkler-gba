@@ -155,9 +155,10 @@ std::vector<unsigned char> cart_assembler::assemble(const input_file& input_file
     // Decompression code
     ////////////////////////////////////////////////////////////////////////////
 
+    // Entry point. Initially the GBA is in ARM state.
+    // Immediately switch to Thumb state and save sp.
     throw_if_lc_is_not_word_aligned();
     align(2);
-    // Initially the GBA is in ARM state. Switch to Thumb state first.
 label("code_start"s);
     arm_to_thumb(inp);
     mov(saved_sp, sp);
