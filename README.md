@@ -28,8 +28,9 @@ To create a 4k or whatever intro for the Gameboy Advance using shrinkler-gba, ta
     the depacker will switch to ARM state before executing the uncompressed intro. If it is odd,
     the depacker will remain in Thumb state. **Warning**: while this works for me it is reportedly not 100%
     reliable, see e.g. [here](https://community.arm.com/support-forums/f/architectures-and-processors-forum/7513/elf-entry-point-in-thumb-mode-armv7-aarch32)
-    or various threads on Stackoverflow. To be on the safe side, make your intro's entry point
-    expect ARM state and switch to Thumb state yourself if needed. This will cost you 8 bytes, though.
+    or various threads on [Stack Overflow](https://stackoverflow.com).
+    To be on the safe side, make your intro's entry point expect ARM state and switch to Thumb state
+    yourself if needed. This will cost you 8 bytes, though.
 * Compress your intro using shrinkler-gba by running the following command: `shrinkler-gba intro.elf -p9`
   * The ROM will be written to `intro.gba`. Use the `-o` option to specify a different output file name.
   * The `-p9` option will crank up compression to the highest level currently supported.
@@ -41,7 +42,8 @@ To create a 4k or whatever intro for the Gameboy Advance using shrinkler-gba, ta
   requirements listed above for your intro. You'll have to roll your own.
 * Since shrinkler-gba sticks part of the depacker code into the cartridge header you should not modify
   the final ROM with tools such as devkitPro's `gbafix`. Doing so is guaranteed to break the depacker code.
-* The depacker does currently not preserve CPU register contents, nor does it zero memory it used during decompression.
+* With the exception of R13 (SP), the depacker does currently not preserve CPU register contents,
+  nor does it zero memory it uses during decompression.
   Your intro should therefore not rely on initial CPU register values, and it should not expect memory
   to be zero but rather clear memory itself. If this is done using the CpuSet or CpuFastSet BIOS calls,
   doing so will not eat up much space. Moreover, the code will hopefully benefit from compression since
