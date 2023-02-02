@@ -64,7 +64,7 @@ private:
     // This message will be printed using Mappy / VisualBoyAdvance debug output.
     void debug_emit_panic_routine(bool debug);
 
-    void throw_if_lc_is_not_word_aligned() const;
+    void throw_if_not_aligned(lzasm::arm::arm32::address_t alignment) const;
 
     std::vector<unsigned char> m_data;
     size_t m_depacker_size;

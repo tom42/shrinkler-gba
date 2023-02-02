@@ -14,6 +14,7 @@
 #include <cstdint>
 #include <stdexcept>
 #include <type_traits>
+#include "fmt/core.h"
 #include "shrinklergbacore/adler32.hpp"
 #include "shrinklergbacore/cart_assembler.hpp"
 
@@ -142,6 +143,8 @@ std::vector<unsigned char> cart_assembler::assemble(const input_file& input_file
     // Out: C = 0 if the next symbol is a literal, C = 1 if it is a reference
     //      bitctx = parity
     ////////////////////////////////////////////////////////////////////////////
+    throw_if_not_aligned(1);
+    align(1);
 label("getkind"s);
     // Use parity as context : bitctx = (outp & 1) << 8
     lsl(bitctx, outp, 31);
@@ -212,7 +215,7 @@ label("done"s);
 
     // Entry point. Initially the GBA is in ARM state.
     // Immediately switch to Thumb state and save sp.
-    throw_if_lc_is_not_word_aligned();
+    throw_if_not_aligned(2);
     align(2);
 label("code_start"s);
     arm_to_thumb(inp);
@@ -524,11 +527,13 @@ label("sadface"s);
     pool();
 }
 
-void cart_assembler::throw_if_lc_is_not_word_aligned() const
+void cart_assembler::throw_if_not_aligned(lzasm::arm::arm32::address_t alignment) const
 {
-    if (current_lc() % 4)
+    auto byte_alignment = 1u << alignment;
+
+    if (current_lc() % byte_alignment)
     {
-        throw std::runtime_error("INTERNAL ERROR: Location counter is not word aligned. We're wasting space");
+        throw std::runtime_error(fmt::format("INTERNAL ERROR: Location counter is not aligned to {} bytes. We're wasting space", byte_alignment));
     }
 }
 
