@@ -19,7 +19,8 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
     * If we save/restore other registers, can we merge save/restore of sp into general register saving code?
 
 ## Input file loading
-* Support also loading of raw binaries, not only ELF: can do that once we need it
+* Support also loading of raw binaries, not only ELF: can do that once we need it. Anyway it will complicate things,
+  since for instance it leaves us with no way of detecting whether the entry point expects ARM or Thumb state.
 * Sanity checks of load address and entry point: not needed for operation, but nice to have:
   * Note: these checks do *not* belong into input_file, which should remain target independent
   * Load address must be either in IWRAM or EWRAM (not necessarily at the beginning of either area)
