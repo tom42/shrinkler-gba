@@ -120,21 +120,32 @@ std::vector<unsigned char> cart_assembler::assemble(const input_file& input_file
 
     // Game title (12 bytes), game code (4 bytes) and maker code (2 bytes).
     // These can be freely used, so we stick code into them.
+    throw_if_wrong_lc(ofs_game_title, "game title");
     byte(0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
     byte(0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
     byte(0x00, 0x00, 0x00, 0x00);
     byte(0x00, 0x00);
+
     // Fixed byte of value 0x96, followed by unit code which can be freely chosen.
+    throw_if_wrong_lc(ofs_fixed_byte, "fixed byte");
     byte(0x96);
     byte(0x00); // TODO: depending on which bit of code we're in here we cannot use an arbitrary mov instruction because the target register might be in use. Find a different instruction, or use tmp0/tmp1 as target, or even a dedicated register.
+
     // Device type (1 byte), followed by 7 unused bytes.
+    throw_if_wrong_lc(ofs_device_type, "device type");
     byte(0x00);
     byte(0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
+
     // Game version (1 byte). Hard to make use of, since it's followed by the complement.
+    throw_if_wrong_lc(ofs_game_version, "game version");
     byte(0x00);
+
     // Complement (will have to be fixed, so that checksum is 0)
+    throw_if_wrong_lc(ofs_complement, "complement");
     byte(0x00);
-    // Checksum
+
+    // Reserved area
+    throw_if_wrong_lc(ofs_reserved2, "reserved area 2");
     byte(0x00, 0x00);
 
     ////////////////////////////////////////////////////////////////////////////
@@ -331,7 +342,9 @@ label("bitsloop"s);
 label("packed_intro"s);
     incbin(compressed_program.begin(), compressed_program.end());
     debug_emit_panic_routine(debug);
-    return link(mem_rom);
+    auto binary = link(mem_rom);
+    // TODO: check value of fixed byte? It is somewhat, redundant, no? Then again, if we check it manually, we can just as well do automatically.
+    return binary;
 }
 
 void cart_assembler::emit_nintendo_logo()
@@ -525,6 +538,14 @@ label("sadface"s);
     byte(0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01);
     byte(0x00, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x00);
     pool();
+}
+
+void cart_assembler::throw_if_wrong_lc(lzasm::arm::arm32::address_t expected_lc, const char* what) const
+{
+    if (current_lc() != expected_lc)
+    {
+        throw std::runtime_error(fmt::format("INTERNAL ERROR: {} is at wrong offset. Expected it to be at {:#x}, but it is at {:#x}", what, expected_lc, current_lc()));
+    }
 }
 
 void cart_assembler::throw_if_not_aligned(lzasm::arm::arm32::address_t alignment) const
