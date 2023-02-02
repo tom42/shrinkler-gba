@@ -40,6 +40,8 @@ constexpr uint32_t reg_dispcnt = reg_base + 0x00;
 constexpr uint32_t MODE_4 = 4;
 constexpr uint32_t BG2_ON = 1 << 10;
 
+constexpr auto fixed_byte_value = 0x96;
+
 // Offsets in GBA cartridge header
 constexpr size_t ofs_game_title = 0xa0;
 constexpr size_t ofs_fixed_byte = 0xb2;
@@ -128,7 +130,7 @@ std::vector<unsigned char> cart_assembler::assemble(const input_file& input_file
 
     // Fixed byte of value 0x96, followed by unit code which can be freely chosen.
     throw_if_wrong_lc(ofs_fixed_byte, "fixed byte");
-    byte(0x96);
+    byte(fixed_byte_value);
     byte(0x00); // TODO: depending on which bit of code we're in here we cannot use an arbitrary mov instruction because the target register might be in use. Find a different instruction, or use tmp0/tmp1 as target, or even a dedicated register.
 
     // Device type (1 byte), followed by 7 unused bytes.
@@ -343,7 +345,7 @@ label("packed_intro"s);
     incbin(compressed_program.begin(), compressed_program.end());
     debug_emit_panic_routine(debug);
     auto binary = link(mem_rom);
-    // TODO: check value of fixed byte? It is somewhat, redundant, no? Then again, if we check it manually, we can just as well do automatically.
+    throw_if_fixed_byte_wrong(binary);
     return binary;
 }
 
@@ -555,6 +557,15 @@ void cart_assembler::throw_if_not_aligned(lzasm::arm::arm32::address_t alignment
     if (current_lc() % byte_alignment)
     {
         throw std::runtime_error(fmt::format("INTERNAL ERROR: Location counter is not aligned to {} bytes. We're wasting space", byte_alignment));
+    }
+}
+
+void cart_assembler::throw_if_fixed_byte_wrong(const std::vector<unsigned char>& binary) const
+{
+    auto actual_byte = binary.at(ofs_fixed_byte);
+    if (actual_byte != fixed_byte_value)
+    {
+        throw std::runtime_error(fmt::format("INTERNAL ERROR: Fixed byte at {:#x} has wrong value. Should be {:#x}, but is {:#x}", ofs_fixed_byte, fixed_byte_value, actual_byte));
     }
 }
 
