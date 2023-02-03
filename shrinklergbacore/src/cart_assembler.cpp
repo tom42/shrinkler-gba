@@ -75,7 +75,7 @@ constexpr uint32_t rgb8(uint32_t r, uint32_t g, uint32_t b) noexcept
 cart_assembler::cart_assembler(const input_file& input_file, const std::vector<unsigned char>& compressed_program, const depacker_settings& settings)
     : settings(settings)
 {
-    m_data = assemble(input_file, compressed_program, settings.debug_checks);
+    m_data = assemble(input_file, compressed_program);
 
     write_complement();
 
@@ -88,7 +88,7 @@ void cart_assembler::write_complement()
     m_data[ofs_complement] = calculate_complement(&m_data[ofs_game_title]);
 }
 
-std::vector<unsigned char> cart_assembler::assemble(const input_file& input_file, const std::vector<unsigned char>& compressed_program, bool debug)
+std::vector<unsigned char> cart_assembler::assemble(const input_file& input_file, const std::vector<unsigned char>& compressed_program)
 {
     // 1536 contexts would be sufficient, but 2048 is smaller.
     constexpr auto INIT_ONE_PROB = 0x8000u;
@@ -267,9 +267,9 @@ label("readoffset"s);
     bne("readlength"s);
 label("donedecompressing"s);
     mov(sp, saved_sp);
-    debug_check_decompressed_data_size(input_file, debug);
-    debug_check_decompressed_data(input_file, debug);
-    debug_check_sp_on_exit(debug);
+    debug_check_decompressed_data_size(input_file);
+    debug_check_decompressed_data(input_file);
+    debug_check_sp_on_exit();
     ldr(outp, input_file.entry());
     bx(outp);
 
@@ -311,7 +311,7 @@ label("bitsloop"s);
     m_depacker_size = current_lc() - gba_header_size;
 label("packed_intro"s);
     incbin(compressed_program.begin(), compressed_program.end());
-    debug_emit_panic_routine(debug);
+    debug_emit_panic_routine();
     return link(mem_rom);
 }
 
@@ -381,9 +381,9 @@ void cart_assembler::asciz(const std::string& s)
     byte(0);
 }
 
-void cart_assembler::debug_check_decompressed_data_size(const input_file& input_file, bool debug)
+void cart_assembler::debug_check_decompressed_data_size(const input_file& input_file)
 {
-    if (!debug)
+    if (!settings.debug_checks)
     {
         return;
     }
@@ -396,13 +396,13 @@ void cart_assembler::debug_check_decompressed_data_size(const input_file& input_
     ldr(tmp1, input_file.loaded_data_size());
     cmp(outp, tmp1);
     beq("decompressed_data_size_ok"s);
-    debug_call_panic_routine(debug, "Wrong decompressed data size");
+    debug_call_panic_routine("Wrong decompressed data size");
 label("decompressed_data_size_ok"s);
 }
 
-void cart_assembler::debug_check_decompressed_data(const input_file& input_file, bool debug)
+void cart_assembler::debug_check_decompressed_data(const input_file& input_file)
 {
-    if (!debug)
+    if (!settings.debug_checks)
     {
         return;
     }
@@ -443,13 +443,13 @@ label("s2_ok"s);
     ldr(expected_checksum, adler32(input_file.data()));
     cmp(s1, expected_checksum);
     beq("checksum_ok"s);
-    debug_call_panic_routine(debug, "Wrong decompressed data checksum");
+    debug_call_panic_routine("Wrong decompressed data checksum");
 label("checksum_ok"s);
 }
 
-void cart_assembler::debug_check_sp_on_exit(bool debug)
+void cart_assembler::debug_check_sp_on_exit()
 {
-    if (!debug)
+    if (!settings.debug_checks)
     {
         return;
     }
@@ -457,13 +457,13 @@ void cart_assembler::debug_check_sp_on_exit(bool debug)
     ldr(r0, initial_sp);
     cmp(r0, sp);
     beq("sp_ok"s);
-    debug_call_panic_routine(debug, "Wrong sp after depacking\n");
+    debug_call_panic_routine("Wrong sp after depacking\n");
 label("sp_ok"s);
 }
 
-void cart_assembler::debug_call_panic_routine(bool debug, const std::string& message)
+void cart_assembler::debug_call_panic_routine(const std::string& message)
 {
-    if (!debug)
+    if (!settings.debug_checks)
     {
         return;
     }
@@ -484,9 +484,9 @@ label(message);
     align(1);
 }
 
-void cart_assembler::debug_emit_panic_routine(bool debug)
+void cart_assembler::debug_emit_panic_routine()
 {
-    if (!debug)
+    if (!settings.debug_checks)
     {
         return;
     }
