@@ -17,6 +17,7 @@
 #include "fmt/core.h"
 #include "shrinklergbacore/adler32.hpp"
 #include "shrinklergbacore/cart_assembler.hpp"
+#include "shrinklergbacore/complement.hpp"
 #include "shrinklergbacore/gba.hpp"
 
 namespace shrinklergbacore
@@ -81,21 +82,9 @@ cart_assembler::cart_assembler(const input_file& input_file, const std::vector<u
     throw_if_complement_wrong();
 }
 
-unsigned char cart_assembler::calculate_complement() const
-{
-    unsigned char sum = 0x19;
-    for (size_t n = ofs_game_title; n < ofs_complement; ++n)
-    {
-        sum += m_data[n];
-    }
-
-    unsigned char complement = -sum;
-    return complement;
-}
-
 void cart_assembler::write_complement()
 {
-    m_data[ofs_complement] = calculate_complement();
+    m_data[ofs_complement] = calculate_complement(m_data);
 }
 
 std::vector<unsigned char> cart_assembler::assemble(const input_file& input_file, const std::vector<unsigned char>& compressed_program, bool debug)
@@ -571,7 +560,7 @@ void cart_assembler::throw_if_fixed_byte_wrong() const
 
 void cart_assembler::throw_if_complement_wrong() const
 {
-    auto expected_complement = calculate_complement();
+    auto expected_complement = calculate_complement(m_data);
     auto actual_complement = m_data.at(ofs_complement);
     if (actual_complement != expected_complement)
     {

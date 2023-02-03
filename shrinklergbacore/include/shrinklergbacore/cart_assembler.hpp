@@ -34,7 +34,6 @@ public:
     }
 
 private:
-    unsigned char calculate_complement() const;
     void write_complement();
     std::vector<unsigned char> assemble(const input_file& input_file, const std::vector<unsigned char>& compressed_program, bool debug);
 

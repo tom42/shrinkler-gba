@@ -9,6 +9,7 @@ set(
   include/shrinklergbacore/adler32.hpp
   include/shrinklergbacore/cart_assembler.hpp
   include/shrinklergbacore/command_line.hpp
+  include/shrinklergbacore/complement.hpp
   include/shrinklergbacore/console.hpp
   include/shrinklergbacore/elfio_wrapper.hpp
   include/shrinklergbacore/elf_strings.hpp
@@ -20,6 +21,7 @@ set(
   src/adler32.cpp
   src/cart_assembler.cpp
   src/command_line.cpp
+  src/complement.cpp
   src/elf_strings.cpp
   src/gba_packer.cpp
   src/input_file.cpp
