@@ -17,6 +17,7 @@
 #include "fmt/core.h"
 #include "shrinklergbacore/adler32.hpp"
 #include "shrinklergbacore/cart_assembler.hpp"
+#include "shrinklergbacore/gba.hpp"
 
 namespace shrinklergbacore
 {
@@ -24,7 +25,6 @@ namespace shrinklergbacore
 using namespace lzasm::arm::arm32;
 using namespace std::literals::string_literals;
 
-constexpr size_t gba_header_size = 192;
 constexpr auto initial_sp = 0x03007f00;
 
 // GBA memory areas
@@ -41,14 +41,6 @@ constexpr uint32_t MODE_4 = 4;
 constexpr uint32_t BG2_ON = 1 << 10;
 
 constexpr auto fixed_byte_value = 0x96;
-
-// Offsets in GBA cartridge header
-constexpr size_t ofs_game_title = 0xa0;
-constexpr size_t ofs_fixed_byte = 0xb2;
-constexpr size_t ofs_device_type = 0xb4;
-constexpr size_t ofs_game_version = 0xbc;
-constexpr size_t ofs_complement = 0xbd;
-constexpr size_t ofs_reserved2 = 0xbe;
 
 // Register aliases
 constexpr auto inp = r0;                // Compressed data

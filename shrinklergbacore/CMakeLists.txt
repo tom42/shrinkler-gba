@@ -12,6 +12,7 @@ set(
   include/shrinklergbacore/console.hpp
   include/shrinklergbacore/elfio_wrapper.hpp
   include/shrinklergbacore/elf_strings.hpp
+  include/shrinklergbacore/gba.hpp
   include/shrinklergbacore/gba_packer.hpp
   include/shrinklergbacore/input_file.hpp
   include/shrinklergbacore/options.hpp
