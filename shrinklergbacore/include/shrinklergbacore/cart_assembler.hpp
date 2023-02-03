@@ -13,6 +13,13 @@
 namespace shrinklergbacore
 {
 
+class depacker_options final
+{
+public:
+    bool code_in_header = true;
+    bool debug_checks = false;
+};
+
 // TODO: stick code into header, but turn it around first so that uninteresting bits are there That is:
 //       * Turn around depacker code, so that the non-changing bits are at the beginning (AND CHECK THIS IN)
 //         * Do not forget that since the entry point is ARM code we most also move the align directive
