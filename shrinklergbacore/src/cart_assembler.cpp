@@ -85,15 +85,21 @@ cart_assembler::cart_assembler(const input_file& input_file, const std::vector<u
     write_complement();
 }
 
-void cart_assembler::write_complement()
+unsigned char cart_assembler::calculate_complement() const
 {
-    char complement = 0;
+    unsigned char sum = 0x19;
     for (size_t n = ofs_game_title; n < ofs_complement; ++n)
     {
-        complement += m_data[n];
+        sum += m_data[n];
     }
 
-    m_data[ofs_complement] = -(0x19 + complement);
+    unsigned char complement = -sum;
+    return complement;
+}
+
+void cart_assembler::write_complement()
+{
+    m_data[ofs_complement] = calculate_complement();
 }
 
 std::vector<unsigned char> cart_assembler::assemble(const input_file& input_file, const std::vector<unsigned char>& compressed_program, bool debug)
