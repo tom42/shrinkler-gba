@@ -16,6 +16,7 @@ namespace shrinklergbacore
 class depacker_settings final
 {
 public:
+    bool code_in_header = true;
     bool debug_checks = false;
 };
 

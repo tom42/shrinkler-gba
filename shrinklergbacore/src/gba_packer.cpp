@@ -36,6 +36,7 @@ void gba_packer::pack(const options& options)
     // Assemble cart
     const depacker_settings depacker_settings
     {
+        .code_in_header = options.code_in_header(),
         .debug_checks = options.debug_checks()
     };
     cart_assembler cart_assembler(input_file, compressed_program, depacker_settings);
