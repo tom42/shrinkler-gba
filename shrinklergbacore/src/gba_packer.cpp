@@ -56,7 +56,7 @@ void gba_packer::write_to_disk(const std::vector<unsigned char>& data, const std
             throw std::system_error(e, std::generic_category());
         }
 
-        file.write(reinterpret_cast<const char*>(&data[0]), data.size());
+        file.write(reinterpret_cast<const char*>(data.data()), data.size());
         if (!file)
         {
             auto e = errno;
