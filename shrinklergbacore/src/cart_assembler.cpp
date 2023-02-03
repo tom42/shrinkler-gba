@@ -72,9 +72,9 @@ constexpr uint32_t rgb8(uint32_t r, uint32_t g, uint32_t b) noexcept
     return rgb5(r >> 3, g >> 3, b >> 3);
 }
 
-cart_assembler::cart_assembler(const input_file& input_file, const std::vector<unsigned char>& compressed_program, bool debug_checks)
+cart_assembler::cart_assembler(const input_file& input_file, const std::vector<unsigned char>& compressed_program, const depacker_settings& settings)
 {
-    m_data = assemble(input_file, compressed_program, debug_checks);
+    m_data = assemble(input_file, compressed_program, settings.debug_checks);
 
     write_complement();
 
