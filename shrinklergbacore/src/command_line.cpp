@@ -16,6 +16,7 @@ namespace shrinklergbacore
 enum option
 {
     first = 256,
+    no_code_in_header,
     debug_checks,
     usage
 };
@@ -35,6 +36,9 @@ public:
         case 'v':
             m_options.verbose(true);
             m_options.shrinkler_parameters().verbose = true;
+            return 0;
+        case option::no_code_in_header:
+            m_options.code_in_header(false);
             return 0;
         case option::debug_checks:
             m_options.debug_checks(true);
@@ -176,6 +180,7 @@ command_action parse_command_line(int argc, char* argv[], options& options, bool
 
         // Code generation options
         { 0, 0, 0, 0, "Code generation options:", 0 },
+        { "no-code-in-header", option::no_code_in_header, 0, 0, "Do not put code in ROM header", 0},
         { "debug-checks", option::debug_checks, 0, 0, "Add debug checks to depacker code", 0},
 
         // Shrinkler compression options

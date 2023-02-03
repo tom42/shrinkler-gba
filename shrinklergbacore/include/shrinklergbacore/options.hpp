@@ -39,6 +39,10 @@ public:
         m_output_file_set = true;
     }
 
+    bool code_in_header() const { return m_code_in_header; }
+
+    void code_in_header(bool code_in_header) { m_code_in_header = code_in_header; }
+
     bool debug_checks() const { return m_debug_checks; }
 
     void debug_checks(bool debug_checks) { m_debug_checks = debug_checks; }
@@ -54,6 +58,7 @@ private:
     bool m_output_file_set = false;
     std::filesystem::path m_input_file;
     std::filesystem::path m_output_file;
+    bool m_code_in_header = true;
     bool m_debug_checks = false;
     shrinklerwrapper::shrinkler_parameters m_shrinkler_parameters;
 };
