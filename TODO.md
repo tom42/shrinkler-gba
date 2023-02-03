@@ -17,6 +17,10 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
   * Preserve sp: already implemented, but could add option to omit this for the really desperate
     * Debug stack check needs to be aware of this
     * If we save/restore other registers, can we merge save/restore of sp into general register saving code?
+* Possible depacker optimizations
+  * Loading of load/entry point adress: e.g. if they can be constructed with lsl/mov. Currently we load
+    them from a constant pool. At least when they're the same lzasm will already optimize this and will
+    only generate one literal.
 
 ## Input file loading
 * Support also loading of raw binaries, not only ELF: can do that once we need it. Anyway it will complicate things,
