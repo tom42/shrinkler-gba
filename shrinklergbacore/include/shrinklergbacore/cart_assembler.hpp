@@ -38,6 +38,7 @@ private:
     std::vector<unsigned char> assemble(const input_file& input_file, const std::vector<unsigned char>& compressed_program, bool debug);
 
     void emit_nintendo_logo();
+    void emit_remaining_header();
 
     // Emit zero terminated string, similar to the GNU assembler's .asciz directive.
     // The terminating zero is also emitted.

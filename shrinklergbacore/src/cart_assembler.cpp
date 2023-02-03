@@ -107,39 +107,15 @@ std::vector<unsigned char> cart_assembler::assemble(const input_file& input_file
 
     arm_branch("code_start"s);
     emit_nintendo_logo();
+    emit_remaining_header();
+    // TODO: above, that's the "normal" header. Now, optionally, stick code into the header, messing as new things up as possible:
+    //       * Ensure the fixed byte is in here. Ensure that with an assertion
+    //         * Insert bogus instruction, but only if putting code into header. same for assertion
+    //       * Also ensure the complement/game version is in here. Ensure that with an assertion, too
+    //         * Insert bogus instruction, but only if putting code into header.same for assertion
 
     // We're still inside the cartridge header, but most of the remaining fields
     // can be abused to stick code into them, so we'll just do that.
-
-    // Game title (12 bytes), game code (4 bytes) and maker code (2 bytes).
-    // These can be freely used, so we stick code into them.
-    throw_if_wrong_lc(ofs_game_title, "game title");
-    byte(0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
-    byte(0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
-    byte(0x00, 0x00, 0x00, 0x00);
-    byte(0x00, 0x00);
-
-    // Fixed byte of value 0x96, followed by unit code which can be freely chosen.
-    throw_if_wrong_lc(ofs_fixed_byte, "fixed byte");
-    byte(fixed_byte_value);
-    byte(0x00); // TODO: depending on which bit of code we're in here we cannot use an arbitrary mov instruction because the target register might be in use. Find a different instruction, or use tmp0/tmp1 as target, or even a dedicated register.
-
-    // Device type (1 byte), followed by 7 unused bytes.
-    throw_if_wrong_lc(ofs_device_type, "device type");
-    byte(0x00);
-    byte(0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
-
-    // Game version (1 byte). Hard to make use of, since it's followed by the complement.
-    throw_if_wrong_lc(ofs_game_version, "game version");
-    byte(0x00);
-
-    // Complement (will have to be fixed, so that checksum is 0)
-    throw_if_wrong_lc(ofs_complement, "complement");
-    byte(0x00);
-
-    // Reserved area
-    throw_if_wrong_lc(ofs_reserved2, "reserved area 2");
-    byte(0x00, 0x00);
 
     ////////////////////////////////////////////////////////////////////////////
     // getkind: figure out whether the next symbol is a literal or a reference
@@ -360,6 +336,38 @@ void cart_assembler::emit_nintendo_logo()
     byte(0x65, 0xc0, 0x7c, 0x63, 0x87, 0xf0, 0x3c, 0xaf);
     byte(0xd6, 0x25, 0xe4, 0x8b, 0x38, 0x0a, 0xac, 0x72);
     byte(0x21, 0xd4, 0xf8, 0x07);
+}
+
+void cart_assembler::emit_remaining_header()
+{
+    // Game title (12 bytes), game code (4 bytes) and maker code (2 bytes)
+    throw_if_wrong_lc(ofs_game_title, "game title");
+    byte(0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
+    byte(0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
+    byte(0x00, 0x00, 0x00, 0x00);
+    byte(0x00, 0x00);
+
+    // Fixed byte of value 0x96, followed by unit code
+    throw_if_wrong_lc(ofs_fixed_byte, "fixed byte");
+    byte(fixed_byte_value);
+    byte(0x00);
+
+    // Device type (1 byte), followed by 7 unused bytes
+    throw_if_wrong_lc(ofs_device_type, "device type");
+    byte(0x00);
+    byte(0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
+
+    // Game version (1 byte)
+    throw_if_wrong_lc(ofs_game_version, "game version");
+    byte(0x00);
+
+    // Complement (will have to be fixed, so that checksum is 0)
+    throw_if_wrong_lc(ofs_complement, "complement");
+    byte(0x00);
+
+    // Reserved area
+    throw_if_wrong_lc(ofs_reserved2, "reserved area 2");
+    byte(0x00, 0x00);
 }
 
 void cart_assembler::asciz(const std::string& s)
