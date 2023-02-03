@@ -8,12 +8,17 @@
 namespace shrinklergbacore
 {
 
-unsigned char calculate_complement(const std::vector<unsigned char>& header_data)
+unsigned char calculate_complement(const unsigned char* game_title)
 {
+    constexpr size_t complement_index = ofs_complement - ofs_game_title;
     unsigned char sum = 0x19;
-    for (size_t n = ofs_game_title; n < ofs_complement; ++n)
+
+    for (size_t i = 0; i < complement_area_size; ++i)
     {
-        sum += header_data[n];
+        if (i != complement_index)
+        {
+            sum += game_title[i];
+        }
     }
 
     unsigned char complement = -sum;

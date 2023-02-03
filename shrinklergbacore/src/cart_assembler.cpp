@@ -84,7 +84,7 @@ cart_assembler::cart_assembler(const input_file& input_file, const std::vector<u
 
 void cart_assembler::write_complement()
 {
-    m_data[ofs_complement] = calculate_complement(m_data);
+    m_data[ofs_complement] = calculate_complement(&m_data[ofs_game_title]);
 }
 
 std::vector<unsigned char> cart_assembler::assemble(const input_file& input_file, const std::vector<unsigned char>& compressed_program, bool debug)
@@ -560,7 +560,7 @@ void cart_assembler::throw_if_fixed_byte_wrong() const
 
 void cart_assembler::throw_if_complement_wrong() const
 {
-    auto expected_complement = calculate_complement(m_data);
+    auto expected_complement = calculate_complement(&m_data[ofs_game_title]);
     auto actual_complement = m_data.at(ofs_complement);
     if (actual_complement != expected_complement)
     {
