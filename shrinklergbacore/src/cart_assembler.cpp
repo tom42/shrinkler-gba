@@ -125,12 +125,6 @@ std::vector<unsigned char> cart_assembler::assemble(const input_file& input_file
         emit_remaining_header();
     }
 
-    // TODO: above, that's the "normal" header. Now, optionally, stick code into the header, messing as new things up as possible:
-    //       * Ensure the fixed byte is in here. Ensure that with an assertion
-    //         * Insert bogus instruction, but only if putting code into header. same for assertion
-    //       * Also ensure the complement/game version is in here. Ensure that with an assertion, too
-    //         * Insert bogus instruction, but only if putting code into header.same for assertion
-
     // We're still inside the cartridge header, but most of the remaining fields
     // can be abused to stick code into them, so we'll just do that.
 
