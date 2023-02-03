@@ -38,6 +38,7 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
     * If we then have our entry in the middle of the depacker code, then we should not blindly align(2).
       Instead, omit the align(2), but at runtime check and throw if current_lc() is not a multiple of 4 at the entry.
   * Wrap initial version up
+* GBA-cart-header.md needs cleanup: we've found a way to abuse the complement.
 * BEFORE WE DO ANY ADDITIONAL WORK ON THE DECODER
   * TURN IT AROUND ONCE, SO THAT E.G: getnumber is in the header rather than the beginning of the main loop
 * Notes from various old sources:
