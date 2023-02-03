@@ -82,7 +82,10 @@ constexpr uint32_t rgb8(uint32_t r, uint32_t g, uint32_t b) noexcept
 cart_assembler::cart_assembler(const input_file& input_file, const std::vector<unsigned char>& compressed_program, bool debug_checks)
 {
     m_data = assemble(input_file, compressed_program, debug_checks);
+
     write_complement();
+
+    throw_if_fixed_byte_wrong();
 }
 
 unsigned char cart_assembler::calculate_complement() const
@@ -350,9 +353,7 @@ label("bitsloop"s);
 label("packed_intro"s);
     incbin(compressed_program.begin(), compressed_program.end());
     debug_emit_panic_routine(debug);
-    auto binary = link(mem_rom);
-    throw_if_fixed_byte_wrong(binary);
-    return binary;
+    return link(mem_rom);
 }
 
 void cart_assembler::emit_nintendo_logo()
@@ -566,9 +567,9 @@ void cart_assembler::throw_if_not_aligned(lzasm::arm::arm32::address_t alignment
     }
 }
 
-void cart_assembler::throw_if_fixed_byte_wrong(const std::vector<unsigned char>& binary) const
+void cart_assembler::throw_if_fixed_byte_wrong() const
 {
-    auto actual_byte = binary.at(ofs_fixed_byte);
+    auto actual_byte = m_data.at(ofs_fixed_byte);
     if (actual_byte != fixed_byte_value)
     {
         throw std::runtime_error(fmt::format("INTERNAL ERROR: Fixed byte at {:#x} has wrong value. Should be {:#x}, but is {:#x}", ofs_fixed_byte, fixed_byte_value, actual_byte));
