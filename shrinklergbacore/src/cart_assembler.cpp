@@ -86,6 +86,7 @@ cart_assembler::cart_assembler(const input_file& input_file, const std::vector<u
     write_complement();
 
     throw_if_fixed_byte_wrong();
+    throw_if_complement_wrong();
 }
 
 unsigned char cart_assembler::calculate_complement() const
@@ -573,6 +574,16 @@ void cart_assembler::throw_if_fixed_byte_wrong() const
     if (actual_byte != fixed_byte_value)
     {
         throw std::runtime_error(fmt::format("INTERNAL ERROR: Fixed byte at {:#x} has wrong value. Should be {:#x}, but is {:#x}", ofs_fixed_byte, fixed_byte_value, actual_byte));
+    }
+}
+
+void cart_assembler::throw_if_complement_wrong() const
+{
+    auto expected_complement = calculate_complement();
+    auto actual_complement = m_data.at(ofs_complement);
+    if (actual_complement != expected_complement)
+    {
+        throw std::runtime_error(fmt::format("INTERNAL ERROR: Complement at {:#x} has wrong value. Should be {:#x}, but is {:#x}", ofs_complement, expected_complement, actual_complement));
     }
 }
 
