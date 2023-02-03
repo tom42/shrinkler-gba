@@ -9,6 +9,7 @@
 //                                  Using unoptimized ldr instructions to load load address and entry point from pool.
 // 228                  fe2a520     Restore sp to 0x03007f00 before executing unpacked intro. No code in header.
 // 228                  e093da7     Code unlikely to vary is at the beginning of the ROM. No code in header.
+// 200                  50f0d25     Moved code into header (getkind and the beginning of getbit)
 
 #include <bit>
 #include <cstdint>
