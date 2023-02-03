@@ -187,8 +187,9 @@ label("loop_condition"s);
         // so that it matches the complement. We cannot fix up the complement,
         // like we'd normally do, since we'd end up with a random, potentially
         // harmful instruction. See also write_complement().
+        constexpr unsigned char dummy_game_version_that_gets_overwritten_later_instead_of_the_complement = 0x77;
         throw_if_wrong_lc(ofs_game_version, "game version");
-        mov(tmp0, 0x77);
+        mov(tmp0, dummy_game_version_that_gets_overwritten_later_instead_of_the_complement);
     }
     lsr(tmp0, isize, 16);         // Loop while bit 15 is clear
     bcc("readbit"s);
