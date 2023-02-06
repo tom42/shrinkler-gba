@@ -401,16 +401,6 @@ void cart_assembler::emit_remaining_header()
     byte(0x00, 0x00);
 }
 
-void cart_assembler::asciz(const std::string& s)
-{
-    for (char c : s)
-    {
-        byte(c);
-    }
-
-    byte(0);
-}
-
 void cart_assembler::debug_check_decompressed_data_size(const input_file& input_file)
 {
     if (!settings.debug_checks)

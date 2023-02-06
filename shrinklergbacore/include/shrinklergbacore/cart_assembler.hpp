@@ -42,10 +42,6 @@ private:
     void emit_nintendo_logo();
     void emit_remaining_header();
 
-    // Emit zero terminated string, similar to the GNU assembler's .asciz directive.
-    // The terminating zero is also emitted.
-    void asciz(const std::string& s);
-
     // Macro that calls the panic routine if the size of the decompressed data is incorrect.
     // This macro expects outp (the output pointer) to point to the byte after the last decompressed byte.
     // This macro clobbers all registers except sp.
