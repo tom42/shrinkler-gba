@@ -73,6 +73,32 @@ public:
     // Data definition directives
     ////////////////////////////////////////////////////////////////////////////
 
+    basic_divided_thumb_assembler& asciz(const std::string& s)
+    {
+        return asciz(s.begin(), s.end());
+    }
+
+    basic_divided_thumb_assembler& asciz(const char* s)
+    {
+        while (*s)
+        {
+            obj.emit8(*s++);
+        }
+        obj.emit8(0);
+        return *this;
+    }
+
+    template <typename Iterator>
+    basic_divided_thumb_assembler& asciz(Iterator iterator, Iterator end)
+    {
+        for (; iterator != end; ++iterator)
+        {
+            obj.emit8(*iterator);
+        }
+        obj.emit8(0);
+        return *this;
+    }
+
     basic_divided_thumb_assembler& byte(const immediate& imm8)
     {
         obj.emit8(to_abs(reference_type::abs8_byte, imm8) & 255);
@@ -235,6 +261,8 @@ public:
     basic_divided_thumb_assembler& blt(const immediate& imm9) { return emit_conditional_branch(condition_code::lt, imm9); }
     basic_divided_thumb_assembler& bgt(const immediate& imm9) { return emit_conditional_branch(condition_code::gt, imm9); }
     basic_divided_thumb_assembler& ble(const immediate& imm9) { return emit_conditional_branch(condition_code::le, imm9); }
+    basic_divided_thumb_assembler& bhs(const immediate& imm9) { return bcs(imm9); }
+    basic_divided_thumb_assembler& blo(const immediate& imm9) { return bcc(imm9); }
 
     // ["b", "#RelS*2", "T16", "1110|0|RelS:11", "ARMv4T+ IT=OUT|LAST"]
     basic_divided_thumb_assembler& b(const immediate& imm12)
