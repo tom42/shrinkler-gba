@@ -416,7 +416,7 @@ void cart_assembler::debug_check_decompressed_data_size(const input_file& input_
     ldr(tmp1, input_file.loaded_data_size());
     cmp(outp, tmp1);
     beq("decompressed_data_size_ok"s);
-    debug_call_panic_routine("Wrong decompressed data size");
+    debug_call_panic_routine("Wrong decompressed data size\n");
 label("decompressed_data_size_ok"s);
 }
 
@@ -463,7 +463,7 @@ label("s2_ok"s);
     ldr(expected_checksum, adler32(input_file.data()));
     cmp(s1, expected_checksum);
     beq("checksum_ok"s);
-    debug_call_panic_routine("Wrong decompressed data checksum");
+    debug_call_panic_routine("Wrong decompressed data checksum\n");
 label("checksum_ok"s);
 }
 
