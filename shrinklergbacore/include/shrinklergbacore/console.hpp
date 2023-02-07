@@ -17,18 +17,28 @@ public:
     void out(std::ostream* s) { m_out = s; }
     bool is_out_enabled() const { return out(); }
 
+    std::ostream* warn() const { return m_warn; }
+    void warn(std::ostream* s) { m_warn = s; }
+    bool is_warn_enabled() const { return warn(); }
+
     std::ostream* verbose() const { return m_verbose; }
     void verbose(std::ostream* s) { m_verbose = s; }
     bool is_verbose_enabled() const { return verbose(); }
 
 private:
     std::ostream* m_out = &std::cout;
+    std::ostream* m_warn = &std::cout;
     std::ostream* m_verbose = &std::cout;
 };
 
 #define CONSOLE_OUT(console)                \
     if (!(console).is_out_enabled());       \
         else *(console).out()
+
+// TODO: add warning prefix to messages?
+#define CONSOLE_WARN(console)               \
+    if (!(console).is_warn_enabled());      \
+        else *(console).warn()
 
 #define CONSOLE_VERBOSE(console)            \
     if (!(console).is_verbose_enabled());   \
