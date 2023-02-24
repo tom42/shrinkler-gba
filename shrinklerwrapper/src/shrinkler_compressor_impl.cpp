@@ -17,7 +17,7 @@
 #include "shrinkler_compressor_impl.hpp"
 #include "util.hpp"
 
-#define CONSOLE if (!parameters.verbose); else std::cout
+#define CONSOLE_VERBOSE if (!parameters.verbose); else std::cout
 
 namespace shrinklerwrapper::detail
 {
@@ -43,7 +43,7 @@ static PackParams create_pack_params(const shrinkler_parameters& parameters)
 // Corresponds to main in Shrinkler.
 vector<unsigned char> shrinkler_compressor_impl::compress(const vector<unsigned char>& data) const
 {
-    CONSOLE << "Compressing..." << endl;
+    CONSOLE_VERBOSE << "Compressing..." << endl;
 
     RefEdgeFactory edge_factory(parameters.references);
     auto pack_params = create_pack_params(parameters);
@@ -55,12 +55,12 @@ vector<unsigned char> shrinkler_compressor_impl::compress(const vector<unsigned 
     // Not worth the trouble for the time being.
     auto packed_bytes = crunch(data, pack_params, edge_factory, false);
 
-    CONSOLE << fmt::format("References considered: {}", edge_factory.max_edge_count) << endl;
-    CONSOLE << fmt::format("References discarded: {}", edge_factory.max_cleaned_edges) << endl;
+    CONSOLE_VERBOSE << fmt::format("References considered: {}", edge_factory.max_edge_count) << endl;
+    CONSOLE_VERBOSE << fmt::format("References discarded: {}", edge_factory.max_cleaned_edges) << endl;
 
     if (edge_factory.max_edge_count > parameters.references)
     {
-        CONSOLE << "Note: compression may benefit from a larger reference buffer (-r option)" << endl;
+        CONSOLE_VERBOSE << "Note: compression may benefit from a larger reference buffer (-r option)" << endl;
     }
 
     return packed_bytes;
@@ -75,7 +75,7 @@ std::vector<unsigned char> shrinkler_compressor_impl::crunch(const std::vector<u
     // Compress and verify
     vector<uint32_t> pack_buffer = compress(non_const_data, params, edge_factory, show_progress);
     auto margin = verify(non_const_data, pack_buffer, params);
-    CONSOLE << "Minimum safety margin for overlapped decrunching: " << margin << endl;
+    CONSOLE_VERBOSE << "Minimum safety margin for overlapped decrunching: " << margin << endl;
 
     // Shrinkler produces packed data suitable for 68k CPUs.
     // For the GBA's ARM7TDMI convert the data to little endian.
@@ -99,7 +99,7 @@ std::vector<uint32_t> shrinkler_compressor_impl::compress(std::vector<unsigned c
 // Corresponds to DataFile::verify in Shrinkler.
 ptrdiff_t shrinkler_compressor_impl::verify(std::vector<unsigned char>& data, std::vector<uint32_t>& pack_buffer, PackParams& params) const
 {
-    CONSOLE << "Verifying..." << endl;
+    CONSOLE_VERBOSE << "Verifying..." << endl;
 
     RangeDecoder decoder(LZEncoder::NUM_CONTEXTS + NUM_RELOC_CONTEXTS, pack_buffer);
     LZDecoder lzd(&decoder, params.parity_context);
@@ -138,7 +138,7 @@ void shrinkler_compressor_impl::packData(unsigned char* data, int data_length, i
     else {
         progress = new NoProgress();
     }
-    CONSOLE << "Original: " << data_length << endl;
+    CONSOLE_VERBOSE << "Original: " << data_length << endl;
     for (int i = 0; i < params->iterations; i++) {
         // Parse data into LZ symbols
         LZParseResult& result = results[1 - best_result];
@@ -162,7 +162,7 @@ void shrinkler_compressor_impl::packData(unsigned char* data, int data_length, i
         }
 
         // Print size
-        CONSOLE << fmt::format("Pass {}: {:.3f}", i + 1, real_size / (double)(8 << Coder::BIT_PRECISION)) << endl;
+        CONSOLE_VERBOSE << fmt::format("Pass {}: {:.3f}", i + 1, real_size / (double)(8 << Coder::BIT_PRECISION)) << endl;
 
         // Count symbol frequencies
         CountingCoder* new_counting_coder = new CountingCoder(LZEncoder::NUM_CONTEXTS);
