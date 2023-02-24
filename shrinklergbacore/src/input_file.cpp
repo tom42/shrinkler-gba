@@ -70,10 +70,6 @@ void input_file::load_elf(std::istream& stream)
     log_program_headers(reader);
     log_section_headers(reader);
     convert_to_binary(reader);
-
-    // TODO: final checks:
-    //       * what do we do if the resulting raw binary is 0 bytes big (or too small in general?)
-    //         * Well in principle it depends on our packers what they consider 'too small'. If they can cope with zero bytes, that's fine by me.
 }
 
 void input_file::reset()
