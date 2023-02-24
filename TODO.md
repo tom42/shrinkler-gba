@@ -63,9 +63,6 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
     @   We can e.g. do so by writing something into the single bit context and then inspecting memory.
 * Somewhere, have some documentation of the depacker, including blueberrys explanation what he does with all the contexts (and the odd stack hack)
 * For deploying windows binaries, do we need to take care to distribute runtime libraries? Or do we link statically?
-* NEXT:
-  * Verification
-    * Either when reading the ELF or writing the raw binary, should we check that sh_addralign/sh_addr match?
 * Open issues
   * Final binary generation/depacker
     * Depacker code
