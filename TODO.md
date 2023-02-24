@@ -37,7 +37,6 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
 ## Old stuff below, needs clean up
 * Next steps
   * Wrap initial version up
-* GBA-cart-header.md needs cleanup: we've found a way to abuse the complement.
 * Notes from various old sources:
   * Old Thumb data depacker (shrinkler_decompress_thumb.s)
     @ * We should make sure we do not write anywhere past the context array
