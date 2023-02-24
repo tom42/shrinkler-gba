@@ -36,13 +36,6 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
 
 ## Old stuff below, needs clean up
 * Next steps
-  * Warnings/sanity checks:
-    * Need to recheck, but:
-      * If the last byte of the output is 0xff, then
-        * Append a byte with a different value
-        * Issue a warning about this
-        * See linker script from devkitPro: apparently there seems to be some issue with flashcarts
-          that throw away trailing 0xff bytes from cart images.
   * Wrap initial version up
 * GBA-cart-header.md needs cleanup: we've found a way to abuse the complement.
 * Notes from various old sources:
