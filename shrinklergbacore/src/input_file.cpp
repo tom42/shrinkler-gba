@@ -176,7 +176,7 @@ void input_file::convert_to_binary(ELFIO::elfio& reader)
         {
             if (s->get_address() < output_address)
             {
-                throw std::runtime_error(format("section {} overlaps with previous section {}", s->get_name(), previous_section->get_name()));
+                throw std::runtime_error(format("Section {} overlaps with previous section {}", s->get_name(), previous_section->get_name()));
             }
 
             const auto npadding_bytes = s->get_address() - output_address;

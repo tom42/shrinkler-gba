@@ -85,7 +85,7 @@ void gba_packer::write_to_disk(const std::vector<unsigned char>& data, const std
     catch (const std::system_error& e)
     {
         remove_output_file(filename);
-        throw std::runtime_error(fmt::format("could not write {}: {}", filename.string(), e.what()));
+        throw std::runtime_error(fmt::format("Could not write {}: {}", filename.string(), e.what()));
     }
 }
 
