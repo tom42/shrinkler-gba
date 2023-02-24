@@ -40,13 +40,25 @@ void gba_packer::pack(const options& options)
         .debug_checks = options.debug_checks()
     };
     cart_assembler cart_assembler(input_file, compressed_program, depacker_settings);
+    std::vector<unsigned char> cart_data = cart_assembler.data();
+
+    // EZF Advance removes trailing 0xff bytes.
+    // If the last byte is 0xff, pad the image so that nothing important is removed.
+    if (cart_data.size() && (cart_data.back() == 0xff))
+    {
+        cart_data.push_back('T');
+        cart_data.push_back('o');
+        cart_data.push_back('m');
+        cart_data.push_back('!');
+        CONSOLE_WARN(console) << "Last byte of cart was 0xff. Appended padding word to protect against EZF Advance" << std::endl;
+    }
 
     CONSOLE_VERBOSE(console) << fmt::format("Uncompressed data size: {:4} bytes", input_file.data().size()) << std::endl;
     CONSOLE_VERBOSE(console) << fmt::format("Compressed data size  : {:4} bytes", compressed_program.size()) << std::endl;
     CONSOLE_VERBOSE(console) << fmt::format("Depacker size         : {:4} bytes (excluding code in cartridge header)", cart_assembler.depacker_size()) << std::endl;
-    CONSOLE_VERBOSE(console) << fmt::format("Cartridge size        : {:4} bytes", cart_assembler.data().size()) << std::endl;
+    CONSOLE_VERBOSE(console) << fmt::format("Cartridge size        : {:4} bytes", cart_data.size()) << std::endl;
     CONSOLE_VERBOSE(console) << "Writing: " << options.output_file().string() << std::endl;
-    write_to_disk(cart_assembler.data(), options.output_file());
+    write_to_disk(cart_data, options.output_file());
 }
 
 void gba_packer::write_to_disk(const std::vector<unsigned char>& data, const std::filesystem::path& filename)

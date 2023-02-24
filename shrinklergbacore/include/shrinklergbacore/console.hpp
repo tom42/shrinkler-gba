@@ -31,17 +31,16 @@ private:
     std::ostream* m_verbose = &std::cout;
 };
 
-#define CONSOLE_OUT(console)                \
-    if (!(console).is_out_enabled());       \
+#define CONSOLE_OUT(console)                    \
+    if (!(console).is_out_enabled());           \
         else *(console).out()
 
-// TODO: add warning prefix to messages?
-#define CONSOLE_WARN(console)               \
-    if (!(console).is_warn_enabled());      \
-        else *(console).warn()
+#define CONSOLE_WARN(console)                   \
+    if (!(console).is_warn_enabled());          \
+        else *(console).warn() << "Warning: "
 
-#define CONSOLE_VERBOSE(console)            \
-    if (!(console).is_verbose_enabled());   \
+#define CONSOLE_VERBOSE(console)                \
+    if (!(console).is_verbose_enabled());       \
         else *(console).verbose()
 
 }
