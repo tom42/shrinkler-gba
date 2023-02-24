@@ -17,6 +17,7 @@
 #include "shrinkler_compressor_impl.hpp"
 #include "util.hpp"
 
+#define CONSOLE_WARN std::cout << "Warning: "
 #define CONSOLE_VERBOSE if (!parameters.verbose); else std::cout
 
 namespace shrinklerwrapper::detail
@@ -60,7 +61,7 @@ vector<unsigned char> shrinkler_compressor_impl::compress(const vector<unsigned 
 
     if (edge_factory.max_edge_count > parameters.references)
     {
-        CONSOLE_VERBOSE << "Note: compression may benefit from a larger reference buffer (-r option)" << endl;
+        CONSOLE_WARN << "Compression may benefit from a larger reference buffer (-r option)" << endl;
     }
 
     return packed_bytes;

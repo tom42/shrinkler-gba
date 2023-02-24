@@ -43,8 +43,6 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
         * Issue a warning about this
         * See linker script from devkitPro: apparently there seems to be some issue with flashcarts
           that throw away trailing 0xff bytes from cart images.
-    * See which output in shrinkler.cpp should be optional and which should not:
-      * The message about the -r option for instance should NOT be hidden if verbose mode is not used
   * Wrap initial version up
 * GBA-cart-header.md needs cleanup: we've found a way to abuse the complement.
 * Notes from various old sources:
