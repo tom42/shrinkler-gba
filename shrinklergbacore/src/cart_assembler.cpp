@@ -10,6 +10,11 @@
 // 228                  fe2a520     Restore sp to 0x03007f00 before executing unpacked intro. No code in header.
 // 228                  e093da7     Code unlikely to vary is at the beginning of the ROM. No code in header.
 // 200                  50f0d25     Moved code into header (getkind and the beginning of getbit).
+//
+// The Thumb Shrinkler depacker is a pretty direct port of the 68K depacker,
+// including how the contexts are laid out on the stack. This is somewhat
+// non-obvious, and Blueberry gave a nice explanation of this on the A.D.A.
+// coding forum. It can be found in 3rdparty/Shrinkler/DepackerExplained.md.
 
 #include <bit>
 #include <cstdint>

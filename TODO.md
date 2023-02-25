@@ -43,10 +43,6 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
     @   * Well we could have a debug mode where we check this, no? Some sort of assertion?
     @ * Since the ultimate goal is to produce a GBA 4k cruncher, do we need to
     @   * Can we save some bits if we do not have our data on stack but in EWRAM?
-  * Old ARM data depacker (shrinkler_decompress_arm.s)
-    @ * Document the odd addressing of the contexts? In principle we can copypaste Blueberrys explanations.
-    @   - Yes we want the table with the context groups
-    @   - And the explanation of the addressing in getbit
   * The old Thumb prototype:
     @ * For starters, keep the contexts on the stack.
     @   Later we can always investigate whether having them e.g. in EWRAM is smaller.
@@ -60,7 +56,6 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
     @ * Check whether the context table is really where we believe it is and we are
     @   not overwriting anything. Currently I am not sure this is the case.
     @   We can e.g. do so by writing something into the single bit context and then inspecting memory.
-* Somewhere, have some documentation of the depacker, including blueberrys explanation what he does with all the contexts (and the odd stack hack)
 * For deploying windows binaries, do we need to take care to distribute runtime libraries? Or do we link statically?
 * Open issues
   * Final binary generation/depacker
