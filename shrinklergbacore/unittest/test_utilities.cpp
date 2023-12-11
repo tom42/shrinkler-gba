@@ -6,6 +6,7 @@
 #include <boost/test/unit_test.hpp>
 #include <cstddef>
 #include <fstream>
+#include <iterator>
 #include "shrinklergbacore_unittest_config.hpp"
 #include "test_utilities.hpp"
 
