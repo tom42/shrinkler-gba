@@ -23,3 +23,6 @@ Note:
 
 ## How to update an existing library
 Example: `git subtree pull --prefix 3rdparty/lzasm https://github.com/tom42/lzasm v0.2.0 --squash`
+
+## How to remove a library
+Just remove the directory, then commit: `git rm 3rdparty/fmt -r`

@@ -7,5 +7,4 @@ if(NOT HAVE_ARGP)
 endif()
 
 add_subdirectory(ELFIO)
-add_subdirectory(fmt)
 add_subdirectory(lzasm)

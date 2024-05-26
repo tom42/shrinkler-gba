@@ -27,7 +27,6 @@ target_include_directories(
   # If the directory containing Shrinkler's assert.h is in the search path,
   # then that will not work. Not with MSVC anyway.
   "${PROJECT_SOURCE_DIR}/3rdparty/Shrinkler/decrunchers_bin")
-target_link_libraries(shrinklerwrapper PRIVATE fmt)
 
 if(BUILD_TESTING)
   add_executable(

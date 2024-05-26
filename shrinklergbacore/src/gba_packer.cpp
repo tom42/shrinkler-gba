@@ -4,12 +4,12 @@
 
 #include <cassert>
 #include <cerrno>
+#include <format>
 #include <fstream>
 #include <iostream>
 #include <string>
 #include <system_error>
 #include <vector>
-#include "fmt/core.h"
 #include "shrinklerwrapper/shrinklerwrapper.hpp"
 #include "shrinklergbacore/cart_assembler.hpp"
 #include "shrinklergbacore/console.hpp"
@@ -58,10 +58,10 @@ void gba_packer::pack(const options& options)
         CONSOLE_WARN(console) << "Last byte of cart was 0xff. Appended padding word to protect against EZF Advance" << std::endl;
     }
 
-    CONSOLE_VERBOSE(console) << fmt::format("Uncompressed data size: {:4} bytes", input_file.data().size()) << std::endl;
-    CONSOLE_VERBOSE(console) << fmt::format("Compressed data size  : {:4} bytes", compressed_program.size()) << std::endl;
-    CONSOLE_VERBOSE(console) << fmt::format("Depacker size         : {:4} bytes (excluding code in cartridge header)", cart_assembler.depacker_size()) << std::endl;
-    CONSOLE_VERBOSE(console) << fmt::format("Cartridge size        : {:4} bytes", cart_data.size()) << std::endl;
+    CONSOLE_VERBOSE(console) << std::format("Uncompressed data size: {:4} bytes", input_file.data().size()) << std::endl;
+    CONSOLE_VERBOSE(console) << std::format("Compressed data size  : {:4} bytes", compressed_program.size()) << std::endl;
+    CONSOLE_VERBOSE(console) << std::format("Depacker size         : {:4} bytes (excluding code in cartridge header)", cart_assembler.depacker_size()) << std::endl;
+    CONSOLE_VERBOSE(console) << std::format("Cartridge size        : {:4} bytes", cart_data.size()) << std::endl;
     CONSOLE_VERBOSE(console) << "Writing: " << options.output_file().string() << std::endl;
     write_to_disk(cart_data, options.output_file());
 }
@@ -90,7 +90,7 @@ void gba_packer::write_to_disk(const std::vector<unsigned char>& data, const std
     catch (const std::system_error& e)
     {
         remove_output_file(filename);
-        throw std::runtime_error(fmt::format("Could not write {}: {}", filename.string(), e.what()));
+        throw std::runtime_error(std::format("Could not write {}: {}", filename.string(), e.what()));
     }
 }
 

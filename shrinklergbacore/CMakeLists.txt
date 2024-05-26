@@ -37,7 +37,7 @@ target_include_directories(
   PRIVATE
   "${Boost_INCLUDE_DIRS}"
   "${CMAKE_CURRENT_BINARY_DIR}")
-target_link_libraries(shrinklergbacore PUBLIC shrinklerwrapper PRIVATE elfio fmt lzasm)
+target_link_libraries(shrinklergbacore PUBLIC shrinklerwrapper PRIVATE elfio lzasm)
 if(NOT HAVE_ARGP)
   target_link_libraries(shrinklergbacore PRIVATE argp-standalone)
 endif()

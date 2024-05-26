@@ -6,7 +6,6 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
 
 # Things to do
 ## General
-* Get rid of fmt: should now be able to use std::format
 * Get rid of wrapper header for shrinkler code: treat it as system header instead
 * Add uninstall target
 

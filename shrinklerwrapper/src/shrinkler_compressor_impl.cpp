@@ -11,9 +11,9 @@
 #include <boost/numeric/conversion/cast.hpp>
 #include <cstdio>
 #include <cstdlib>
+#include <format>
 #include <iostream>
 #include <stdexcept>
-#include "fmt/core.h"
 #include "shrinkler_compressor_impl.hpp"
 #include "util.hpp"
 
@@ -56,8 +56,8 @@ vector<unsigned char> shrinkler_compressor_impl::compress(const vector<unsigned 
     // Not worth the trouble for the time being.
     auto packed_bytes = crunch(data, pack_params, edge_factory, false);
 
-    CONSOLE_VERBOSE << fmt::format("References considered: {}", edge_factory.max_edge_count) << endl;
-    CONSOLE_VERBOSE << fmt::format("References discarded: {}", edge_factory.max_cleaned_edges) << endl;
+    CONSOLE_VERBOSE << std::format("References considered: {}", edge_factory.max_edge_count) << endl;
+    CONSOLE_VERBOSE << std::format("References discarded: {}", edge_factory.max_cleaned_edges) << endl;
 
     if (edge_factory.max_edge_count > parameters.references)
     {
@@ -117,7 +117,7 @@ ptrdiff_t shrinkler_compressor_impl::verify(std::vector<unsigned char>& data, st
     // Check length
     if (numeric_cast<size_t>(verifier.size()) != data.size())
     {
-        throw runtime_error(fmt::format("INTERNAL ERROR: decompressed data has incorrect length ({}, should have been {})", verifier.size(), data.size()));
+        throw runtime_error(std::format("INTERNAL ERROR: decompressed data has incorrect length ({}, should have been {})", verifier.size(), data.size()));
     }
 
     return verifier.front_overlap_margin + pack_buffer.size() * 4 - data.size();
@@ -163,7 +163,7 @@ void shrinkler_compressor_impl::packData(unsigned char* data, int data_length, i
         }
 
         // Print size
-        CONSOLE_VERBOSE << fmt::format("Pass {}: {:.3f}", i + 1, real_size / (double)(8 << Coder::BIT_PRECISION)) << endl;
+        CONSOLE_VERBOSE << std::format("Pass {}: {:.3f}", i + 1, real_size / (double)(8 << Coder::BIT_PRECISION)) << endl;
 
         // Count symbol frequencies
         CountingCoder* new_counting_coder = new CountingCoder(LZEncoder::NUM_CONTEXTS);

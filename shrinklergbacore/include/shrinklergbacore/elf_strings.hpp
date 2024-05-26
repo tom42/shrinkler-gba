@@ -5,8 +5,8 @@
 #ifndef SHRINKLERGBACORE_ELF_STRINGS_HPP
 #define SHRINKLERGBACORE_ELF_STRINGS_HPP
 
+#include <format>
 #include <string>
-#include "fmt/core.h"
 #include "shrinklergbacore/elfio_wrapper.hpp"
 
 namespace shrinklergbacore::elf_strings
@@ -15,14 +15,14 @@ namespace shrinklergbacore::elf_strings
 template <typename TValue>
 std::string to_hex(TValue value)
 {
-    return fmt::format("{:#0x}", value);
+    return std::format("{:#0x}", value);
 }
 
 template <typename TValue, typename NDigits>
 std::string to_hex(TValue value, NDigits ndigits)
 {
     const auto prefix_width = 2;
-    return fmt::format("{:#0{}x}", value, ndigits + prefix_width);
+    return std::format("{:#0{}x}", value, ndigits + prefix_width);
 }
 
 std::string get_section_type(ELFIO::Elf_Word type);
