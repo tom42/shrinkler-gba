@@ -35,7 +35,7 @@ std::vector<unsigned char> load_binary_file(const std::filesystem::path& filenam
         data.begin(),
         std::istream_iterator<unsigned char>(file),
         std::istream_iterator<unsigned char>());
-    BOOST_REQUIRE_MESSAGE(file || file.eof(), "Error reading " + full_path.string());
+    BOOST_REQUIRE_MESSAGE(!file.bad() && (data.size() == filesize), "Error reading " + full_path.string());
     file.close();
 
     return data;
