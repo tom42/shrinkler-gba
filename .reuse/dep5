@@ -7,10 +7,6 @@ Files: 3rdparty/ELFIO/*
 Copyright: 2001-present Serge Lamikhov-Center
 License: MIT
 
-Files: 3rdparty/fmt/*
-Copyright: 2012-present Victor Zverovich
-License: MIT
-
 Files: 3rdparty/Shrinkler/*
 Copyright: 1999-present Aske Simon Christensen
 License: LicenseRef-Shrinkler
