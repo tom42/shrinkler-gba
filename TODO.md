@@ -6,6 +6,13 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
 
 # Things to do
 ## General
+* Modernize this code
+  * Redo CMakeLists.txt
+  * Stop using subtrees. Get stuff using FetchContent. Our own, anyway.
+  * Make shrinklerwrapper a separate project (libshrinkler, ongoing)
+  * Use argpppp
+  * Use agbpack to pack tiny intros
+  * CI builds with github actions
 * Get rid of wrapper header for shrinkler code: treat it as system header instead
 * Add uninstall target
 
