@@ -1,58 +1,36 @@
 # SPDX-FileCopyrightText: 2021 Thomas Mathys
 # SPDX-License-Identifier: MIT
-# shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
 
-cmake_minimum_required(VERSION 3.20.0)
+cmake_minimum_required(VERSION 3.31.6)
 project(shrinkler-gba VERSION 0.1.0 LANGUAGES CXX)
+list(INSERT CMAKE_MODULE_PATH 0 "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
-if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
-  set(IS_MAIN_PROJECT TRUE)
-else()
-  set(IS_MAIN_PROJECT FALSE)
+
+################################################################################
+# Options
+################################################################################
+
+option(shrinkler_gba_BUILD_TESTING "Build shrinkler-gba tests" OFF)
+option(shrinkler_gba_ENABLE_WARNINGS "Build shrinkler-gba with warnings enabled" OFF)
+option(shrinkler_gba_INSTALL_SHRINKLER_GBA "Install the shrinkler-gba executable" ${PROJECT_IS_TOP_LEVEL})
+
+# TODO: rewrite similarly to agbpack etc.
+# TODO: merge in stuff from old CMakeLists as it makes sense
+# TODO: implement all options, including installer
+
+################################################################################
+# Set up testing
+################################################################################
+
+# TODO: enable testing (through preset, then that's already done) and get it to work (VtgTesting is probably missing)
+# TODO: figure out which version of catch2 we can easily use on github, and use that
+if(shrinkler_gba_BUILD_TESTING)
+  enable_testing()
+  include(VtgTesting)
+  vtg_testing_setup_catch2(3.4.0)
 endif()
 
-if(IS_MAIN_PROJECT)
-  set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-  include(CTest)
-endif()
-
 
 ################################################################################
-# Find packages.
+# Build our own code
 ################################################################################
-
-include(CheckFunctionExists)
-
-# Search for Boost headers only, but not the libraries.
-# We'll compile the unit test framework ourselves as part of the unit tests.
-# This simplifies cross development, since we only
-# need Boost headers on build machines.
-find_package(Boost 1.78 REQUIRED)
-
-check_function_exists(argp_parse HAVE_ARGP)
-
-
-################################################################################
-# Subdirectories with 3rd party code.
-################################################################################
-
-add_subdirectory(3rdparty)
-
-
-################################################################################
-# Subdirectories with own code.
-################################################################################
-
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
-
-if(MSVC)
-  add_compile_options(/W4 /WX)
-else()
-  add_compile_options(-Wall -Wextra -pedantic -Werror)
-endif()
-
-add_subdirectory(shrinklerwrapper)
-add_subdirectory(shrinklergbacore)
-add_subdirectory(shrinkler-gba)

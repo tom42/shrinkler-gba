@@ -1,0 +1,32 @@
+
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+if(agbpack_ENABLE_WARNINGS)
+  set(vtg_ENABLE_WARNINGS ON)
+endif()
+include(VtgEnableWarnings)
+
+# Create global configuration header
+configure_file(
+  agbpack_config.hpp.in
+  "${CMAKE_CURRENT_BINARY_DIR}/agbpack_config.hpp")
+include_directories("${CMAKE_CURRENT_BINARY_DIR}")
+
+add_subdirectory(src)
+if(agbpack_BUILD_TESTING)
+  add_subdirectory(test)
+endif()
+
+
+################################################################################
+# Add custom targets (reuse lint etc.)
+################################################################################
+
+if(PROJECT_IS_TOP_LEVEL)
+  add_custom_target(
+    reuse-lint
+    COMMAND reuse lint
+    WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}")
+endif()

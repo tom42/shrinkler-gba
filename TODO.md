@@ -13,8 +13,11 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
   * Use argpppp
   * Use agbpack to pack tiny intros
   * CI builds with github actions
+  * Redo source tree organization (top level src/test directory, see e.g. agbpack)
 * Get rid of wrapper header for shrinkler code: treat it as system header instead
 * Add uninstall target
+* Delete CMakeListst.old.txt
+* Go through directories/files (top level in particular, but not only), see what's still needed
 
 ## Depackers
 * For really small intros: use BIOS LZSS compression + Huffman encoding (4 or 8 bit, whichever is better)
