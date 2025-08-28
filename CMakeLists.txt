@@ -14,6 +14,7 @@ option(shrinkler_gba_BUILD_TESTING "Build shrinkler-gba tests" OFF)
 option(shrinkler_gba_ENABLE_WARNINGS "Build shrinkler-gba with warnings enabled" OFF)
 option(shrinkler_gba_INSTALL_SHRINKLER_GBA "Install the shrinkler-gba executable" ${PROJECT_IS_TOP_LEVEL})
 
+# TODO: internally, call everything shrinklergba: no dashes, no underscores
 # TODO: rewrite similarly to agbpack etc.
 # TODO: merge in stuff from old CMakeLists as it makes sense
 # TODO: implement all options, including installer
