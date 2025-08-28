@@ -1,7 +1,6 @@
 <!--
 SPDX-FileCopyrightText: 2021 Thomas Mathys
 SPDX-License-Identifier: MIT
-shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
 -->
 
 # Things to do
@@ -14,6 +13,8 @@ shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
   * Use agbpack to pack tiny intros
   * CI builds with github actions
   * Redo source tree organization (top level src/test directory, see e.g. agbpack)
+  * Remove the following blurb from all copyright notices:
+    'Port of the Shrinkler Amiga executable cruncher for the GBA'
 * Get rid of wrapper header for shrinkler code: treat it as system header instead
 * Add uninstall target
 * Delete CMakeListst.old.txt
