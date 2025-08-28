@@ -22,8 +22,6 @@ option(shrinkler_gba_INSTALL_SHRINKLER_GBA "Install the shrinkler-gba executable
 # Set up testing
 ################################################################################
 
-# TODO: enable testing (through preset, then that's already done) and get it to work (VtgTesting is probably missing)
-# TODO: figure out which version of catch2 we can easily use on github, and use that
 if(shrinkler_gba_BUILD_TESTING)
   enable_testing()
   include(VtgTesting)
@@ -34,3 +32,29 @@ endif()
 ################################################################################
 # Build our own code
 ################################################################################
+
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+if(shrinkler_gba_ENABLE_WARNINGS)
+  set(vtg_ENABLE_WARNINGS ON)
+endif()
+include(VtgEnableWarnings)
+
+add_subdirectory(src)
+if(agbpack_BUILD_TESTING)
+  add_subdirectory(test)
+endif()
+
+
+################################################################################
+# Add custom targets (reuse lint etc.)
+################################################################################
+
+if(PROJECT_IS_TOP_LEVEL)
+  add_custom_target(
+    reuse-lint
+    COMMAND reuse lint
+    WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}")
+endif()
