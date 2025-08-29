@@ -6,7 +6,7 @@ set(
   PUBLIC FILE_SET CXX_MODULES FILES
   shrinkler_gba.cppm)
 
+# Production version of shrinkler_gba.
 add_library(shrinkler_gba)
 target_sources(shrinkler_gba ${shrinkler_gba_sources})
-# TODO: enable warnings
-# TODO: see what else we need for a module, e.g. from agbpack (do we need to set the standard?)
+vtg_target_enable_warnings(shrinkler_gba)
