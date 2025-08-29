@@ -43,7 +43,7 @@ endif()
 include(VtgEnableWarnings)
 
 add_subdirectory(src)
-if(agbpack_BUILD_TESTING)
+if(shrinkler_gba_BUILD_TESTING)
   add_subdirectory(test)
 endif()
 
