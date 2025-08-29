@@ -5,6 +5,8 @@
 #include <iostream>
 #include <stdexcept>
 
+import shrinkler_gba;
+
 int main(int, char* argv[])
 {
     try
