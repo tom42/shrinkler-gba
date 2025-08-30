@@ -6,6 +6,7 @@ SPDX-License-Identifier: MIT
 # Things to do
 ## General
 * Modernize this code
+  * When all done: fix reuse compliancy
   * Redo CMakeLists.txt
   * Stop using subtrees. Get stuff using FetchContent. Our own, anyway.
   * Make shrinklerwrapper a separate project (libshrinkler, ongoing)
