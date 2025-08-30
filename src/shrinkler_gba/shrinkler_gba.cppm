@@ -2,3 +2,4 @@
 // SPDX - License - Identifier: MIT
 
 export module shrinkler_gba;
+export import :adler32;
