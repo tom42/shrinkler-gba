@@ -1,12 +1,16 @@
 // SPDX-FileCopyrightText: 2023 Thomas Mathys
 // SPDX-License-Identifier: MIT
 
+module;
+
+#include <cstdint>
+#include <vector>
+
 module shrinkler_gba;
 
 namespace shrinkler_gba
 {
 
-// TODO: are we not missing headers here, like <cstdint> and <vector>? That's just MSVC not needing them, no?
 uint32_t adler32(const std::vector<unsigned char>& data)
 {
     constexpr auto base = 65521;
