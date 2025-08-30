@@ -5,7 +5,9 @@ set(
   shrinkler_gba_sources
   PUBLIC FILE_SET CXX_MODULES FILES
   adler32.cppm
-  shrinkler_gba.cppm)
+  shrinkler_gba.cppm
+  PRIVATE
+  adler32.cpp)
 
 # Production version of shrinkler_gba.
 add_library(shrinkler_gba)
