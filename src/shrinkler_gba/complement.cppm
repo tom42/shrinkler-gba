@@ -1,18 +1,18 @@
 // SPDX-FileCopyrightText: 2023 Thomas Mathys
 // SPDX-License-Identifier: MIT
-// shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
 
-#ifndef SHRINKLERGBACORE_CHECKSUM_HPP
-#define SHRINKLERGBACORE_CHECKSUM_HPP
+module;
 
 #include <cstddef>
-#include "gba.hpp"
 
-namespace shrinklergbacore
+export module shrinkler_gba:complement;
+
+namespace shrinkler_gba
 {
 
+// TODO: uncomment: does not yet build since we're missing ofs_complement and the like
 // The size of the checksummed area in the GBA cartridge header in bytes, including the complement byte.
-constexpr size_t checksum_area_size = ofs_complement - ofs_game_title + 1;
+//inline constexpr size_t checksum_area_size = ofs_complement - ofs_game_title + 1;
 
 // Calculates the complement of a GBA cartridge header.
 // checksum_area must point to a buffer representing the cartridge's checksum area.
@@ -28,5 +28,3 @@ unsigned char calculate_complement(const unsigned char* checksum_area);
 unsigned char calculate_complement(const unsigned char* checksum_area, size_t variable_byte_index);
 
 }
-
-#endif

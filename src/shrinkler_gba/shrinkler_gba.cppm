@@ -3,3 +3,4 @@
 
 export module shrinkler_gba;
 export import :adler32;
+export import :complement;
