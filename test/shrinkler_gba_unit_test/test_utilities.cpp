@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 #include <cstddef>
+#include <filesystem>
 #include <fstream>
 #include <iterator>
 #include <stdexcept>
@@ -14,9 +15,9 @@ namespace shrinkler_gba_unit_test
 using std::filesystem::path;
 using std::vector;
 
-std::vector<unsigned char> load_binary_file(const std::filesystem::path& filename)
+std::vector<unsigned char> load_binary_file(const std::string& filename)
 {
-    path full_path = SHRINKLER_GBA_UNIT_TEST_TESTDATA_DIRECTORY / filename;
+    path full_path = std::filesystem::path(SHRINKLER_GBA_UNIT_TEST_TESTDATA_DIRECTORY) / filename;
 
     // Open file, stop it from eating whitespace.
     std::ifstream file(full_path, std::ios::binary);
