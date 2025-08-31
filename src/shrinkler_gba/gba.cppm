@@ -1,0 +1,22 @@
+// SPDX-FileCopyrightText: 2023 Thomas Mathys
+// SPDX-License-Identifier: MIT
+
+module;
+
+#include <cstddef>
+
+export module shrinkler_gba:gba;
+
+namespace shrinkler_gba
+{
+
+// Offsets in GBA cartridge header
+inline constexpr size_t gba_header_size = 192;
+inline constexpr size_t ofs_game_title = 0xa0;
+inline constexpr size_t ofs_fixed_byte = 0xb2;
+inline constexpr size_t ofs_device_type = 0xb4;
+inline constexpr size_t ofs_game_version = 0xbc;
+inline constexpr size_t ofs_complement = 0xbd;
+inline constexpr size_t ofs_reserved2 = 0xbe;
+
+}

@@ -6,6 +6,7 @@ set(
   PUBLIC FILE_SET CXX_MODULES FILES
   adler32.cppm
   complement.cppm
+  gba.cppm
   shrinkler_gba.cppm
   PRIVATE
   adler32.cpp)

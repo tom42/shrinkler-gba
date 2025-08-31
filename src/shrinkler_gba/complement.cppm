@@ -6,13 +6,13 @@ module;
 #include <cstddef>
 
 export module shrinkler_gba:complement;
+import :gba;
 
 namespace shrinkler_gba
 {
 
-// TODO: uncomment: does not yet build since we're missing ofs_complement and the like
 // The size of the checksummed area in the GBA cartridge header in bytes, including the complement byte.
-//inline constexpr size_t checksum_area_size = ofs_complement - ofs_game_title + 1;
+inline constexpr size_t checksum_area_size = ofs_complement - ofs_game_title + 1;
 
 // Calculates the complement of a GBA cartridge header.
 // checksum_area must point to a buffer representing the cartridge's checksum area.
