@@ -19,9 +19,14 @@ std::vector<unsigned char> load_binary_file(const std::string& filename)
 {
     path full_path = std::filesystem::path(SHRINKLER_GBA_UNIT_TEST_TESTDATA_DIRECTORY) / filename;
 
-    // Open file, stop it from eating whitespace.
+    // Open file
     std::ifstream file(full_path, std::ios::binary);
-    //BOOST_REQUIRE_MESSAGE(file, "Could not open " + full_path.string()); // TODO: throw exception here instead
+    if (!file)
+    {
+        throw std::runtime_error("Could not open " + full_path.string());
+    }
+
+    // Stop file from eating whitespace.
     file.unsetf(std::ios::skipws);
 
     // Create vector with sufficient capacity to hold entire file.
@@ -34,9 +39,12 @@ std::vector<unsigned char> load_binary_file(const std::string& filename)
         data.begin(),
         std::istream_iterator<unsigned char>(file),
         std::istream_iterator<unsigned char>());
-    //BOOST_REQUIRE_MESSAGE(!file.bad() && (data.size() == filesize), "Error reading " + full_path.string()); // TODO: throw exception here instead
-    file.close();
+    if (file.bad() || (data.size() != filesize))
+    {
+        throw std::runtime_error("Error reading " + full_path.string());
+    }
 
+    file.close();
     return data;
 }
 
