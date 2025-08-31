@@ -10,6 +10,7 @@ configure_file(
 add_executable(
   shrinkler_gba_unit_test
   adler32_test.cpp
+  complement_test.cpp
   test_utilities.cpp)
 
 vtg_target_enable_warnings(shrinkler_gba_unit_test)
