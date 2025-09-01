@@ -1,11 +1,9 @@
 // SPDX-FileCopyrightText: 2023 Thomas Mathys
 // SPDX-License-Identifier: MIT
-// shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
 
-#include "shrinklergbacore/complement.hpp"
-#include "shrinklergbacore/gba.hpp"
+module shrinkler_gba;
 
-namespace shrinklergbacore
+namespace shrinkler_gba
 {
 
 unsigned char calculate_complement(const unsigned char* checksum_area)

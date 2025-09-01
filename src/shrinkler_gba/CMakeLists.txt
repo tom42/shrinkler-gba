@@ -9,7 +9,8 @@ set(
   gba.cppm
   shrinkler_gba.cppm
   PRIVATE
-  adler32.cpp)
+  adler32.cpp
+  complement.cpp)
 
 # Production version of shrinkler_gba.
 add_library(shrinkler_gba)
