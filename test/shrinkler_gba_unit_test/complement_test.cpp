@@ -9,6 +9,9 @@ namespace shrinkler_gba_unit_test
 {
 
 using shrinkler_gba::calculate_complement;
+using shrinkler_gba::checksum_area_size;
+using shrinkler_gba::ofs_game_title;
+using shrinkler_gba::ofs_game_version;
 
 namespace
 {
@@ -31,7 +34,7 @@ TEST_CASE("complement_test")
 {
     SECTION("value of checksum_area_size is correct")
     {
-        CHECK(shrinkler_gba::checksum_area_size == 30);
+        CHECK(checksum_area_size == 30);
     }
 
     SECTION("calculate complement normally")
@@ -39,30 +42,24 @@ TEST_CASE("complement_test")
         CHECK(calculate_complement(all_zero_except_fixed_byte) == 0x51);
         CHECK(calculate_complement(ascending_numbers) == 0x34);
     }
+
+    SECTION("calculate complement with fixed complement byte")
+    {
+        std::vector<unsigned char> buf(ascending_numbers, ascending_numbers + std::size(ascending_numbers));
+
+        // We want the real complement byte to have a fixed value, and fix the game version byte instead.
+        // Calculate what value the game version byte should have.
+        const size_t game_version_index = ofs_game_version - ofs_game_title;
+        const unsigned char game_version_byte = calculate_complement(buf.data(), game_version_index);
+        CHECK(game_version_byte == 0x33);
+
+        // Patch the game version byte in the checksum area, and check whether everything matches up.
+        buf[game_version_index] = game_version_byte;
+        const unsigned char calculated_complement_byte = calculate_complement(buf.data());
+        CHECK(calculated_complement_byte == 0x1e);
+        CHECK(buf[checksum_area_size - 2] == 0x33); // Game version
+        CHECK(buf[checksum_area_size - 1] == 0x1e); // Complement byte which we forced to a desired value
+    }
 }
 
 }
-
-// TODO: convert stuff below
-//
-//    BOOST_AUTO_TEST_CASE(calculate_complement_with_fixed_complement_byte)
-//    {
-//        std::vector<unsigned char> buf(ascending_numbers, ascending_numbers + std::size(ascending_numbers));
-//
-//        // We want the real complement byte to have a fixed value, and fix the game version byte instead.
-//        // Calculate what value the game version byte should have.
-//        const size_t game_version_index = ofs_game_version - ofs_game_title;
-//        const unsigned char game_version_byte = calculate_complement(buf.data(), game_version_index);
-//        BOOST_TEST(game_version_byte == 0x33);
-//
-//        // Patch the game version byte in the checksum area, and check whether everything matches up.
-//        buf[game_version_index] = game_version_byte;
-//        const unsigned char calculated_complement_byte = calculate_complement(buf.data());
-//        BOOST_TEST(calculated_complement_byte == 0x1e);
-//        BOOST_TEST(buf[checksum_area_size - 2] == 0x33); // Game version
-//        BOOST_TEST(buf[checksum_area_size - 1] == 0x1e); // Complement byte which we forced to a desired value
-//    }
-//
-//BOOST_AUTO_TEST_SUITE_END()
-//
-//}
