@@ -33,13 +33,12 @@ endif()
 # Get dependencies
 ################################################################################
 
-# TODO: how do I pass the version also to FIND_PACKAGE?
 include(FetchContent)
 FetchContent_Declare(
   libshrinkler
   GIT_REPOSITORY https://github.com/tom42/libshrinkler
   GIT_TAG        v1.0.0
-  FIND_PACKAGE_ARGS NAMES libshrinkler)
+  FIND_PACKAGE_ARGS 1.0.0 NAMES libshrinkler)
 FetchContent_MakeAvailable(libshrinkler)
 
 
