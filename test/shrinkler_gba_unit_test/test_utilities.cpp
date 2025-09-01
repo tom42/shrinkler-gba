@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 #include <cstddef>
+#include <cstring>
 #include <filesystem>
 #include <fstream>
 #include <iterator>
