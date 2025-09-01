@@ -33,12 +33,13 @@ endif()
 # Get dependencies
 ################################################################################
 
-# TODO: use find_package, particularly on linux. See https://cmake.org/cmake/help/latest/guide/using-dependencies/index.html#fetchcontent-and-find-package-integration
+# TODO: how do I pass the version also to FIND_PACKAGE?
 include(FetchContent)
 FetchContent_Declare(
   libshrinkler
   GIT_REPOSITORY https://github.com/tom42/libshrinkler
-  GIT_TAG        v1.0.0)
+  GIT_TAG        v1.0.0
+  FIND_PACKAGE_ARGS NAMES libshrinkler)
 FetchContent_MakeAvailable(libshrinkler)
 
 
