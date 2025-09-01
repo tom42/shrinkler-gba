@@ -30,6 +30,19 @@ endif()
 
 
 ################################################################################
+# Get dependencies
+################################################################################
+
+# TODO: use find_package, particularly on linux. See https://cmake.org/cmake/help/latest/guide/using-dependencies/index.html#fetchcontent-and-find-package-integration
+include(FetchContent)
+FetchContent_Declare(
+  libshrinkler
+  GIT_REPOSITORY https://github.com/tom42/libshrinkler
+  GIT_TAG        v1.0.0)
+FetchContent_MakeAvailable(libshrinkler)
+
+
+################################################################################
 # Build our own code
 ################################################################################
 
