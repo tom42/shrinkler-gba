@@ -6,6 +6,7 @@ module;
 #include <filesystem>
 
 export module shrinkler_gba:options;
+import libshrinkler;
 
 namespace shrinkler_gba
 {
@@ -46,17 +47,11 @@ public:
 
     void debug_checks(bool debug_checks) { m_debug_checks = debug_checks; }
 
-    // TODO: get everything in here that uses shrinklerwrapper::shrinkler_parameters built again:
-    //       * Neet to get this now from libshrinkler
-    //       * So libshrinkler needs a release, make it so
-    //       * We would then like a hybrid approach:
-    //         * If the library is installed, use find_package
-    //         * If it is not, use FetchContent
-    //const shrinklerwrapper::shrinkler_parameters& shrinkler_parameters() const { return m_shrinkler_parameters; }
+    const libshrinkler::encoder_parameters& shrinkler_parameters() const { return m_shrinkler_parameters; }
 
-    //shrinklerwrapper::shrinkler_parameters& shrinkler_parameters() { return m_shrinkler_parameters; }
+    libshrinkler::encoder_parameters& shrinkler_parameters() { return m_shrinkler_parameters; }
 
-    //void shrinkler_parameters(const shrinklerwrapper::shrinkler_parameters& p) { m_shrinkler_parameters = p; }
+    void shrinkler_parameters(const libshrinkler::encoder_parameters& p) { m_shrinkler_parameters = p; }
 
 private:
     bool m_verbose = false;
@@ -65,7 +60,7 @@ private:
     std::filesystem::path m_output_file;
     bool m_code_in_header = true;
     bool m_debug_checks = false;
-    //shrinklerwrapper::shrinkler_parameters m_shrinkler_parameters;
+    libshrinkler::encoder_parameters m_shrinkler_parameters;
 };
 
 }
