@@ -1,6 +1,10 @@
 // SPDX-FileCopyrightText: 2023 Thomas Mathys
 // SPDX-License-Identifier: MIT
 
+module;
+
+#include <cstddef>
+
 module shrinkler_gba;
 
 namespace shrinkler_gba
