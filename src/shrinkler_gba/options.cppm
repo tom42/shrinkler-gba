@@ -1,14 +1,13 @@
 // SPDX-FileCopyrightText: 2021 Thomas Mathys
 // SPDX-License-Identifier: MIT
-// shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
 
-#ifndef SHRINKLERGBACORE_OPTIONS_HPP
-#define SHRINKLERGBACORE_OPTIONS_HPP
+module;
 
 #include <filesystem>
-#include "shrinklerwrapper/shrinklerwrapper.hpp"
 
-namespace shrinklergbacore
+export module shrinkler_gba:options;
+
+namespace shrinkler_gba
 {
 
 class options final
@@ -47,11 +46,17 @@ public:
 
     void debug_checks(bool debug_checks) { m_debug_checks = debug_checks; }
 
-    const shrinklerwrapper::shrinkler_parameters& shrinkler_parameters() const { return m_shrinkler_parameters; }
+    // TODO: get everything in here that uses shrinklerwrapper::shrinkler_parameters built again:
+    //       * Neet to get this now from libshrinkler
+    //       * So libshrinkler needs a release, make it so
+    //       * We would then like a hybrid approach:
+    //         * If the library is installed, use find_package
+    //         * If it is not, use FetchContent
+    //const shrinklerwrapper::shrinkler_parameters& shrinkler_parameters() const { return m_shrinkler_parameters; }
 
-    shrinklerwrapper::shrinkler_parameters& shrinkler_parameters() { return m_shrinkler_parameters; }
+    //shrinklerwrapper::shrinkler_parameters& shrinkler_parameters() { return m_shrinkler_parameters; }
 
-    void shrinkler_parameters(const shrinklerwrapper::shrinkler_parameters& p) { m_shrinkler_parameters = p; }
+    //void shrinkler_parameters(const shrinklerwrapper::shrinkler_parameters& p) { m_shrinkler_parameters = p; }
 
 private:
     bool m_verbose = false;
@@ -60,9 +65,7 @@ private:
     std::filesystem::path m_output_file;
     bool m_code_in_header = true;
     bool m_debug_checks = false;
-    shrinklerwrapper::shrinkler_parameters m_shrinkler_parameters;
+    //shrinklerwrapper::shrinkler_parameters m_shrinkler_parameters;
 };
 
 }
-
-#endif

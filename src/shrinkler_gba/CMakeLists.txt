@@ -7,6 +7,7 @@ set(
   adler32.cppm
   complement.cppm
   gba.cppm
+  options.cppm
   shrinkler_gba.cppm
   PRIVATE
   adler32.cpp
