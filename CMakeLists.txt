@@ -34,10 +34,18 @@ endif()
 ################################################################################
 
 include(FetchContent)
+
+FetchContent_Declare(
+  argpppp
+  GIT_REPOSITORY    https://github.com/tom42/argpppp
+  GIT_TAG           v0.0.8
+  FIND_PACKAGE_ARGS 0.0.8 NAMES argpppp)
+FetchContent_MakeAvailable(argpppp)
+
 FetchContent_Declare(
   libshrinkler
-  GIT_REPOSITORY https://github.com/tom42/libshrinkler
-  GIT_TAG        v1.0.0
+  GIT_REPOSITORY    https://github.com/tom42/libshrinkler
+  GIT_TAG           v1.0.0
   FIND_PACKAGE_ARGS 1.0.0 NAMES libshrinkler)
 FetchContent_MakeAvailable(libshrinkler)
 
