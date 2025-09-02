@@ -11,6 +11,7 @@ import libshrinkler;
 namespace shrinkler_gba
 {
 
+SHRINKLER_GBA_EXPORT_FOR_UNIT_TESTING
 class options final
 {
 public:
