@@ -1,0 +1,11 @@
+// SPDX-FileCopyrightText: 2021 Thomas Mathys
+// SPDX-License-Identifier: MIT
+
+#ifndef SHRINKLER_GBA_VERSION_HPP
+#define SHRINKLER_GBA_VERSION_HPP
+
+#define SHRINKLER_GBA_PROJECT_NAME "@PROJECT_NAME@"
+
+#define SHRINKLER_GBA_PROJECT_VERSION "@PROJECT_VERSION@"
+
+#endif

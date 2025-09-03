@@ -2,8 +2,6 @@
 # SPDX-License-Identifier: MIT
 # shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
 
-configure_file(shrinklergbacore_version.hpp.in shrinklergbacore_version.hpp)
-
 set(
   SOURCES
   include/shrinklergbacore/adler32.hpp

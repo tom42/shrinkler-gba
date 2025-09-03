@@ -1,6 +1,10 @@
 // SPDX-FileCopyrightText: 2021 Thomas Mathys
 // SPDX-License-Identifier: MIT
 
+module;
+
+#include "version.hpp"
+
 module shrinkler_gba;
 import argpppp;
 
@@ -8,9 +12,8 @@ import argpppp;
 // It is not needed for glibc.
 extern "C"
 {
-// TODO: real version string
 // TODO: does this work on GNU/Linux?
-const char* argp_program_version = "argp_program_version_test 1.0";
+const char* argp_program_version = SHRINKLER_GBA_PROJECT_NAME " " SHRINKLER_GBA_PROJECT_VERSION;
 }
 
 namespace shrinkler_gba
@@ -33,16 +36,16 @@ void parse_command_line(int argc, char* argv[])
 {
     // TODO: parse command line using argpppp
     //       * Should now add callbacks
-    // TODO: add version
-    //       * First of all need a version header
-    //       * Then we need to define argp_program_version
-    // TODO: do we add a bug report address?
     // TODO: are the defaults still good? Can/should we calculate them somehow? (no they're not good anymore, since the default preset is now 3)
     // TODO: remove bogus_callback. This is only here to set up the parser
     auto bogus_callback = [](const char*) { return true; };
 
     argpppp::parser parser;
     // TODO: TBH I am not so happy with those set_xxx() methods: why did we call them set_xxx() rather than xxx()?
+    parser.set_doc(
+        SHRINKLER_GBA_PROJECT_NAME " - Shrinkler for the Gameboy Advance by Tom/Vantage\n"
+        "Shrinkler compression by Blueberry/Loonies\n"
+        "https://github.com/tom42/shrinkler-gba");
     parser.set_args_doc("FILE");
     add_header(parser, "General options:");
     add_option(parser, { "output-file", 'o', "FILE", {}, "Specify output filename. The default output filename is the input filename with the extension replaced by .gba" }, bogus_callback);

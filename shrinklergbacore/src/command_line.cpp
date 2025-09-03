@@ -97,14 +97,6 @@ private:
         m_action = command_action::exit_success;
     }
 
-    void print_version()
-    {
-        if (!m_silent)
-        {
-            std::cout << SHRINKLERGBA_PROJECT_NAME << " " << SHRINKLERGBA_PROJECT_VERSION << std::endl;
-        }
-    }
-
     int parse_preset(const char* s, const argp_state* state)
     {
         int preset = 0;
@@ -158,11 +150,6 @@ static error_t parse_opt(int key, char* arg, argp_state* state) noexcept
 
 command_action parse_command_line(int argc, char* argv[], options& options, bool silent)
 {
-    static const char doc[] =
-        SHRINKLERGBA_PROJECT_NAME " - Shrinkler for the Gameboy Advance by Tom/Vantage\n"
-        "Shrinkler compression by Blueberry/Loonies\n"
-        "https://github.com/tom42/shrinkler-gba";
-
     parser parser(options, silent);
 
     unsigned int flags = ARGP_NO_EXIT | ARGP_NO_HELP;
