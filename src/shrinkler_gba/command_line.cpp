@@ -40,7 +40,11 @@ void parse_command_line(int argc, char* argv[])
     // TODO: remove bogus_callback. This is only here to set up the parser
     auto bogus_callback = [](const char*) { return true; };
 
+    // TODO: set up callbacks to fill in command line options
+    // TODO: somehow, return options back to caller
+    options options;
     argpppp::parser parser;
+
     // TODO: TBH I am not so happy with those set_xxx() methods: why did we call them set_xxx() rather than xxx()?
     parser.set_doc(
         SHRINKLER_GBA_PROJECT_NAME " - Shrinkler for the Gameboy Advance by Tom/Vantage\n"
@@ -62,7 +66,9 @@ void parse_command_line(int argc, char* argv[])
     add_option(parser, { "preset", 'p', "PRESET", {}, "Preset for all compression options except --references (1..9, default 2)" }, bogus_callback);
     add_option(parser, { "references", 'r', "N", {}, "Number of reference edges to keep in memory (100000)" }, bogus_callback);
     add_option(parser, { "skip-length", 's', "N", {}, "Minimum match length to accept greedily (2000)" }, bogus_callback);
-    auto result = parser.parse(argc, argv); // TODO: result contains the paresed arguments => there should be only one - the input file. Put that into the options...
+
+    auto result = parser.parse(argc, argv);
+    options.input_file(result.args.at(0));
 }
 
 }
