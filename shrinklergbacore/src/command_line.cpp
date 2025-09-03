@@ -162,9 +162,6 @@ command_action parse_command_line(int argc, char* argv[], options& options, bool
         SHRINKLERGBA_PROJECT_NAME " - Shrinkler for the Gameboy Advance by Tom/Vantage\n"
         "Shrinkler compression by Blueberry/Loonies\n"
         "https://github.com/tom42/shrinkler-gba";
-    static const char args_doc[] = "FILE";
-
-    static const argp argp = { argp_options, parse_opt, args_doc, doc, 0, 0, 0 };
 
     parser parser(options, silent);
 

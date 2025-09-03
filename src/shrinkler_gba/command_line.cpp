@@ -4,6 +4,15 @@
 module shrinkler_gba;
 import argpppp;
 
+// extern "C" is needed for some platforms, e.g. when using MSVC and argp-standalone.
+// It is not needed for glibc.
+extern "C"
+{
+// TODO: real version string
+// TODO: does this work on GNU/Linux?
+const char* argp_program_version = "argp_program_version_test 1.0";
+}
+
 namespace shrinkler_gba
 {
 
@@ -28,11 +37,13 @@ void parse_command_line(int argc, char* argv[])
     //       * First of all need a version header
     //       * Then we need to define argp_program_version
     // TODO: do we add a bug report address?
-    // TODO: are the defaults still good? Can/should we calculate them somehow?
+    // TODO: are the defaults still good? Can/should we calculate them somehow? (no they're not good anymore, since the default preset is now 3)
     // TODO: remove bogus_callback. This is only here to set up the parser
     auto bogus_callback = [](const char*) { return true; };
 
     argpppp::parser parser;
+    // TODO: TBH I am not so happy with those set_xxx() methods: why did we call them set_xxx() rather than xxx()?
+    parser.set_args_doc("FILE");
     add_header(parser, "General options:");
     add_option(parser, { "output-file", 'o', "FILE", {}, "Specify output filename. The default output filename is the input filename with the extension replaced by .gba" }, bogus_callback);
     add_option(parser, { "verbose", 'v', {}, {}, "Print verbose messages", 0 }, bogus_callback);
