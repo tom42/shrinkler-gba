@@ -13,14 +13,6 @@
 namespace shrinklergbacore
 {
 
-enum option
-{
-    first = 256,
-    no_code_in_header,
-    debug_checks,
-    usage
-};
-
 class parser final
 {
 public:
@@ -171,36 +163,6 @@ command_action parse_command_line(int argc, char* argv[], options& options, bool
         "Shrinkler compression by Blueberry/Loonies\n"
         "https://github.com/tom42/shrinkler-gba";
     static const char args_doc[] = "FILE";
-
-    static const argp_option argp_options[] =
-    {
-        { 0, 0, 0, 0, "General options:", 0 },
-        { "output-file", 'o', "FILE", 0, "Specify output filename. The default output filename is the input filename with the extension replaced by .gba", 0 },
-        { "verbose", 'v', 0, 0, "Print verbose messages", 0 },
-
-        // Code generation options
-        { 0, 0, 0, 0, "Code generation options:", 0 },
-        { "no-code-in-header", option::no_code_in_header, 0, 0, "Do not put code in ROM header", 0},
-        { "debug-checks", option::debug_checks, 0, 0, "Add debug checks to depacker code", 0},
-
-        // Shrinkler compression options
-        { 0, 0, 0, 0, "Shrinkler compression options (default values in parentheses):", 0 },
-        { "same-length", 'a', "N", 0, "Number of matches of the same length to consider (20)", 0 },
-        { "effort", 'e', "N", 0, "Perseverance in finding multiple matches (200)", 0 },
-        { "iterations", 'i', "N", 0, "Number of iterations for the compression (2)", 0 },
-        { "length-margin", 'l', "N", 0, "Number of shorter matches considered for each match (2)", 0 },
-        { "preset", 'p', "PRESET", 0, "Preset for all compression options except --references (1..9, default 2)", 0 },
-        { "references", 'r', "N", 0, "Number of reference edges to keep in memory (100000)", 0 },
-        { "skip-length", 's', "N", 0, "Minimum match length to accept greedily (2000)", 0 },
-
-        // argp always forces "help" and "version" into group -1, but not "usage".
-        // But we want "usage" to be there too, so we explicitly specify -1 for "help".
-        // That way, "version" and "usage" will inherit it.
-        { "help", '?', 0, 0, "Give this help list", -1 },
-        { "version", 'V', 0, 0, "Print program version", 0},
-        { "usage", option::usage, 0, 0, "Give a short usage message", 0 },
-        { 0, 0, 0, 0, 0, 0 }
-    };
 
     static const argp argp = { argp_options, parse_opt, args_doc, doc, 0, 0, 0 };
 
