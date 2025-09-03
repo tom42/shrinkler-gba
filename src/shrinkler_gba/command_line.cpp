@@ -35,7 +35,7 @@ enum option
 void parse_command_line(int argc, char* argv[])
 {
     // TODO: parse command line using argpppp
-    //       * Should now add callbacks
+    //       * Should now add callbacks and set values
     // TODO: are the defaults still good? Can/should we calculate them somehow? (no they're not good anymore, since the default preset is now 3)
     // TODO: remove bogus_callback. This is only here to set up the parser
     auto bogus_callback = [](const char*) { return true; };
@@ -47,6 +47,7 @@ void parse_command_line(int argc, char* argv[])
         "Shrinkler compression by Blueberry/Loonies\n"
         "https://github.com/tom42/shrinkler-gba");
     parser.set_args_doc("FILE");
+    parser.set_nargs(1);
     add_header(parser, "General options:");
     add_option(parser, { "output-file", 'o', "FILE", {}, "Specify output filename. The default output filename is the input filename with the extension replaced by .gba" }, bogus_callback);
     add_option(parser, { "verbose", 'v', {}, {}, "Print verbose messages", 0 }, bogus_callback);
@@ -61,7 +62,7 @@ void parse_command_line(int argc, char* argv[])
     add_option(parser, { "preset", 'p', "PRESET", {}, "Preset for all compression options except --references (1..9, default 2)" }, bogus_callback);
     add_option(parser, { "references", 'r', "N", {}, "Number of reference edges to keep in memory (100000)" }, bogus_callback);
     add_option(parser, { "skip-length", 's', "N", {}, "Minimum match length to accept greedily (2000)" }, bogus_callback);
-    parser.parse(argc, argv);
+    auto result = parser.parse(argc, argv); // TODO: result contains the paresed arguments => there should be only one - the input file. Put that into the options...
 }
 
 }
