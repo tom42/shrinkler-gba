@@ -12,6 +12,7 @@ add_executable(
   adler32_test.cpp
   complement_test.cpp
   options_test.cpp
+  parse_command_line_test.cpp
   test_utilities.cpp)
 
 vtg_target_enable_warnings(shrinkler_gba_unit_test)

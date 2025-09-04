@@ -1,23 +1,66 @@
 // SPDX-FileCopyrightText: 2021 Thomas Mathys
 // SPDX-License-Identifier: MIT
-// shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
 
-#include <boost/algorithm/string.hpp>
-#include <boost/numeric/conversion/cast.hpp>
-#include <boost/test/unit_test.hpp>
-#include <cstring>
+#include <catch2/catch_test_macros.hpp>
+#include <sstream>
 #include <string>
 #include <vector>
-#include "shrinklergbacore/command_line.hpp"
-#include "shrinklergbacore/options.hpp"
 
-namespace shrinklergbacore_unittest
+import shrinkler_gba;
+
+namespace shrinkler_gba_unit_test
 {
 
-using shrinklergbacore::command_action;
 using std::string;
 using std::vector;
 
+namespace
+{
+
+vector<char> to_vector(const string& s)
+{
+    return vector<char>(s.c_str(), s.c_str() + s.size() + 1);
+}
+
+void parse_command_line(const char* command_line)
+{
+    // Split string into individual arguments
+    vector<vector<char>> args;
+    args.push_back(to_vector("program_name"));
+    std::istringstream stream(command_line);
+    string s;
+    while (stream >> s)
+    {
+        args.push_back(to_vector(s));
+    }
+
+    // Put together argv array
+    vector<char*> argv;
+    for (auto& arg : args)
+    {
+        argv.push_back(arg.data());
+    }
+
+    // TODO: return return value, once that exist
+    // TODO: this exits on error, which is not good. give it an option not to do this
+    //shrinkler_gba::parse_command_line(static_cast<int>(argv.size()), argv.data());
+}
+
+}
+
+TEST_CASE("parse_command_line_test")
+{
+    SECTION("empty command line")
+    {
+        // TODO: real test: assert something here (that would require parse_command_line to return something)
+        parse_command_line("");
+    }
+}
+
+}
+
+// TODO: get test up and running
+/*
 class command_line_test_fixture
 {
 public:
@@ -25,36 +68,9 @@ public:
 
     shrinklergbacore::command_action parse_command_line(const char* command_line)
     {
-        options = shrinklergbacore::options();
-
-        // Split string into individual arguments and convert them to vector<char>
-        vector<vector<char>> vectors;
-        vectors.push_back(to_vector("program_name"));
-        if (strlen(command_line))
-        {
-            vector<string> strings;
-            boost::split(strings, command_line, boost::is_any_of(" "));
-            for (const auto& s : strings)
-            {
-                vectors.push_back(to_vector(s));
-            }
-        }
-
-        // Put together an argv array.
-        vector<char*> argv;
-        for (auto& v : vectors)
-        {
-            argv.push_back(v.data());
-        }
-
-        return shrinklergbacore::parse_command_line(boost::numeric_cast<int>(argv.size()), argv.data(), options, true);
     }
 
 private:
-    static vector<char> to_vector(const string& s)
-    {
-        return vector<char>(s.c_str(), s.c_str() + s.size() + 1);
-    }
 };
 
 BOOST_FIXTURE_TEST_SUITE(command_line_test, command_line_test_fixture)
@@ -174,3 +190,4 @@ BOOST_FIXTURE_TEST_SUITE(command_line_test, command_line_test_fixture)
 BOOST_AUTO_TEST_SUITE_END()
 
 }
+*/
