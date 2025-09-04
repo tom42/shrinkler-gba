@@ -9,8 +9,6 @@ SPDX-License-Identifier: MIT
   * When all done: fix reuse compliancy
   * Redo CMakeLists.txt
   * Stop using subtrees. Get stuff using FetchContent. Our own, anyway.
-  * Make shrinklerwrapper a separate project (libshrinkler, ongoing)
-  * Use argpppp
   * Use agbpack to pack tiny intros
   * CI builds with github actions
   * Redo source tree organization (top level src/test directory, see e.g. agbpack)
