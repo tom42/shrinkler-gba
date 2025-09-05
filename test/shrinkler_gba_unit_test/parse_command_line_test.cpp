@@ -80,6 +80,22 @@ TEST_CASE("parse_command_line_test")
         auto result = parse_command_line("--invalid-option");
         CHECK(result.success == false);
     }
+
+    SECTION("output file option before input file argument")
+    {
+        auto result = parse_command_line("-o output input");
+        CHECK(result.success == true);
+        CHECK(result.options.input_file() == "input");
+        CHECK(result.options.output_file() == "output");
+    }
+
+    SECTION("output file option after input file argument")
+    {
+        auto result = parse_command_line("input -o output");
+        CHECK(result.success == true);
+        CHECK(result.options.input_file() == "input");
+        CHECK(result.options.output_file() == "output");
+    }
 }
 
 }
@@ -87,20 +103,6 @@ TEST_CASE("parse_command_line_test")
 // TODO: get test up and running
 /*
 BOOST_FIXTURE_TEST_SUITE(command_line_test, command_line_test_fixture)
-    BOOST_AUTO_TEST_CASE(output_file_option_before_input_file)
-    {
-        BOOST_TEST((parse_command_line("-o output input") == command_action::process));
-        BOOST_TEST(options.input_file() == "input");
-        BOOST_TEST(options.output_file() == "output");
-    }
-
-    BOOST_AUTO_TEST_CASE(output_file_option_after_input_file)
-    {
-        BOOST_TEST((parse_command_line("input -o output") == command_action::process));
-        BOOST_TEST(options.input_file() == "input");
-        BOOST_TEST(options.output_file() == "output");
-    }
-
     BOOST_AUTO_TEST_CASE(verbose_option)
     {
         BOOST_TEST((parse_command_line("input -v") == command_action::process));

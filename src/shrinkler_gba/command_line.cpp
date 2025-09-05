@@ -58,7 +58,8 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
     parser.set_args_doc("FILE");
     parser.set_nargs(1);
     add_header(parser, "General options:");
-    add_option(parser, { "output-file", 'o', "FILE", {}, "Specify output filename. The default output filename is the input filename with the extension replaced by .gba" }, bogus_callback);
+    add_option(parser, { "output-file", 'o', "FILE", {}, "Specify output filename. The default output filename is the input filename with the extension replaced by .gba" },
+        [&](auto s) { result.options.output_file(s); return true; }); // TODO: can we shorten this? Is it possible to overload stuff such that the return can be omitted if we do not wish to check anything?
     add_option(parser, { "verbose", 'v', {}, {}, "Print verbose messages", 0 }, bogus_callback);
     add_header(parser, "Depacker options:");
     add_option(parser, { "no-code-in-header", option::no_code_in_header, {}, {}, "Do not put code in ROM header" }, bogus_callback);
