@@ -67,6 +67,7 @@ TEST_CASE("parse_command_line_test")
     SECTION("one input file, no other options")
     {
         auto result = parse_command_line("file1.elf");
+        CHECK(result.parse_result == true);
         CHECK(result.options.input_file() == "file1.elf");
         CHECK(result.options.output_file() == "file1.gba");
         CHECK(result.options.verbose() == false);
