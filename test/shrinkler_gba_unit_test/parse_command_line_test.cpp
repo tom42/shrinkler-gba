@@ -74,6 +74,12 @@ TEST_CASE("parse_command_line_test")
         CHECK(result.options.code_in_header() == true);
         CHECK(result.options.debug_checks() == false);
     }
+
+    SECTION("invalid option")
+    {
+        auto result = parse_command_line("--invalid-option");
+        CHECK(result.parse_result == false);
+    }
 }
 
 }
@@ -81,12 +87,6 @@ TEST_CASE("parse_command_line_test")
 // TODO: get test up and running
 /*
 BOOST_FIXTURE_TEST_SUITE(command_line_test, command_line_test_fixture)
-
-    BOOST_AUTO_TEST_CASE(invalid_option)
-    {
-        BOOST_TEST((parse_command_line("--invalid-option") == command_action::exit_failure));
-    }
-
     BOOST_AUTO_TEST_CASE(output_file_option_before_input_file)
     {
         BOOST_TEST((parse_command_line("-o output input") == command_action::process));
