@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 
+import argpppp;
 import shrinkler_gba;
 
 namespace shrinkler_gba_unit_test
@@ -13,6 +14,7 @@ namespace shrinkler_gba_unit_test
 
 using std::string;
 using std::vector;
+using shrinkler_gba::parse_command_line_result;
 
 namespace
 {
@@ -22,8 +24,10 @@ vector<char> to_vector(const string& s)
     return vector<char>(s.c_str(), s.c_str() + s.size() + 1);
 }
 
-void parse_command_line(const char* command_line)
+parse_command_line_result parse_command_line(const char* command_line)
 {
+    using argpppp::pf;
+
     // Split string into individual arguments
     vector<vector<char>> args;
     args.push_back(to_vector("program_name"));
@@ -41,9 +45,7 @@ void parse_command_line(const char* command_line)
         argv.push_back(arg.data());
     }
 
-    // TODO: return return value, once that exist
-    // TODO: this exits on error, which is not good. give it an option not to do this
-    //shrinkler_gba::parse_command_line(static_cast<int>(argv.size()), argv.data());
+    return shrinkler_gba::parse_command_line(static_cast<int>(argv.size()), argv.data(), pf::no_errs | pf::no_exit);
 }
 
 }
@@ -52,8 +54,8 @@ TEST_CASE("parse_command_line_test")
 {
     SECTION("empty command line")
     {
-        // TODO: real test: assert something here (that would require parse_command_line to return something)
-        parse_command_line("");
+        auto result = parse_command_line("");
+        CHECK(result.parse_result == false);
     }
 }
 
@@ -74,11 +76,6 @@ private:
 };
 
 BOOST_FIXTURE_TEST_SUITE(command_line_test, command_line_test_fixture)
-
-    BOOST_AUTO_TEST_CASE(empty_command_line)
-    {
-        BOOST_TEST((parse_command_line("") == command_action::exit_failure));
-    }
 
     BOOST_AUTO_TEST_CASE(more_than_one_input_file)
     {

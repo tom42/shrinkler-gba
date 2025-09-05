@@ -32,7 +32,7 @@ enum option
 
 }
 
-void parse_command_line(int argc, char* argv[])
+parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf flags_for_unit_test)
 {
     // TODO: parse command line using argpppp
     //       * Should now add callbacks and set values
@@ -42,10 +42,15 @@ void parse_command_line(int argc, char* argv[])
 
     // TODO: set up callbacks to fill in command line options
     // TODO: somehow, return options back to caller
-    options options;
+    parse_command_line_result result;
     argpppp::parser parser;
 
-    // TODO: TBH I am not so happy with those set_xxx() methods: why did we call them set_xxx() rather than xxx()?
+    // TODO: argpppp improvements:
+    //       * TBH I am not so happy with those set_xxx() methods: why did we call them set_xxx() rather than xxx()?
+    //       * Not sure whether it makes sense to have the flags on the parse method: we're already using an object,
+    //         so we could put them just as well onto a setter
+    //       * It is not immediately obvious what the default value for parser flags would be. Either rename 'none' to 'default',
+    //         or, alternatively, have an additional enum member defined as such: 'default = none'
     parser.set_doc(
         SHRINKLER_GBA_PROJECT_NAME " - Shrinkler for the Gameboy Advance by Tom/Vantage\n"
         "Shrinkler compression by Blueberry/Loonies\n"
@@ -67,8 +72,17 @@ void parse_command_line(int argc, char* argv[])
     add_option(parser, { "references", 'r', "N", {}, "Number of reference edges to keep in memory (100000)" }, bogus_callback);
     add_option(parser, { "skip-length", 's', "N", {}, "Minimum match length to accept greedily (2000)" }, bogus_callback);
 
-    auto result = parser.parse(argc, argv);
-    options.input_file(result.args.at(0));
+    // TODO: handle case where result.errnum is nonzero: that's some sort of parse error, which requires main() to exit
+    //       * zero => we're good
+    //       * nonzero => we're not good, do nothing
+    //       * The case do nothing and exit with success does not exist, because we're letting argp_parse exit (maybe document that)
+    // TODO: set input file if available
+    // TODO: UGH: need to think about return value (blah, for sake of simplicty pass it as non-const output argument?)
+    // TODO: the terms result and parse_result are used a bit often here
+    auto parse_result = parser.parse(argc, argv, flags_for_unit_test);
+    result.parse_result = parse_result.errnum == 0;
+    // TODO: set return flag in result structure
+    return result;
 }
 
 }
