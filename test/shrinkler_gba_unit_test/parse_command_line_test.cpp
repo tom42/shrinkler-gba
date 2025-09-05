@@ -55,19 +55,19 @@ TEST_CASE("parse_command_line_test")
     SECTION("empty command line")
     {
         auto result = parse_command_line("");
-        CHECK(result.parse_result == false);
+        CHECK(result.success == false);
     }
 
     SECTION("more than one input file")
     {
         auto result = parse_command_line("file1 file2");
-        CHECK(result.parse_result == false);
+        CHECK(result.success == false);
     }
 
     SECTION("one input file, no other options")
     {
         auto result = parse_command_line("file1.elf");
-        CHECK(result.parse_result == true);
+        CHECK(result.success == true);
         CHECK(result.options.input_file() == "file1.elf");
         CHECK(result.options.output_file() == "file1.gba");
         CHECK(result.options.verbose() == false);
@@ -78,7 +78,7 @@ TEST_CASE("parse_command_line_test")
     SECTION("invalid option")
     {
         auto result = parse_command_line("--invalid-option");
-        CHECK(result.parse_result == false);
+        CHECK(result.success == false);
     }
 }
 

@@ -10,7 +10,7 @@ namespace shrinkler_gba
 
 export struct parse_command_line_result final
 {
-    bool parse_result{};
+    bool success{};
     options options{};
 };
 
