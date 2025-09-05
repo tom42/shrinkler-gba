@@ -57,30 +57,19 @@ TEST_CASE("parse_command_line_test")
         auto result = parse_command_line("");
         CHECK(result.parse_result == false);
     }
+
+    SECTION("more than one input file")
+    {
+        auto result = parse_command_line("file1 file2");
+        CHECK(result.parse_result == false);
+    }
 }
 
 }
 
 // TODO: get test up and running
 /*
-class command_line_test_fixture
-{
-public:
-    shrinklergbacore::options options;
-
-    shrinklergbacore::command_action parse_command_line(const char* command_line)
-    {
-    }
-
-private:
-};
-
 BOOST_FIXTURE_TEST_SUITE(command_line_test, command_line_test_fixture)
-
-    BOOST_AUTO_TEST_CASE(more_than_one_input_file)
-    {
-        BOOST_TEST((parse_command_line("file1 file2") == command_action::exit_failure));
-    }
 
     BOOST_AUTO_TEST_CASE(one_input_file_no_other_options)
     {
