@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/generators/catch_generators.hpp>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -96,6 +97,14 @@ TEST_CASE("parse_command_line_test")
         CHECK(result.options.input_file() == "input");
         CHECK(result.options.output_file() == "output");
     }
+
+    SECTION("--verbose option")
+    {
+        auto command_line = GENERATE("input -v", "input --verbose");
+        auto result = parse_command_line(command_line);
+        CHECK(result.success == true);
+        CHECK(result.options.verbose() == true);
+    }
 }
 
 }
@@ -103,14 +112,6 @@ TEST_CASE("parse_command_line_test")
 // TODO: get test up and running
 /*
 BOOST_FIXTURE_TEST_SUITE(command_line_test, command_line_test_fixture)
-    BOOST_AUTO_TEST_CASE(verbose_option)
-    {
-        BOOST_TEST((parse_command_line("input -v") == command_action::process));
-        BOOST_TEST(options.verbose() == true);
-        BOOST_TEST((parse_command_line("input --verbose") == command_action::process));
-        BOOST_TEST(options.verbose() == true);
-    }
-
     BOOST_AUTO_TEST_CASE(no_code_in_header_option)
     {
         BOOST_TEST((parse_command_line("input --no-code-in-header") == command_action::process));
