@@ -63,6 +63,16 @@ TEST_CASE("parse_command_line_test")
         auto result = parse_command_line("file1 file2");
         CHECK(result.parse_result == false);
     }
+
+    SECTION("one input file, no other options")
+    {
+        auto result = parse_command_line("file1.elf");
+        CHECK(result.options.input_file() == "file1.elf");
+        CHECK(result.options.output_file() == "file1.gba");
+        CHECK(result.options.verbose() == false);
+        CHECK(result.options.code_in_header() == true);
+        CHECK(result.options.debug_checks() == false);
+    }
 }
 
 }
@@ -71,15 +81,6 @@ TEST_CASE("parse_command_line_test")
 /*
 BOOST_FIXTURE_TEST_SUITE(command_line_test, command_line_test_fixture)
 
-    BOOST_AUTO_TEST_CASE(one_input_file_no_other_options)
-    {
-        BOOST_TEST((parse_command_line("file1") == command_action::process));
-        BOOST_TEST(options.input_file() == "file1");
-        BOOST_TEST(options.output_file() == "file1.gba");
-        BOOST_TEST(options.verbose() == false);
-        BOOST_TEST(options.code_in_header() == true);
-        BOOST_TEST(options.debug_checks() == false);
-    }
 
     BOOST_AUTO_TEST_CASE(help_option)
     {
