@@ -81,24 +81,6 @@ TEST_CASE("parse_command_line_test")
 /*
 BOOST_FIXTURE_TEST_SUITE(command_line_test, command_line_test_fixture)
 
-
-    BOOST_AUTO_TEST_CASE(help_option)
-    {
-        BOOST_TEST((parse_command_line("-?") == command_action::exit_success));
-        BOOST_TEST((parse_command_line("--help") == command_action::exit_success));
-    }
-
-    BOOST_AUTO_TEST_CASE(version_option)
-    {
-        BOOST_TEST((parse_command_line("-V") == command_action::exit_success));
-        BOOST_TEST((parse_command_line("--version") == command_action::exit_success));
-    }
-
-    BOOST_AUTO_TEST_CASE(usage_option)
-    {
-        BOOST_TEST((parse_command_line("--usage") == command_action::exit_success));
-    }
-
     BOOST_AUTO_TEST_CASE(invalid_option)
     {
         BOOST_TEST((parse_command_line("--invalid-option") == command_action::exit_failure));
