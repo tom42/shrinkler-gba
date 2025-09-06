@@ -11,11 +11,14 @@ int main(int argc, char* argv[])
 {
     try
     {
-        // TODO: parse command line, then
-        //       * Either run the packer
-        //       * Do nothing and exit with error (orly? Aren't we letting argp_parse exit?)
-        //       * Do nothing and exit with error (orly? Aren't we letting argp_parse exit?)
-        shrinkler_gba::parse_command_line(argc, argv);
+        auto result = shrinkler_gba::parse_command_line(argc, argv);
+        if (!result.success)
+        {
+            // Should not happen because we let argp_parse exit.
+            return EXIT_FAILURE;
+        }
+
+        // TODO: run the packer
         return EXIT_SUCCESS;
     }
     catch (const std::exception& e)
