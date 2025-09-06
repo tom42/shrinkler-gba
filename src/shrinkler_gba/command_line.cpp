@@ -79,7 +79,6 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
     //       * zero => we're good
     //       * nonzero => we're not good, do nothing
     //       * The case do nothing and exit with success does not exist, because we're letting argp_parse exit (maybe document that)
-    // TODO: UGH: need to think about return value (blah, for sake of simplicty pass it as non-const output argument?)
     auto parse_result = parser.parse(argc, argv, flags_for_unit_test);
     result.success = parse_result.errnum == 0;
     if (parse_result.args.size() > 0)
