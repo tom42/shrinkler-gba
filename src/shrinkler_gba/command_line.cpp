@@ -75,12 +75,13 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
     add_option(parser, { "references", 'r', "N", {}, "Number of reference edges to keep in memory (100000)" }, bogus_callback);
     add_option(parser, { "skip-length", 's', "N", {}, "Minimum match length to accept greedily (2000)" }, bogus_callback);
 
-    // TODO: handle case where result.errnum is nonzero: that's some sort of parse error, which requires main() to exit
-    //       * zero => we're good
-    //       * nonzero => we're not good, do nothing
-    //       * The case do nothing and exit with success does not exist, because we're letting argp_parse exit (maybe document that)
     auto parse_result = parser.parse(argc, argv, flags_for_unit_test);
+
+    // We let argp_parse exit if it wants to, so no need to worry about the --help, --usage or --version option.
+    // If parsing is successful and there's a file to compress we return true, otherwise we return false.
+    // The parser is set up so that it fails if there is not exactly one argument (the input file).
     result.success = parse_result.errnum == 0;
+
     if (parse_result.args.size() > 0)
     {
         result.options.input_file(parse_result.args[0]);
