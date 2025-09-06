@@ -46,6 +46,9 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
     argpppp::parser parser;
 
     // TODO: argpppp improvements:
+    //       * The fact that we require a callback is rather inconvenient. Why did we code it like so?
+    //         * We could add a bogus callback which silently does nothing
+    //         * We could add no callback. If the option is encountered, it is not handled (test this), leading argp_parse to issue an error
     //       * TBH I am not so happy with those set_xxx() methods: why did we call them set_xxx() rather than xxx()?
     //       * Not sure whether it makes sense to have the flags on the parse method: we're already using an object,
     //         so we could put them just as well onto a setter
