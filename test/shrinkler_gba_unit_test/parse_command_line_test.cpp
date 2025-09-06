@@ -112,6 +112,13 @@ TEST_CASE("parse_command_line_test")
         CHECK(result.success == true);
         CHECK(result.options.code_in_header() == false);
     }
+
+    SECTION("--debug-checks option")
+    {
+        auto result = parse_command_line("input --debug-checks");
+        CHECK(result.success == true);
+        CHECK(options.debug_checks() == true);
+    }
 }
 
 }
@@ -119,12 +126,6 @@ TEST_CASE("parse_command_line_test")
 // TODO: get test up and running
 /*
 BOOST_FIXTURE_TEST_SUITE(command_line_test, command_line_test_fixture)
-    BOOST_AUTO_TEST_CASE(debug_checks_option)
-    {
-        BOOST_TEST((parse_command_line("input --debug-checks") == command_action::process));
-        BOOST_TEST(options.debug_checks() == true);
-    }
-
     BOOST_AUTO_TEST_CASE(shrinkler_iterations_option)
     {
         BOOST_TEST((parse_command_line("input -i") == command_action::exit_failure));
