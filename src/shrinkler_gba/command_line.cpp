@@ -63,7 +63,7 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
     add_option(parser, { "verbose", 'v', {}, {}, "Print verbose messages", 0 }, [&](auto) { result.options.verbose(true); return true; });
 
     add_header(parser, "Depacker options:");
-    add_option(parser, { "no-code-in-header", option::no_code_in_header, {}, {}, "Do not put code in ROM header" }, bogus_callback);
+    add_option(parser, { "no-code-in-header", option::no_code_in_header, {}, {}, "Do not put code in ROM header" }, [&](auto) { result.options.code_in_header(false); return true; });
     add_option(parser, { "debug-checks", option::debug_checks, {}, {}, "Add debug checks to depacker code" }, bogus_callback);
 
     add_header(parser, "Shrinkler compression options (default values in parentheses):");
