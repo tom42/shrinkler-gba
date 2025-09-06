@@ -64,7 +64,7 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
 
     add_header(parser, "Depacker options:");
     add_option(parser, { "no-code-in-header", option::no_code_in_header, {}, {}, "Do not put code in ROM header" }, [&](auto) { result.options.code_in_header(false); return true; });
-    add_option(parser, { "debug-checks", option::debug_checks, {}, {}, "Add debug checks to depacker code" }, bogus_callback);
+    add_option(parser, { "debug-checks", option::debug_checks, {}, {}, "Add debug checks to depacker code" }, [&](auto) { result.options.debug_checks(true); return true; });
 
     add_header(parser, "Shrinkler compression options (default values in parentheses):");
     add_option(parser, { "same-length", 'a', "N", {}, "Number of matches of the same length to consider (20)" }, bogus_callback);

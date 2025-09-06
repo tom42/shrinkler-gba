@@ -117,7 +117,7 @@ TEST_CASE("parse_command_line_test")
     {
         auto result = parse_command_line("input --debug-checks");
         CHECK(result.success == true);
-        CHECK(options.debug_checks() == true);
+        CHECK(result.options.debug_checks() == true);
     }
 }
 
