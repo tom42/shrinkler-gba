@@ -41,7 +41,6 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
     auto bogus_callback = [](const char*) { return true; };
 
     // TODO: set up callbacks to fill in command line options
-    // TODO: somehow, return options back to caller
     parse_command_line_result result;
     argpppp::parser parser;
 
