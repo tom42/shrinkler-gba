@@ -119,13 +119,24 @@ TEST_CASE("parse_command_line_test")
         CHECK(result.success == true);
         CHECK(result.options.debug_checks() == true);
     }
+
+    SECTION("--preset option")
+    {
+        auto result = parse_command_line("input -p2");
+        CHECK(result.success == true);
+        CHECK(result.options.shrinkler_parameters().iterations() == 2);
+        CHECK(result.options.shrinkler_parameters().length_margin() == 2);
+        CHECK(result.options.shrinkler_parameters().same_length() == 20);
+        CHECK(result.options.shrinkler_parameters().effort() == 200);
+        CHECK(result.options.shrinkler_parameters().skip_length() == 2000);
+        CHECK(result.options.shrinkler_parameters().references() == 100000);
+    }
 }
 
 }
 
 // TODO: get test up and running
 /*
-BOOST_FIXTURE_TEST_SUITE(command_line_test, command_line_test_fixture)
     BOOST_AUTO_TEST_CASE(shrinkler_iterations_option)
     {
         BOOST_TEST((parse_command_line("input -i") == command_action::exit_failure));
@@ -150,19 +161,5 @@ BOOST_FIXTURE_TEST_SUITE(command_line_test, command_line_test_fixture)
         BOOST_TEST(options.shrinkler_parameters().skip_length == 11111);
         BOOST_TEST(options.shrinkler_parameters().references == 111111);
     }
-
-    BOOST_AUTO_TEST_CASE(shrinkler_preset_option)
-    {
-        BOOST_TEST((parse_command_line("input -p3") == command_action::process));
-        BOOST_TEST(options.shrinkler_parameters().iterations == 3);
-        BOOST_TEST(options.shrinkler_parameters().length_margin == 3);
-        BOOST_TEST(options.shrinkler_parameters().same_length == 30);
-        BOOST_TEST(options.shrinkler_parameters().effort == 300);
-        BOOST_TEST(options.shrinkler_parameters().skip_length == 3000);
-        BOOST_TEST(options.shrinkler_parameters().references == 100000);
-    }
-
-BOOST_AUTO_TEST_SUITE_END()
-
 }
 */
