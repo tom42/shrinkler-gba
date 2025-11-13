@@ -3,6 +3,7 @@
 
 module;
 
+#include <string>
 #include "version.hpp"
 
 module shrinkler_gba;
@@ -19,6 +20,9 @@ const char* argp_program_version = SHRINKLER_GBA_PROJECT_NAME " " SHRINKLER_GBA_
 namespace shrinkler_gba
 {
 
+using argpppp::set;
+using std::string;
+
 namespace
 {
 
@@ -32,36 +36,49 @@ enum option
 
 }
 
+// TODO: use all arguments
+parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf flags_for_unit_test)
+{
+    parse_command_line_result result;
+    argpppp::options options;
+    options
+        .doc(
+            SHRINKLER_GBA_PROJECT_NAME " - Shrinkler for the Gameboy Advance by Tom/Vantage\n"
+            "Shrinkler compression by Blueberry/Loonies\n"
+            "https://github.com/tom42/shrinkler-gba")
+        .args_doc("FILE")
+        .num_args(1)
+        .add_header("General options:")
+        .add({ 'o', "output-file", "Output file name. Default is input file name with extension replaced by .gba", "FILE" },
+            set<string>([&](string s) { result.options.output_file(s); }))
+        .add({ 'v', "verbose", "Print verbose messages" }, set<bool>([&](bool b) { result.options.verbose(b); }))
+        .add_header("Depacker options:")
+        ;
+
+    argpppp::command_line_parser parser;
+    parser.flags(flags_for_unit_test);
+    parser.parse(argc, argv, options);
+
+    // TODO: fill in result
+    return result;
+}
+
+// TODO: redo stuff below
+/*
 parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf flags_for_unit_test)
 {
     // TODO: parse command line using argpppp
     //       * Should now add callbacks and set values
     // TODO: are the defaults still good? Can/should we calculate them somehow? (no they're not good anymore, since the default preset is now 3)
-    // TODO: remove bogus_callback. This is only here to set up the parser
-    auto bogus_callback = [](const char*) { return true; };
 
     // TODO: set up callbacks to fill in command line options
     parse_command_line_result result;
-    argpppp::parser parser;
+    argpppp::command_line_parser parser;
 
     // TODO: argpppp improvements:
-    //       * TBH I am not so happy with those set_xxx() methods: why did we call them set_xxx() rather than xxx()?
-    //       * Not sure whether it makes sense to have the flags on the parse method: we're already using an object,
-    //         so we could put them just as well onto a setter
     //       * It is not immediately obvious what the default value for parser flags would be. Either rename 'none' to 'default',
     //         or, alternatively, have an additional enum member defined as such: 'default = none'
-    parser.set_doc(
-        SHRINKLER_GBA_PROJECT_NAME " - Shrinkler for the Gameboy Advance by Tom/Vantage\n"
-        "Shrinkler compression by Blueberry/Loonies\n"
-        "https://github.com/tom42/shrinkler-gba");
-    parser.set_args_doc("FILE");
-    parser.set_nargs(1);
 
-    add_header(parser, "General options:");
-    add_option(parser, { "output-file", 'o', "FILE", {}, "Specify output file name. The default output file name is the input file name with the extension replaced by .gba" }, [&](auto s) { result.options.output_file(s); return true; });
-    add_option(parser, { "verbose", 'v', {}, {}, "Print verbose messages", 0 }, [&](auto) { result.options.verbose(true); return true; });
-
-    add_header(parser, "Depacker options:");
     add_option(parser, { "no-code-in-header", option::no_code_in_header, {}, {}, "Do not put code in ROM header" }, [&](auto) { result.options.code_in_header(false); return true; });
     add_option(parser, { "debug-checks", option::debug_checks, {}, {}, "Add debug checks to depacker code" }, [&](auto) { result.options.debug_checks(true); return true; });
 
@@ -87,6 +104,6 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
     }
 
     return result;
-}
+}*/
 
 }
