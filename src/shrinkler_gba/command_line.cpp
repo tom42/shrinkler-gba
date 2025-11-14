@@ -51,7 +51,7 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
         .add_header("General options:")
         .add({ 'o', "output-file", "Output file name. Default is input file name with extension replaced by .gba", "FILE" },
             set<string>([&](string s) { result.options.output_file(s); }))
-        .add({ 'v', "verbose", "Print verbose messages" }, set<bool>([&](bool b) { result.options.verbose(b); }))
+        .add({ 'v', "verbose", "Print verbose messages" }, set<bool>([&](bool) { result.options.verbose(true); }))
         .add_header("Depacker options:")
         ;
 
