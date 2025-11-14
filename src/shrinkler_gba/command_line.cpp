@@ -10,6 +10,7 @@ module;
 
 module shrinkler_gba;
 import argpppp;
+import libshrinkler;
 
 // extern "C" is needed for some platforms, e.g. when using MSVC and argp-standalone.
 // It is not needed for glibc.
@@ -72,7 +73,9 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
 
         .add_header("Shrinkler compression options (default values in parentheses):")
         .add({ 'a', "same-length", format("Number of matches of same length to consider ({})", result.options.shrinkler_parameters().same_length()), "N" },
-            set<int>([&](int n) { result.options.shrinkler_parameters().same_length(n); })) // TODO: specify min and max. Problem: libshrinkler does not export the required constants => We need 1.1.0
+            set<int>([&](int n) { result.options.shrinkler_parameters().same_length(n); })
+                .min(libshrinkler::min_same_length)
+                .max(libshrinkler::max_same_length))
         ;
 
     argpppp::command_line_parser parser;
