@@ -47,15 +47,19 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
             "https://github.com/tom42/shrinkler-gba")
         .args_doc("FILE")
         .num_args(1)
+
         .add_header("General options:")
         .add({ 'o', "output-file", "Output file name. Default is input file name with extension replaced by .gba", "FILE" },
             set<string>([&](string s) { result.options.output_file(s); }))
         .add({ 'v', "verbose", "Print verbose messages" }, set<bool>([&](bool) { result.options.verbose(true); }))
+
         .add_header("Depacker options:")
         .add({ option::no_code_in_header, "no-code-in-header", "Do not put code into ROM header" },
             set<bool>([&](bool) { result.options.code_in_header(false); } ))
         .add({ option::debug_checks, "debug-checks", "Add debug checks to depacker code" },
             set<bool>([&](bool) { result.options.debug_checks(true); }))
+
+        .add_header("Shrinkler compression options (default values in parentheses):")
         ;
 
     argpppp::command_line_parser parser;
@@ -82,7 +86,6 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
     //       * It is not immediately obvious what the default value for parser flags would be. Either rename 'none' to 'default',
     //         or, alternatively, have an additional enum member defined as such: 'default = none'
 
-    add_header(parser, "Shrinkler compression options (default values in parentheses):");
     add_option(parser, { "same-length", 'a', "N", {}, "Number of matches of the same length to consider (20)" }, bogus_callback);
     add_option(parser, { "effort", 'e', "N", {}, "Perseverance in finding multiple matches (200)" }, bogus_callback);
     add_option(parser, { "iterations", 'i', "N", {}, "Number of iterations for the compression (2)" }, bogus_callback);
