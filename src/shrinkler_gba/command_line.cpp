@@ -4,6 +4,7 @@
 module;
 
 #include <format>
+#include <iostream> // TODO: delete once done
 #include <string>
 #include "version.hpp"
 
@@ -76,9 +77,19 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
 
     argpppp::command_line_parser parser;
     parser.flags(flags_for_unit_test);
-    parser.parse(argc, argv, options);
+    auto parse_result = parser.parse(argc, argv, options);
 
-    // TODO: fill in result
+    // TODO: fill in result (err...what?)
+    result.options.input_file(parse_result.args.at(0));
+
+    // TODO: debug code: print options
+    std::cout << "input_file:     " << result.options.input_file() << "\n";
+    std::cout << "output_file:    " << result.options.output_file() << "\n";
+    std::cout << "verbose:        " << result.options.verbose() << "\n";
+    std::cout << "code_in_header: " << result.options.code_in_header() << "\n";
+    std::cout << "debug_checks:   " << result.options.debug_checks() << "\n";
+    std::cout << "same_length:    " << result.options.shrinkler_parameters().same_length() << "\n";
+
     return result;
 }
 
