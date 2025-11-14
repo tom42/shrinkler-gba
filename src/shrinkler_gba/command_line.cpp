@@ -25,6 +25,7 @@ namespace shrinkler_gba
 using argpppp::set;
 using std::format;
 using std::string;
+using namespace libshrinkler;
 
 namespace
 {
@@ -72,67 +73,42 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
         .add_header("Shrinkler compression options (default values in parentheses):")
         .add({ 'a', "same-length", format("Number of matches of same length to consider ({})", result.options.shrinkler_parameters().same_length()), "N" },
             set<int>([&](int n) { result.options.shrinkler_parameters().same_length(n); })
-            .min(libshrinkler::min_same_length)
-            .max(libshrinkler::max_same_length))
+            .min(min_same_length)
+            .max(max_same_length))
         .add({ 'e', "effort", format("Perseverance in finding multiple matches ({})", result.options.shrinkler_parameters().effort()), "N" },
             set<int>([&](int n) { result.options.shrinkler_parameters().effort(n); })
-            .min(libshrinkler::min_effort)
-            .max(libshrinkler::max_effort))
+            .min(min_effort)
+            .max(max_effort))
         .add({ 'i', "iterations", format("Number of compression iterations ({})", result.options.shrinkler_parameters().iterations()), "N" },
             set<int>([&](int n) { result.options.shrinkler_parameters().iterations(n); })
-            .min(libshrinkler::min_iterations)
-            .max(libshrinkler::max_iterations))
+            .min(min_iterations)
+            .max(max_iterations))
         .add({ 'l', "length-margin", format("Number of shorter matches considered for each match ({})", result.options.shrinkler_parameters().length_margin()), "N" },
             set<int>([&](int n) { result.options.shrinkler_parameters().length_margin(n); })
-            .min(libshrinkler::min_length_margin)
-            .max(libshrinkler::max_length_margin))
-        .add({ 'p', "preset", format("Preset for all compression options except --references ({}..{}, default {})", libshrinkler::min_preset, libshrinkler::max_preset, libshrinkler::default_preset), "PRESET"},
+            .min(min_length_margin)
+            .max(max_length_margin))
+        .add({ 'p', "preset", format("Preset for all compression options except --references ({}..{}, default {})", min_preset, max_preset, default_preset), "PRESET"},
             set<int>([&](int n) { result.options.shrinkler_parameters().preset(n); })
-            .min(libshrinkler::min_preset)
-            .max(libshrinkler::max_preset))
+            .min(min_preset)
+            .max(max_preset))
         .add({ 'r', "references", format("Number of reference edges to keep in memory ({})", result.options.shrinkler_parameters().references()), "N" },
             set<int>([&](int n) { result.options.shrinkler_parameters().references(n); })
-            .min(libshrinkler::min_references)
-            .max(libshrinkler::max_references))
+            .min(min_references)
+            .max(max_references))
         .add({ 's', "skip-length", format("Minimum match length to accept greedily ({})", result.options.shrinkler_parameters().skip_length()), "N" },
             set<int>([&](int n) { result.options.shrinkler_parameters().skip_length(n); })
-            .min(libshrinkler::min_skip_length)
-            .max(libshrinkler::max_skip_length))
+            .min(min_skip_length)
+            .max(max_skip_length))
         ;
 
     argpppp::command_line_parser parser;
     parser.flags(flags_for_unit_test);
     auto parse_result = parser.parse(argc, argv, options);
 
-    // TODO: fill in result (err...what?)
+    result.success = parse_result.errnum == 0;
     result.options.input_file(parse_result.args.at(0));
 
     return result;
 }
-
-// TODO: redo stuff below
-/*
-parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf flags_for_unit_test)
-{
-    // TODO: parse command line using argpppp
-    //       * Should now add callbacks and set values
-    // TODO: are the defaults still good? Can/should we calculate them somehow? (no they're not good anymore, since the default preset is now 3)
-
-    // TODO: set up callbacks to fill in command line options
-
-    auto parse_result = parser.parse(argc, argv, flags_for_unit_test);
-
-    // We let argp_parse exit if it wants to, so no need to worry about the --help, --usage or --version option.
-    // If parsing is successful and there's a file to compress we return true, otherwise we return false.
-    // The parser is set up so that it fails if there is not exactly one argument (the input file).
-    result.success = parse_result.errnum == 0;
-
-    if (parse_result.args.size() > 0)
-    {
-        result.options.input_file(parse_result.args[0]);
-    }
-
-    return result;
-}*/
 
 }
