@@ -26,6 +26,14 @@ using std::string;
 namespace
 {
 
+// TODO: extend argpppp, so that non-printable option keys can be assigned automatically. We should not have to define these keys, they have no meaning for us.
+//       * Maybe we can extend argpppp::option: it should not take ints as keys, but some sort of type, e.g. option_key, or short_name
+//       * Probably we want an implicit conversion from char to short_name. That will be how options with printable short name will primarily be defined
+//       * We can then have all sorts of special cased things, for cases like
+//         * "I want to assign a code manually" (then again, maybe we should not support this in the first place - yagni)
+//         * "This is a special option"
+//         * "This option has no short name"
+//       When done this enum can go.
 enum option
 {
     first = 256,
@@ -81,10 +89,6 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
     // TODO: set up callbacks to fill in command line options
     parse_command_line_result result;
     argpppp::command_line_parser parser;
-
-    // TODO: argpppp improvements:
-    //       * It is not immediately obvious what the default value for parser flags would be. Either rename 'none' to 'default',
-    //         or, alternatively, have an additional enum member defined as such: 'default = none'
 
     add_option(parser, { "same-length", 'a', "N", {}, "Number of matches of the same length to consider (20)" }, bogus_callback);
     add_option(parser, { "effort", 'e', "N", {}, "Perseverance in finding multiple matches (200)" }, bogus_callback);
