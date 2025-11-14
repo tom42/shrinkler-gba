@@ -31,7 +31,6 @@ enum option
     first = 256,
     no_code_in_header,
     debug_checks,
-    usage
 };
 
 }
