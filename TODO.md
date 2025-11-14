@@ -11,6 +11,8 @@ SPDX-License-Identifier: MIT
   * Stop using subtrees. Get stuff using FetchContent. Our own, anyway.
   * Use agbpack to pack tiny intros
   * CI builds with github actions
+    * gcc/clang/windows
+    * And static quality or however we called it
   * Redo source tree organization (top level src/test directory, see e.g. agbpack)
   * Remove the following blurb from all copyright notices:
     'Port of the Shrinkler Amiga executable cruncher for the GBA'
@@ -90,5 +92,3 @@ SPDX-License-Identifier: MIT
   * I am not even sure, but I think we are not yet at 4.7. Possibly 4.6, or something in between 4.6 and 4.7.
   * If we do upgrade, ensure we also upgrade the packer if required
   * And also if we do upgrade: apparently the Shrinkler license has slightly changed, so we'd need to update that too
-  * Use preset 3 as default, as Blueberry does these days
-    * Can we unhardcode this from the command line parser, if not already done so? Well, not easily, with default/min/max values all over the place. Time to write an argp c++ wrapper, really.
