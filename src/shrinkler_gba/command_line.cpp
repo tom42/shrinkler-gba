@@ -98,7 +98,6 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
             set<int>([&](int n) { result.options.shrinkler_parameters().skip_length(n); })
             .min(libshrinkler::min_skip_length)
             .max(libshrinkler::max_skip_length))
-
         ;
 
     argpppp::command_line_parser parser;
