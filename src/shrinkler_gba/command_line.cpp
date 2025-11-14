@@ -74,16 +74,24 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
         .add_header("Shrinkler compression options (default values in parentheses):")
         .add({ 'a', "same-length", format("Number of matches of same length to consider ({})", result.options.shrinkler_parameters().same_length()), "N" },
             set<int>([&](int n) { result.options.shrinkler_parameters().same_length(n); })
-                .min(libshrinkler::min_same_length)
-                .max(libshrinkler::max_same_length))
+            .min(libshrinkler::min_same_length)
+            .max(libshrinkler::max_same_length))
         .add({ 'e', "effort", format("Perseverance in finding multiple matches ({})", result.options.shrinkler_parameters().effort()), "N" },
             set<int>([&](int n) { result.options.shrinkler_parameters().effort(n); })
-                .min(libshrinkler::min_effort)
-                .max(libshrinkler::max_effort))
+            .min(libshrinkler::min_effort)
+            .max(libshrinkler::max_effort))
         .add({ 'i', "iterations", format("Number of compression iterations ({})", result.options.shrinkler_parameters().iterations()), "N" },
             set<int>([&](int n) { result.options.shrinkler_parameters().iterations(n); })
-                .min(libshrinkler::min_iterations)
-                .max(libshrinkler::max_iterations))
+            .min(libshrinkler::min_iterations)
+            .max(libshrinkler::max_iterations))
+        .add({ 'l', "length-margin", format("Number of shorter matches considered for each match ({})", result.options.shrinkler_parameters().length_margin()), "N" },
+            set<int>([&](int n) { result.options.shrinkler_parameters().length_margin(n); })
+            .min(libshrinkler::min_length_margin)
+            .max(libshrinkler::max_length_margin))
+        .add({ 'p', "preset", format("Preset for all compression options except --references ({}..{}, default {})", libshrinkler::min_preset, libshrinkler::max_preset, libshrinkler::default_preset), "PRESET"},
+            set<int>([&](int n) { result.options.shrinkler_parameters().preset(n); })
+            .min(libshrinkler::min_preset)
+            .max(libshrinkler::max_preset))
         ;
 
     argpppp::command_line_parser parser;
@@ -102,6 +110,7 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
     std::cout << "same_length:    " << result.options.shrinkler_parameters().same_length() << "\n";
     std::cout << "effort:         " << result.options.shrinkler_parameters().effort() << "\n";
     std::cout << "iterations:     " << result.options.shrinkler_parameters().iterations() << "\n";
+    std::cout << "length_margin:  " << result.options.shrinkler_parameters().length_margin() << "\n";
 
     return result;
 }
@@ -115,11 +124,7 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
     // TODO: are the defaults still good? Can/should we calculate them somehow? (no they're not good anymore, since the default preset is now 3)
 
     // TODO: set up callbacks to fill in command line options
-    parse_command_line_result result;
-    argpppp::command_line_parser parser;
 
-    add_option(parser, { "length-margin", 'l', "N", {}, "Number of shorter matches considered for each match (2)" }, bogus_callback);
-    add_option(parser, { "preset", 'p', "PRESET", {}, "Preset for all compression options except --references (1..9, default 2)" }, bogus_callback);
     add_option(parser, { "references", 'r', "N", {}, "Number of reference edges to keep in memory (100000)" }, bogus_callback);
     add_option(parser, { "skip-length", 's', "N", {}, "Minimum match length to accept greedily (2000)" }, bogus_callback);
 
