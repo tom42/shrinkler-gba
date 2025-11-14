@@ -3,6 +3,7 @@
 
 module;
 
+#include <format>
 #include <string>
 #include "version.hpp"
 
@@ -21,6 +22,7 @@ namespace shrinkler_gba
 {
 
 using argpppp::set;
+using std::format;
 using std::string;
 
 namespace
@@ -68,7 +70,7 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
             set<bool>([&](bool) { result.options.debug_checks(true); }))
 
         .add_header("Shrinkler compression options (default values in parentheses):")
-        .add({ 'a', "same-length", "Number of matches of same length to consider (20)", "N" }, // TODO: unhardcode default
+        .add({ 'a', "same-length", format("Number of matches of same length to consider ({})", result.options.shrinkler_parameters().same_length()), "N" },
             set<int>([&](int n) { result.options.shrinkler_parameters().same_length(n); })) // TODO: specify min and max
         ;
 
