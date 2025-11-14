@@ -54,6 +54,8 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
         .add_header("Depacker options:")
         .add({ option::no_code_in_header, "no-code-in-header", "Do not put code into ROM header" },
             set<bool>([&](bool) { result.options.code_in_header(false); } ))
+        .add({ option::debug_checks, "debug-checks", "Add debug checks to depacker code" },
+            set<bool>([&](bool) { result.options.debug_checks(true); }))
         ;
 
     argpppp::command_line_parser parser;
@@ -79,8 +81,6 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
     // TODO: argpppp improvements:
     //       * It is not immediately obvious what the default value for parser flags would be. Either rename 'none' to 'default',
     //         or, alternatively, have an additional enum member defined as such: 'default = none'
-
-    add_option(parser, { "debug-checks", option::debug_checks, {}, {}, "Add debug checks to depacker code" }, [&](auto) { result.options.debug_checks(true); return true; });
 
     add_header(parser, "Shrinkler compression options (default values in parentheses):");
     add_option(parser, { "same-length", 'a', "N", {}, "Number of matches of the same length to consider (20)" }, bogus_callback);
