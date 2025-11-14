@@ -92,6 +92,10 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
             set<int>([&](int n) { result.options.shrinkler_parameters().preset(n); })
             .min(libshrinkler::min_preset)
             .max(libshrinkler::max_preset))
+        .add({ 'r', "references", format("Number of reference edges to keep in memory ({})", result.options.shrinkler_parameters().references()), "N" },
+            set<int>([&](int n) { result.options.shrinkler_parameters().references(n); })
+            .min(libshrinkler::min_references)
+            .max(libshrinkler::max_references))
         ;
 
     argpppp::command_line_parser parser;
@@ -111,6 +115,7 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
     std::cout << "effort:         " << result.options.shrinkler_parameters().effort() << "\n";
     std::cout << "iterations:     " << result.options.shrinkler_parameters().iterations() << "\n";
     std::cout << "length_margin:  " << result.options.shrinkler_parameters().length_margin() << "\n";
+    std::cout << "references:     " << result.options.shrinkler_parameters().references() << "\n";
 
     return result;
 }
@@ -125,7 +130,6 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
 
     // TODO: set up callbacks to fill in command line options
 
-    add_option(parser, { "references", 'r', "N", {}, "Number of reference edges to keep in memory (100000)" }, bogus_callback);
     add_option(parser, { "skip-length", 's', "N", {}, "Minimum match length to accept greedily (2000)" }, bogus_callback);
 
     auto parse_result = parser.parse(argc, argv, flags_for_unit_test);
