@@ -80,6 +80,10 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
             set<int>([&](int n) { result.options.shrinkler_parameters().effort(n); })
                 .min(libshrinkler::min_effort)
                 .max(libshrinkler::max_effort))
+        .add({ 'i', "iterations", format("Number of compression iterations ({})", result.options.shrinkler_parameters().iterations()), "N" },
+            set<int>([&](int n) { result.options.shrinkler_parameters().iterations(n); })
+            .min(libshrinkler::min_iterations)
+            .max(libshrinkler::max_iterations))
         ;
 
     argpppp::command_line_parser parser;
@@ -97,6 +101,7 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
     std::cout << "debug_checks:   " << result.options.debug_checks() << "\n";
     std::cout << "same_length:    " << result.options.shrinkler_parameters().same_length() << "\n";
     std::cout << "effort:         " << result.options.shrinkler_parameters().effort() << "\n";
+    std::cout << "iterations:     " << result.options.shrinkler_parameters().iterations() << "\n";
 
     return result;
 }
@@ -113,7 +118,6 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
     parse_command_line_result result;
     argpppp::command_line_parser parser;
 
-    add_option(parser, { "iterations", 'i', "N", {}, "Number of iterations for the compression (2)" }, bogus_callback);
     add_option(parser, { "length-margin", 'l', "N", {}, "Number of shorter matches considered for each match (2)" }, bogus_callback);
     add_option(parser, { "preset", 'p', "PRESET", {}, "Preset for all compression options except --references (1..9, default 2)" }, bogus_callback);
     add_option(parser, { "references", 'r', "N", {}, "Number of reference edges to keep in memory (100000)" }, bogus_callback);
