@@ -82,8 +82,8 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
                 .max(libshrinkler::max_effort))
         .add({ 'i', "iterations", format("Number of compression iterations ({})", result.options.shrinkler_parameters().iterations()), "N" },
             set<int>([&](int n) { result.options.shrinkler_parameters().iterations(n); })
-            .min(libshrinkler::min_iterations)
-            .max(libshrinkler::max_iterations))
+                .min(libshrinkler::min_iterations)
+                .max(libshrinkler::max_iterations))
         ;
 
     argpppp::command_line_parser parser;
