@@ -4,7 +4,6 @@
 module;
 
 #include <format>
-#include <iostream> // TODO: delete once done
 #include <string>
 #include "version.hpp"
 
@@ -47,7 +46,6 @@ enum option
 
 }
 
-// TODO: use all arguments
 parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf flags_for_unit_test)
 {
     parse_command_line_result result;
@@ -96,6 +94,11 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
             set<int>([&](int n) { result.options.shrinkler_parameters().references(n); })
             .min(libshrinkler::min_references)
             .max(libshrinkler::max_references))
+        .add({ 's', "skip-length", format("Minimum match length to accept greedily ({})", result.options.shrinkler_parameters().skip_length()), "N" },
+            set<int>([&](int n) { result.options.shrinkler_parameters().skip_length(n); })
+            .min(libshrinkler::min_skip_length)
+            .max(libshrinkler::max_skip_length))
+
         ;
 
     argpppp::command_line_parser parser;
@@ -104,18 +107,6 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
 
     // TODO: fill in result (err...what?)
     result.options.input_file(parse_result.args.at(0));
-
-    // TODO: debug code: print options
-    std::cout << "input_file:     " << result.options.input_file() << "\n";
-    std::cout << "output_file:    " << result.options.output_file() << "\n";
-    std::cout << "verbose:        " << result.options.verbose() << "\n";
-    std::cout << "code_in_header: " << result.options.code_in_header() << "\n";
-    std::cout << "debug_checks:   " << result.options.debug_checks() << "\n";
-    std::cout << "same_length:    " << result.options.shrinkler_parameters().same_length() << "\n";
-    std::cout << "effort:         " << result.options.shrinkler_parameters().effort() << "\n";
-    std::cout << "iterations:     " << result.options.shrinkler_parameters().iterations() << "\n";
-    std::cout << "length_margin:  " << result.options.shrinkler_parameters().length_margin() << "\n";
-    std::cout << "references:     " << result.options.shrinkler_parameters().references() << "\n";
 
     return result;
 }
@@ -129,8 +120,6 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
     // TODO: are the defaults still good? Can/should we calculate them somehow? (no they're not good anymore, since the default preset is now 3)
 
     // TODO: set up callbacks to fill in command line options
-
-    add_option(parser, { "skip-length", 's', "N", {}, "Minimum match length to accept greedily (2000)" }, bogus_callback);
 
     auto parse_result = parser.parse(argc, argv, flags_for_unit_test);
 
