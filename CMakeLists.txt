@@ -42,6 +42,13 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(argpppp)
 
 FetchContent_Declare(
+  elfio
+  GIT_REPOSITORY    https://github.com/serge1/ELFIO
+  GIT_TAG           Release_3.12
+  FIND_PACKAGE_ARGS 3.12 NAMES elfio)
+FetchContent_MakeAvailable(elfio)
+
+FetchContent_Declare(
   libshrinkler
   GIT_REPOSITORY    https://github.com/tom42/libshrinkler
   GIT_TAG           v1.1.0
