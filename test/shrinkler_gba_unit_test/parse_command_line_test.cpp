@@ -171,21 +171,19 @@ TEST_CASE("parse_command_line_test")
 
         CHECK(result.success == false);
     }
-}
 
-}
-
-// TODO: get test up and running
-/*
-    BOOST_AUTO_TEST_CASE(shrinkler_compression_options)
+    SECTION("shrinkler compression options")
     {
-        BOOST_TEST((parse_command_line("input -i1 -l11 -a111 -e1111 -s11111 -r111111") == command_action::process));
-        BOOST_TEST(options.shrinkler_parameters().iterations == 1);
-        BOOST_TEST(options.shrinkler_parameters().length_margin == 11);
-        BOOST_TEST(options.shrinkler_parameters().same_length == 111);
-        BOOST_TEST(options.shrinkler_parameters().effort == 1111);
-        BOOST_TEST(options.shrinkler_parameters().skip_length == 11111);
-        BOOST_TEST(options.shrinkler_parameters().references == 111111);
+        auto result = parse_command_line("input -i1 -l11 -a111 -e1111 -s11111 -r111111");
+
+        CHECK(result.success == true);
+        CHECK(result.options.shrinkler_parameters().iterations() == 1);
+        CHECK(result.options.shrinkler_parameters().length_margin() == 11);
+        CHECK(result.options.shrinkler_parameters().same_length() == 111);
+        CHECK(result.options.shrinkler_parameters().effort() == 1111);
+        CHECK(result.options.shrinkler_parameters().skip_length() == 11111);
+        CHECK(result.options.shrinkler_parameters().references() == 111111);
     }
 }
-*/
+
+}
