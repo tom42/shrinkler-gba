@@ -11,6 +11,7 @@ add_executable(
   shrinkler_gba_unit_test
   adler32_test.cpp
   complement_test.cpp
+  input_file_test.cpp
   options_test.cpp
   parse_command_line_test.cpp
   test_utilities.cpp)
