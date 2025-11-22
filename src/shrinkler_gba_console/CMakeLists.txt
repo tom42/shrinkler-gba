@@ -8,4 +8,4 @@ set_property(TARGET shrinkler-gba PROPERTY PROJECT_LABEL "shrinkler_gba_console"
 vtg_target_enable_warnings(shrinkler-gba)
 target_link_libraries(shrinkler-gba shrinkler_gba)
 
-# TODO: install
+# TODO: install (but only if configured for this, see top level CMakeLists.txt)
