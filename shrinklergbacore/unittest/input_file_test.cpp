@@ -9,22 +9,6 @@
 namespace shrinklergbacore_unittest
 {
 
-using std::runtime_error;
-using shrinklergbacore::input_file;
-
-static shrinklergbacore::console create_console(bool verbose)
-{
-    shrinklergbacore::console c;
-
-    if (!verbose)
-    {
-        c.verbose(nullptr);
-        c.out(nullptr);
-    }
-
-    return c;
-}
-
 static input_file load_elf_file(const std::filesystem::path& filename, bool verbose = false)
 {
     input_file f(create_console(verbose));
