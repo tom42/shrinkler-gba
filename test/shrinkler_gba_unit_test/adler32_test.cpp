@@ -13,7 +13,7 @@ namespace shrinkler_gba_unit_test
 
 using shrinkler_gba::adler32;
 
-TEST_CASE("adler32_test")
+TEST_CASE("adler32")
 {
     CHECK(adler32(make_bytevector("")) == 0x00000001u);
     CHECK(adler32(make_bytevector("a")) == 0x00620062u);

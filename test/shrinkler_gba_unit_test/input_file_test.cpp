@@ -8,7 +8,7 @@ import shrinkler_gba;
 namespace shrinkler_gba_unit_test
 {
 
-TEST_CASE("input_file_test")
+TEST_CASE("input_file")
 {
 }
 

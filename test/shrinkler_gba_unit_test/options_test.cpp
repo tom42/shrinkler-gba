@@ -10,7 +10,7 @@ namespace shrinkler_gba_unit_test
 
 using options = shrinkler_gba::options;
 
-TEST_CASE("options_test")
+TEST_CASE("options")
 {
 
     SECTION("constructor")

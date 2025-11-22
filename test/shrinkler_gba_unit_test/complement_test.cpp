@@ -30,7 +30,7 @@ const unsigned char ascending_numbers[shrinkler_gba::checksum_area_size] =
 
 }
 
-TEST_CASE("complement_test")
+TEST_CASE("complement")
 {
     SECTION("value of checksum_area_size is correct")
     {

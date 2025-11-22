@@ -53,7 +53,7 @@ parse_command_line_result parse_command_line(const char* command_line)
 
 }
 
-TEST_CASE("parse_command_line_test")
+TEST_CASE("parse_command_line")
 {
     SECTION("empty command line")
     {
