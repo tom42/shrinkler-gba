@@ -37,8 +37,8 @@ include(FetchContent)
 FetchContent_Declare(
   argpppp
   GIT_REPOSITORY    https://github.com/tom42/argpppp
-  GIT_TAG           v0.1.0
-  FIND_PACKAGE_ARGS 0.1.0 NAMES argpppp)
+  GIT_TAG           v0.2.0
+  FIND_PACKAGE_ARGS 0.2.0 NAMES argpppp)
 FetchContent_MakeAvailable(argpppp)
 
 FetchContent_Declare(

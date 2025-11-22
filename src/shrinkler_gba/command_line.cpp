@@ -27,26 +27,6 @@ using std::format;
 using std::string;
 using namespace libshrinkler;
 
-namespace
-{
-
-// TODO: extend argpppp, so that non-printable option keys can be assigned automatically. We should not have to define these keys, they have no meaning for us.
-//       * Maybe we can extend argpppp::option: it should not take ints as keys, but some sort of type, e.g. option_key, or short_name
-//       * Probably we want an implicit conversion from char to short_name. That will be how options with printable short name will primarily be defined
-//       * We can then have all sorts of special cased things, for cases like
-//         * "I want to assign a code manually" (then again, maybe we should not support this in the first place - yagni)
-//         * "This is a special option"
-//         * "This option has no short name"
-//       When done this enum can go.
-enum option
-{
-    first = 256,
-    no_code_in_header,
-    debug_checks,
-};
-
-}
-
 parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf flags_for_unit_test)
 {
     parse_command_line_result result;
@@ -65,9 +45,9 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
         .add({ 'v', "verbose", "Print verbose messages" }, set<bool>([&](bool) { result.options.verbose(true); }))
 
         .add_header("Depacker options:")
-        .add({ option::no_code_in_header, "no-code-in-header", "Do not put code into ROM header" },
+        .add({ {}, "no-code-in-header", "Do not put code into ROM header"},
             set<bool>([&](bool) { result.options.code_in_header(false); } ))
-        .add({ option::debug_checks, "debug-checks", "Add debug checks to depacker code" },
+        .add({ {}, "debug-checks", "Add debug checks to depacker code"},
             set<bool>([&](bool) { result.options.debug_checks(true); }))
 
         .add_header("Shrinkler compression options (default values in parentheses):")
