@@ -16,7 +16,8 @@ set(
   PRIVATE
   adler32.cpp
   command_line.cpp
-  complement.cpp)
+  complement.cpp
+  gba_packer.cpp)
 
 # Production version of shrinkler_gba.
 add_library(shrinkler_gba)

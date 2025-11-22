@@ -10,7 +10,7 @@ namespace shrinkler_gba
 export class gba_packer final
 {
 public:
-    void pack(options) {}
+    void pack(const options& options);
 };
 
 }
