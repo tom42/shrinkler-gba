@@ -56,18 +56,21 @@ TEST_CASE("parse_command_line_test")
     SECTION("empty command line")
     {
         auto result = parse_command_line("");
+
         CHECK(result.success == false);
     }
 
     SECTION("more than one input file")
     {
         auto result = parse_command_line("file1 file2");
+
         CHECK(result.success == false);
     }
 
     SECTION("one input file, no other options")
     {
         auto result = parse_command_line("file1.elf");
+
         CHECK(result.success == true);
         CHECK(result.options.input_file() == "file1.elf");
         CHECK(result.options.output_file() == "file1.gba");
@@ -79,12 +82,14 @@ TEST_CASE("parse_command_line_test")
     SECTION("invalid option")
     {
         auto result = parse_command_line("--invalid-option");
+
         CHECK(result.success == false);
     }
 
     SECTION("output file option before input file argument")
     {
         auto result = parse_command_line("-o output input");
+
         CHECK(result.success == true);
         CHECK(result.options.input_file() == "input");
         CHECK(result.options.output_file() == "output");
@@ -93,6 +98,7 @@ TEST_CASE("parse_command_line_test")
     SECTION("output file option after input file argument")
     {
         auto result = parse_command_line("input -o output");
+
         CHECK(result.success == true);
         CHECK(result.options.input_file() == "input");
         CHECK(result.options.output_file() == "output");
@@ -100,8 +106,12 @@ TEST_CASE("parse_command_line_test")
 
     SECTION("--verbose option")
     {
-        auto command_line = GENERATE("input -v", "input --verbose");
+        auto command_line = GENERATE(
+            "input -v",
+            "input --verbose");
+
         auto result = parse_command_line(command_line);
+
         CHECK(result.success == true);
         CHECK(result.options.verbose() == true);
     }
@@ -109,6 +119,7 @@ TEST_CASE("parse_command_line_test")
     SECTION("--no-code-in-header option")
     {
         auto result = parse_command_line("input --no-code-in-header");
+
         CHECK(result.success == true);
         CHECK(result.options.code_in_header() == false);
     }
@@ -116,6 +127,7 @@ TEST_CASE("parse_command_line_test")
     SECTION("--debug-checks option")
     {
         auto result = parse_command_line("input --debug-checks");
+
         CHECK(result.success == true);
         CHECK(result.options.debug_checks() == true);
     }
@@ -123,6 +135,7 @@ TEST_CASE("parse_command_line_test")
     SECTION("--preset option")
     {
         auto result = parse_command_line("input -p2");
+
         CHECK(result.success == true);
         CHECK(result.options.shrinkler_parameters().iterations() == 2);
         CHECK(result.options.shrinkler_parameters().length_margin() == 2);
