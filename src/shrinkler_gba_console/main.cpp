@@ -7,6 +7,11 @@
 
 import shrinkler_gba;
 
+void run(const shrinkler_gba::options& /*options*/)
+{
+    // TODO: create and run packer
+}
+
 int main(int argc, char* argv[])
 {
     try
@@ -18,7 +23,7 @@ int main(int argc, char* argv[])
             return EXIT_FAILURE;
         }
 
-        // TODO: run the packer
+        run(result.options);
         return EXIT_SUCCESS;
     }
     catch (const std::exception& e)

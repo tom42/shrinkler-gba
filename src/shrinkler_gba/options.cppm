@@ -11,8 +11,7 @@ import libshrinkler;
 namespace shrinkler_gba
 {
 
-SHRINKLER_GBA_EXPORT_FOR_UNIT_TESTING
-class options final
+export class options final
 {
 public:
     bool verbose() const { return m_verbose; }
