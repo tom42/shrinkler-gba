@@ -19,6 +19,12 @@ TEST_CASE("input_file")
         CHECK(input_file.loaded_data_size() == 0);
         CHECK(input_file.data().size() == 0);
     }
+
+    SECTION("load, file does not exist")
+    {
+        // TODO: expect some sort of exception, and its message
+        input_file.load("non-existing-file.elf");
+    }
 }
 
 }
