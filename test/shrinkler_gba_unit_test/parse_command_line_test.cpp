@@ -158,20 +158,25 @@ TEST_CASE("parse_command_line_test")
         CHECK(result.success == true);
         CHECK(result.options.shrinkler_parameters().iterations() == expected_iterations);
     }
+
+    SECTION("--iterations option, missing or bad argument")
+    {
+        auto command_line = GENERATE(
+            "input -i",
+            "input -i x",
+            "input -i 0",
+            "input -i 10");
+
+        auto result = parse_command_line(command_line);
+
+        CHECK(result.success == false);
+    }
 }
 
 }
 
 // TODO: get test up and running
 /*
-    BOOST_AUTO_TEST_CASE(shrinkler_iterations_option)
-    {
-        BOOST_TEST((parse_command_line("input -i") == command_action::exit_failure));
-        BOOST_TEST((parse_command_line("input -i x") == command_action::exit_failure));
-        BOOST_TEST((parse_command_line("input -i 0") == command_action::exit_failure));
-        BOOST_TEST((parse_command_line("input -i 10") == command_action::exit_failure));
-    }
-
     BOOST_AUTO_TEST_CASE(shrinkler_compression_options)
     {
         BOOST_TEST((parse_command_line("input -i1 -l11 -a111 -e1111 -s11111 -r111111") == command_action::process));
