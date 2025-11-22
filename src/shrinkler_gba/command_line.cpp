@@ -86,7 +86,10 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
     auto parse_result = parser.parse(argc, argv, options);
 
     result.success = parse_result.errnum == 0;
-    result.options.input_file(parse_result.args.at(0));
+    if (result.success)
+    {
+        result.options.input_file(parse_result.args.at(0));
+    }
 
     return result;
 }
