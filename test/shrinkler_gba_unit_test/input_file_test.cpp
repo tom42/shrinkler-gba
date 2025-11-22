@@ -30,6 +30,14 @@ TEST_CASE("input_file")
             std::runtime_error,
             Catch::Matchers::Message("non-existing-file.elf: no such file or directory"));
     }
+
+    SECTION("load, invalid file")
+    {
+        CHECK_THROWS_MATCHES(
+            input_file.load("invalid-elf-file.elf"),
+            std::runtime_error,
+            Catch::Matchers::Message("invalid-elf-file.elf: file is not a valid ELF file"));
+    }
 }
 
 }

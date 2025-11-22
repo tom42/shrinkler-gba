@@ -18,14 +18,6 @@ static input_file load_elf_file(const std::filesystem::path& filename, bool verb
 
 BOOST_AUTO_TEST_SUITE(input_file_test)
 
-    BOOST_AUTO_TEST_CASE(load_when_elf_file_is_invalid_then_throws)
-    {
-        BOOST_CHECK_EXCEPTION(
-            load_elf_file("invalid-elf-file.elf"),
-            runtime_error,
-            [](const auto& e) { return boost::iends_with(e.what(), "file is not a valid ELF file"); });
-    }
-
     BOOST_AUTO_TEST_CASE(load)
     {
         auto testee = load_elf_file("lostmarbles.elf");
