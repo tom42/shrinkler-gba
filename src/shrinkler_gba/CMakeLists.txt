@@ -10,6 +10,7 @@ set(
   command_line.cppm
   complement.cppm
   gba.cppm
+  gba_packer.cppm
   options.cppm
   shrinkler_gba.cppm
   PRIVATE

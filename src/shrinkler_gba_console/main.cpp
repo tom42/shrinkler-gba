@@ -10,9 +10,10 @@ import shrinkler_gba;
 namespace
 {
 
-void run(const shrinkler_gba::options& /*options*/)
+void run(const shrinkler_gba::options& options)
 {
-    // TODO: create and run packer
+    shrinkler_gba::gba_packer packer;
+    packer.pack(options);
 }
 
 }
