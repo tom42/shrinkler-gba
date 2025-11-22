@@ -6,6 +6,7 @@ add_executable(shrinkler-gba main.cpp)
 set_property(TARGET shrinkler-gba PROPERTY PROJECT_LABEL "shrinkler_gba_console")
 
 vtg_target_enable_warnings(shrinkler-gba)
-target_link_libraries(shrinkler-gba shrinkler_gba)
+target_link_libraries(shrinkler-gba PRIVATE shrinkler_gba)
 
 # TODO: install (but only if configured for this, see top level CMakeLists.txt)
+#       => But do not forget: do not hardcode install directory, use GNUInstallDirs or however it is called
