@@ -5,16 +5,26 @@
 #include <catch2/matchers/catch_matchers.hpp>
 #include <catch2/matchers/catch_matchers_exception.hpp>
 #include <stdexcept>
+#include <string>
 
 import shrinkler_gba;
 
 namespace shrinkler_gba_unit_test
 {
 
-TEST_CASE("input_file")
+class input_file_fixture
 {
-    shrinkler_gba::input_file input_file;
+protected:
+    void load(const std::string& filename)
+    {
+        input_file.load(filename);
+    }
 
+    shrinkler_gba::input_file input_file;
+};
+
+TEST_CASE_METHOD(input_file_fixture, "input_file")
+{
     SECTION("state after construction")
     {
         CHECK(input_file.entry() == 0);
@@ -26,7 +36,7 @@ TEST_CASE("input_file")
     SECTION("load, file does not exist")
     {
         CHECK_THROWS_MATCHES(
-            input_file.load("non-existing-file.elf"),
+            load("non-existing-file.elf"),
             std::runtime_error,
             Catch::Matchers::Message("non-existing-file.elf: no such file or directory"));
     }
@@ -34,7 +44,7 @@ TEST_CASE("input_file")
     SECTION("load, invalid file")
     {
         CHECK_THROWS_MATCHES(
-            input_file.load("invalid-elf-file.elf"),
+            load("invalid-elf-file.elf"),
             std::runtime_error,
             Catch::Matchers::Message("invalid-elf-file.elf: file is not a valid ELF file"));
     }
