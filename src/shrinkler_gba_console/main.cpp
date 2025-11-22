@@ -7,9 +7,14 @@
 
 import shrinkler_gba;
 
+namespace
+{
+
 void run(const shrinkler_gba::options& /*options*/)
 {
     // TODO: create and run packer
+}
+
 }
 
 int main(int argc, char* argv[])
