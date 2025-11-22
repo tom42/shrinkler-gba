@@ -18,20 +18,6 @@ static input_file load_elf_file(const std::filesystem::path& filename, bool verb
 
 BOOST_AUTO_TEST_SUITE(input_file_test)
 
-    BOOST_AUTO_TEST_CASE(constructor)
-    {
-        const input_file testee;
-
-    }
-
-    BOOST_AUTO_TEST_CASE(load_when_file_does_not_exist_then_throws)
-    {
-        BOOST_CHECK_EXCEPTION(
-            load_elf_file("non-existing-file.elf"),
-            runtime_error,
-            [](const auto& e) { return boost::iends_with(e.what(), "non-existing-file.elf: no such file or directory"); });
-    }
-
     BOOST_AUTO_TEST_CASE(load_when_elf_file_is_invalid_then_throws)
     {
         BOOST_CHECK_EXCEPTION(

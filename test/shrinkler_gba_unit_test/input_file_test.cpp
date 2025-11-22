@@ -2,6 +2,9 @@
 // SPDX-License-Identifier: MIT
 
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers.hpp>
+#include <catch2/matchers/catch_matchers_exception.hpp>
+#include <stdexcept>
 
 import shrinkler_gba;
 
@@ -22,8 +25,10 @@ TEST_CASE("input_file")
 
     SECTION("load, file does not exist")
     {
-        // TODO: expect some sort of exception, and its message
-        input_file.load("non-existing-file.elf");
+        CHECK_THROWS_MATCHES(
+            input_file.load("non-existing-file.elf"),
+            std::runtime_error,
+            Catch::Matchers::Message("non-existing-file.elf: no such file or directory"));
     }
 }
 

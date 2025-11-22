@@ -4,6 +4,7 @@
 module;
 
 #include <cstdint>
+#include <string>
 #include <vector>
 
 export module shrinkler_gba:input_file;
@@ -15,6 +16,8 @@ SHRINKLER_GBA_EXPORT_FOR_UNIT_TESTING
 class input_file final
 {
 public:
+    void load(const std::string& path);
+
     uint32_t entry() const { return m_entry; }
 
     uint32_t load_address() const { return m_load_address; }

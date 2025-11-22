@@ -1,7 +1,3 @@
-// SPDX-FileCopyrightText: 2021 Thomas Mathys
-// SPDX-License-Identifier: MIT
-// shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
-
 #include <algorithm>
 #include <fstream>
 #include <stdexcept>
@@ -42,10 +38,6 @@ void input_file::load(const std::filesystem::path& path)
         }
 
         load(stream);
-    }
-    catch (const std::exception& e)
-    {
-        throw std::runtime_error(path.string() + ": " + e.what());
     }
 }
 
