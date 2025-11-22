@@ -7,4 +7,5 @@ export import :command_line;
 export import :complement;
 export import :gba;
 export import :gba_packer;
+export import :input_file;
 export import :options;

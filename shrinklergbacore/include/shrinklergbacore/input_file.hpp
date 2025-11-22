@@ -5,11 +5,9 @@
 #ifndef SHRINKLERGBACORE_INPUT_FILE_HPP
 #define SHRINKLERGBACORE_INPUT_FILE_HPP
 
-#include <cstdint>
 #include <boost/numeric/conversion/cast.hpp>
 #include <filesystem>
 #include <iosfwd>
-#include <vector>
 #include "shrinklergbacore/console.hpp"
 
 namespace ELFIO
@@ -65,9 +63,6 @@ private:
     static void sort_sections_by_address(std::vector<const ELFIO::section*>& sections);
 
     const console m_console;
-    uint32_t m_entry = 0;
-    uint32_t m_load_address = 0;
-    std::vector<unsigned char> m_data;
 };
 
 }

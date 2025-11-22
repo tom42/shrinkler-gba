@@ -11,6 +11,7 @@ set(
   complement.cppm
   gba.cppm
   gba_packer.cppm
+  input_file.cppm
   options.cppm
   shrinkler_gba.cppm
   PRIVATE
