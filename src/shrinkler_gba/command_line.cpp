@@ -41,42 +41,42 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
 
         .add_header("General options:")
         .add({ 'o', "output-file", "Output file name. Default is input file name with extension replaced by .gba", "FILE" },
-            set<string>([&](string s) { result.options.output_file(s); }))
-        .add({ 'v', "verbose", "Print verbose messages" }, set<bool>([&](bool) { result.options.verbose(true); }))
+            set<string>([&](string s) { result.opts.output_file(s); }))
+        .add({ 'v', "verbose", "Print verbose messages" }, set<bool>([&](bool) { result.opts.verbose(true); }))
 
         .add_header("Depacker options:")
         .add({ {}, "no-code-in-header", "Do not put code into ROM header"},
-            set<bool>([&](bool) { result.options.code_in_header(false); } ))
+            set<bool>([&](bool) { result.opts.code_in_header(false); } ))
         .add({ {}, "debug-checks", "Add debug checks to depacker code"},
-            set<bool>([&](bool) { result.options.debug_checks(true); }))
+            set<bool>([&](bool) { result.opts.debug_checks(true); }))
 
         .add_header("Shrinkler compression options (default values in parentheses):")
-        .add({ 'a', "same-length", format("Number of matches of same length to consider ({})", result.options.shrinkler_parameters().same_length()), "N" },
-            set<int>([&](int n) { result.options.shrinkler_parameters().same_length(n); })
+        .add({ 'a', "same-length", format("Number of matches of same length to consider ({})", result.opts.shrinkler_parameters().same_length()), "N" },
+            set<int>([&](int n) { result.opts.shrinkler_parameters().same_length(n); })
             .min(min_same_length)
             .max(max_same_length))
-        .add({ 'e', "effort", format("Perseverance in finding multiple matches ({})", result.options.shrinkler_parameters().effort()), "N" },
-            set<int>([&](int n) { result.options.shrinkler_parameters().effort(n); })
+        .add({ 'e', "effort", format("Perseverance in finding multiple matches ({})", result.opts.shrinkler_parameters().effort()), "N" },
+            set<int>([&](int n) { result.opts.shrinkler_parameters().effort(n); })
             .min(min_effort)
             .max(max_effort))
-        .add({ 'i', "iterations", format("Number of compression iterations ({})", result.options.shrinkler_parameters().iterations()), "N" },
-            set<int>([&](int n) { result.options.shrinkler_parameters().iterations(n); })
+        .add({ 'i', "iterations", format("Number of compression iterations ({})", result.opts.shrinkler_parameters().iterations()), "N" },
+            set<int>([&](int n) { result.opts.shrinkler_parameters().iterations(n); })
             .min(min_iterations)
             .max(max_iterations))
-        .add({ 'l', "length-margin", format("Number of shorter matches considered for each match ({})", result.options.shrinkler_parameters().length_margin()), "N" },
-            set<int>([&](int n) { result.options.shrinkler_parameters().length_margin(n); })
+        .add({ 'l', "length-margin", format("Number of shorter matches considered for each match ({})", result.opts.shrinkler_parameters().length_margin()), "N" },
+            set<int>([&](int n) { result.opts.shrinkler_parameters().length_margin(n); })
             .min(min_length_margin)
             .max(max_length_margin))
         .add({ 'p', "preset", format("Preset for all compression options except --references ({}..{}, default {})", min_preset, max_preset, default_preset), "PRESET"},
-            set<int>([&](int n) { result.options.shrinkler_parameters().preset(n); })
+            set<int>([&](int n) { result.opts.shrinkler_parameters().preset(n); })
             .min(min_preset)
             .max(max_preset))
-        .add({ 'r', "references", format("Number of reference edges to keep in memory ({})", result.options.shrinkler_parameters().references()), "N" },
-            set<int>([&](int n) { result.options.shrinkler_parameters().references(n); })
+        .add({ 'r', "references", format("Number of reference edges to keep in memory ({})", result.opts.shrinkler_parameters().references()), "N" },
+            set<int>([&](int n) { result.opts.shrinkler_parameters().references(n); })
             .min(min_references)
             .max(max_references))
-        .add({ 's', "skip-length", format("Minimum match length to accept greedily ({})", result.options.shrinkler_parameters().skip_length()), "N" },
-            set<int>([&](int n) { result.options.shrinkler_parameters().skip_length(n); })
+        .add({ 's', "skip-length", format("Minimum match length to accept greedily ({})", result.opts.shrinkler_parameters().skip_length()), "N" },
+            set<int>([&](int n) { result.opts.shrinkler_parameters().skip_length(n); })
             .min(min_skip_length)
             .max(max_skip_length))
         ;
@@ -88,7 +88,7 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
     result.success = parse_result.errnum == 0;
     if (result.success)
     {
-        result.options.input_file(parse_result.args.at(0));
+        result.opts.input_file(parse_result.args.at(0));
     }
 
     return result;

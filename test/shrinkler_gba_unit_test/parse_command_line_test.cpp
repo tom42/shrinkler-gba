@@ -74,11 +74,11 @@ TEST_CASE("parse_command_line_test")
         auto result = parse_command_line("file1.elf");
 
         CHECK(result.success == true);
-        CHECK(result.options.input_file() == "file1.elf");
-        CHECK(result.options.output_file() == "file1.gba");
-        CHECK(result.options.verbose() == false);
-        CHECK(result.options.code_in_header() == true);
-        CHECK(result.options.debug_checks() == false);
+        CHECK(result.opts.input_file() == "file1.elf");
+        CHECK(result.opts.output_file() == "file1.gba");
+        CHECK(result.opts.verbose() == false);
+        CHECK(result.opts.code_in_header() == true);
+        CHECK(result.opts.debug_checks() == false);
     }
 
     SECTION("invalid option")
@@ -93,8 +93,8 @@ TEST_CASE("parse_command_line_test")
         auto result = parse_command_line("-o output input");
 
         CHECK(result.success == true);
-        CHECK(result.options.input_file() == "input");
-        CHECK(result.options.output_file() == "output");
+        CHECK(result.opts.input_file() == "input");
+        CHECK(result.opts.output_file() == "output");
     }
 
     SECTION("output file option after input file argument")
@@ -102,8 +102,8 @@ TEST_CASE("parse_command_line_test")
         auto result = parse_command_line("input -o output");
 
         CHECK(result.success == true);
-        CHECK(result.options.input_file() == "input");
-        CHECK(result.options.output_file() == "output");
+        CHECK(result.opts.input_file() == "input");
+        CHECK(result.opts.output_file() == "output");
     }
 
     SECTION("--verbose option")
@@ -115,7 +115,7 @@ TEST_CASE("parse_command_line_test")
         auto result = parse_command_line(command_line);
 
         CHECK(result.success == true);
-        CHECK(result.options.verbose() == true);
+        CHECK(result.opts.verbose() == true);
     }
 
     SECTION("--no-code-in-header option")
@@ -123,7 +123,7 @@ TEST_CASE("parse_command_line_test")
         auto result = parse_command_line("input --no-code-in-header");
 
         CHECK(result.success == true);
-        CHECK(result.options.code_in_header() == false);
+        CHECK(result.opts.code_in_header() == false);
     }
 
     SECTION("--debug-checks option")
@@ -131,7 +131,7 @@ TEST_CASE("parse_command_line_test")
         auto result = parse_command_line("input --debug-checks");
 
         CHECK(result.success == true);
-        CHECK(result.options.debug_checks() == true);
+        CHECK(result.opts.debug_checks() == true);
     }
 
     SECTION("--preset option")
@@ -139,12 +139,12 @@ TEST_CASE("parse_command_line_test")
         auto result = parse_command_line("input -p2");
 
         CHECK(result.success == true);
-        CHECK(result.options.shrinkler_parameters().iterations() == 2);
-        CHECK(result.options.shrinkler_parameters().length_margin() == 2);
-        CHECK(result.options.shrinkler_parameters().same_length() == 20);
-        CHECK(result.options.shrinkler_parameters().effort() == 200);
-        CHECK(result.options.shrinkler_parameters().skip_length() == 2000);
-        CHECK(result.options.shrinkler_parameters().references() == 100000);
+        CHECK(result.opts.shrinkler_parameters().iterations() == 2);
+        CHECK(result.opts.shrinkler_parameters().length_margin() == 2);
+        CHECK(result.opts.shrinkler_parameters().same_length() == 20);
+        CHECK(result.opts.shrinkler_parameters().effort() == 200);
+        CHECK(result.opts.shrinkler_parameters().skip_length() == 2000);
+        CHECK(result.opts.shrinkler_parameters().references() == 100000);
     }
 
     SECTION("--iterations option")
@@ -156,7 +156,7 @@ TEST_CASE("parse_command_line_test")
         auto result = parse_command_line(command_line);
 
         CHECK(result.success == true);
-        CHECK(result.options.shrinkler_parameters().iterations() == expected_iterations);
+        CHECK(result.opts.shrinkler_parameters().iterations() == expected_iterations);
     }
 
     SECTION("--iterations option, missing or bad argument")
@@ -177,12 +177,12 @@ TEST_CASE("parse_command_line_test")
         auto result = parse_command_line("input -i1 -l11 -a111 -e1111 -s11111 -r111111");
 
         CHECK(result.success == true);
-        CHECK(result.options.shrinkler_parameters().iterations() == 1);
-        CHECK(result.options.shrinkler_parameters().length_margin() == 11);
-        CHECK(result.options.shrinkler_parameters().same_length() == 111);
-        CHECK(result.options.shrinkler_parameters().effort() == 1111);
-        CHECK(result.options.shrinkler_parameters().skip_length() == 11111);
-        CHECK(result.options.shrinkler_parameters().references() == 111111);
+        CHECK(result.opts.shrinkler_parameters().iterations() == 1);
+        CHECK(result.opts.shrinkler_parameters().length_margin() == 11);
+        CHECK(result.opts.shrinkler_parameters().same_length() == 111);
+        CHECK(result.opts.shrinkler_parameters().effort() == 1111);
+        CHECK(result.opts.shrinkler_parameters().skip_length() == 11111);
+        CHECK(result.opts.shrinkler_parameters().references() == 111111);
     }
 }
 

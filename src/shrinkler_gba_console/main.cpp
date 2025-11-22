@@ -28,7 +28,7 @@ int main(int argc, char* argv[])
             return EXIT_FAILURE;
         }
 
-        run(result.options);
+        run(result.opts);
         return EXIT_SUCCESS;
     }
     catch (const std::exception& e)

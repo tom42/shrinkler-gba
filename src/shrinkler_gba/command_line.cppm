@@ -11,7 +11,7 @@ namespace shrinkler_gba
 export struct parse_command_line_result final
 {
     bool success{};
-    options options{};
+    options opts{};
 };
 
 export parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf flags_for_unit_test = argpppp::pf::none);
