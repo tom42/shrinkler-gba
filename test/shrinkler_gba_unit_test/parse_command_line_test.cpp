@@ -5,6 +5,7 @@
 #include <catch2/generators/catch_generators.hpp>
 #include <sstream>
 #include <string>
+#include <utility>
 #include <vector>
 
 import argpppp;
@@ -13,9 +14,10 @@ import shrinkler_gba;
 namespace shrinkler_gba_unit_test
 {
 
+using shrinkler_gba::parse_command_line_result;
+using std::make_pair;
 using std::string;
 using std::vector;
-using shrinkler_gba::parse_command_line_result;
 
 namespace
 {
@@ -144,6 +146,18 @@ TEST_CASE("parse_command_line_test")
         CHECK(result.options.shrinkler_parameters().skip_length() == 2000);
         CHECK(result.options.shrinkler_parameters().references() == 100000);
     }
+
+    SECTION("--iterations option")
+    {
+        auto [command_line, expected_iterations] = GENERATE(
+            make_pair("input -i1", 1),
+            make_pair("input -i9", 9));
+
+        auto result = parse_command_line(command_line);
+
+        CHECK(result.success == true);
+        CHECK(result.options.shrinkler_parameters().iterations() == expected_iterations);
+    }
 }
 
 }
@@ -156,12 +170,6 @@ TEST_CASE("parse_command_line_test")
         BOOST_TEST((parse_command_line("input -i x") == command_action::exit_failure));
         BOOST_TEST((parse_command_line("input -i 0") == command_action::exit_failure));
         BOOST_TEST((parse_command_line("input -i 10") == command_action::exit_failure));
-
-        BOOST_TEST((parse_command_line("input -i 1") == command_action::process));
-        BOOST_TEST(options.shrinkler_parameters().iterations == 1);
-
-        BOOST_TEST((parse_command_line("input -i 9") == command_action::process));
-        BOOST_TEST(options.shrinkler_parameters().iterations == 9);
     }
 
     BOOST_AUTO_TEST_CASE(shrinkler_compression_options)
