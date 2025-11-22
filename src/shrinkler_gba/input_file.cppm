@@ -21,6 +21,14 @@ SHRINKLER_GBA_EXPORT_FOR_UNIT_TESTING
 class input_file final
 {
 public:
+    uint32_t entry() const { return m_entry; }
+
+    uint32_t load_address() const { return m_load_address; }
+
+    uint32_t loaded_data_size() const { return 0; } // TODO: real implementation
+
+    const std::vector<unsigned char>& data() const { return m_data; }
+
 private:
     uint32_t m_entry = 0;
     uint32_t m_load_address = 0;

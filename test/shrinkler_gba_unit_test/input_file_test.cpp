@@ -10,6 +10,15 @@ namespace shrinkler_gba_unit_test
 
 TEST_CASE("input_file")
 {
+    shrinkler_gba::input_file input_file;
+
+    SECTION("state after construction")
+    {
+        CHECK(input_file.entry() == 0);
+        CHECK(input_file.load_address() == 0);
+        CHECK(input_file.loaded_data_size() == 0);
+        CHECK(input_file.data().size() == 0);
+    }
 }
 
 }

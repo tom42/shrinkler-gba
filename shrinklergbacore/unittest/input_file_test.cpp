@@ -1,7 +1,3 @@
-// SPDX-FileCopyrightText: 2021 Thomas Mathys
-// SPDX-License-Identifier: MIT
-// shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
-
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/test/unit_test.hpp>
 #include <filesystem>
@@ -42,10 +38,6 @@ BOOST_AUTO_TEST_SUITE(input_file_test)
     {
         const input_file testee;
 
-        BOOST_TEST(testee.entry() == 0u);
-        BOOST_TEST(testee.load_address() == 0u);
-        BOOST_TEST(testee.loaded_data_size() == 0u);
-        BOOST_TEST(testee.data().size() == 0u);
     }
 
     BOOST_AUTO_TEST_CASE(load_when_file_does_not_exist_then_throws)
