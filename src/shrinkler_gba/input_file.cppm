@@ -11,12 +11,6 @@ export module shrinkler_gba:input_file;
 namespace shrinkler_gba
 {
 
-// TODO: get ELFIO, but can we organize things so that no ELFIO header is used in .cppm files?
-//       => Note: back then we used ELFIO 3.9, but we should probably migrate to the latest version, that would be 3.12
-//       => Note: output from vcpkg install elfio:
-//            # this is heuristically generated, and may not be correct
-//            find_package(elfio CONFIG REQUIRED) (ugh: what is CONFIG?)
-//            target_link_libraries(main PRIVATE elfio::elfio)
 SHRINKLER_GBA_EXPORT_FOR_UNIT_TESTING
 class input_file final
 {
