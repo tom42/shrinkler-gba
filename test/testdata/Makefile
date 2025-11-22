@@ -1,8 +1,11 @@
 # SPDX-FileCopyrightText: 2021 Thomas Mathys
 # SPDX-License-Identifier: MIT
-# shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
+#
+# To simplify building we have all test data files in version control,
+# even binaries for which the source code is included.
+# This makefile can be used if test data files need to be (re)created for some reason.
 
-# Using devkitPro, but any ARM GNU assembler should do.
+# Nprmally I'm using devkitPro, but any equivalent ARM GNU assembler will do.
 AS := arm-none-eabi-as
 LD := arm-none-eabi-ld
 
