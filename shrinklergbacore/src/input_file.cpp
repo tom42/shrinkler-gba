@@ -23,23 +23,6 @@ static table_printer create_table_printer()
     return p;
 }
 
-void input_file::load(const std::filesystem::path& path)
-{
-    try
-    {
-        CONSOLE_VERBOSE(m_console) << "Loading: " << path.string() << std::endl;
-        std::ifstream stream(path, std::ios::binary);
-
-        if (!stream)
-        {
-            auto e = errno;
-            throw std::system_error(e, std::generic_category());
-        }
-
-        load(stream);
-    }
-}
-
 void input_file::load(std::istream& stream)
 {
     load_elf(stream);

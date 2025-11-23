@@ -29,12 +29,11 @@ void open_elf(elfio& reader, std::istream& stream)
 
 }
 
-void input_file::load(const std::string& path)
+void input_file::load(const std::string& path, const console& console)
 {
     try
     {
-        // TODO: originally we logged here, question is, do we really want this? Not really, no?
-        //       => Well probably we do - if the program crashes we want to be able to read what it was doing, no?
+        console.verbose("Loading: {}", path);
         std::ifstream stream(path, std::ios::binary);
 
         if (!stream)

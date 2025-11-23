@@ -25,10 +25,10 @@ console create_console(const options& opts)
     return c;
 }
 
-input_file load_input_file(console& /*console*/, const std::filesystem::path& path)
+input_file load_input_file(const std::filesystem::path& path, const console& console)
 {
     input_file f;
-    f.load(path.string()); // TODO: somehow pass the console to the input file, so that it can log
+    f.load(path.string(), console);
 
     if (!f.loaded_data_size())
     {
@@ -45,7 +45,7 @@ input_file load_input_file(console& /*console*/, const std::filesystem::path& pa
 void pack(const options& opts)
 {
     auto console = create_console(opts);
-    auto input_file = load_input_file(console, opts.input_file());
+    auto input_file = load_input_file(opts.input_file(), console);
 
     // TODO: implement the existing 5/6/whatever steps:
     //       * Compress raw binary: note: here some work on libshrinkler might be necessary: I am not sure it supports progress output. But that's fine.

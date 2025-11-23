@@ -9,6 +9,7 @@ module;
 #include <vector>
 
 export module shrinkler_gba:input_file;
+import :console;
 
 namespace shrinkler_gba
 {
@@ -17,7 +18,7 @@ SHRINKLER_GBA_EXPORT_FOR_UNIT_TESTING
 class input_file final
 {
 public:
-    void load(const std::string& path);
+    void load(const std::string& path, const console& console);
 
     void load(std::istream& stream);
 
