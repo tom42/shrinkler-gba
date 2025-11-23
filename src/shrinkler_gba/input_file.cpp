@@ -38,12 +38,23 @@ void check_executable_type(elfio& reader)
     }
 }
 
+void check_elf_version(elfio& reader)
+{
+    const auto expected_elf_version = 1;
+
+    auto ei_version = reader.get_elf_version();
+    if (ei_version != expected_elf_version)
+    {
+        throw std::runtime_error(std::format("Unknown ELF format version {}. Expected {}", ei_version, expected_elf_version));
+    }
+}
+
 void check_header(elfio& reader)
 {
     check_executable_type(reader);
+    check_elf_version(reader);
 
     // TODO: do port stuff below
-    //check_elf_version(reader);
 
     //// Not sure these matter. Checking them to be on the safe side.
     //check_os_abi(reader);
