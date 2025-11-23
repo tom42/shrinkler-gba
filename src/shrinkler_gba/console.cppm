@@ -25,7 +25,7 @@ public:
     {
         if (m_out_stream)
         {
-            std::print(m_out_stream, fmt, std::forward<Args>(args)...);
+            std::println(m_out_stream, fmt, std::forward<Args>(args)...);
         }
     }
 
@@ -34,7 +34,8 @@ public:
     {
         if (m_warn_stream)
         {
-            std::print(m_warn_stream, fmt, std::forward<Args>(args)...);
+            std::print(m_warn_stream, "Warning: ");
+            std::println(m_warn_stream, fmt, std::forward<Args>(args)...);
         }
     }
 
@@ -43,7 +44,7 @@ public:
     {
         if (m_verbose_stream)
         {
-            std::print(m_verbose_stream, fmt, std::forward<Args>(args)...);
+            std::println(m_verbose_stream, fmt, std::forward<Args>(args)...);
         }
     }
 
