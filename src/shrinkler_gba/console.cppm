@@ -17,6 +17,7 @@ export module shrinkler_gba:console;
 namespace shrinkler_gba
 {
 
+SHRINKLER_GBA_EXPORT_FOR_UNIT_TESTING
 class console final
 {
 public:

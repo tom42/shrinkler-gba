@@ -26,7 +26,13 @@ protected:
     void load(const std::string& filename)
     {
         auto path = std::filesystem::path(SHRINKLER_GBA_UNIT_TEST_TESTDATA_DIRECTORY) / filename;
-        input_file.load(path.string());
+
+        shrinkler_gba::console console;
+        console.out_stream(nullptr);
+        console.warn_stream(nullptr);
+        console.verbose_stream(nullptr);
+
+        input_file.load(path.string(), console);
     }
 
     shrinkler_gba::input_file input_file;
