@@ -37,14 +37,11 @@ public:
     uint32_t loaded_data_size() const { return boost::numeric_cast<uint32_t>(m_data.size()); }
 
 private:
-    void load_elf(std::istream& stream);
-    void reset();
     void read_entry(ELFIO::elfio& reader);
     void log_program_headers(ELFIO::elfio& reader) const;
     void log_section_headers(ELFIO::elfio& reader) const;
     void convert_to_binary(ELFIO::elfio& reader);
 
-    static void open_elf(ELFIO::elfio& reader, std::istream& stream);
     static void check_header(ELFIO::elfio& reader);
     static void check_executable_type(ELFIO::elfio& reader);
     static void check_elf_version(ELFIO::elfio& reader);

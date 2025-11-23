@@ -11,7 +11,6 @@ namespace shrinklergbacore
 {
 
 using boost::numeric_cast;
-using ELFIO::elfio;
 using ELFIO::Elf64_Addr;
 using ELFIO::Elf_Half;
 using ELFIO::segment;
@@ -61,13 +60,6 @@ void input_file::load_elf(std::istream& stream)
     log_program_headers(reader);
     log_section_headers(reader);
     convert_to_binary(reader);
-}
-
-void input_file::reset()
-{
-    m_entry = 0;
-    m_load_address = 0;
-    std::vector<unsigned char>().swap(m_data);
 }
 
 void input_file::read_entry(elfio& reader)
@@ -186,14 +178,6 @@ void input_file::convert_to_binary(ELFIO::elfio& reader)
         m_data.insert(m_data.end(), s->get_data(), s->get_data() + s->get_size());
         output_address += s->get_size();
         previous_section = s;
-    }
-}
-
-void input_file::open_elf(elfio& reader, std::istream& stream)
-{
-    if (!reader.load(stream))
-    {
-        throw runtime_error("file is not a valid ELF file");
     }
 }
 

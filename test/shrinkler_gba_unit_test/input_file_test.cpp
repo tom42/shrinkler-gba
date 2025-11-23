@@ -53,7 +53,7 @@ TEST_CASE_METHOD(input_file_fixture, "input_file")
         CHECK_THROWS_MATCHES(
             load("invalid-elf-file.elf"),
             std::runtime_error,
-            Catch::Matchers::Message("invalid-elf-file.elf: file is not a valid ELF file"));
+            MessageMatches(EndsWith("invalid-elf-file.elf: file is not a valid ELF file")));
     }
 }
 

@@ -4,6 +4,7 @@
 module;
 
 #include <cstdint>
+#include <iosfwd>
 #include <string>
 #include <vector>
 
@@ -18,6 +19,8 @@ class input_file final
 public:
     void load(const std::string& path);
 
+    void load(std::istream& stream);
+
     uint32_t entry() const { return m_entry; }
 
     uint32_t load_address() const { return m_load_address; }
@@ -27,6 +30,9 @@ public:
     const std::vector<unsigned char>& data() const { return m_data; }
 
 private:
+    void load_elf(std::istream& stream);
+    void reset();
+
     uint32_t m_entry = 0;
     uint32_t m_load_address = 0;
     std::vector<unsigned char> m_data;
