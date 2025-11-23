@@ -9,6 +9,7 @@ set(
   adler32.cppm
   command_line.cppm
   complement.cppm
+  console.cppm
   gba.cppm
   gba_packer.cppm
   input_file.cppm
