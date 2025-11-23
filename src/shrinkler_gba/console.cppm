@@ -21,7 +21,7 @@ class console final
 {
 public:
     template<typename... Args>
-    void out(std::format_string<Args...> fmt, Args&&... args)
+    void out(std::format_string<Args...> fmt, Args&&... args) const
     {
         if (m_out_stream)
         {
@@ -30,7 +30,7 @@ public:
     }
 
     template<typename... Args>
-    void warn(std::format_string<Args...> fmt, Args&&... args)
+    void warn(std::format_string<Args...> fmt, Args&&... args) const
     {
         if (m_warn_stream)
         {
@@ -40,7 +40,7 @@ public:
     }
 
     template<typename... Args>
-    void verbose(std::format_string<Args...> fmt, Args&&... args)
+    void verbose(std::format_string<Args...> fmt, Args&&... args) const
     {
         if (m_verbose_stream)
         {
