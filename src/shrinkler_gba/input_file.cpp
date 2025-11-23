@@ -93,6 +93,12 @@ void check_header(elfio& reader)
     check_object_file_version(reader);
 }
 
+uint32_t read_entry(elfio& reader)
+{
+    // TODO: use some sort of narrow_cast that does throw if the value is too big
+    return static_cast<uint32_t>(reader.get_entry());
+}
+
 }
 
 void input_file::load(const std::string& path, const console& console)
@@ -131,10 +137,10 @@ void input_file::load_elf(std::istream& stream)
     elfio reader;
     open_elf(reader, stream);
     check_header(reader);
+    m_entry = read_entry(reader);
 
     // TODO: implement stuff below
     /*
-    read_entry(reader);
     log_program_headers(reader);
     log_section_headers(reader);
     convert_to_binary(reader);

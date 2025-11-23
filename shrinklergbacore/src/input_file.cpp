@@ -36,11 +36,6 @@ void input_file::load_elf(std::istream& stream)
     convert_to_binary(reader);
 }
 
-void input_file::read_entry(elfio& reader)
-{
-    m_entry = numeric_cast<uint32_t>(reader.get_entry());
-}
-
 void input_file::log_program_headers(elfio& reader) const
 {
     if (!m_console.is_verbose_enabled())
