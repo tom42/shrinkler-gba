@@ -49,15 +49,27 @@ void check_elf_version(elfio& reader)
     }
 }
 
+void check_os_abi(elfio& reader)
+{
+    const auto expected_abi = ELFIO::ELFOSABI_NONE;
+
+    auto ei_osabi = reader.get_os_abi();
+    if (ei_osabi != expected_abi)
+    {
+        throw std::runtime_error(std::format("Unknown ELF OS ABI {}. Expected none ({})", ei_osabi, expected_abi));
+    }
+}
+
 void check_header(elfio& reader)
 {
     check_executable_type(reader);
     check_elf_version(reader);
 
+    // Not sure these matter. Checking them to be on the safe side.
+    check_os_abi(reader);
+
     // TODO: do port stuff below
 
-    //// Not sure these matter. Checking them to be on the safe side.
-    //check_os_abi(reader);
     //check_abi_version(reader);
     //check_object_file_version(reader);
 }

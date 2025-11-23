@@ -155,17 +155,6 @@ void input_file::convert_to_binary(ELFIO::elfio& reader)
     }
 }
 
-void input_file::check_os_abi(elfio& reader)
-{
-    const auto expected_abi = ELFOSABI_NONE;
-
-    auto ei_osabi = reader.get_os_abi();
-    if (ei_osabi != expected_abi)
-    {
-        throw runtime_error(std::format("unknown ELF OS ABI {}. Expected none ({})", ei_osabi, expected_abi));
-    }
-}
-
 void input_file::check_abi_version(elfio& reader)
 {
     const auto expected_abi_version = 0;
