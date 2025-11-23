@@ -21,9 +21,6 @@ namespace shrinklergbacore
 
 void gba_packer::pack(const options& options)
 {
-    console console;
-    console.verbose(options.verbose() ? &std::cout : nullptr);
-
     // Load program
     input_file input_file(console);
     input_file.load(options.input_file());

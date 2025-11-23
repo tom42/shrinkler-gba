@@ -1,6 +1,10 @@
 // SPDX-FileCopyrightText: 2021 Thomas Mathys
 // SPDX-License-Identifier: MIT
 
+module;
+
+#include <filesystem>
+
 module shrinkler_gba;
 
 namespace shrinkler_gba
@@ -21,14 +25,22 @@ console create_console(const options& opts)
     return c;
 }
 
+input_file load_input_file(console& /*console*/, const std::filesystem::path& path)
+{
+    input_file f;
+    f.load(path.string()); // TODO: somehow pass the console to the input file, so that it can log
+    // TODO: throw if the file is too small, since Shrinkler does not like this (but what about agbpack? will agbpack like this?)
+    return f;
+}
+
 }
 
 void pack(const options& opts)
 {
     auto console = create_console(opts);
+    auto input_file = load_input_file(console, opts.input_file());
 
     // TODO: implement the existing 5/6/whatever steps:
-    //       * Load program (load ELF and convert to raw binary)
     //       * Compress raw binary: note: here some work on libshrinkler might be necessary: I am not sure it supports progress output. But that's fine.
     //       * Assemble cart
     //       * Fix up for EZFlash (why is that not done by the assembler? => because that's post processing and needs to be done for both assemblers?)
