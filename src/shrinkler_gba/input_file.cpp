@@ -23,7 +23,7 @@ void open_elf(elfio& reader, std::istream& stream)
 {
     if (!reader.load(stream))
     {
-        throw std::runtime_error("file is not a valid ELF file");
+        throw std::runtime_error("File is not a valid ELF file");
     }
 }
 
