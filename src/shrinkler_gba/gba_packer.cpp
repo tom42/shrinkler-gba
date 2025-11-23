@@ -29,7 +29,14 @@ input_file load_input_file(console& /*console*/, const std::filesystem::path& pa
 {
     input_file f;
     f.load(path.string()); // TODO: somehow pass the console to the input file, so that it can log
-    // TODO: throw if the file is too small, since Shrinkler does not like this (but what about agbpack? will agbpack like this?)
+
+    if (!f.loaded_data_size())
+    {
+        // Shrinkler does really not like files with size zero.
+        // TODO: what about agbpack (clownlzss + huffman; what's the minimum size they would like to have?)
+        throw std::runtime_error("File is too small to be compressed");
+    }
+
     return f;
 }
 
