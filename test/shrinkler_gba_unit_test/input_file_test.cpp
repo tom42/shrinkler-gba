@@ -4,8 +4,10 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers.hpp>
 #include <catch2/matchers/catch_matchers_exception.hpp>
+#include <filesystem>
 #include <stdexcept>
 #include <string>
+#include "shrinkler_gba_unit_test_config.hpp"
 
 import shrinkler_gba;
 
@@ -17,7 +19,8 @@ class input_file_fixture
 protected:
     void load(const std::string& filename)
     {
-        input_file.load(filename);
+        auto path = std::filesystem::path(SHRINKLER_GBA_UNIT_TEST_TESTDATA_DIRECTORY) / filename;
+        input_file.load(path.string());
     }
 
     shrinkler_gba::input_file input_file;
