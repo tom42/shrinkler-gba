@@ -60,6 +60,28 @@ void check_os_abi(elfio& reader)
     }
 }
 
+void check_abi_version(elfio& reader)
+{
+    const auto expected_abi_version = 0;
+
+    auto ei_abiversion = reader.get_abi_version();
+    if (ei_abiversion != expected_abi_version)
+    {
+        throw std::runtime_error(std::format("Unknown ABI version {}. Expected {}", ei_abiversion, expected_abi_version));
+    }
+}
+
+void check_object_file_version(elfio& reader)
+{
+    const auto expected_object_file_version = 1;
+
+    auto e_version = reader.get_version();
+    if (e_version != expected_object_file_version)
+    {
+        throw std::runtime_error(std::format("Unknown object file version {}. Expected {}", e_version, expected_object_file_version));
+    }
+}
+
 void check_header(elfio& reader)
 {
     check_executable_type(reader);
@@ -67,11 +89,8 @@ void check_header(elfio& reader)
 
     // Not sure these matter. Checking them to be on the safe side.
     check_os_abi(reader);
-
-    // TODO: do port stuff below
-
-    //check_abi_version(reader);
-    //check_object_file_version(reader);
+    check_abi_version(reader);
+    check_object_file_version(reader);
 }
 
 }

@@ -155,28 +155,6 @@ void input_file::convert_to_binary(ELFIO::elfio& reader)
     }
 }
 
-void input_file::check_abi_version(elfio& reader)
-{
-    const auto expected_abi_version = 0;
-
-    auto ei_abiversion = reader.get_abi_version();
-    if (ei_abiversion != expected_abi_version)
-    {
-        throw runtime_error(std::format("unknown ABI version {}. Expected {}", ei_abiversion, expected_abi_version));
-    }
-}
-
-void input_file::check_object_file_version(elfio& reader)
-{
-    const auto expected_object_file_version = 1;
-
-    auto e_version = reader.get_version();
-    if (e_version != expected_object_file_version)
-    {
-        throw runtime_error(std::format("unknown object file version {}. Expected {}", e_version, expected_object_file_version));
-    }
-}
-
 bool input_file::is_section_included(const ELFIO::section* s)
 {
     if ((s->get_type() == SHT_NULL) || (s->get_type() == SHT_NOBITS))
