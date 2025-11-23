@@ -27,6 +27,30 @@ void open_elf(elfio& reader, std::istream& stream)
     }
 }
 
+void check_executable_type(elfio& reader)
+{
+    if ((reader.get_class() != ELFIO::ELFCLASS32) ||
+        (reader.get_encoding() != ELFIO::ELFDATA2LSB) ||
+        (reader.get_type() != ELFIO::ET_EXEC) ||
+        (reader.get_machine() != ELFIO::EM_ARM))
+    {
+        throw std::runtime_error("File is not a 32-bit little endian ARM executable ELF file");
+    }
+}
+
+void check_header(elfio& reader)
+{
+    check_executable_type(reader);
+
+    // TODO: do port stuff below
+    //check_elf_version(reader);
+
+    //// Not sure these matter. Checking them to be on the safe side.
+    //check_os_abi(reader);
+    //check_abi_version(reader);
+    //check_object_file_version(reader);
+}
+
 }
 
 void input_file::load(const std::string& path, const console& console)
@@ -64,10 +88,10 @@ void input_file::load_elf(std::istream& stream)
 
     elfio reader;
     open_elf(reader, stream);
+    check_header(reader);
 
     // TODO: implement stuff below
     /*
-    check_header(reader);
     read_entry(reader);
     log_program_headers(reader);
     log_section_headers(reader);

@@ -155,28 +155,6 @@ void input_file::convert_to_binary(ELFIO::elfio& reader)
     }
 }
 
-void input_file::check_header(elfio& reader)
-{
-    check_executable_type(reader);
-    check_elf_version(reader);
-
-    // Not sure these matter. Checking them to be on the safe side.
-    check_os_abi(reader);
-    check_abi_version(reader);
-    check_object_file_version(reader);
-}
-
-void input_file::check_executable_type(elfio& reader)
-{
-    if ((reader.get_class() != ELFCLASS32) ||
-        (reader.get_encoding() != ELFDATA2LSB) ||
-        (reader.get_type() != ET_EXEC) ||
-        (reader.get_machine() != EM_ARM))
-    {
-        throw runtime_error("file is not a 32-bit little endian ARM executable ELF file");
-    }
-}
-
 void input_file::check_elf_version(elfio& reader)
 {
     const auto expected_elf_version = 1;

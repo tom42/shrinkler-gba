@@ -40,8 +40,6 @@ private:
     void log_section_headers(ELFIO::elfio& reader) const;
     void convert_to_binary(ELFIO::elfio& reader);
 
-    static void check_header(ELFIO::elfio& reader);
-    static void check_executable_type(ELFIO::elfio& reader);
     static void check_elf_version(ELFIO::elfio& reader);
     static void check_os_abi(ELFIO::elfio& reader);
     static void check_abi_version(ELFIO::elfio& reader);
