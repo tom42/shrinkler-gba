@@ -32,8 +32,6 @@ public:
 
     void load(std::istream& stream);
 
-    bool is_thumb_entry() const { return entry() & 1; }
-
     uint32_t loaded_data_size() const { return boost::numeric_cast<uint32_t>(m_data.size()); }
 
 private:

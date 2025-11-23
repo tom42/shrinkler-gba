@@ -18,17 +18,6 @@ static input_file load_elf_file(const std::filesystem::path& filename, bool verb
 
 BOOST_AUTO_TEST_SUITE(input_file_test)
 
-    BOOST_AUTO_TEST_CASE(load)
-    {
-        auto testee = load_elf_file("lostmarbles.elf");
-
-        BOOST_TEST(testee.entry() == 0x03000000u);
-        BOOST_TEST(testee.is_thumb_entry() == false);
-        BOOST_TEST(testee.load_address() == 0x03000000u);
-        BOOST_TEST(testee.data() == load_binary_file("lostmarbles.bin"), boost::test_tools::per_element());
-        BOOST_TEST(testee.data().size() == testee.loaded_data_size());
-    }
-
     BOOST_AUTO_TEST_CASE(load_thumb_entry)
     {
         auto testee = load_elf_file("thumb_entry.elf");

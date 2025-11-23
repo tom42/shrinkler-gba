@@ -9,6 +9,7 @@
 #include <stdexcept>
 #include <string>
 #include "shrinkler_gba_unit_test_config.hpp"
+#include "test_utilities.hpp"
 
 import shrinkler_gba;
 
@@ -55,6 +56,17 @@ TEST_CASE_METHOD(input_file_fixture, "input_file")
             load("invalid-elf-file.elf"),
             std::runtime_error,
             MessageMatches(EndsWith("invalid-elf-file.elf: file is not a valid ELF file", CaseSensitive::No)));
+    }
+
+    SECTION("load, valid file, ARM entry")
+    {
+        load("lostmarbles.elf");
+
+        CHECK(input_file.entry() == 0x03000000);
+        CHECK(input_file.is_thumb_entry() == false);
+        CHECK(input_file.load_address() == 0x03000000);
+        CHECK(input_file.data() == load_binary_file("lostmarbles.bin"));
+        CHECK(input_file.data().size() == input_file.loaded_data_size());
     }
 }
 

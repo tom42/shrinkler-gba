@@ -23,6 +23,8 @@ public:
 
     uint32_t entry() const { return m_entry; }
 
+    bool is_thumb_entry() const { return entry() & 1; }
+
     uint32_t load_address() const { return m_load_address; }
 
     uint32_t loaded_data_size() const { return 0; } // TODO: real implementation
