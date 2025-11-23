@@ -11,7 +11,7 @@ void gba_packer::pack(const options&)
     // TODO: implement the existing 5/6/whatever steps:
     //       * Set up the console/logging/whatever
     //       * Load program (load ELF and convert to raw binary)
-    //       * Compress raw binary
+    //       * Compress raw binary: note: here some work on libshrinkler might be necessary: I am not sure it supports progress output. But that's fine.
     //       * Assemble cart
     //       * Fix up for EZFlash (why is that not done by the assembler? => because that's post processing and needs to be done for both assemblers?)
     //       * Write result to disk
