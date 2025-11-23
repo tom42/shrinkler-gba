@@ -42,7 +42,7 @@ void input_file::load(const std::string& path, const console& console)
             throw std::system_error(e, std::generic_category());
         }
 
-        load(stream);
+        load(stream, console);
     }
     catch (const std::exception& e)
     {
@@ -50,11 +50,12 @@ void input_file::load(const std::string& path, const console& console)
     }
 }
 
-void input_file::load(std::istream& stream)
+void input_file::load(std::istream& stream, const console& console)
 {
     load_elf(stream);
-
-    // TODO: log data (see old implementation): entry, load address, total size of loaded data
+    console.verbose("Entry: {:#x}", entry());
+    console.verbose("Load address: {:#x}", load_address());
+    console.verbose("Total size of loaded data: {0:#x} ({0})", loaded_data_size());
 }
 
 void input_file::load_elf(std::istream& stream)

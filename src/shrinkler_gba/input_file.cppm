@@ -20,7 +20,7 @@ class input_file final
 public:
     void load(const std::string& path, const console& console);
 
-    void load(std::istream& stream);
+    void load(std::istream& stream, const console& console);
 
     uint32_t entry() const { return m_entry; }
 
@@ -28,7 +28,9 @@ public:
 
     uint32_t load_address() const { return m_load_address; }
 
-    uint32_t loaded_data_size() const { return 0; } // TODO: real implementation
+    // TODO: real implementation
+    // TODO: have some sort of narrowing cast that performs a check at runtime?
+    uint32_t loaded_data_size() const { return 0; }
 
     const std::vector<unsigned char>& data() const { return m_data; }
 

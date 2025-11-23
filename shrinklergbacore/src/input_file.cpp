@@ -23,15 +23,6 @@ static table_printer create_table_printer()
     return p;
 }
 
-void input_file::load(std::istream& stream)
-{
-    load_elf(stream);
-
-    CONSOLE_VERBOSE(m_console) << std::format("Entry: {:#x}", m_entry) << std::endl;
-    CONSOLE_VERBOSE(m_console) << std::format("Load address: {:#x}", m_load_address) << std::endl;
-    CONSOLE_VERBOSE(m_console) << std::format("Total size of loaded data: {0:#x} ({0})", m_data.size()) << std::endl;
-}
-
 void input_file::load_elf(std::istream& stream)
 {
     reset();
