@@ -15,6 +15,7 @@ import shrinkler_gba;
 namespace shrinkler_gba_unit_test
 {
 
+using Catch::CaseSensitive;
 using Catch::Matchers::MessageMatches;
 using Catch::Matchers::EndsWith;
 
@@ -45,7 +46,7 @@ TEST_CASE_METHOD(input_file_fixture, "input_file")
         CHECK_THROWS_MATCHES(
             load("non-existing-file.elf"),
             std::runtime_error,
-            MessageMatches(EndsWith("non-existing-file.elf: no such file or directory")));
+            MessageMatches(EndsWith("non-existing-file.elf: no such file or directory", CaseSensitive::No)));
     }
 
     SECTION("load, invalid file")
@@ -53,7 +54,7 @@ TEST_CASE_METHOD(input_file_fixture, "input_file")
         CHECK_THROWS_MATCHES(
             load("invalid-elf-file.elf"),
             std::runtime_error,
-            MessageMatches(EndsWith("invalid-elf-file.elf: file is not a valid ELF file")));
+            MessageMatches(EndsWith("invalid-elf-file.elf: file is not a valid ELF file", CaseSensitive::No)));
     }
 }
 
