@@ -4,6 +4,7 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers.hpp>
 #include <catch2/matchers/catch_matchers_exception.hpp>
+#include <catch2/matchers/catch_matchers_string.hpp>
 #include <filesystem>
 #include <stdexcept>
 #include <string>
@@ -13,6 +14,9 @@ import shrinkler_gba;
 
 namespace shrinkler_gba_unit_test
 {
+
+using Catch::Matchers::MessageMatches;
+using Catch::Matchers::EndsWith;
 
 class input_file_fixture
 {
@@ -41,7 +45,7 @@ TEST_CASE_METHOD(input_file_fixture, "input_file")
         CHECK_THROWS_MATCHES(
             load("non-existing-file.elf"),
             std::runtime_error,
-            Catch::Matchers::Message("non-existing-file.elf: no such file or directory"));
+            MessageMatches(EndsWith("non-existing-file.elf: no such file or directory")));
     }
 
     SECTION("load, invalid file")
