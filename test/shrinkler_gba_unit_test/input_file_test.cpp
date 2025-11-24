@@ -74,6 +74,17 @@ TEST_CASE_METHOD(input_file_fixture, "input_file")
         CHECK(input_file.data() == load_binary_file("lostmarbles.bin"));
         CHECK(input_file.data().size() == input_file.loaded_data_size());
     }
+
+    SECTION("load, valid file, Thumb entry")
+    {
+        load("thumb_entry.elf");
+
+        CHECK(input_file.entry() == 0x8001);
+        CHECK(input_file.is_thumb_entry() == true);
+        CHECK(input_file.load_address() == 0x8000);
+        CHECK(input_file.data() == load_binary_file("thumb_entry.bin"));
+        CHECK(input_file.data().size() == input_file.loaded_data_size());
+    }
 }
 
 }
