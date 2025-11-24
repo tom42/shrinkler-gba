@@ -99,6 +99,100 @@ uint32_t read_entry(elfio& reader)
     return static_cast<uint32_t>(reader.get_entry());
 }
 
+bool is_section_included(const ELFIO::section* s)
+{
+    if ((s->get_type() == ELFIO::SHT_NULL) || (s->get_type() == ELFIO::SHT_NOBITS))
+    {
+        return false;
+    }
+
+    if (s->get_address() == 0)
+    {
+        return false;
+    }
+
+    if (s->get_size() == 0)
+    {
+        return false;
+    }
+
+    if (!(s->get_flags() & ELFIO::SHF_ALLOC))
+    {
+        return false;
+    }
+
+    return true;
+}
+
+// TODO: can we implement this again using copy_if as before?
+//       Problem is that iterators are now suddenly unique_ptrs. Sigh.
+std::vector<const ELFIO::section*> get_included_sections(ELFIO::elfio& reader)
+{
+    const ELFIO::Elf_Half nsections = reader.sections.size();
+    std::vector<const ELFIO::section*> sections;
+
+    for (ELFIO::Elf_Half i = 0; i < nsections; ++i)
+    {
+        if (is_section_included(reader.sections[i]))
+        {
+            sections.push_back(reader.sections[i]);
+        }
+    }
+
+    return sections;
+}
+
+void sort_sections_by_address(std::vector<const ELFIO::section*>& sections)
+{
+    std::sort(
+        sections.begin(),
+        sections.end(),
+        [](const ELFIO::section* lhs, const ELFIO::section* rhs) { return lhs->get_address() < rhs->get_address(); });
+}
+
+std::vector<unsigned char> convert_to_binary(ELFIO::elfio& reader, uint32_t& load_address)
+{
+    std::vector<const ELFIO::section*> included_sections = get_included_sections(reader);
+    sort_sections_by_address(included_sections);
+
+    const ELFIO::section* previous_section = nullptr;
+    ELFIO::Elf64_Addr output_address = 0;
+    std::vector<unsigned char> m_data; // TODO: rename to 'data'
+
+    for (const ELFIO::section* s : included_sections)
+    {
+        if (m_data.size())
+        {
+            if (s->get_address() < output_address)
+            {
+                throw std::runtime_error(std::format("Section {} overlaps with previous section {}", s->get_name(), previous_section->get_name()));
+            }
+
+            const auto npadding_bytes = s->get_address() - output_address;
+            if (npadding_bytes > 0)
+            {
+                // There is a hole between the current and the last section.
+                // Pad it with zeros. Zeros are required by ELF.
+                m_data.insert(m_data.end(), static_cast<size_t>(npadding_bytes), 0); // TODO: numeric cast
+                output_address += npadding_bytes;
+            }
+        }
+        else
+        {
+            // No bytes written to output yet. Record initial output address and load address.
+            output_address = s->get_address();
+            load_address = static_cast<uint32_t>(output_address); // TODO: numeric cast
+        }
+
+        // Copy section data to output.
+        m_data.insert(m_data.end(), s->get_data(), s->get_data() + s->get_size());
+        output_address += s->get_size();
+        previous_section = s;
+    }
+
+    return m_data;
+}
+
 }
 
 void input_file::load(const std::string& path, const console& console)
@@ -138,13 +232,9 @@ void input_file::load_elf(std::istream& stream)
     open_elf(reader, stream);
     check_header(reader);
     m_entry = read_entry(reader);
-
-    // TODO: implement stuff below
-    /*
-    log_program_headers(reader);
-    log_section_headers(reader);
-    convert_to_binary(reader);
-    */
+    //log_program_headers(reader); // TODO: implement (skipped to get tests going first)
+    //log_section_headers(reader); // TODO: implement (skipped to get tests going first)
+    m_data = convert_to_binary(reader, m_load_address);
 }
 
 void input_file::reset()

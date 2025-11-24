@@ -30,7 +30,7 @@ public:
 
     // TODO: real implementation
     // TODO: have some sort of narrowing cast that performs a check at runtime?
-    uint32_t loaded_data_size() const { return 0; }
+    uint32_t loaded_data_size() const { return static_cast<uint32_t>(m_data.size()); }
 
     const std::vector<unsigned char>& data() const { return m_data; }
 

@@ -110,71 +110,6 @@ void input_file::log_section_headers(ELFIO::elfio& reader) const
     printer.print(*m_console.verbose());
 }
 
-void input_file::convert_to_binary(ELFIO::elfio& reader)
-{
-    std::vector<const ELFIO::section*> included_sections = get_included_sections(reader);
-    sort_sections_by_address(included_sections);
-
-    const ELFIO::section* previous_section = nullptr;
-    Elf64_Addr output_address = 0;
-
-    for (const ELFIO::section* s : included_sections)
-    {
-        if (m_data.size())
-        {
-            if (s->get_address() < output_address)
-            {
-                throw std::runtime_error(std::format("Section {} overlaps with previous section {}", s->get_name(), previous_section->get_name()));
-            }
-
-            const auto npadding_bytes = s->get_address() - output_address;
-            if (npadding_bytes > 0)
-            {
-                // There is a hole between the current and the last section.
-                // Pad it with zeros. Zeros are required by ELF.
-                m_data.insert(m_data.end(), numeric_cast<size_t>(npadding_bytes), 0);
-                output_address += npadding_bytes;
-            }
-        }
-        else
-        {
-            // No bytes written to output yet. Record initial output address and load address.
-            output_address = s->get_address();
-            m_load_address = numeric_cast<uint32_t>(output_address);
-        }
-
-        // Copy section data to output.
-        m_data.insert(m_data.end(), s->get_data(), s->get_data() + s->get_size());
-        output_address += s->get_size();
-        previous_section = s;
-    }
-}
-
-bool input_file::is_section_included(const ELFIO::section* s)
-{
-    if ((s->get_type() == SHT_NULL) || (s->get_type() == SHT_NOBITS))
-    {
-        return false;
-    }
-
-    if (s->get_address() == 0)
-    {
-        return false;
-    }
-
-    if (s->get_size() == 0)
-    {
-        return false;
-    }
-
-    if (!(s->get_flags() & SHF_ALLOC))
-    {
-        return false;
-    }
-
-    return true;
-}
-
 std::vector<const ELFIO::section*> input_file::get_included_sections(ELFIO::elfio& reader)
 {
     std::vector<const ELFIO::section*> included_sections;
@@ -184,14 +119,6 @@ std::vector<const ELFIO::section*> input_file::get_included_sections(ELFIO::elfi
         std::back_inserter(included_sections),
         is_section_included);
     return included_sections;
-}
-
-void input_file::sort_sections_by_address(std::vector<const ELFIO::section*>& sections)
-{
-    std::sort(
-        sections.begin(),
-        sections.end(),
-        [](const ELFIO::section* lhs, const ELFIO::section* rhs) { return lhs->get_address() < rhs->get_address(); });
 }
 
 }
