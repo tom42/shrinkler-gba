@@ -28,7 +28,6 @@ public:
 
     uint32_t load_address() const { return m_load_address; }
 
-    // TODO: real implementation
     // TODO: have some sort of narrowing cast that performs a check at runtime?
     uint32_t loaded_data_size() const { return static_cast<uint32_t>(m_data.size()); }
 

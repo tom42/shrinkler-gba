@@ -5,6 +5,7 @@ module;
 
 #include <elfio/elfio.hpp>
 #include <fstream>
+#include <gsl/gsl>
 #include <stdexcept>
 #include <string>
 #include <system_error>
@@ -95,8 +96,7 @@ void check_header(elfio& reader)
 
 uint32_t read_entry(elfio& reader)
 {
-    // TODO: use some sort of narrow_cast that does throw if the value is too big
-    return static_cast<uint32_t>(reader.get_entry());
+    return gsl::narrow<uint32_t>(reader.get_entry());
 }
 
 bool is_section_included(const ELFIO::section* s)

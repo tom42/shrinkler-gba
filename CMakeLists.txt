@@ -56,6 +56,16 @@ FetchContent_Declare(
   FIND_PACKAGE_ARGS 1.1.0 NAMES libshrinkler)
 FetchContent_MakeAvailable(libshrinkler)
 
+# TODO: for some reason, find_package does not find GSL 4.2.0 installed with vcpkg.
+#       Only 4.1.0 works. Seems like the 4.2.0 package installed with vcpkg thinks that it is 4.1.0. Report on github?
+FetchContent_Declare(
+  gsl
+  GIT_REPOSITORY    https://github.com/microsoft/GSL
+  GIT_TAG           v4.1.0
+  SYSTEM
+  FIND_PACKAGE_ARGS 4.1.0 NAMES Microsoft.GSL)
+FetchContent_MakeAvailable(gsl)
+
 
 ################################################################################
 # Build our own code
