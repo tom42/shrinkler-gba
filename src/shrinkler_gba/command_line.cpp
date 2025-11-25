@@ -15,7 +15,6 @@ import libshrinkler;
 // It is not needed for glibc.
 extern "C"
 {
-// TODO: does this work on GNU/Linux?
 const char* argp_program_version = SHRINKLER_GBA_PROJECT_NAME " " SHRINKLER_GBA_PROJECT_VERSION;
 }
 
