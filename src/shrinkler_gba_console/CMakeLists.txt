@@ -8,5 +8,7 @@ set_property(TARGET shrinkler-gba PROPERTY PROJECT_LABEL "shrinkler_gba_console"
 vtg_target_enable_warnings(shrinkler-gba)
 target_link_libraries(shrinkler-gba PRIVATE shrinkler_gba)
 
-# TODO: install (but only if configured for this, see top level CMakeLists.txt)
-#       => But do not forget: do not hardcode install directory, use GNUInstallDirs or however it is called
+if(shrinkler_gba_INSTALL_SHRINKLER_GBA)
+  include(GNUInstallDirs)
+  install(TARGETS shrinkler-gba DESTINATION ${CMAKE_INSTALL_BINDIR})
+endif()

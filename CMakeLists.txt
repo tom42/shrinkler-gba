@@ -15,7 +15,6 @@ option(shrinkler_gba_ENABLE_WARNINGS "Build shrinkler-gba with warnings enabled"
 option(shrinkler_gba_INSTALL_SHRINKLER_GBA "Install the shrinkler-gba executable" ${PROJECT_IS_TOP_LEVEL})
 
 # TODO: merge in stuff from old CMakeLists as it makes sense
-# TODO: implement all options, including installer
 
 ################################################################################
 # Set up testing
