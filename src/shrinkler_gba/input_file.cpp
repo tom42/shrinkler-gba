@@ -157,11 +157,11 @@ std::vector<unsigned char> convert_to_binary(ELFIO::elfio& reader, uint32_t& loa
 
     const ELFIO::section* previous_section = nullptr;
     ELFIO::Elf64_Addr output_address = 0;
-    std::vector<unsigned char> m_data; // TODO: rename to 'data'
+    std::vector<unsigned char> data;
 
     for (const ELFIO::section* s : included_sections)
     {
-        if (m_data.size())
+        if (data.size())
         {
             if (s->get_address() < output_address)
             {
@@ -173,7 +173,7 @@ std::vector<unsigned char> convert_to_binary(ELFIO::elfio& reader, uint32_t& loa
             {
                 // There is a hole between the current and the last section.
                 // Pad it with zeros. Zeros are required by ELF.
-                m_data.insert(m_data.end(), static_cast<size_t>(npadding_bytes), 0); // TODO: numeric cast
+                data.insert(data.end(), static_cast<size_t>(npadding_bytes), 0); // TODO: numeric cast
                 output_address += npadding_bytes;
             }
         }
@@ -185,12 +185,12 @@ std::vector<unsigned char> convert_to_binary(ELFIO::elfio& reader, uint32_t& loa
         }
 
         // Copy section data to output.
-        m_data.insert(m_data.end(), s->get_data(), s->get_data() + s->get_size());
+        data.insert(data.end(), s->get_data(), s->get_data() + s->get_size());
         output_address += s->get_size();
         previous_section = s;
     }
 
-    return m_data;
+    return data;
 }
 
 }
