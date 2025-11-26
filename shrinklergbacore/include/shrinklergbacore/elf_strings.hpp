@@ -12,12 +12,6 @@
 namespace shrinklergbacore::elf_strings
 {
 
-template <typename TValue>
-std::string to_hex(TValue value)
-{
-    return std::format("{:#0x}", value);
-}
-
 template <typename TValue, typename NDigits>
 std::string to_hex(TValue value, NDigits ndigits)
 {
