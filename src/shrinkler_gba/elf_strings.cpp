@@ -12,7 +12,6 @@ namespace shrinkler_gba
 {
 
 // TODO: add missing values? (ARM_ATTRIBUTES at the very least?)
-// TODO: is returning std::string here not wasteful?
 std::string get_section_type(ELFIO::Elf_Word type)
 {
     using namespace ELFIO;
