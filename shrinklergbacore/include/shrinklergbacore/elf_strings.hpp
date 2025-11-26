@@ -12,13 +12,6 @@
 namespace shrinklergbacore::elf_strings
 {
 
-template <typename TValue, typename NDigits>
-std::string to_hex(TValue value, NDigits ndigits)
-{
-    const auto prefix_width = 2;
-    return std::format("{:#0{}x}", value, ndigits + prefix_width);
-}
-
 std::string get_section_type(ELFIO::Elf_Word type);
 std::string get_section_flags(ELFIO::Elf_Xword flags);
 std::string get_segment_type(ELFIO::Elf_Word type);
