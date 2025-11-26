@@ -14,9 +14,9 @@ TEST_CASE("elf_strings")
 {
 	SECTION("to_hex")
 	{
-		CHECK(to_hex(0xfu) == "0xf");
-		CHECK(to_hex(0xffu) == "0xff");
-		CHECK(to_hex(0xfffu) == "0xfff");
+		CHECK(to_hex(0xau) == "0xa");
+		CHECK(to_hex(0xabu) == "0xab");
+		CHECK(to_hex(0xabcu) == "0xabc");
 	}
 }
 
