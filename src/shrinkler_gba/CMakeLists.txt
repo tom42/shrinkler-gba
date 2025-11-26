@@ -15,6 +15,7 @@ set(
   input_file.cppm
   options.cppm
   shrinkler_gba.cppm
+  table_printer.cppm
   PRIVATE
   adler32.cpp
   command_line.cpp
