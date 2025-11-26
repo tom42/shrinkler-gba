@@ -3,6 +3,7 @@
 
 module;
 
+#include <array>
 #include <elfio/elfio.hpp>
 #include <string>
 
@@ -90,6 +91,18 @@ std::string get_segment_type(ELFIO::Elf_Word type)
     }
 
     return to_hex(type, 8);
+}
+
+std::string get_segment_flags(ELFIO::Elf_Word flags)
+{
+    static const std::array table{ "", "X", "W", "WX", "R", "RX", "RW", "RWX" };
+
+    if (flags < table.size())
+    {
+        return table[flags];
+    }
+
+    return to_hex(flags);
 }
 
 }

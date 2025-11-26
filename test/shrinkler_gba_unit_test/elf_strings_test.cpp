@@ -35,7 +35,7 @@ TEST_CASE("elf_strings")
 
     SECTION("get_section_type")
     {
-        // No full coverage here, just check a known and an unknown section type.
+        // No full coverage here, just check a known and an unknown section type
         CHECK(get_section_type(SHT_PROGBITS) == "PROGBITS");
         CHECK(get_section_type(0x12345678) == "0x12345678");
     }
@@ -54,9 +54,17 @@ TEST_CASE("elf_strings")
 
     SECTION("get_segment_type")
     {
-        // No full coverage here, just check a known and an unknown segment type.
+        // No full coverage here, just check a known and an unknown segment type
         CHECK(get_segment_type(PT_SHLIB) == "SHLIB");
         CHECK(get_segment_type(0x12345678) == "0x12345678");
+    }
+
+    SECTION("get_segment_flags")
+    {
+        // No full coverage here
+        CHECK(get_segment_flags(0) == "");
+        CHECK(get_segment_flags(PF_R) == "R");
+        CHECK(get_segment_flags(PF_R | PF_W | PF_X) == "RWX");
     }
 }
 
