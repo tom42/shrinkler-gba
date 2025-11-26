@@ -4,6 +4,7 @@
 module;
 
 #include <concepts>
+#include <elfio/elfio.hpp>
 #include <format>
 #include <string>
 
@@ -27,5 +28,9 @@ std::string to_hex(TValue value, NDigits ndigits)
     return std::format("{:#0{}x}", value, ndigits + prefix_width);
 }
 
+std::string get_section_type(ELFIO::Elf_Word type);
+std::string get_section_flags(ELFIO::Elf_Xword flags);
+std::string get_segment_type(ELFIO::Elf_Word type);
+std::string get_segment_flags(ELFIO::Elf_Word flags);
 
 }
