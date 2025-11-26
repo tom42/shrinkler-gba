@@ -62,6 +62,7 @@ std::string get_section_flags(ELFIO::Elf_Xword flags)
 
     std::string result;
 
+    const auto original_flags = flags;
     for (const auto& entry : table)
     {
         if (flags & entry.flag)
@@ -73,7 +74,7 @@ std::string get_section_flags(ELFIO::Elf_Xword flags)
 
     if (flags)
     {
-        return to_hex(flags);
+        return to_hex(original_flags);
     }
 
     return result;
