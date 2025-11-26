@@ -5,6 +5,7 @@
 #include <cstring>
 #include <filesystem>
 #include <fstream>
+#include <gsl/gsl>
 #include <iterator>
 #include <stdexcept>
 #include "shrinkler_gba_unit_test_config.hpp"
@@ -33,7 +34,7 @@ std::vector<unsigned char> load_binary_file(const std::string& filename)
     // Create vector with sufficient capacity to hold entire file.
     auto filesize = std::filesystem::file_size(full_path);
     vector<unsigned char> data;
-    data.reserve(static_cast<size_t>(filesize)); // TODO: use a numeric_cast replacement? Or do we simply not care?
+    data.reserve(gsl::narrow<size_t>(filesize));
 
     // Read entire file
     data.insert(
