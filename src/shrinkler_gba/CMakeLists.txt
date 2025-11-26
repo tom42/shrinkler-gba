@@ -10,6 +10,7 @@ set(
   command_line.cppm
   complement.cppm
   console.cppm
+  elf_strings.cppm
   gba.cppm
   gba_packer.cppm
   input_file.cppm
