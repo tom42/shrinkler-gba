@@ -12,11 +12,12 @@ module shrinkler_gba;
 namespace shrinkler_gba
 {
 
-// TODO: add missing values? (ARM_ATTRIBUTES at the very least?)
 std::string get_section_type(ELFIO::Elf_Word type)
 {
     using namespace ELFIO;
 
+    // This are only the most common section types, plus some
+    // special ones used for ARM. Add missing ones as needed.
     switch (type)
     {
         case SHT_NULL: return "NULL";
