@@ -26,10 +26,6 @@ private:
     void indent_table(std::ostream& os);
     static void pad_column(std::ostream& os, const std::string& column_text, size_t column_width);
     static void print_column_separator(std::ostream& os);
-
-    int m_table_indent = 0;
-    std::vector<std::vector<std::string>> m_rows;
-    std::vector<size_t> m_column_widths;
 };
 
 }
