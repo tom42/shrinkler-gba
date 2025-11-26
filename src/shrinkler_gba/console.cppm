@@ -64,6 +64,11 @@ public:
         m_verbose_stream = stream;
     }
 
+    bool is_verbose_enabled() const
+    {
+        return m_verbose_stream;
+    }
+
 private:
     FILE* m_out_stream = stdout;
     FILE* m_warn_stream = stdout;

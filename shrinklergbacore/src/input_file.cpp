@@ -38,18 +38,6 @@ void input_file::load_elf(std::istream& stream)
 
 void input_file::log_program_headers(elfio& reader) const
 {
-    if (!m_console.is_verbose_enabled())
-    {
-        return;
-    }
-
-    Elf_Half nheaders = reader.segments.size();
-    if (nheaders == 0)
-    {
-        CONSOLE_VERBOSE(m_console) << "File has no program headers" << std::endl;
-        return;
-    }
-
     auto printer = create_table_printer();
     printer.add_row({ "Nr", "Type", "Offset", "VirtAddr", "PhysAddr", "FileSiz", "MemSiz", "Align", "Flg" });
     for (Elf_Half i = 0; i < nheaders; ++i)

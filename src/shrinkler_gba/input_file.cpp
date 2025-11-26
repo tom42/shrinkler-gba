@@ -99,6 +99,23 @@ uint32_t read_entry(elfio& reader)
     return gsl::narrow<uint32_t>(reader.get_entry());
 }
 
+void log_program_headers(elfio& reader, const console& console)
+{
+    if (!console.is_verbose_enabled())
+    {
+        return;
+    }
+
+    ELFIO::Elf_Half nheaders = reader.segments.size();
+    if (nheaders == 0)
+    {
+        console.verbose("File has no program headers");
+        return;
+    }
+
+    // TODO: implement. Problem: really need table_printer first
+}
+
 bool is_section_included(const ELFIO::section* s)
 {
     if ((s->get_type() == ELFIO::SHT_NULL) || (s->get_type() == ELFIO::SHT_NOBITS))
@@ -223,13 +240,13 @@ void input_file::load(const std::string& path, const console& console)
 
 void input_file::load(std::istream& stream, const console& console)
 {
-    load_elf(stream);
+    load_elf(stream, console);
     console.verbose("Entry: {:#x}", entry());
     console.verbose("Load address: {:#x}", load_address());
     console.verbose("Total size of loaded data: {0:#x} ({0})", loaded_data_size());
 }
 
-void input_file::load_elf(std::istream& stream)
+void input_file::load_elf(std::istream& stream, const console& console)
 {
     reset();
 
@@ -237,7 +254,7 @@ void input_file::load_elf(std::istream& stream)
     open_elf(reader, stream);
     check_header(reader);
     m_entry = read_entry(reader);
-    //log_program_headers(reader); // TODO: implement (skipped to get tests going first)
+    log_program_headers(reader, console);
     //log_section_headers(reader); // TODO: implement (skipped to get tests going first)
     m_data = convert_to_binary(reader, m_load_address);
 }
