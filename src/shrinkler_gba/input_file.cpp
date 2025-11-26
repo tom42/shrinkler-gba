@@ -173,7 +173,7 @@ std::vector<unsigned char> convert_to_binary(ELFIO::elfio& reader, uint32_t& loa
             {
                 // There is a hole between the current and the last section.
                 // Pad it with zeros. Zeros are required by ELF.
-                data.insert(data.end(), static_cast<size_t>(npadding_bytes), 0); // TODO: numeric cast
+                data.insert(data.end(), gsl::narrow<size_t>(npadding_bytes), 0);
                 output_address += npadding_bytes;
             }
         }
@@ -181,7 +181,7 @@ std::vector<unsigned char> convert_to_binary(ELFIO::elfio& reader, uint32_t& loa
         {
             // No bytes written to output yet. Record initial output address and load address.
             output_address = s->get_address();
-            load_address = static_cast<uint32_t>(output_address); // TODO: numeric cast
+            load_address = gsl::narrow<uint32_t>(output_address);
         }
 
         // Copy section data to output.
