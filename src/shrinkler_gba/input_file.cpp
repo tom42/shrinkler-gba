@@ -126,6 +126,7 @@ bool is_section_included(const ELFIO::section* s)
 
 // TODO: can we implement this again using copy_if as before?
 //       Problem is that iterators are now suddenly unique_ptrs. Sigh.
+//       => Well possibly we can use views to transform to raw pointer and then copy with predicarte
 std::vector<const ELFIO::section*> get_included_sections(ELFIO::elfio& reader)
 {
     const ELFIO::Elf_Half nsections = reader.sections.size();
@@ -150,6 +151,10 @@ void sort_sections_by_address(std::vector<const ELFIO::section*>& sections)
         [](const ELFIO::section* lhs, const ELFIO::section* rhs) { return lhs->get_address() < rhs->get_address(); });
 }
 
+// TODO: only one return value => We could have a struct binary_file?
+//       * well, it's nonsense: better to separate the concerns "being an input file" and "loading an input file"
+//       * we could then have a function load_input_file which returns either an operational input file or nothing.
+//         Benefit: nor reset() method or any of that crap needed => obviously that requires some refactoring
 std::vector<unsigned char> convert_to_binary(ELFIO::elfio& reader, uint32_t& load_address)
 {
     std::vector<const ELFIO::section*> included_sections = get_included_sections(reader);
