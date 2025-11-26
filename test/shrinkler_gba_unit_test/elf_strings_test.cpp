@@ -2,12 +2,14 @@
 // SPDX-License-Identifier: MIT
 
 #include <catch2/catch_test_macros.hpp>
+#include <elfio/elfio.hpp>
 
 import shrinkler_gba;
 
 namespace shrinkler_gba_unit_test
 {
 
+using shrinkler_gba::get_section_type;
 using shrinkler_gba::to_hex;
 
 TEST_CASE("elf_strings")
@@ -25,6 +27,13 @@ TEST_CASE("elf_strings")
         CHECK(to_hex(0xabu, 2) == "0xab");
         CHECK(to_hex(0xabcu, 2) == "0xabc");
         CHECK(to_hex(0xabcu, 4) == "0x0abc");
+    }
+
+    SECTION("get_section_type")
+    {
+        // No full coverage here, just check a known and an unknown section type.
+        CHECK(get_section_type(ELFIO::SHT_PROGBITS) == "PROGBITS");
+        CHECK(get_section_type(0x12345678) == "0x12345678");
     }
 }
 

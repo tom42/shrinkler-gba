@@ -21,6 +21,7 @@ set(
   adler32.cpp
   command_line.cpp
   complement.cpp
+  elf_strings.cpp
   gba_packer.cpp
   input_file.cpp)
 
