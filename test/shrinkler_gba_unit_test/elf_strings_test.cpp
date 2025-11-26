@@ -12,6 +12,8 @@ namespace shrinkler_gba_unit_test
 using namespace ELFIO;
 using shrinkler_gba::get_section_flags;
 using shrinkler_gba::get_section_type;
+using shrinkler_gba::get_segment_flags;
+using shrinkler_gba::get_segment_type;
 using shrinkler_gba::to_hex;
 
 TEST_CASE("elf_strings")
@@ -48,6 +50,13 @@ TEST_CASE("elf_strings")
     SECTION("get_section_flags, known and unknown flags")
     {
         CHECK(get_section_flags(SHF_WRITE | 0x80000000) == "0x80000001");
+    }
+
+    SECTION("get_segment_type")
+    {
+        // No full coverage here, just check a known and an unknown segment type.
+        CHECK(get_segment_type(PT_SHLIB) == "SHLIB");
+        CHECK(get_segment_type(0x12345678) == "0x12345678");
     }
 }
 

@@ -80,4 +80,16 @@ std::string get_section_flags(ELFIO::Elf_Xword flags)
     return result;
 }
 
+std::string get_segment_type(ELFIO::Elf_Word type)
+{
+    static const std::array table{ "NULL", "LOAD", "DYNAMIC", "INTERP", "NOTE", "SHLIB", "PHDR", "TLS" };
+
+    if (type < table.size())
+    {
+        return table[type];
+    }
+
+    return to_hex(type, 8);
+}
+
 }

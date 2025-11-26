@@ -34,8 +34,10 @@ std::string get_section_type(ELFIO::Elf_Word type);
 SHRINKLER_GBA_EXPORT_FOR_UNIT_TESTING
 std::string get_section_flags(ELFIO::Elf_Xword flags);
 
+SHRINKLER_GBA_EXPORT_FOR_UNIT_TESTING
 std::string get_segment_type(ELFIO::Elf_Word type);
 
+SHRINKLER_GBA_EXPORT_FOR_UNIT_TESTING
 std::string get_segment_flags(ELFIO::Elf_Word flags);
 
 }
