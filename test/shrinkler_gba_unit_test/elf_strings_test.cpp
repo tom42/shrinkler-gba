@@ -9,6 +9,8 @@ import shrinkler_gba;
 namespace shrinkler_gba_unit_test
 {
 
+using namespace ELFIO;
+using shrinkler_gba::get_section_flags;
 using shrinkler_gba::get_section_type;
 using shrinkler_gba::to_hex;
 
@@ -32,8 +34,20 @@ TEST_CASE("elf_strings")
     SECTION("get_section_type")
     {
         // No full coverage here, just check a known and an unknown section type.
-        CHECK(get_section_type(ELFIO::SHT_PROGBITS) == "PROGBITS");
+        CHECK(get_section_type(SHT_PROGBITS) == "PROGBITS");
         CHECK(get_section_type(0x12345678) == "0x12345678");
+    }
+
+    SECTION("get_section_flags, known flags")
+    {
+        CHECK(get_section_flags(SHF_WRITE) == "W");
+        CHECK(get_section_flags(SHF_ALLOC) == "A");
+        CHECK(get_section_flags(SHF_WRITE | SHF_EXECINSTR) == "WX");
+    }
+
+    SECTION("get_section_flags, known and unknown flags")
+    {
+        CHECK(get_section_flags(SHF_WRITE | 0x80000000) == "0x80000001");
     }
 }
 
