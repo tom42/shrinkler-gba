@@ -79,6 +79,15 @@ TEST_CASE("console")
         CHECK(warn_stream.str() == "");
         CHECK(verbose_stream.str() == "log message\n");
     }
+
+    SECTION("is_verbose_enabled")
+    {
+        console.verbose_stream(nullptr);
+        CHECK(console.is_verbose_enabled() == false);
+
+        console.verbose_stream(&verbose_stream);
+        CHECK(console.is_verbose_enabled() == true);
+    }
 }
 
 }

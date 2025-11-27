@@ -17,7 +17,6 @@ export module shrinkler_gba:console;
 namespace shrinkler_gba
 {
 
-// TODO: full test coverage: as it is this does not even compile
 SHRINKLER_GBA_EXPORT_FOR_UNIT_TESTING
 class console final
 {
