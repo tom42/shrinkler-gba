@@ -11,6 +11,7 @@ export module shrinkler_gba:table_printer;
 namespace shrinkler_gba
 {
 
+SHRINKLER_GBA_EXPORT_FOR_UNIT_TESTING
 class table_printer final
 {
 public:
