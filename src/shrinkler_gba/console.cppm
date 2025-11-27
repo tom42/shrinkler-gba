@@ -27,7 +27,7 @@ public:
     {
         if (m_out_stream)
         {
-            std::println(m_out_stream, fmt, std::forward<Args>(args)...);
+            std::println(*m_out_stream, fmt, std::forward<Args>(args)...);
         }
     }
 
