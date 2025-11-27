@@ -59,6 +59,26 @@ TEST_CASE("console")
         CHECK(warn_stream.str() == "Warning: log message\n");
         CHECK(verbose_stream.str() == "");
     }
+
+    SECTION("verbose, output is disabled")
+    {
+        console.verbose_stream(nullptr);
+
+        console.verbose("log message");
+
+        CHECK(out_stream.str() == "");
+        CHECK(warn_stream.str() == "");
+        CHECK(verbose_stream.str() == "");
+    }
+
+    SECTION("verbose, output is enabled")
+    {
+        console.verbose("log message");
+
+        CHECK(out_stream.str() == "");
+        CHECK(warn_stream.str() == "");
+        CHECK(verbose_stream.str() == "log message\n");
+    }
 }
 
 }
