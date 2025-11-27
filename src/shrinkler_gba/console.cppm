@@ -36,8 +36,8 @@ public:
     {
         if (m_warn_stream)
         {
-            std::print(m_warn_stream, "Warning: ");
-            std::println(m_warn_stream, fmt, std::forward<Args>(args)...);
+            std::print(*m_warn_stream, "Warning: ");
+            std::println(*m_warn_stream, fmt, std::forward<Args>(args)...);
         }
     }
 

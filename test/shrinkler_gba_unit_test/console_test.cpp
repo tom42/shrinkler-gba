@@ -39,6 +39,26 @@ TEST_CASE("console")
         CHECK(warn_stream.str() == "");
         CHECK(verbose_stream.str() == "");
     }
+
+    SECTION("warn, output is disabled")
+    {
+        console.warn_stream(nullptr);
+
+        console.warn("log message");
+
+        CHECK(out_stream.str() == "");
+        CHECK(warn_stream.str() == "");
+        CHECK(verbose_stream.str() == "");
+    }
+
+    SECTION("warn, output is enabled")
+    {
+        console.warn("log message");
+
+        CHECK(out_stream.str() == "");
+        CHECK(warn_stream.str() == "Warning: log message\n");
+        CHECK(verbose_stream.str() == "");
+    }
 }
 
 }
