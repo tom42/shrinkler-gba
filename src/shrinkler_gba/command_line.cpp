@@ -4,6 +4,7 @@
 module;
 
 #include <format>
+#include <iostream> // TODO: needed to work around internal compiler error - can we wpork around this otherwise? Should we report it?
 #include <string>
 #include "version.hpp"
 
