@@ -40,23 +40,9 @@ public:
         }
     }
 
-    // TODO: deinline this?
-    void verbose(const char* s)
-    {
-        if (m_verbose_stream)
-        {
-            *m_verbose_stream << (s ? s : "(null)") << "\n";
-        }
-    }
+    void verbose(const char* s);
 
-    // TODO: deinline this?
-    void verbose(const std::string& s)
-    {
-        if (m_verbose_stream)
-        {
-            *m_verbose_stream << s << "\n";
-        }
-    }
+    void verbose(const std::string& s);
 
     template<typename... Args>
     void verbose(std::format_string<Args...> fmt, Args&&... args) const
