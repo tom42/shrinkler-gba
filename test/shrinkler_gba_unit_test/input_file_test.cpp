@@ -19,35 +19,27 @@ namespace shrinkler_gba_unit_test
 using Catch::CaseSensitive;
 using Catch::Matchers::MessageMatches;
 using Catch::Matchers::EndsWith;
+using shrinkler_gba::input_file;
 
-class input_file_fixture
+namespace
 {
-protected:
-    void load(const std::string& filename)
-    {
-        auto path = std::filesystem::path(SHRINKLER_GBA_UNIT_TEST_TESTDATA_DIRECTORY) / filename;
 
-        shrinkler_gba::console console;
-        console.out_stream(nullptr);
-        console.warn_stream(nullptr);
-        console.verbose_stream(nullptr);
-
-        input_file = shrinkler_gba::input_file::load(path.string(), console);
-    }
-
-    shrinkler_gba::input_file input_file;
-};
-
-TEST_CASE_METHOD(input_file_fixture, "input_file")
+input_file load(const std::string& filename)
 {
-    SECTION("state after construction")
-    {
-        CHECK(input_file.entry() == 0);
-        CHECK(input_file.load_address() == 0);
-        CHECK(input_file.loaded_data_size() == 0);
-        CHECK(input_file.data().size() == 0);
-    }
+    auto path = std::filesystem::path(SHRINKLER_GBA_UNIT_TEST_TESTDATA_DIRECTORY) / filename;
 
+    shrinkler_gba::console console;
+    console.out_stream(nullptr);
+    console.warn_stream(nullptr);
+    console.verbose_stream(nullptr);
+
+    return input_file::load(path.string(), console);
+}
+
+}
+
+TEST_CASE("input_file")
+{
     SECTION("load, file does not exist")
     {
         CHECK_THROWS_MATCHES(
@@ -66,7 +58,7 @@ TEST_CASE_METHOD(input_file_fixture, "input_file")
 
     SECTION("load, valid file, ARM entry")
     {
-        load("lostmarbles.elf");
+        auto input_file = load("lostmarbles.elf");
 
         CHECK(input_file.entry() == 0x03000000);
         CHECK(input_file.is_thumb_entry() == false);
@@ -77,7 +69,7 @@ TEST_CASE_METHOD(input_file_fixture, "input_file")
 
     SECTION("load, valid file, Thumb entry")
     {
-        load("thumb_entry.elf");
+        auto input_file = load("thumb_entry.elf");
 
         CHECK(input_file.entry() == 0x8001);
         CHECK(input_file.is_thumb_entry() == true);

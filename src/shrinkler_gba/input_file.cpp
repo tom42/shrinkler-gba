@@ -271,7 +271,7 @@ std::vector<unsigned char> convert_to_binary(ELFIO::elfio& reader, uint32_t& loa
 
 }
 
-void input_file::load_elf(std::istream& stream, const console& console)
+input_file::input_file(std::istream& stream, const console& console)
 {
     elfio reader;
     open_elf(reader, stream);
@@ -284,8 +284,7 @@ void input_file::load_elf(std::istream& stream, const console& console)
 
 input_file input_file::load(std::istream& stream, const console& console)
 {
-    input_file f;
-    f.load_elf(stream, console);
+    input_file f(stream, console);
 
     console.verbose("Entry: {:#x}", f.entry());
     console.verbose("Load address: {:#x}", f.load_address());
