@@ -208,6 +208,13 @@ void log_section_headers(elfio& reader, const console& console)
 // TODO: can we implement this again using copy_if as before?
 //       Problem is that iterators are now suddenly unique_ptrs. Sigh.
 //       => Well possibly we can use views to transform to raw pointer and then copy with predicarte
+//            std::vector<const ELFIO::section*> included_sections;
+//            std::copy_if(
+//                reader.sections.begin(),
+//                reader.sections.end(),
+//                std::back_inserter(included_sections),
+//                is_section_included);
+//            return included_sections;
 std::vector<const ELFIO::section*> get_included_sections(ELFIO::elfio& reader)
 {
     const ELFIO::Elf_Half nsections = reader.sections.size();
