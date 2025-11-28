@@ -67,6 +67,14 @@ FetchContent_Declare(
   FIND_PACKAGE_ARGS 1.1.0 NAMES libshrinkler)
 FetchContent_MakeAvailable(libshrinkler)
 
+# TODO: use find_package once we have minimally cleaned up lzasm and released a new version
+FetchContent_Declare(
+  lzasm
+  GIT_REPOSITORY    https://github.com/tom42/lzasm
+  GIT_TAG           934c6c54b5de907ea3c53a553b3b781d8259f1b3
+  SYSTEM)
+FetchContent_MakeAvailable(lzasm)
+
 
 ################################################################################
 # Build our own code
