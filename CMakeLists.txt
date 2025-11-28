@@ -48,14 +48,6 @@ FetchContent_Declare(
   FIND_PACKAGE_ARGS 3.12 NAMES elfio)
 FetchContent_MakeAvailable(elfio)
 
-FetchContent_Declare(
-  libshrinkler
-  GIT_REPOSITORY    https://github.com/tom42/libshrinkler
-  GIT_TAG           v1.1.0
-  SYSTEM
-  FIND_PACKAGE_ARGS 1.1.0 NAMES libshrinkler)
-FetchContent_MakeAvailable(libshrinkler)
-
 # Note: the ms-gsl 4.2.0 package available in vcpkg contains the version 4.1.0
 # in its CMake version file, so this will always fetch sources and never use
 # the installed package. We can live with this for the time being.
@@ -66,6 +58,14 @@ FetchContent_Declare(
   SYSTEM
   FIND_PACKAGE_ARGS 4.2.0 NAMES Microsoft.GSL)
 FetchContent_MakeAvailable(gsl)
+
+FetchContent_Declare(
+  libshrinkler
+  GIT_REPOSITORY    https://github.com/tom42/libshrinkler
+  GIT_TAG           v1.1.0
+  SYSTEM
+  FIND_PACKAGE_ARGS 1.1.0 NAMES libshrinkler)
+FetchContent_MakeAvailable(libshrinkler)
 
 
 ################################################################################
