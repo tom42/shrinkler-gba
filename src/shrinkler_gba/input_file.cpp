@@ -6,6 +6,7 @@ module;
 #include <elfio/elfio.hpp>
 #include <fstream>
 #include <gsl/gsl>
+#include <ranges>
 #include <stdexcept>
 #include <string>
 #include <system_error>
@@ -205,30 +206,12 @@ void log_section_headers(elfio& reader, const console& console)
     printer.print(console);
 }
 
-// TODO: can we implement this again using copy_if as before?
-//       Problem is that iterators are now suddenly unique_ptrs. Sigh.
-//       => Well possibly we can use views to transform to raw pointer and then copy with predicarte
-//            std::vector<const ELFIO::section*> included_sections;
-//            std::copy_if(
-//                reader.sections.begin(),
-//                reader.sections.end(),
-//                std::back_inserter(included_sections),
-//                is_section_included);
-//            return included_sections;
 std::vector<const ELFIO::section*> get_included_sections(ELFIO::elfio& reader)
 {
-    const ELFIO::Elf_Half nsections = reader.sections.size();
-    std::vector<const ELFIO::section*> sections;
-
-    for (ELFIO::Elf_Half i = 0; i < nsections; ++i)
-    {
-        if (is_section_included(reader.sections[i]))
-        {
-            sections.push_back(reader.sections[i]);
-        }
-    }
-
-    return sections;
+    return
+        std::views::transform(reader.sections, [](const auto& s) { return s.get(); }) |
+        std::views::filter(is_section_included) |
+        std::ranges::to<std::vector<const ELFIO::section*>>();
 }
 
 void sort_sections_by_address(std::vector<const ELFIO::section*>& sections)
