@@ -19,6 +19,8 @@ SHRINKLER_GBA_EXPORT_FOR_UNIT_TESTING
 class input_file final
 {
 public:
+    static input_file load(std::istream& stream, const console& console);
+
     static input_file load(const std::string& path, const console& console);
 
     uint32_t entry() const { return m_entry; }
@@ -32,8 +34,7 @@ public:
     const std::vector<unsigned char>& data() const { return m_data; }
 
 private:
-    void load_old(std::istream& stream, const console& console); // TODO: remove member function
-    void load_elf(std::istream& stream, const console& console); // TODO: remove member function
+    void load_elf(std::istream& stream, const console& console); // TODO: remove member function => make it a ctor
 
     uint32_t m_entry = 0;
     uint32_t m_load_address = 0;

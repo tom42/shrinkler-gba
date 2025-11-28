@@ -271,14 +271,6 @@ std::vector<unsigned char> convert_to_binary(ELFIO::elfio& reader, uint32_t& loa
 
 }
 
-void input_file::load_old(std::istream& stream, const console& console)
-{
-    load_elf(stream, console);
-    console.verbose("Entry: {:#x}", entry());
-    console.verbose("Load address: {:#x}", load_address());
-    console.verbose("Total size of loaded data: {0:#x} ({0})", loaded_data_size());
-}
-
 void input_file::load_elf(std::istream& stream, const console& console)
 {
     elfio reader;
@@ -288,6 +280,18 @@ void input_file::load_elf(std::istream& stream, const console& console)
     log_program_headers(reader, console);
     log_section_headers(reader, console);
     m_data = convert_to_binary(reader, m_load_address);
+}
+
+input_file input_file::load(std::istream& stream, const console& console)
+{
+    input_file f;
+    f.load_elf(stream, console);
+
+    console.verbose("Entry: {:#x}", f.entry());
+    console.verbose("Load address: {:#x}", f.load_address());
+    console.verbose("Total size of loaded data: {0:#x} ({0})", f.loaded_data_size());
+
+    return f;
 }
 
 input_file input_file::load(const std::string& path, const console& console)
@@ -303,9 +307,7 @@ input_file input_file::load(const std::string& path, const console& console)
             throw std::system_error(e, std::generic_category());
         }
 
-        input_file f;
-        f.load_old(stream, console);
-        return f;
+        return load(stream, console);
     }
     catch (const std::exception& e)
     {
