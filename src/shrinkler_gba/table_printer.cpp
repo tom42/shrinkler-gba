@@ -68,7 +68,7 @@ void table_printer::add_row(std::vector<std::string> row)
     m_rows.push_back(std::move(row));
 }
 
-void table_printer::print(console& c)
+void table_printer::print(const console& c)
 {
     for (const auto& row : m_rows)
     {

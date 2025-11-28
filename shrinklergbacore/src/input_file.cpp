@@ -16,13 +16,6 @@ using ELFIO::Elf_Half;
 using ELFIO::segment;
 using std::runtime_error;
 
-static table_printer create_table_printer()
-{
-    table_printer p;
-    p.table_indent(2);
-    return p;
-}
-
 void input_file::load_elf(std::istream& stream)
 {
     reset();
@@ -34,29 +27,6 @@ void input_file::load_elf(std::istream& stream)
     log_program_headers(reader);
     log_section_headers(reader);
     convert_to_binary(reader);
-}
-
-void input_file::log_program_headers(elfio& reader) const
-{
-    auto printer = create_table_printer();
-    printer.add_row({ "Nr", "Type", "Offset", "VirtAddr", "PhysAddr", "FileSiz", "MemSiz", "Align", "Flg" });
-    for (Elf_Half i = 0; i < nheaders; ++i)
-    {
-        const auto& s = *reader.segments[i];
-        printer.add_row({
-            std::to_string(i),
-            elf_strings::get_segment_type(s.get_type()),
-            elf_strings::to_hex(s.get_offset(), 6),
-            elf_strings::to_hex(s.get_virtual_address(), 8),
-            elf_strings::to_hex(s.get_physical_address(), 8),
-            elf_strings::to_hex(s.get_file_size(), 5),
-            elf_strings::to_hex(s.get_memory_size(), 5),
-            elf_strings::to_hex(s.get_align(), 5),
-            elf_strings::get_segment_flags(s.get_flags())});
-    }
-
-    CONSOLE_VERBOSE(m_console) << "Program headers" << std::endl;
-    printer.print(*m_console.verbose());
 }
 
 void input_file::log_section_headers(ELFIO::elfio& reader) const

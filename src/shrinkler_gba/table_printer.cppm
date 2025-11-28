@@ -21,7 +21,7 @@ public:
     // Taking an std::ostream as argument here would be more sensible, but as of
     // November 2025 that causes some module related internal compiler error in MSVC.
     // As a workaround, take a console as argument.
-    void print(console& c);
+    void print(const console& c);
 
     int table_indent() const { return m_table_indent; }
 

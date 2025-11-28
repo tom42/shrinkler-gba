@@ -20,6 +20,13 @@ using ELFIO::elfio;
 namespace
 {
 
+table_printer create_table_printer()
+{
+    table_printer p;
+    p.table_indent(2);
+    return p;
+}
+
 void open_elf(elfio& reader, std::istream& stream)
 {
     if (!reader.load(stream))
@@ -113,7 +120,25 @@ void log_program_headers(elfio& reader, const console& console)
         return;
     }
 
-    // TODO: implement. Problem: really need table_printer first
+    auto printer = create_table_printer();
+    printer.add_row({ "Nr", "Type", "Offset", "VirtAddr", "PhysAddr", "FileSiz", "MemSiz", "Align", "Flg" });
+    for (ELFIO::Elf_Half i = 0; i < nheaders; ++i)
+    {
+        const auto& s = *reader.segments[i];
+        printer.add_row({
+            std::to_string(i),
+            get_segment_type(s.get_type()),
+            to_hex(s.get_offset(), 6),
+            to_hex(s.get_virtual_address(), 8),
+            to_hex(s.get_physical_address(), 8),
+            to_hex(s.get_file_size(), 5),
+            to_hex(s.get_memory_size(), 5),
+            to_hex(s.get_align(), 5),
+            get_segment_flags(s.get_flags()) });
+    }
+
+    console.verbose("Program headers");
+    printer.print(console);
 }
 
 bool is_section_included(const ELFIO::section* s)

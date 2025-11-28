@@ -40,9 +40,9 @@ public:
         }
     }
 
-    void verbose(const char* s);
+    void verbose(const char* s) const;
 
-    void verbose(const std::string& s);
+    void verbose(const std::string& s) const;
 
     template<typename... Args>
     void verbose(std::format_string<Args...> fmt, Args&&... args) const

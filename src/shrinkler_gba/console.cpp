@@ -11,7 +11,7 @@ module shrinkler_gba;
 namespace shrinkler_gba
 {
 
-void console::verbose(const char* s)
+void console::verbose(const char* s) const
 {
     if (m_verbose_stream)
     {
@@ -19,7 +19,7 @@ void console::verbose(const char* s)
     }
 }
 
-void console::verbose(const std::string& s)
+void console::verbose(const std::string& s) const
 {
     if (m_verbose_stream)
     {
