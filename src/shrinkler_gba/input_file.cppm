@@ -23,6 +23,8 @@ public:
 
     void load_old(std::istream& stream, const console& console); // TODO: remove member function
 
+    static input_file load(const std::string& path, const console& console);
+
     uint32_t entry() const { return m_entry; }
 
     bool is_thumb_entry() const { return entry() & 1; }

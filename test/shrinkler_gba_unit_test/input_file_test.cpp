@@ -32,7 +32,7 @@ protected:
         console.warn_stream(nullptr);
         console.verbose_stream(nullptr);
 
-        input_file.load_old(path.string(), console);
+        input_file = shrinkler_gba::input_file::load(path.string(), console);
     }
 
     shrinkler_gba::input_file input_file;
