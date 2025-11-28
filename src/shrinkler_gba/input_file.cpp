@@ -311,4 +311,11 @@ void input_file::load_elf(std::istream& stream, const console& console)
     m_data = convert_to_binary(reader, m_load_address);
 }
 
+input_file input_file::load(const std::string& path, const console& console)
+{
+    input_file f;
+    f.load_old(path, console);
+    return f;
+}
+
 }
