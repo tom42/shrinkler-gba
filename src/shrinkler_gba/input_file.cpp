@@ -226,7 +226,7 @@ void sort_sections_by_address(std::vector<const ELFIO::section*>& sections)
 //       * well, it's nonsense: better to separate the concerns "being an input file" and "loading an input file"
 //       * we could then have a function load_input_file which returns either an operational input file or nothing.
 //         Benefit: nor reset() method or any of that crap needed => obviously that requires some refactoring
-std::vector<unsigned char> convert_to_binary(ELFIO::elfio& reader, uint32_t& load_address)
+std::vector<unsigned char> convert_to_binary(ELFIO::elfio& reader, uint32_t& out_load_address)
 {
     std::vector<const ELFIO::section*> included_sections = get_included_sections(reader);
     sort_sections_by_address(included_sections);
@@ -257,7 +257,7 @@ std::vector<unsigned char> convert_to_binary(ELFIO::elfio& reader, uint32_t& loa
         {
             // No bytes written to output yet. Record initial output address and load address.
             output_address = s->get_address();
-            load_address = gsl::narrow<uint32_t>(output_address);
+            out_load_address = gsl::narrow<uint32_t>(output_address);
         }
 
         // Copy section data to output.
@@ -274,11 +274,13 @@ std::vector<unsigned char> convert_to_binary(ELFIO::elfio& reader, uint32_t& loa
 input_file::input_file(std::istream& stream, const console& console)
 {
     elfio reader;
+
     open_elf(reader, stream);
     check_header(reader);
-    m_entry = read_entry(reader);
     log_program_headers(reader, console);
     log_section_headers(reader, console);
+
+    m_entry = read_entry(reader);
     m_data = convert_to_binary(reader, m_load_address);
 }
 
