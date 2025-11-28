@@ -32,7 +32,6 @@ public:
     const std::vector<unsigned char>& data() const { return m_data; }
 
 private:
-    void load_old(const std::string& path, const console& console); // TODO: remove member function
     void load_old(std::istream& stream, const console& console); // TODO: remove member function
     void load_elf(std::istream& stream, const console& console); // TODO: remove member function
 
