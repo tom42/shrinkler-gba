@@ -106,6 +106,31 @@ uint32_t read_entry(elfio& reader)
     return gsl::narrow<uint32_t>(reader.get_entry());
 }
 
+bool is_section_included(const ELFIO::section* s)
+{
+    if ((s->get_type() == ELFIO::SHT_NULL) || (s->get_type() == ELFIO::SHT_NOBITS))
+    {
+        return false;
+    }
+
+    if (s->get_address() == 0)
+    {
+        return false;
+    }
+
+    if (s->get_size() == 0)
+    {
+        return false;
+    }
+
+    if (!(s->get_flags() & ELFIO::SHF_ALLOC))
+    {
+        return false;
+    }
+
+    return true;
+}
+
 void log_program_headers(elfio& reader, const console& console)
 {
     if (!console.is_verbose_enabled())
@@ -141,29 +166,43 @@ void log_program_headers(elfio& reader, const console& console)
     printer.print(console);
 }
 
-bool is_section_included(const ELFIO::section* s)
+void log_section_headers(elfio& reader, const console& console)
 {
-    if ((s->get_type() == ELFIO::SHT_NULL) || (s->get_type() == ELFIO::SHT_NOBITS))
+    if (!console.is_verbose_enabled())
     {
-        return false;
+        return;
     }
 
-    if (s->get_address() == 0)
+    ELFIO::Elf_Half nheaders = reader.sections.size();
+    if (nheaders == 0)
     {
-        return false;
+        console.verbose("File has no section headers");
+        return;
     }
 
-    if (s->get_size() == 0)
+    auto printer = create_table_printer();
+    printer.add_row({ "Nr", "Name", "Type", "Addr", "Off", "Size", "ES", "Flg", "Lk", "Inf", "Al", "Inc" });
+    for (ELFIO::Elf_Half i = 0; i < nheaders; ++i)
     {
-        return false;
+        const ELFIO::section* s = reader.sections[i];
+        printer.add_row({
+            std::to_string(i),
+            s->get_name(),
+            get_section_type(s->get_type()),
+            to_hex(s->get_address(), 8),
+            to_hex(s->get_offset(), 6),
+            to_hex(s->get_size(), 6),
+            to_hex(s->get_entry_size(), 2),
+            get_section_flags(s->get_flags()),
+            to_hex(s->get_link(), 2),
+            to_hex(s->get_info(), 3),
+            to_hex(s->get_addr_align(), 2),
+            is_section_included(s) ? "Y" : "N"
+            });
     }
 
-    if (!(s->get_flags() & ELFIO::SHF_ALLOC))
-    {
-        return false;
-    }
-
-    return true;
+    console.verbose("Section headers");
+    printer.print(console);
 }
 
 // TODO: can we implement this again using copy_if as before?
@@ -280,7 +319,7 @@ void input_file::load_elf(std::istream& stream, const console& console)
     check_header(reader);
     m_entry = read_entry(reader);
     log_program_headers(reader, console);
-    //log_section_headers(reader); // TODO: implement (skipped to get tests going first)
+    log_section_headers(reader, console);
     m_data = convert_to_binary(reader, m_load_address);
 }
 

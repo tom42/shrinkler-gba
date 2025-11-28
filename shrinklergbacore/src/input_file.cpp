@@ -29,45 +29,6 @@ void input_file::load_elf(std::istream& stream)
     convert_to_binary(reader);
 }
 
-void input_file::log_section_headers(ELFIO::elfio& reader) const
-{
-    if (!m_console.is_verbose_enabled())
-    {
-        return;
-    }
-
-    Elf_Half nheaders = reader.sections.size();
-    if (nheaders == 0)
-    {
-        CONSOLE_VERBOSE(m_console) << "File has no section headers" << std::endl;
-        return;
-    }
-
-    auto printer = create_table_printer();
-    printer.add_row({ "Nr", "Name", "Type", "Addr", "Off", "Size", "ES", "Flg", "Lk", "Inf", "Al", "Inc" });
-    for (Elf_Half i = 0; i < nheaders; ++i)
-    {
-        const ELFIO::section* s = reader.sections[i];
-        printer.add_row({
-            std::to_string(i),
-            s->get_name(),
-            elf_strings::get_section_type(s->get_type()),
-            elf_strings::to_hex(s->get_address(), 8),
-            elf_strings::to_hex(s->get_offset(), 6),
-            elf_strings::to_hex(s->get_size(), 6),
-            elf_strings::to_hex(s->get_entry_size(), 2),
-            elf_strings::get_section_flags(s->get_flags()),
-            elf_strings::to_hex(s->get_link(), 2),
-            elf_strings::to_hex(s->get_info(), 3),
-            elf_strings::to_hex(s->get_addr_align(), 2),
-            is_section_included(s) ? "Y" : "N"
-            });
-    }
-
-    CONSOLE_VERBOSE(m_console) << "Section headers" << std::endl;
-    printer.print(*m_console.verbose());
-}
-
 std::vector<const ELFIO::section*> input_file::get_included_sections(ELFIO::elfio& reader)
 {
     std::vector<const ELFIO::section*> included_sections;
