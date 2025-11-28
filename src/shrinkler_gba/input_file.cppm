@@ -35,7 +35,6 @@ public:
 
 private:
     void load_elf(std::istream& stream, const console& console);
-    void reset();
 
     uint32_t m_entry = 0;
     uint32_t m_load_address = 0;

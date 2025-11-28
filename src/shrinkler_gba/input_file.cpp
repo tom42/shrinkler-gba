@@ -302,8 +302,6 @@ void input_file::load(std::istream& stream, const console& console)
 
 void input_file::load_elf(std::istream& stream, const console& console)
 {
-    reset();
-
     elfio reader;
     open_elf(reader, stream);
     check_header(reader);
@@ -311,13 +309,6 @@ void input_file::load_elf(std::istream& stream, const console& console)
     log_program_headers(reader, console);
     log_section_headers(reader, console);
     m_data = convert_to_binary(reader, m_load_address);
-}
-
-void input_file::reset()
-{
-    m_entry = 0;
-    m_load_address = 0;
-    std::vector<unsigned char>().swap(m_data);
 }
 
 }
