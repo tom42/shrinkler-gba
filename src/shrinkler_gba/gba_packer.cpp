@@ -28,7 +28,7 @@ console create_console(const options& opts)
 input_file load_input_file(const std::filesystem::path& path, const console& console)
 {
     input_file f;
-    f.load(path.string(), console);
+    f.load_old(path.string(), console);
 
     if (!f.loaded_data_size())
     {

@@ -271,7 +271,7 @@ std::vector<unsigned char> convert_to_binary(ELFIO::elfio& reader, uint32_t& loa
 
 }
 
-void input_file::load(const std::string& path, const console& console)
+void input_file::load_old(const std::string& path, const console& console)
 {
     try
     {
@@ -284,7 +284,7 @@ void input_file::load(const std::string& path, const console& console)
             throw std::system_error(e, std::generic_category());
         }
 
-        load(stream, console);
+        load_old(stream, console);
     }
     catch (const std::exception& e)
     {
@@ -292,7 +292,7 @@ void input_file::load(const std::string& path, const console& console)
     }
 }
 
-void input_file::load(std::istream& stream, const console& console)
+void input_file::load_old(std::istream& stream, const console& console)
 {
     load_elf(stream, console);
     console.verbose("Entry: {:#x}", entry());
