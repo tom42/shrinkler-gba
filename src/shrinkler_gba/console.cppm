@@ -40,6 +40,18 @@ public:
         }
     }
 
+    // TODO: add and test const char* overload (inline or not?)
+
+    // TODO: add and test string overload
+    // TODO: deinline this?
+    void verbose(const std::string& s)
+    {
+        if (m_verbose_stream)
+        {
+            *m_verbose_stream << s << "\n";
+        }
+    }
+
     template<typename... Args>
     void verbose(std::format_string<Args...> fmt, Args&&... args) const
     {

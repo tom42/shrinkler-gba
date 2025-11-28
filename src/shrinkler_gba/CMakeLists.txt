@@ -23,7 +23,8 @@ set(
   complement.cpp
   elf_strings.cpp
   gba_packer.cpp
-  input_file.cpp)
+  input_file.cpp
+  table_printer.cpp)
 
 # Production version of shrinkler_gba.
 add_library(shrinkler_gba)
