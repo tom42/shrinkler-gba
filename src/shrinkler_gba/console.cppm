@@ -40,9 +40,15 @@ public:
         }
     }
 
-    // TODO: add and test const char* overload (inline or not?)
+    // TODO: deinline this?
+    void verbose(const char* s)
+    {
+        if (m_verbose_stream)
+        {
+            *m_verbose_stream << (s ? s : "(null)") << "\n";
+        }
+    }
 
-    // TODO: add and test string overload
     // TODO: deinline this?
     void verbose(const std::string& s)
     {
