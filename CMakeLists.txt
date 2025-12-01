@@ -33,6 +33,14 @@ endif()
 include(FetchContent)
 
 FetchContent_Declare(
+  agbpack
+  GIT_REPOSITORY    https://github.com/tom42/agbpack
+  GIT_TAG           v0.1.0
+  SYSTEM
+  FIND_PACKAGE_ARGS 0.1.0 NAMES agbpack)
+FetchContent_MakeAvailable(agbpack)
+
+FetchContent_Declare(
   argpppp
   GIT_REPOSITORY    https://github.com/tom42/argpppp
   GIT_TAG           v0.2.0
