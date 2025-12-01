@@ -15,6 +15,16 @@ import :console;
 namespace shrinkler_gba
 {
 
+// TODO: this was kind of better before we refactored it
+//       * Turn it back as it was, with most methods being either instance or class methods
+//         * The static factory methods seem kind of pointless. Turn them into two constructors, the private constructor can go
+//       * Still, do the loading of the ELF file in the constructor, so that there is no load() method, and reset() is not needed
+//       * Since we can have instance methods, the output parameter in convert_to_binary is not needed anymore
+//       * Obviously, input_file IS violating SRP:
+//         * It dumps all sorts of data that might be interesting for debugging
+//         * It loads an ELF file and converts it to binary
+//         * Think about separating these two concerns
+//           * There is one bit of code I think we're sharing: is_section_included() => Well, no problem, we factor out that method
 SHRINKLER_GBA_EXPORT_FOR_UNIT_TESTING
 class input_file final
 {
