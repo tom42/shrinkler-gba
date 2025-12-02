@@ -215,6 +215,8 @@ input_file input_file::load(std::istream& stream, const console& console)
     return f;
 }
 
+// TODO: remove this (we keep it for reference for the moment)
+/*
 input_file input_file::load(const std::string& path, const console& console)
 {
     try
@@ -235,5 +237,6 @@ input_file input_file::load(const std::string& path, const console& console)
         throw std::runtime_error(path + ": " + e.what());
     }
 }
+*/
 
 }

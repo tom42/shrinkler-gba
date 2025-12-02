@@ -34,8 +34,6 @@ class input_file final
 public:
     static input_file load(std::istream& stream, const console& console);
 
-    static input_file load(const std::string& path, const console& console);
-
     uint32_t entry() const { return m_entry; }
 
     bool is_thumb_entry() const { return entry() & 1; }

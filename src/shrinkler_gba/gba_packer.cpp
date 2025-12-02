@@ -25,8 +25,18 @@ console create_console(const options& opts)
     return c;
 }
 
-input_file load_input_file(const std::filesystem::path& path, const console& console)
+input_file load_input_file(const std::filesystem::path& /*path*/, const console& /*console*/)
 {
+    // TODO: this must now
+    //       * open the file
+    //       * Dump ELF information
+    //       * Actually load the input file (that is, do the objcopy thing)
+    //       * Check for data size > 0
+    //       * Have a big try/catch block as input_file used to have
+    throw std::runtime_error("TODO: implement");
+
+    // TODO: reimplement this: we do file IO here. We then log elf info and then we load the input file
+    /*
     auto f = input_file::load(path.string(), console);
 
     if (!f.loaded_data_size())
@@ -37,6 +47,7 @@ input_file load_input_file(const std::filesystem::path& path, const console& con
     }
 
     return f;
+    */
 }
 
 }
