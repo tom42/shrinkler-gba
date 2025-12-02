@@ -144,10 +144,8 @@ std::string get_segment_flags(ELFIO::Elf_Word flags)
     return to_hex(flags);
 }
 
-// TODO: can we try again whether it might work to supply a stream here instead?
 void display_program_headers(ELFIO::elfio& reader, const console& console)
 {
-    // TODO: do this check higher up?
     if (!console.is_verbose_enabled())
     {
         return;
@@ -181,10 +179,8 @@ void display_program_headers(ELFIO::elfio& reader, const console& console)
     printer.print(console);
 }
 
-// TODO: can we try again whether it might work to supply a stream here instead?
 void display_section_headers(ELFIO::elfio& reader, const console& console)
 {
-    // TODO: do this check higher up?
     if (!console.is_verbose_enabled())
     {
         return;
