@@ -12,6 +12,44 @@ module shrinkler_gba;
 namespace shrinkler_gba
 {
 
+namespace
+{
+
+table_printer create_table_printer()
+{
+    table_printer p;
+    p.table_indent(2);
+    return p;
+}
+
+// TODO: we have this twice. Deduplicate
+bool is_section_included(const ELFIO::section* s)
+{
+    if ((s->get_type() == ELFIO::SHT_NULL) || (s->get_type() == ELFIO::SHT_NOBITS))
+    {
+        return false;
+    }
+
+    if (s->get_address() == 0)
+    {
+        return false;
+    }
+
+    if (s->get_size() == 0)
+    {
+        return false;
+    }
+
+    if (!(s->get_flags() & ELFIO::SHF_ALLOC))
+    {
+        return false;
+    }
+
+    return true;
+}
+
+}
+
 std::string get_section_type(ELFIO::Elf_Word type)
 {
     using namespace ELFIO;
@@ -104,6 +142,83 @@ std::string get_segment_flags(ELFIO::Elf_Word flags)
     }
 
     return to_hex(flags);
+}
+
+// TODO: can we try again whether it might work to supply a stream here instead?
+void display_program_headers(ELFIO::elfio& reader, const console& console)
+{
+    // TODO: do this check higher up?
+    if (!console.is_verbose_enabled())
+    {
+        return;
+    }
+
+    ELFIO::Elf_Half nheaders = reader.segments.size();
+    if (nheaders == 0)
+    {
+        console.verbose("File has no program headers");
+        return;
+    }
+
+    auto printer = create_table_printer();
+    printer.add_row({ "Nr", "Type", "Offset", "VirtAddr", "PhysAddr", "FileSiz", "MemSiz", "Align", "Flg" });
+    for (ELFIO::Elf_Half i = 0; i < nheaders; ++i)
+    {
+        const auto& s = *reader.segments[i];
+        printer.add_row({
+            std::to_string(i),
+            get_segment_type(s.get_type()),
+            to_hex(s.get_offset(), 6),
+            to_hex(s.get_virtual_address(), 8),
+            to_hex(s.get_physical_address(), 8),
+            to_hex(s.get_file_size(), 5),
+            to_hex(s.get_memory_size(), 5),
+            to_hex(s.get_align(), 5),
+            get_segment_flags(s.get_flags()) });
+    }
+
+    console.verbose("Program headers");
+    printer.print(console);
+}
+
+// TODO: can we try again whether it might work to supply a stream here instead?
+void display_section_headers(ELFIO::elfio& reader, const console& console)
+{
+    // TODO: do this check higher up?
+    if (!console.is_verbose_enabled())
+    {
+        return;
+    }
+
+    ELFIO::Elf_Half nheaders = reader.sections.size();
+    if (nheaders == 0)
+    {
+        console.verbose("File has no section headers");
+        return;
+    }
+
+    auto printer = create_table_printer();
+    printer.add_row({ "Nr", "Name", "Type", "Addr", "Off", "Size", "ES", "Flg", "Lk", "Inf", "Al", "Inc" });
+    for (ELFIO::Elf_Half i = 0; i < nheaders; ++i)
+    {
+        const ELFIO::section* s = reader.sections[i];
+        printer.add_row({
+            std::to_string(i),
+            s->get_name(),
+            get_section_type(s->get_type()),
+            to_hex(s->get_address(), 8),
+            to_hex(s->get_offset(), 6),
+            to_hex(s->get_size(), 6),
+            to_hex(s->get_entry_size(), 2),
+            get_section_flags(s->get_flags()),
+            to_hex(s->get_link(), 2),
+            to_hex(s->get_info(), 3),
+            to_hex(s->get_addr_align(), 2),
+            is_section_included(s) ? "Y" : "N" });
+    }
+
+    console.verbose("Section headers");
+    printer.print(console);
 }
 
 }
