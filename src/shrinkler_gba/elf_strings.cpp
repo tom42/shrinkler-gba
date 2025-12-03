@@ -5,6 +5,7 @@ module;
 
 #include <array>
 #include <elfio/elfio.hpp>
+#include <gsl/gsl>
 #include <string>
 
 module shrinkler_gba;
@@ -162,7 +163,7 @@ void display_program_headers(ELFIO::elfio& reader, const console& console)
     printer.add_row({ "Nr", "Type", "Offset", "VirtAddr", "PhysAddr", "FileSiz", "MemSiz", "Align", "Flg" });
     for (ELFIO::Elf_Half i = 0; i < nheaders; ++i)
     {
-        const auto& s = *reader.segments[i];
+        const ELFIO::segment& s = *gsl::not_null(reader.segments[i]);
         printer.add_row({
             std::to_string(i),
             get_segment_type(s.get_type()),
@@ -197,20 +198,20 @@ void display_section_headers(ELFIO::elfio& reader, const console& console)
     printer.add_row({ "Nr", "Name", "Type", "Addr", "Off", "Size", "ES", "Flg", "Lk", "Inf", "Al", "Inc" });
     for (ELFIO::Elf_Half i = 0; i < nheaders; ++i)
     {
-        const ELFIO::section* s = reader.sections[i]; // TODO: use not_null here?
+        const ELFIO::section& s = *gsl::not_null(reader.sections[i]);
         printer.add_row({
             std::to_string(i),
-            s->get_name(),
-            get_section_type(s->get_type()),
-            to_hex(s->get_address(), 8),
-            to_hex(s->get_offset(), 6),
-            to_hex(s->get_size(), 6),
-            to_hex(s->get_entry_size(), 2),
-            get_section_flags(s->get_flags()),
-            to_hex(s->get_link(), 2),
-            to_hex(s->get_info(), 3),
-            to_hex(s->get_addr_align(), 2),
-            is_section_included(s) ? "Y" : "N" });
+            s.get_name(),
+            get_section_type(s.get_type()),
+            to_hex(s.get_address(), 8),
+            to_hex(s.get_offset(), 6),
+            to_hex(s.get_size(), 6),
+            to_hex(s.get_entry_size(), 2),
+            get_section_flags(s.get_flags()),
+            to_hex(s.get_link(), 2),
+            to_hex(s.get_info(), 3),
+            to_hex(s.get_addr_align(), 2),
+            is_section_included(&s) ? "Y" : "N" });
     }
 
     console.verbose("Section headers");
