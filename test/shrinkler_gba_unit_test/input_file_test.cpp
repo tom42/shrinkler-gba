@@ -2,9 +2,6 @@
 // SPDX-License-Identifier: MIT
 
 #include <catch2/catch_test_macros.hpp>
-#include <catch2/matchers/catch_matchers.hpp>
-#include <catch2/matchers/catch_matchers_exception.hpp>
-#include <catch2/matchers/catch_matchers_string.hpp>
 #include <filesystem>
 #include <stdexcept>
 #include <string>
@@ -16,9 +13,6 @@ import shrinkler_gba;
 namespace shrinkler_gba_unit_test
 {
 
-using Catch::CaseSensitive;
-using Catch::Matchers::MessageMatches;
-using Catch::Matchers::EndsWith;
 using shrinkler_gba::input_file;
 
 namespace
@@ -43,22 +37,7 @@ input_file load(const std::string& filename)
 TEST_CASE("input_file")
 {
     // TODO: see what to do about these tests
-    /*SECTION("load, file does not exist")
-    {
-        CHECK_THROWS_MATCHES(
-            load("non-existing-file.elf"),
-            std::runtime_error,
-            MessageMatches(EndsWith("non-existing-file.elf: no such file or directory", CaseSensitive::No)));
-    }
-
-    SECTION("load, invalid file")
-    {
-        CHECK_THROWS_MATCHES(
-            load("invalid-elf-file.elf"),
-            std::runtime_error,
-            MessageMatches(EndsWith("invalid-elf-file.elf: file is not a valid ELF file", CaseSensitive::No)));
-    }
-
+    /*
     SECTION("load, valid file, ARM entry")
     {
         auto input_file = load("lostmarbles.elf");
