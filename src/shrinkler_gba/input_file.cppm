@@ -15,7 +15,6 @@ namespace shrinkler_gba
 
 bool is_section_included(gsl::not_null<const ELFIO::section*> s);
 
-// TODO: elf_strings.cpp(m) should probably be renamed if log_program_headers and friends go in there
 SHRINKLER_GBA_EXPORT_FOR_UNIT_TESTING
 class input_file final
 {

@@ -12,7 +12,7 @@ add_executable(
   adler32_test.cpp
   complement_test.cpp
   console_test.cpp
-  elf_strings_test.cpp
+  elf_info_test.cpp
   input_file_test.cpp
   options_test.cpp
   pack_test.cpp

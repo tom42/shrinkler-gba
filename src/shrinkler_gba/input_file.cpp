@@ -10,7 +10,7 @@ module;
 #include <string>
 
 module shrinkler_gba;
-import :elf_strings;
+import :elf_info;
 
 namespace shrinkler_gba
 {

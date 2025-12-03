@@ -6,7 +6,7 @@ export import :adler32;
 export import :command_line;
 export import :complement;
 export import :console;
-export import :elf_strings;
+export import :elf_info;
 export import :gba;
 export import :input_file;
 export import :options;

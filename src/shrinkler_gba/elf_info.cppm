@@ -8,7 +8,7 @@ module;
 #include <format>
 #include <string>
 
-export module shrinkler_gba:elf_strings;
+export module shrinkler_gba:elf_info;
 import :console;
 
 namespace shrinkler_gba

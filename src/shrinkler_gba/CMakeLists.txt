@@ -10,7 +10,7 @@ set(
   command_line.cppm
   complement.cppm
   console.cppm
-  elf_strings.cppm
+  elf_info.cppm
   gba.cppm
   input_file.cppm
   options.cppm
@@ -22,7 +22,7 @@ set(
   command_line.cpp
   complement.cpp
   console.cpp
-  elf_strings.cpp
+  elf_info.cpp
   input_file.cpp
   pack.cpp
   table_printer.cpp)

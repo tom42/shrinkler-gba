@@ -16,7 +16,7 @@ using shrinkler_gba::get_segment_flags;
 using shrinkler_gba::get_segment_type;
 using shrinkler_gba::to_hex;
 
-TEST_CASE("elf_strings")
+TEST_CASE("elf_info")
 {
     SECTION("to_hex, without width specifier")
     {
