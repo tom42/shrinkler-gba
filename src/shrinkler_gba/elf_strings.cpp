@@ -22,7 +22,7 @@ table_printer create_table_printer()
     return p;
 }
 
-// TODO: we have this twice. Deduplicate
+// TODO: we have this twice. Deduplicate. Also: either use a reference, or not_null
 bool is_section_included(const ELFIO::section* s)
 {
     if ((s->get_type() == ELFIO::SHT_NULL) || (s->get_type() == ELFIO::SHT_NOBITS))
@@ -197,7 +197,7 @@ void display_section_headers(ELFIO::elfio& reader, const console& console)
     printer.add_row({ "Nr", "Name", "Type", "Addr", "Off", "Size", "ES", "Flg", "Lk", "Inf", "Al", "Inc" });
     for (ELFIO::Elf_Half i = 0; i < nheaders; ++i)
     {
-        const ELFIO::section* s = reader.sections[i];
+        const ELFIO::section* s = reader.sections[i]; // TODO: use not_null here?
         printer.add_row({
             std::to_string(i),
             s->get_name(),
