@@ -11,6 +11,7 @@ module;
 
 module shrinkler_gba;
 import :input_file;
+import libshrinkler;
 
 namespace shrinkler_gba
 {
@@ -71,12 +72,26 @@ input_file load_input_file(const std::string& path, const console& console)
     }
 }
 
+std::vector<unsigned char> compress(const std::vector<unsigned char>& data, const options& opts) // TODO: better name for 'data'
+{
+    // TODO: set encoder parameters
+    // TODO: encode (get compressed data + compression info)
+    // TODO: dump compression info
+    // TODO: progress output for libshrinkler?
+    libshrinkler::encoder encoder;
+    encoder.parameters(opts.shrinkler_parameters());
+    encoder.encode(data);
+    return {}; // TODO: return real return value (the compressed binary)
+}
+
 }
 
 void pack(const options& opts)
 {
     auto console = create_console(opts);
     auto input_file = load_input_file(opts.input_file().string(), console);
+    // TODO: currently we only do shrinkler compression. Later we'll also support lzss+huffman compression
+    auto compressed_binary = compress(input_file.data(), opts);
 
     // TODO: implement the remaining 5/6/whatever steps (see old implementation):
     //       * Compress raw binary: note: here some work on libshrinkler might be necessary: I am not sure it supports progress output. But that's fine.
