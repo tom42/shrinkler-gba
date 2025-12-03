@@ -22,6 +22,7 @@ using ELFIO::elfio;
 namespace
 {
 
+// TODO: do we still need this here? (no, we don't, this is now done in pack.cpp)
 void open_elf(elfio& reader, std::istream& stream)
 {
     if (!reader.load(stream))
@@ -208,7 +209,6 @@ input_file input_file::load(std::istream& stream, const console& console)
 {
     input_file f(stream, console);
 
-    console.verbose("Entry: {:#x}", f.entry());
     console.verbose("Load address: {:#x}", f.load_address());
     console.verbose("Total size of loaded data: {0:#x} ({0})", f.loaded_data_size());
 
@@ -221,15 +221,6 @@ input_file input_file::load(const std::string& path, const console& console)
 {
     try
     {
-        console.verbose("Loading: {}", path);
-        std::ifstream stream(path, std::ios::binary);
-
-        if (!stream)
-        {
-            auto e = errno;
-            throw std::system_error(e, std::generic_category());
-        }
-
         return load(stream, console);
     }
     catch (const std::exception& e)

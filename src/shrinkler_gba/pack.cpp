@@ -3,9 +3,14 @@
 
 module;
 
+#include <elfio/elfio.hpp>
 #include <filesystem>
+#include <fstream>
+#include <stdexcept>
+#include <system_error>
 
 module shrinkler_gba;
+import :input_file;
 
 namespace shrinkler_gba
 {
@@ -25,15 +30,44 @@ console create_console(const options& opts)
     return c;
 }
 
-input_file load_input_file(const std::filesystem::path& /*path*/, const console& /*console*/)
+input_file load_input_file(const std::string& path, const console& console)
 {
-    // TODO: this must now
-    //       * open the file
-    //       * Dump ELF information
-    //       * Actually load the input file (that is, do the objcopy thing)
-    //       * Check for data size > 0
-    //       * Have a big try/catch block as input_file used to have
-    throw std::runtime_error("TODO: implement");
+    try
+    {
+        console.verbose("Loading: {}", path);
+        std::ifstream stream(path, std::ios::binary);
+        if (!stream)
+        {
+            // TODO: test this branch (there is a commented out test in input_file_test that can be used for this)
+            auto e = errno;
+            throw std::system_error(e, std::generic_category());
+        }
+
+        ELFIO::elfio elfio;
+        if (!elfio.load(stream))
+        {
+            // TODO: test this branch (there is a commented out test in input_file_test that can be used for this)
+            throw std::runtime_error("File is not a valid ELF file");
+        }
+
+        // TODO: have a dedicated method for this in elf_strings.cppm?
+        display_program_headers(elfio, console);
+        display_section_headers(elfio, console);
+        console.verbose("Entry: {:#x}", elfio.get_entry());
+
+        // TODO: implement this ctor
+        input_file f(elfio, console);
+
+        // TODO: check for data size > 0 here
+
+        // TODO: log load address and total size of data
+
+        return f;
+    }
+    catch (const std::exception& e)
+    {
+        throw std::runtime_error(path + ": " + e.what());
+    }
 
     // TODO: reimplement this: we do file IO here. We then log elf info and then we load the input file
     /*
@@ -55,7 +89,7 @@ input_file load_input_file(const std::filesystem::path& /*path*/, const console&
 void pack(const options& opts)
 {
     auto console = create_console(opts);
-    auto input_file = load_input_file(opts.input_file(), console);
+    auto input_file = load_input_file(opts.input_file().string(), console);
 
     // TODO: implement the existing 5/6/whatever steps:
     //       * Compress raw binary: note: here some work on libshrinkler might be necessary: I am not sure it supports progress output. But that's fine.

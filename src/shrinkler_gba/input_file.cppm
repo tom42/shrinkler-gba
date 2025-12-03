@@ -27,7 +27,7 @@ namespace shrinkler_gba
 //           * There is one bit of code I think we're sharing: is_section_included() => Well, no problem, we factor out that method
 //         * Note: elf_strings.cpp(m) should probably be renamed if log_program_headers and friends go in there
 // TODO: this class should not know about console
-// TODO: this class should not know about file names, just istreams
+// TODO: this class should not know about file names, just istreams (possibly not even that, possibly we give it an elf reader)
 SHRINKLER_GBA_EXPORT_FOR_UNIT_TESTING
 class input_file final
 {
