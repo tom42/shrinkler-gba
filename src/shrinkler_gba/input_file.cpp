@@ -94,9 +94,8 @@ std::vector<gsl::not_null<const ELFIO::section*>> get_included_sections(const el
 
 void sort_sections_by_address(std::vector<gsl::not_null<const ELFIO::section*>>& sections)
 {
-    std::sort(
-        sections.begin(),
-        sections.end(),
+    std::ranges::sort(
+        sections,
         [](auto lhs, auto rhs) { return lhs->get_address() < rhs->get_address(); });
 }
 
