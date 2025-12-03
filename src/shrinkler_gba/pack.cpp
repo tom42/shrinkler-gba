@@ -56,11 +56,16 @@ input_file load_input_file(const std::string& path, const console& console)
 
         input_file f(elfio);
 
-        // TODO: check for data size > 0 here
-
         console.verbose("Entry: {:#x}", f.entry());
         console.verbose("Load address: {:#x}", f.load_address());
         console.verbose("Total size of loaded data: {0:#x} ({0})", f.loaded_data_size());
+
+        if (!f.loaded_data_size())
+        {
+            // Shrinkler does really not like files with size zero.
+            // TODO: what about agbpack (clownlzss + huffman; what's the minimum size they would like to have?)
+            throw std::runtime_error("File is too small to be compressed");
+        }
 
         return f;
     }
@@ -68,20 +73,6 @@ input_file load_input_file(const std::string& path, const console& console)
     {
         throw std::runtime_error(path + ": " + e.what());
     }
-
-    // TODO: reimplement this: we do file IO here. We then log elf info and then we load the input file
-    /*
-    auto f = input_file::load(path.string(), console);
-
-    if (!f.loaded_data_size())
-    {
-        // Shrinkler does really not like files with size zero.
-        // TODO: what about agbpack (clownlzss + huffman; what's the minimum size they would like to have?)
-        throw std::runtime_error("File is too small to be compressed");
-    }
-
-    return f;
-    */
 }
 
 }
