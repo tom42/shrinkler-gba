@@ -41,6 +41,8 @@ public:
     const std::vector<unsigned char>& data() const { return m_data; }
 
 private:
+    void read_entry(const ELFIO::elfio& elfio);
+
     uint32_t m_entry = 0;
     uint32_t m_load_address = 0;
     std::vector<unsigned char> m_data;

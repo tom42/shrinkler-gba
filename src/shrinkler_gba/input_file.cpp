@@ -84,11 +84,6 @@ void check_header(const elfio& elfio)
     check_object_file_version(elfio);
 }
 
-uint32_t read_entry(const elfio& elfio)
-{
-    return gsl::narrow<uint32_t>(elfio.get_entry());
-}
-
 bool is_section_included(const ELFIO::section* s)
 {
     if ((s->get_type() == ELFIO::SHT_NULL) || (s->get_type() == ELFIO::SHT_NOBITS))
@@ -179,10 +174,14 @@ std::vector<unsigned char> convert_to_binary(const elfio& elfio, uint32_t& out_l
 
 input_file::input_file(const elfio& elfio)
 {
-    // TODO: implement
     check_header(elfio);
-    m_entry = read_entry(elfio); // TOOD: make this a member
+    read_entry(elfio);
     m_data = convert_to_binary(elfio, m_load_address); // TODO: make this a member. Benefit: no output parameter anymore
+}
+
+void input_file::read_entry(const elfio& elfio)
+{
+    m_entry = gsl::narrow<uint32_t>(elfio.get_entry());
 }
 
 }
