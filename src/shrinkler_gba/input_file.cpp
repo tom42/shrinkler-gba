@@ -84,7 +84,7 @@ void check_header(const elfio& elfio)
     check_object_file_version(elfio);
 }
 
-bool is_section_included(const ELFIO::section* s)
+bool is_section_included(gsl::not_null<const ELFIO::section*> s)
 {
     if ((s->get_type() == ELFIO::SHT_NULL) || (s->get_type() == ELFIO::SHT_NOBITS))
     {
@@ -109,20 +109,20 @@ bool is_section_included(const ELFIO::section* s)
     return true;
 }
 
-std::vector<const ELFIO::section*> get_included_sections(const elfio& elfio)
+std::vector<gsl::not_null<const ELFIO::section*>> get_included_sections(const elfio& elfio)
 {
     return
         std::views::transform(elfio.sections, [](const auto& s) { return s.get(); }) |
         std::views::filter(is_section_included) |
-        std::ranges::to<std::vector<const ELFIO::section*>>();
+        std::ranges::to<std::vector<gsl::not_null<const ELFIO::section*>>>();
 }
 
-void sort_sections_by_address(std::vector<const ELFIO::section*>& sections)
+void sort_sections_by_address(std::vector<gsl::not_null<const ELFIO::section*>>& sections)
 {
     std::sort(
         sections.begin(),
         sections.end(),
-        [](const ELFIO::section* lhs, const ELFIO::section* rhs) { return lhs->get_address() < rhs->get_address(); });
+        [](auto lhs, auto rhs) { return lhs->get_address() < rhs->get_address(); });
 }
 
 }
@@ -141,13 +141,13 @@ void input_file::read_entry(const elfio& elfio)
 
 void input_file::load_binary(const elfio& elfio)
 {
-    std::vector<const ELFIO::section*> included_sections = get_included_sections(elfio);
+    auto included_sections = get_included_sections(elfio);
     sort_sections_by_address(included_sections);
 
     const ELFIO::section* previous_section = nullptr;
     ELFIO::Elf64_Addr output_address = 0;
 
-    for (const ELFIO::section* s : included_sections)
+    for (auto s : included_sections)
     {
         if (m_data.size())
         {
