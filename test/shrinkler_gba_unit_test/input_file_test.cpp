@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 #include <catch2/catch_test_macros.hpp>
+#include <elfio/elfio.hpp>
 #include <filesystem>
 #include <stdexcept>
 #include <string>
@@ -18,29 +19,26 @@ using shrinkler_gba::input_file;
 namespace
 {
 
-// TODO: see what to do about this
-/*
-input_file load(const std::string& filename)
+input_file create_input_file(const std::string& filename)
 {
     auto path = std::filesystem::path(SHRINKLER_GBA_UNIT_TEST_TESTDATA_DIRECTORY) / filename;
 
-    shrinkler_gba::console console;
-    console.out_stream(nullptr);
-    console.warn_stream(nullptr);
-    console.verbose_stream(nullptr);
+    ELFIO::elfio elfio;
+    if (!elfio.load(path.string()))
+    {
+        throw std::runtime_error("Could not load test ELF file");
+    }
 
-    return input_file::load(path.string(), console);
-}*/
+    return input_file(elfio);
+}
 
 }
 
 TEST_CASE("input_file")
 {
-    // TODO: see what to do about these tests
-    /*
-    SECTION("load, valid file, ARM entry")
+    SECTION("constructor, valid file, ARM entry")
     {
-        auto input_file = load("lostmarbles.elf");
+        auto input_file = create_input_file("lostmarbles.elf");
 
         CHECK(input_file.entry() == 0x03000000);
         CHECK(input_file.is_thumb_entry() == false);
@@ -49,16 +47,16 @@ TEST_CASE("input_file")
         CHECK(input_file.data().size() == input_file.loaded_data_size());
     }
 
-    SECTION("load, valid file, Thumb entry")
+    SECTION("constructor, valid file, Thumb entry")
     {
-        auto input_file = load("thumb_entry.elf");
+        auto input_file = create_input_file("thumb_entry.elf");
 
         CHECK(input_file.entry() == 0x8001);
         CHECK(input_file.is_thumb_entry() == true);
         CHECK(input_file.load_address() == 0x8000);
         CHECK(input_file.data() == load_binary_file("thumb_entry.bin"));
         CHECK(input_file.data().size() == input_file.loaded_data_size());
-    }*/
+    }
 }
 
 }
