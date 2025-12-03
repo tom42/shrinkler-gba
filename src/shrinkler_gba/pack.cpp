@@ -91,12 +91,12 @@ void pack(const options& opts)
     auto console = create_console(opts);
     auto input_file = load_input_file(opts.input_file().string(), console);
 
-    // TODO: implement the existing 5/6/whatever steps:
+    // TODO: implement the remaining 5/6/whatever steps (see old implementation):
     //       * Compress raw binary: note: here some work on libshrinkler might be necessary: I am not sure it supports progress output. But that's fine.
     //       * Assemble cart
     //       * Fix up for EZFlash (why is that not done by the assembler? => because that's post processing and needs to be done for both assemblers?)
     //       * Write result to disk
-    // TODO: here we would like to rework the existing components, so that they do NOT produce console output. All console output should be controlled/done up here in this file
+    //       * Verbose output of final cart sizes
 }
 
 }

@@ -20,76 +20,73 @@ using ELFIO::elfio;
 namespace
 {
 
-// TODO: replace reader by elfio in entire file
-void check_executable_type(const elfio& reader)
+void check_executable_type(const elfio& elfio)
 {
-    if ((reader.get_class() != ELFIO::ELFCLASS32) ||
-        (reader.get_encoding() != ELFIO::ELFDATA2LSB) ||
-        (reader.get_type() != ELFIO::ET_EXEC) ||
-        (reader.get_machine() != ELFIO::EM_ARM))
+    if ((elfio.get_class() != ELFIO::ELFCLASS32) ||
+        (elfio.get_encoding() != ELFIO::ELFDATA2LSB) ||
+        (elfio.get_type() != ELFIO::ET_EXEC) ||
+        (elfio.get_machine() != ELFIO::EM_ARM))
     {
         throw std::runtime_error("File is not a 32-bit little endian ARM executable ELF file");
     }
 }
 
-void check_elf_version(const elfio& reader)
+void check_elf_version(const elfio& elfio)
 {
     const auto expected_elf_version = 1;
 
-    auto ei_version = reader.get_elf_version();
-    if (ei_version != expected_elf_version)
+    auto version = elfio.get_elf_version();
+    if (version != expected_elf_version)
     {
-        throw std::runtime_error(std::format("Unknown ELF format version {}. Expected {}", ei_version, expected_elf_version));
+        throw std::runtime_error(std::format("Unknown ELF format version {}. Expected {}", version, expected_elf_version));
     }
 }
 
-void check_os_abi(const elfio& reader)
+void check_os_abi(const elfio& elfio)
 {
     const auto expected_abi = ELFIO::ELFOSABI_NONE;
 
-    auto ei_osabi = reader.get_os_abi();
-    if (ei_osabi != expected_abi)
+    auto osabi = elfio.get_os_abi();
+    if (osabi != expected_abi)
     {
-        throw std::runtime_error(std::format("Unknown ELF OS ABI {}. Expected none ({})", ei_osabi, expected_abi));
+        throw std::runtime_error(std::format("Unknown ELF OS ABI {}. Expected none ({})", osabi, expected_abi));
     }
 }
 
-void check_abi_version(const elfio& reader)
+void check_abi_version(const elfio& elfio)
 {
     const auto expected_abi_version = 0;
 
-    auto ei_abiversion = reader.get_abi_version();
-    if (ei_abiversion != expected_abi_version)
+    auto abiversion = elfio.get_abi_version();
+    if (abiversion != expected_abi_version)
     {
-        throw std::runtime_error(std::format("Unknown ABI version {}. Expected {}", ei_abiversion, expected_abi_version));
+        throw std::runtime_error(std::format("Unknown ABI version {}. Expected {}", abiversion, expected_abi_version));
     }
 }
 
-void check_object_file_version(const elfio& reader)
+void check_object_file_version(const elfio& elfio)
 {
     const auto expected_object_file_version = 1;
 
-    auto e_version = reader.get_version();
+    auto e_version = elfio.get_version();
     if (e_version != expected_object_file_version)
     {
         throw std::runtime_error(std::format("Unknown object file version {}. Expected {}", e_version, expected_object_file_version));
     }
 }
 
-void check_header(const elfio& reader)
+void check_header(const elfio& elfio)
 {
-    check_executable_type(reader);
-    check_elf_version(reader);
-
-    // Not sure these matter. Checking them to be on the safe side.
-    check_os_abi(reader);
-    check_abi_version(reader);
-    check_object_file_version(reader);
+    check_executable_type(elfio);
+    check_elf_version(elfio);
+    check_os_abi(elfio);
+    check_abi_version(elfio);
+    check_object_file_version(elfio);
 }
 
-uint32_t read_entry(const elfio& reader)
+uint32_t read_entry(const elfio& elfio)
 {
-    return gsl::narrow<uint32_t>(reader.get_entry());
+    return gsl::narrow<uint32_t>(elfio.get_entry());
 }
 
 bool is_section_included(const ELFIO::section* s)
@@ -117,10 +114,10 @@ bool is_section_included(const ELFIO::section* s)
     return true;
 }
 
-std::vector<const ELFIO::section*> get_included_sections(const ELFIO::elfio& reader)
+std::vector<const ELFIO::section*> get_included_sections(const elfio& elfio)
 {
     return
-        std::views::transform(reader.sections, [](const auto& s) { return s.get(); }) |
+        std::views::transform(elfio.sections, [](const auto& s) { return s.get(); }) |
         std::views::filter(is_section_included) |
         std::ranges::to<std::vector<const ELFIO::section*>>();
 }
@@ -133,11 +130,11 @@ void sort_sections_by_address(std::vector<const ELFIO::section*>& sections)
         [](const ELFIO::section* lhs, const ELFIO::section* rhs) { return lhs->get_address() < rhs->get_address(); });
 }
 
-std::vector<unsigned char> convert_to_binary(const ELFIO::elfio& reader, uint32_t& out_load_address)
+std::vector<unsigned char> convert_to_binary(const elfio& elfio, uint32_t& out_load_address)
 {
     out_load_address = 0;
 
-    std::vector<const ELFIO::section*> included_sections = get_included_sections(reader);
+    std::vector<const ELFIO::section*> included_sections = get_included_sections(elfio);
     sort_sections_by_address(included_sections);
 
     const ELFIO::section* previous_section = nullptr;
@@ -180,7 +177,7 @@ std::vector<unsigned char> convert_to_binary(const ELFIO::elfio& reader, uint32_
 
 }
 
-input_file::input_file(const ELFIO::elfio& elfio)
+input_file::input_file(const elfio& elfio)
 {
     // TODO: implement
     check_header(elfio);
