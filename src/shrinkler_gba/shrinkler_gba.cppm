@@ -8,7 +8,7 @@ export import :complement;
 export import :console;
 export import :elf_strings;
 export import :gba;
-export import :gba_packer;
 export import :input_file;
 export import :options;
+export import :pack;
 export import :table_printer;

@@ -12,9 +12,9 @@ set(
   console.cppm
   elf_strings.cppm
   gba.cppm
-  gba_packer.cppm
   input_file.cppm
   options.cppm
+  pack.cppm
   shrinkler_gba.cppm
   table_printer.cppm
   PRIVATE
@@ -23,8 +23,8 @@ set(
   complement.cpp
   console.cpp
   elf_strings.cpp
-  gba_packer.cpp
   input_file.cpp
+  pack.cpp
   table_printer.cpp)
 
 # Production version of shrinkler_gba.
