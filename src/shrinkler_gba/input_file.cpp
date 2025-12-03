@@ -87,7 +87,7 @@ void check_header(const elfio& elfio)
 std::vector<gsl::not_null<const ELFIO::section*>> get_included_sections(const elfio& elfio)
 {
     return
-        std::views::transform(elfio.sections, [](const auto& s) { return s.get(); }) |
+        std::views::transform(elfio.sections, [](const auto& s) { return gsl::not_null(s.get()); }) |
         std::views::filter(is_section_included) |
         std::ranges::to<std::vector<gsl::not_null<const ELFIO::section*>>>();
 }
