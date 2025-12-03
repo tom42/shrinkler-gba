@@ -48,9 +48,7 @@ input_file load_input_file(const std::string& path, const console& console)
             throw std::runtime_error("File is not a valid ELF file");
         }
 
-        // TODO: have a dedicated method for this in elf_strings.cppm?
-        display_program_headers(elfio, console);
-        display_section_headers(elfio, console);
+        display_elf_info(elfio, console);
 
         input_file f(elfio);
 

@@ -119,7 +119,7 @@ std::string get_segment_flags(ELFIO::Elf_Word flags)
     return to_hex(flags);
 }
 
-void display_program_headers(ELFIO::elfio& reader, const console& console)
+void display_program_headers(const ELFIO::elfio& reader, const console& console)
 {
     if (!console.is_verbose_enabled())
     {
@@ -154,7 +154,7 @@ void display_program_headers(ELFIO::elfio& reader, const console& console)
     printer.print(console);
 }
 
-void display_section_headers(ELFIO::elfio& reader, const console& console)
+void display_section_headers(const ELFIO::elfio& reader, const console& console)
 {
     if (!console.is_verbose_enabled())
     {
@@ -190,6 +190,12 @@ void display_section_headers(ELFIO::elfio& reader, const console& console)
 
     console.verbose("Section headers");
     printer.print(console);
+}
+
+void display_elf_info(const ELFIO::elfio& reader, const console& console)
+{
+    display_program_headers(reader, console);
+    display_section_headers(reader, console);
 }
 
 }

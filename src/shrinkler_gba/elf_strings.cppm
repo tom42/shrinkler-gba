@@ -41,8 +41,6 @@ std::string get_segment_type(ELFIO::Elf_Word type);
 SHRINKLER_GBA_EXPORT_FOR_UNIT_TESTING
 std::string get_segment_flags(ELFIO::Elf_Word flags);
 
-void display_program_headers(ELFIO::elfio& reader, const console& console);
-
-void display_section_headers(ELFIO::elfio& reader, const console& console);
+void display_elf_info(const ELFIO::elfio& reader, const console& console);
 
 }
