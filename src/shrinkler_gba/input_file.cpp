@@ -125,20 +125,31 @@ void sort_sections_by_address(std::vector<const ELFIO::section*>& sections)
         [](const ELFIO::section* lhs, const ELFIO::section* rhs) { return lhs->get_address() < rhs->get_address(); });
 }
 
-std::vector<unsigned char> convert_to_binary(const elfio& elfio, uint32_t& out_load_address)
-{
-    out_load_address = 0;
+}
 
+input_file::input_file(const elfio& elfio)
+{
+    check_header(elfio);
+    read_entry(elfio);
+    load_binary(elfio);
+}
+
+void input_file::read_entry(const elfio& elfio)
+{
+    m_entry = gsl::narrow<uint32_t>(elfio.get_entry());
+}
+
+void input_file::load_binary(const elfio& elfio)
+{
     std::vector<const ELFIO::section*> included_sections = get_included_sections(elfio);
     sort_sections_by_address(included_sections);
 
     const ELFIO::section* previous_section = nullptr;
     ELFIO::Elf64_Addr output_address = 0;
-    std::vector<unsigned char> data;
 
     for (const ELFIO::section* s : included_sections)
     {
-        if (data.size())
+        if (m_data.size())
         {
             if (s->get_address() < output_address)
             {
@@ -150,7 +161,7 @@ std::vector<unsigned char> convert_to_binary(const elfio& elfio, uint32_t& out_l
             {
                 // There is a hole between the current and the last section.
                 // Pad it with zeros. Zeros are required by ELF.
-                data.insert(data.end(), gsl::narrow<size_t>(npadding_bytes), 0);
+                m_data.insert(m_data.end(), gsl::narrow<size_t>(npadding_bytes), 0);
                 output_address += npadding_bytes;
             }
         }
@@ -158,30 +169,14 @@ std::vector<unsigned char> convert_to_binary(const elfio& elfio, uint32_t& out_l
         {
             // No bytes written to output yet. Record initial output address and load address.
             output_address = s->get_address();
-            out_load_address = gsl::narrow<uint32_t>(output_address);
+            m_load_address = gsl::narrow<uint32_t>(output_address);
         }
 
         // Copy section data to output.
-        data.insert(data.end(), s->get_data(), s->get_data() + s->get_size());
+        m_data.insert(m_data.end(), s->get_data(), s->get_data() + s->get_size());
         output_address += s->get_size();
         previous_section = s;
     }
-
-    return data;
-}
-
-}
-
-input_file::input_file(const elfio& elfio)
-{
-    check_header(elfio);
-    read_entry(elfio);
-    m_data = convert_to_binary(elfio, m_load_address); // TODO: make this a member. Benefit: no output parameter anymore
-}
-
-void input_file::read_entry(const elfio& elfio)
-{
-    m_entry = gsl::narrow<uint32_t>(elfio.get_entry());
 }
 
 }

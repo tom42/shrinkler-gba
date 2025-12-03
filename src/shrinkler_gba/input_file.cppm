@@ -42,6 +42,7 @@ public:
 
 private:
     void read_entry(const ELFIO::elfio& elfio);
+    void load_binary(const ELFIO::elfio& elfio);
 
     uint32_t m_entry = 0;
     uint32_t m_load_address = 0;
