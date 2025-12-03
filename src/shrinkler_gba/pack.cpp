@@ -38,7 +38,6 @@ input_file load_input_file(const std::string& path, const console& console)
         std::ifstream stream(path, std::ios::binary);
         if (!stream)
         {
-            // TODO: test this branch (there is a commented out test in input_file_test that can be used for this)
             auto e = errno;
             throw std::system_error(e, std::generic_category());
         }
@@ -46,7 +45,6 @@ input_file load_input_file(const std::string& path, const console& console)
         ELFIO::elfio elfio;
         if (!elfio.load(stream))
         {
-            // TODO: test this branch (there is a commented out test in input_file_test that can be used for this)
             throw std::runtime_error("File is not a valid ELF file");
         }
 
