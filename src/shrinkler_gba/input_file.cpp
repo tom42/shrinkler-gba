@@ -4,12 +4,10 @@
 module;
 
 #include <elfio/elfio.hpp>
-#include <fstream>
 #include <gsl/gsl>
 #include <ranges>
 #include <stdexcept>
 #include <string>
-#include <system_error>
 
 module shrinkler_gba;
 import :elf_strings;
@@ -22,16 +20,8 @@ using ELFIO::elfio;
 namespace
 {
 
-// TODO: do we still need this here? (no, we don't, this is now done in pack.cpp)
-void open_elf(elfio& reader, std::istream& stream)
-{
-    if (!reader.load(stream))
-    {
-        throw std::runtime_error("File is not a valid ELF file");
-    }
-}
-
-void check_executable_type(elfio& reader)
+// TODO: replace reader by elfio in entire file
+void check_executable_type(const elfio& reader)
 {
     if ((reader.get_class() != ELFIO::ELFCLASS32) ||
         (reader.get_encoding() != ELFIO::ELFDATA2LSB) ||
@@ -42,7 +32,7 @@ void check_executable_type(elfio& reader)
     }
 }
 
-void check_elf_version(elfio& reader)
+void check_elf_version(const elfio& reader)
 {
     const auto expected_elf_version = 1;
 
@@ -53,7 +43,7 @@ void check_elf_version(elfio& reader)
     }
 }
 
-void check_os_abi(elfio& reader)
+void check_os_abi(const elfio& reader)
 {
     const auto expected_abi = ELFIO::ELFOSABI_NONE;
 
@@ -64,7 +54,7 @@ void check_os_abi(elfio& reader)
     }
 }
 
-void check_abi_version(elfio& reader)
+void check_abi_version(const elfio& reader)
 {
     const auto expected_abi_version = 0;
 
@@ -75,7 +65,7 @@ void check_abi_version(elfio& reader)
     }
 }
 
-void check_object_file_version(elfio& reader)
+void check_object_file_version(const elfio& reader)
 {
     const auto expected_object_file_version = 1;
 
@@ -86,7 +76,7 @@ void check_object_file_version(elfio& reader)
     }
 }
 
-void check_header(elfio& reader)
+void check_header(const elfio& reader)
 {
     check_executable_type(reader);
     check_elf_version(reader);
@@ -97,7 +87,7 @@ void check_header(elfio& reader)
     check_object_file_version(reader);
 }
 
-uint32_t read_entry(elfio& reader)
+uint32_t read_entry(const elfio& reader)
 {
     return gsl::narrow<uint32_t>(reader.get_entry());
 }
@@ -127,7 +117,7 @@ bool is_section_included(const ELFIO::section* s)
     return true;
 }
 
-std::vector<const ELFIO::section*> get_included_sections(ELFIO::elfio& reader)
+std::vector<const ELFIO::section*> get_included_sections(const ELFIO::elfio& reader)
 {
     return
         std::views::transform(reader.sections, [](const auto& s) { return s.get(); }) |
@@ -143,7 +133,7 @@ void sort_sections_by_address(std::vector<const ELFIO::section*>& sections)
         [](const ELFIO::section* lhs, const ELFIO::section* rhs) { return lhs->get_address() < rhs->get_address(); });
 }
 
-std::vector<unsigned char> convert_to_binary(ELFIO::elfio& reader, uint32_t& out_load_address)
+std::vector<unsigned char> convert_to_binary(const ELFIO::elfio& reader, uint32_t& out_load_address)
 {
     out_load_address = 0;
 
@@ -190,44 +180,12 @@ std::vector<unsigned char> convert_to_binary(ELFIO::elfio& reader, uint32_t& out
 
 }
 
-input_file::input_file(std::istream& stream, const console& console)
+input_file::input_file(const ELFIO::elfio& elfio)
 {
-    elfio reader;
-
-    open_elf(reader, stream);
-    check_header(reader);
-
-    // TODO: do this in the main driver I guess (whater that is - gba_packer.cppm?) => Also remove the import :elf_strings above!
-    display_program_headers(reader, console);
-    display_section_headers(reader, console);
-
-    m_entry = read_entry(reader);
-    m_data = convert_to_binary(reader, m_load_address);
+    // TODO: implement
+    check_header(elfio);
+    m_entry = read_entry(elfio); // TOOD: make this a member
+    m_data = convert_to_binary(elfio, m_load_address); // TODO: make this a member. Benefit: no output parameter anymore
 }
-
-input_file input_file::load(std::istream& stream, const console& console)
-{
-    input_file f(stream, console);
-
-    console.verbose("Load address: {:#x}", f.load_address());
-    console.verbose("Total size of loaded data: {0:#x} ({0})", f.loaded_data_size());
-
-    return f;
-}
-
-// TODO: remove this (we keep it for reference for the moment)
-/*
-input_file input_file::load(const std::string& path, const console& console)
-{
-    try
-    {
-        return load(stream, console);
-    }
-    catch (const std::exception& e)
-    {
-        throw std::runtime_error(path + ": " + e.what());
-    }
-}
-*/
 
 }

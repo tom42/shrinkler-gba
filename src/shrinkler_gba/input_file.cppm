@@ -4,13 +4,11 @@
 module;
 
 #include <cstdint>
+#include <elfio/elfio.hpp>
 #include <gsl/gsl>
-#include <iosfwd>
-#include <string>
 #include <vector>
 
 export module shrinkler_gba:input_file;
-import :console;
 
 namespace shrinkler_gba
 {
@@ -26,13 +24,11 @@ namespace shrinkler_gba
 //         * Think about separating these two concerns
 //           * There is one bit of code I think we're sharing: is_section_included() => Well, no problem, we factor out that method
 //         * Note: elf_strings.cpp(m) should probably be renamed if log_program_headers and friends go in there
-// TODO: this class should not know about console
-// TODO: this class should not know about file names, just istreams (possibly not even that, possibly we give it an elf reader)
 SHRINKLER_GBA_EXPORT_FOR_UNIT_TESTING
 class input_file final
 {
 public:
-    static input_file load(std::istream& stream, const console& console);
+    input_file(const ELFIO::elfio& elfio);
 
     uint32_t entry() const { return m_entry; }
 
@@ -45,8 +41,6 @@ public:
     const std::vector<unsigned char>& data() const { return m_data; }
 
 private:
-    input_file(std::istream& stream, const console& console);
-
     uint32_t m_entry = 0;
     uint32_t m_load_address = 0;
     std::vector<unsigned char> m_data;

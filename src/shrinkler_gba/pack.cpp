@@ -53,14 +53,14 @@ input_file load_input_file(const std::string& path, const console& console)
         // TODO: have a dedicated method for this in elf_strings.cppm?
         display_program_headers(elfio, console);
         display_section_headers(elfio, console);
-        console.verbose("Entry: {:#x}", elfio.get_entry());
 
-        // TODO: implement this ctor
-        input_file f(elfio, console);
+        input_file f(elfio);
 
         // TODO: check for data size > 0 here
 
-        // TODO: log load address and total size of data
+        console.verbose("Entry: {:#x}", f.entry());
+        console.verbose("Load address: {:#x}", f.load_address());
+        console.verbose("Total size of loaded data: {0:#x} ({0})", f.loaded_data_size());
 
         return f;
     }
