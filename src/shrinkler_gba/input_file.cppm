@@ -13,6 +13,8 @@ export module shrinkler_gba:input_file;
 namespace shrinkler_gba
 {
 
+bool is_section_included(gsl::not_null<const ELFIO::section*> s);
+
 // TODO: this was kind of better before we refactored it
 //       * Turn it back as it was, with most methods being either instance or class methods
 //         * The static factory methods seem kind of pointless. Turn them into two constructors, the private constructor can go

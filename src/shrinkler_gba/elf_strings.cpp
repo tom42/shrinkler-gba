@@ -23,32 +23,6 @@ table_printer create_table_printer()
     return p;
 }
 
-// TODO: we have this twice. Deduplicate. Also: either use a reference, or not_null
-bool is_section_included(const ELFIO::section* s)
-{
-    if ((s->get_type() == ELFIO::SHT_NULL) || (s->get_type() == ELFIO::SHT_NOBITS))
-    {
-        return false;
-    }
-
-    if (s->get_address() == 0)
-    {
-        return false;
-    }
-
-    if (s->get_size() == 0)
-    {
-        return false;
-    }
-
-    if (!(s->get_flags() & ELFIO::SHF_ALLOC))
-    {
-        return false;
-    }
-
-    return true;
-}
-
 }
 
 std::string get_section_type(ELFIO::Elf_Word type)
