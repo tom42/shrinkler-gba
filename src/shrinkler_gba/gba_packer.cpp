@@ -65,21 +65,4 @@ void pack(const options& opts)
     // TODO: here we would like to rework the existing components, so that they do NOT produce console output. All console output should be controlled/done up here in this file
 }
 
-// TODO: old stuff below (packer-as-a-class: probably delete this once we do not need it anymore)
-void gba_packer::pack(const options&)
-{
-    initialize_console_output();
-    load_input_file();
-}
-
-void gba_packer::initialize_console_output()
-{
-    // TODO: initialize console output
-}
-
-void gba_packer::load_input_file()
-{
-    // TODO: basically, load input file
-}
-
 }
