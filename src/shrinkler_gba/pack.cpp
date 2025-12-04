@@ -72,16 +72,18 @@ input_file load_input_file(const std::string& path, const console& console)
     }
 }
 
-std::vector<unsigned char> compress(const std::vector<unsigned char>& data, const options& opts) // TODO: better name for 'data'
+std::vector<unsigned char> compress(const std::vector<unsigned char>& uncompressed_binary, const options& opts)
 {
-    // TODO: set encoder parameters
     // TODO: encode (get compressed data + compression info)
     // TODO: dump compression info
     // TODO: progress output for libshrinkler?
+    // TODO: check parameters
+    //       * What about the parity context? (Well we can measure whether messing with it yields smaller binaries, but as I understand it also needs a different packer)
+    //       * Endianness: this is currently set to 'big', which is of course not what we want => best to set the endianness to big here
     libshrinkler::encoder encoder;
     encoder.parameters(opts.shrinkler_parameters());
-    encoder.encode(data);
-    return {}; // TODO: return real return value (the compressed binary)
+    auto compressed_binary = encoder.encode(uncompressed_binary);
+    return compressed_binary;
 }
 
 }
