@@ -76,7 +76,7 @@ std::vector<unsigned char> compress(const std::vector<unsigned char>& uncompress
 {
     // TODO: encode (get compressed data + compression info)
     // TODO: dump compression info
-    // TODO: progress output for libshrinkler?
+    // TODO: progress output for libshrinkler? => Well what is not implemented inside libshrinkler
     // TODO: check parameters
     //       * What about the parity context? (Well we can measure whether messing with it yields smaller binaries, but as I understand it also needs a different packer)
     //       * Endianness: this is currently set to 'big', which is of course not what we want => best to set the endianness to big here
@@ -84,6 +84,16 @@ std::vector<unsigned char> compress(const std::vector<unsigned char>& uncompress
     encoder.parameters(opts.shrinkler_parameters());
     auto compressed_binary = encoder.encode(uncompressed_binary);
     return compressed_binary;
+}
+
+std::vector<unsigned char> assemble_cartridge()
+{
+    // TODO: assemble cartridge:
+    //       * need the compressed binary
+    //       * need the options
+    // TODO: later we'll have multiple algorithms, but for the time being that's fine
+    //       * Note that since the total size is given by cart header + depacker + packed program this means that both compress() and assemble_cartridge() possibly need to go into some sort of class
+    return {}; // TODO: return real cart data
 }
 
 }
@@ -94,9 +104,9 @@ void pack(const options& opts)
     auto input_file = load_input_file(opts.input_file().string(), console);
     // TODO: currently we only do shrinkler compression. Later we'll also support lzss+huffman compression
     auto compressed_binary = compress(input_file.data(), opts);
+    auto cartridge_data = assemble_cartridge();
 
     // TODO: implement the remaining 5/6/whatever steps (see old implementation):
-    //       * Compress raw binary: note: here some work on libshrinkler might be necessary: I am not sure it supports progress output. But that's fine.
     //       * Assemble cart
     //       * Fix up for EZFlash (why is that not done by the assembler? => because that's post processing and needs to be done for both assemblers?)
     //       * Write result to disk
