@@ -21,20 +21,6 @@ namespace shrinklergbacore
 
 void gba_packer::pack(const options& options)
 {
-    // Load program
-    input_file input_file(console);
-    input_file.load(options.input_file());
-    if (!input_file.loaded_data_size())
-    {
-        // Shrinkler does really not like files with size zero.
-        throw std::runtime_error("File is too small to be compressed");
-    }
-
-    // Compress program
-    shrinklerwrapper::shrinkler_compressor compressor;
-    compressor.set_parameters(options.shrinkler_parameters());
-    auto compressed_program = compressor.compress(input_file.data());
-
     // Assemble cart
     const depacker_settings depacker_settings
     {
