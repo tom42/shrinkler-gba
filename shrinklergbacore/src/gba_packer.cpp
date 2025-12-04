@@ -21,20 +21,6 @@ namespace shrinklergbacore
 
 void gba_packer::pack(const options& options)
 {
-    // Assemble cart
-    cart_assembler cart_assembler(input_file, compressed_program, depacker_settings);
-    std::vector<unsigned char> cart_data = cart_assembler.data();
-
-    // EZF Advance removes trailing 0xff bytes.
-    // If the last byte is 0xff, pad the image so that nothing important is removed.
-    if (cart_data.size() && (cart_data.back() == 0xff))
-    {
-        cart_data.push_back('T');
-        cart_data.push_back('o');
-        cart_data.push_back('m');
-        cart_data.push_back('!');
-        CONSOLE_WARN(console) << "Last byte of cart was 0xff. Appended padding word to protect against EZF Advance" << std::endl;
-    }
 
     CONSOLE_VERBOSE(console) << std::format("Uncompressed data size: {:4} bytes", input_file.data().size()) << std::endl;
     CONSOLE_VERBOSE(console) << std::format("Compressed data size  : {:4} bytes", compressed_program.size()) << std::endl;

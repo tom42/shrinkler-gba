@@ -105,6 +105,20 @@ std::vector<unsigned char> assemble_cartridge(const input_file& input_file, cons
     return assembler.data();
 }
 
+void fix_cartridge_for_ezf_advance(std::vector<unsigned char>& cartridge_data, const console& console)
+{
+    // EZF Advance removes trailing 0xff bytes.
+    // If the last byte is 0xff, pad the image so that nothing important is removed.
+    if (cartridge_data.size() && (cartridge_data.back() == 0xff))
+    {
+        cartridge_data.push_back('T');
+        cartridge_data.push_back('o');
+        cartridge_data.push_back('m');
+        cartridge_data.push_back('!');
+        console.warn("Last byte of cart was 0xff. Appended padding word to protect against EZF Advance");
+    }
+}
+
 }
 
 void pack(const options& opts)
@@ -114,10 +128,9 @@ void pack(const options& opts)
     // TODO: currently we only do shrinkler compression. Later we'll also support lzss+huffman compression
     auto compressed_binary = compress(input_file.data(), opts);
     auto cartridge_data = assemble_cartridge(input_file, compressed_binary, opts);
+    fix_cartridge_for_ezf_advance(cartridge_data, console);
 
     // TODO: implement the remaining 5/6/whatever steps (see old implementation):
-    //       * Assemble cart
-    //       * Fix up for EZFlash (why is that not done by the assembler? => because that's post processing and needs to be done for both assemblers?)
     //       * Write result to disk
     //       * Verbose output of final cart sizes
 }
