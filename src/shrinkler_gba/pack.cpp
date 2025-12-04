@@ -79,9 +79,14 @@ std::vector<unsigned char> compress(const std::vector<unsigned char>& uncompress
     // TODO: progress output for libshrinkler? => Well what is not implemented inside libshrinkler
     // TODO: check parameters
     //       * What about the parity context? (Well we can measure whether messing with it yields smaller binaries, but as I understand it also needs a different packer)
-    //       * Endianness: this is currently set to 'big', which is of course not what we want => best to set the endianness to big here
-    libshrinkler::encoder encoder;
-    encoder.parameters(opts.shrinkler_parameters());
+    using namespace libshrinkler;
+
+    encoder_parameters encoder_parameters(opts.shrinkler_parameters());
+    encoder_parameters.endianness(endianness::little);
+
+    encoder encoder;
+    encoder.parameters(encoder_parameters);
+
     auto compressed_binary = encoder.encode(uncompressed_binary);
     return compressed_binary;
 }
@@ -90,6 +95,7 @@ std::vector<unsigned char> assemble_cartridge(const input_file& input_file, cons
 {
     // TODO: later we'll have multiple algorithms, but for the time being that's fine
     //       * Note that since the total size is given by cart header + depacker + packed program this means that both compress() and assemble_cartridge() possibly need to go into some sort of class
+    //       * Can we compare the output we're getting here against an old version? Should be bit for bit the same, no?
     const shrinkler_depacker_settings depacker_settings
     {
         .code_in_header = opts.code_in_header(),
