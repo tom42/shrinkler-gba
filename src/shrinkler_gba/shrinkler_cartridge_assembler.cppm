@@ -3,8 +3,8 @@
 
 module;
 
+#include <lzasm/arm/arm32/divided_thumb_assembler.hpp>
 #include <vector>
-#include "lzasm/arm/arm32/divided_thumb_assembler.hpp"
 
 export module shrinkler_gba:shrinkler_cartridge_assembler;
 
