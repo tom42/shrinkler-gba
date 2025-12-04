@@ -21,11 +21,6 @@ namespace shrinklergbacore
 
 void gba_packer::pack(const options& options)
 {
-
-    CONSOLE_VERBOSE(console) << std::format("Uncompressed data size: {:4} bytes", input_file.data().size()) << std::endl;
-    CONSOLE_VERBOSE(console) << std::format("Compressed data size  : {:4} bytes", compressed_program.size()) << std::endl;
-    CONSOLE_VERBOSE(console) << std::format("Depacker size         : {:4} bytes (excluding code in cartridge header)", cart_assembler.depacker_size()) << std::endl;
-    CONSOLE_VERBOSE(console) << std::format("Cartridge size        : {:4} bytes", cart_data.size()) << std::endl;
     CONSOLE_VERBOSE(console) << "Writing: " << options.output_file().string() << std::endl;
     write_to_disk(cart_data, options.output_file());
 }

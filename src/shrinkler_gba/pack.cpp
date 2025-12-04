@@ -130,9 +130,13 @@ void pack(const options& opts)
     auto cartridge_data = assemble_cartridge(input_file, compressed_binary, opts);
     fix_cartridge_for_ezf_advance(cartridge_data, console);
 
+    console.verbose("Uncompressed size: {:4} bytes", input_file.data().size());
+    console.verbose("Compressed size  : {:4} bytes", compressed_binary.size());
+    //console.verbose("Depacker size    : {:4} bytes (excluding code in cartridge header)", cartridge_assembler.depacker_size()); // TODO: somehow implement this. Problem: we don't have the assembler.
+    console.verbose("Cartridge size   : {:4} bytes", cartridge_data.size());
+
     // TODO: implement the remaining 5/6/whatever steps (see old implementation):
     //       * Write result to disk
-    //       * Verbose output of final cart sizes
 }
 
 }
