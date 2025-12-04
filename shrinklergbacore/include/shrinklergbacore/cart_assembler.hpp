@@ -1,13 +1,5 @@
-// SPDX-FileCopyrightText: 2021 Thomas Mathys
-// SPDX-License-Identifier: MIT
-// shrinkler-gba: Port of the Shrinkler Amiga executable cruncher for the GBA
-
-#ifndef SHRINKLERGBACORE_CART_ASSEMBLER_HPP
-#define SHRINKLERGBACORE_CART_ASSEMBLER_HPP
-
 #include <string>
 #include <vector>
-#include "lzasm/arm/arm32/divided_thumb_assembler.hpp"
 #include "shrinklergbacore/input_file.hpp"
 
 namespace shrinklergbacore
@@ -20,7 +12,7 @@ public:
     bool debug_checks = false;
 };
 
-class cart_assembler final : private lzasm::arm::arm32::divided_thumb_assembler
+class cart_assembler final
 {
 public:
     cart_assembler(const input_file& input_file, const std::vector<unsigned char>& compressed_program, const depacker_settings& settings);

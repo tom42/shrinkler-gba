@@ -93,7 +93,8 @@ std::vector<unsigned char> assemble_cartridge()
     //       * need the options
     // TODO: later we'll have multiple algorithms, but for the time being that's fine
     //       * Note that since the total size is given by cart header + depacker + packed program this means that both compress() and assemble_cartridge() possibly need to go into some sort of class
-    return {}; // TODO: return real cart data
+    shrinkler_cartridge_assembler assembler;
+    return assembler.data();
 }
 
 }

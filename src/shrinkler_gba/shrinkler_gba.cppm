@@ -11,4 +11,5 @@ export import :gba;
 export import :input_file;
 export import :options;
 export import :pack;
+export import :shrinkler_cartridge_assembler;
 export import :table_printer;

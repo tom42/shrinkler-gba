@@ -15,6 +15,7 @@ set(
   input_file.cppm
   options.cppm
   pack.cppm
+  shrinkler_cartridge_assembler.cppm
   shrinkler_gba.cppm
   table_printer.cppm
   PRIVATE
@@ -32,7 +33,7 @@ add_library(shrinkler_gba)
 target_sources(shrinkler_gba ${shrinkler_gba_sources})
 target_include_directories(shrinkler_gba PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
 target_compile_definitions(shrinkler_gba PRIVATE SHRINKLER_GBA_EXPORT_FOR_UNIT_TESTING=)
-target_link_libraries(shrinkler_gba PRIVATE argpppp elfio::elfio libshrinkler Microsoft.GSL::GSL)
+target_link_libraries(shrinkler_gba PRIVATE argpppp elfio::elfio libshrinkler lzasm Microsoft.GSL::GSL)
 vtg_target_enable_warnings(shrinkler_gba)
 
 # Unit testing version of shrinkler_gba.
@@ -41,6 +42,6 @@ if(shrinkler_gba_BUILD_TESTING)
   target_sources(shrinkler_gba_unit_testing ${shrinkler_gba_sources})
   target_include_directories(shrinkler_gba_unit_testing PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
   target_compile_definitions(shrinkler_gba_unit_testing PRIVATE SHRINKLER_GBA_EXPORT_FOR_UNIT_TESTING=export)
-  target_link_libraries(shrinkler_gba_unit_testing PRIVATE argpppp elfio::elfio libshrinkler Microsoft.GSL::GSL)
+  target_link_libraries(shrinkler_gba_unit_testing PRIVATE argpppp elfio::elfio libshrinkler lzasm Microsoft.GSL::GSL)
   vtg_target_enable_warnings(shrinkler_gba_unit_testing)
 endif()
