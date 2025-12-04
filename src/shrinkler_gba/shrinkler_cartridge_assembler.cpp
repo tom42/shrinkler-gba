@@ -65,4 +65,9 @@ constexpr uint32_t rgb8(uint32_t r, uint32_t g, uint32_t b)
 
 }
 
+shrinkler_cartridge_assembler::shrinkler_cartridge_assembler(const input_file& /*input_file*/, const std::vector<unsigned char>& /*compressed_program*/, const shrinkler_depacker_settings& /*settings*/)
+{
+    // TODO: implement
+}
+
 }

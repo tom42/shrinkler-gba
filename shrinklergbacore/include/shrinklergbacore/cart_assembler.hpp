@@ -8,8 +8,6 @@ namespace shrinklergbacore
 class cart_assembler final
 {
 public:
-    cart_assembler(const input_file& input_file, const std::vector<unsigned char>& compressed_program, const depacker_settings& settings);
-
     const std::vector<unsigned char>& data() const
     {
         return m_data;

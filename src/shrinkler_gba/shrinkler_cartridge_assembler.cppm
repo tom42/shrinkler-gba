@@ -7,6 +7,7 @@ module;
 #include <vector>
 
 export module shrinkler_gba:shrinkler_cartridge_assembler;
+import :input_file;
 
 namespace shrinkler_gba
 {
@@ -21,6 +22,8 @@ public:
 class shrinkler_cartridge_assembler final : private lzasm::arm::arm32::divided_thumb_assembler
 {
 public:
+    shrinkler_cartridge_assembler(const input_file& input_file, const std::vector<unsigned char>& compressed_program, const shrinkler_depacker_settings& settings);
+
     // TODO: return by const reference (once we're not returning a temporary anymore)
     std::vector<unsigned char> data() const
     {

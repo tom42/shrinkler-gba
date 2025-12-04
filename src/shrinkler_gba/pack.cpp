@@ -86,14 +86,16 @@ std::vector<unsigned char> compress(const std::vector<unsigned char>& uncompress
     return compressed_binary;
 }
 
-std::vector<unsigned char> assemble_cartridge()
+std::vector<unsigned char> assemble_cartridge(const input_file& input_file, const std::vector<unsigned char>& compressed_binary, const options& opts)
 {
-    // TODO: assemble cartridge:
-    //       * need the compressed binary
-    //       * need the options
     // TODO: later we'll have multiple algorithms, but for the time being that's fine
     //       * Note that since the total size is given by cart header + depacker + packed program this means that both compress() and assemble_cartridge() possibly need to go into some sort of class
-    shrinkler_cartridge_assembler assembler;
+    const shrinkler_depacker_settings depacker_settings
+    {
+        .code_in_header = opts.code_in_header(),
+        .debug_checks = opts.debug_checks()
+    };
+    shrinkler_cartridge_assembler assembler(input_file, compressed_binary, depacker_settings);
     return assembler.data();
 }
 
@@ -105,7 +107,7 @@ void pack(const options& opts)
     auto input_file = load_input_file(opts.input_file().string(), console);
     // TODO: currently we only do shrinkler compression. Later we'll also support lzss+huffman compression
     auto compressed_binary = compress(input_file.data(), opts);
-    auto cartridge_data = assemble_cartridge();
+    auto cartridge_data = assemble_cartridge(input_file, compressed_binary, opts);
 
     // TODO: implement the remaining 5/6/whatever steps (see old implementation):
     //       * Assemble cart
