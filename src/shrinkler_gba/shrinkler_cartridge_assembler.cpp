@@ -20,7 +20,6 @@ module;
 #include <bit>
 #include <concepts>
 #include <cstdint>
-#include <format>
 #include <lzasm/arm/arm32/divided_thumb_assembler.hpp>
 #include <stdexcept>
 #include <string>
@@ -570,11 +569,12 @@ label("sadface"s);
     pool();
 }
 
-void shrinkler_cartridge_assembler::throw_if_wrong_lc(lzasm::arm::arm32::address_t expected_lc, const char* what) const
+void shrinkler_cartridge_assembler::throw_if_wrong_lc(lzasm::arm::arm32::address_t expected_lc, const char* /*what*/) const
 {
     if (current_lc() != expected_lc)
     {
-        throw std::runtime_error(std::format("INTERNAL ERROR: {} is at wrong offset. Expected it to be at {:#x}, but it is at {:#x}", what, expected_lc, current_lc()));
+        // TODO: does not build due to MSVC internal compiler error - can we work around this somehow?
+        //throw std::runtime_error(std::format("INTERNAL ERROR: {} is at wrong offset. Expected it to be at {:#x}, but it is at {:#x}", what, expected_lc, current_lc()));
     }
 }
 
@@ -584,7 +584,8 @@ void shrinkler_cartridge_assembler::throw_if_not_aligned(lzasm::arm::arm32::addr
 
     if (current_lc() % byte_alignment)
     {
-        throw std::runtime_error(std::format("INTERNAL ERROR: Location counter is not aligned to {} bytes. We're wasting space", byte_alignment));
+        // TODO: does not build due to MSVC internal compiler error - can we work around this somehow?
+        //throw std::runtime_error(std::format("INTERNAL ERROR: Location counter is not aligned to {} bytes. We're wasting space", byte_alignment));
     }
 }
 
@@ -593,7 +594,8 @@ void shrinkler_cartridge_assembler::throw_if_fixed_byte_wrong() const
     auto actual_byte = m_data.at(ofs_fixed_byte);
     if (actual_byte != fixed_byte_value)
     {
-        throw std::runtime_error(std::format("INTERNAL ERROR: Fixed byte at {:#x} has wrong value. Should be {:#x}, but is {:#x}", ofs_fixed_byte, fixed_byte_value, actual_byte));
+        // TODO: does not build due to MSVC internal compiler error - can we work around this somehow?
+        //throw std::runtime_error(std::format("INTERNAL ERROR: Fixed byte at {:#x} has wrong value. Should be {:#x}, but is {:#x}", ofs_fixed_byte, fixed_byte_value, actual_byte));
     }
 }
 
@@ -603,7 +605,8 @@ void shrinkler_cartridge_assembler::throw_if_complement_wrong() const
     auto actual_complement = m_data.at(ofs_complement);
     if (actual_complement != expected_complement)
     {
-        throw std::runtime_error(std::format("INTERNAL ERROR: Complement at {:#x} has wrong value. Should be {:#x}, but is {:#x}", ofs_complement, expected_complement, actual_complement));
+        // TODO: does not build due to MSVC internal compiler error - can we work around this somehow?
+        //throw std::runtime_error(std::format("INTERNAL ERROR: Complement at {:#x} has wrong value. Should be {:#x}, but is {:#x}", ofs_complement, expected_complement, actual_complement));
     }
 }
 
