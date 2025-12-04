@@ -3,6 +3,7 @@
 
 module;
 
+#include <concepts>
 #include <cstdint>
 #include <lzasm/arm/arm32/divided_thumb_assembler.hpp>
 #include <string>
@@ -46,6 +47,21 @@ constexpr auto bitbuf = r6;     // Input bit buffer
 constexpr auto bitctx = r7;     // Bit context index
 constexpr auto offset = r8;     // Offset
 constexpr auto saved_sp = r9;   // Saved stack pointer
+
+constexpr bool is_power_of_2(std::unsigned_integral auto n)
+{
+    return std::popcount(n) == 1;
+}
+
+constexpr uint32_t rgb5(uint32_t r, uint32_t g, uint32_t b)
+{
+    return r | (g << 5) | (b << 10);
+}
+
+constexpr uint32_t rgb8(uint32_t r, uint32_t g, uint32_t b)
+{
+    return rgb5(r >> 3, g >> 3, b >> 3);
+}
 
 }
 

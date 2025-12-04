@@ -26,23 +26,6 @@
 namespace shrinklergbacore
 {
 
-template <typename T>
-constexpr bool is_power_of_2(T n) noexcept
-{
-    static_assert(std::is_unsigned_v<T>, "T must be unsigned");
-    return std::popcount(n) == 1;
-}
-
-constexpr uint32_t rgb5(uint32_t r, uint32_t g, uint32_t b) noexcept
-{
-    return r | (g << 5) | (b << 10);
-}
-
-constexpr uint32_t rgb8(uint32_t r, uint32_t g, uint32_t b) noexcept
-{
-    return rgb5(r >> 3, g >> 3, b >> 3);
-}
-
 cart_assembler::cart_assembler(const input_file& input_file, const std::vector<unsigned char>& compressed_program, const depacker_settings& settings)
     : settings(settings)
 {
