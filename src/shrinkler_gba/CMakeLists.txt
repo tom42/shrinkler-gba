@@ -26,6 +26,7 @@ set(
   elf_info.cpp
   input_file.cpp
   pack.cpp
+  shrinkler_cartridge_assembler.cpp
   table_printer.cpp)
 
 # Production version of shrinkler_gba.
