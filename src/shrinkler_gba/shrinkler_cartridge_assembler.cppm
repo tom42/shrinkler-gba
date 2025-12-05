@@ -20,25 +20,10 @@ struct shrinkler_depacker_settings final
     bool debug_checks = false;
 };
 
-class cartridge final
+struct cartridge final
 {
-public:
-    cartridge(const std::vector<unsigned char>& data) : m_data(data) {}
-
-    // TODO: remove this? Should fixing up the cartridge not be part of this class?
-    std::vector<unsigned char>& data()
-    {
-        return m_data;
-    }
-
-    size_t depacker_size() const
-    {
-        // TODO: real implementation
-        return 0;
-    }
-
-private:
-    std::vector<unsigned char> m_data;
+    std::vector<unsigned char> data;
+    size_t depacker_size = 0;
 };
 
 class shrinkler_cartridge_assembler final : private lzasm::arm::arm32::divided_thumb_assembler

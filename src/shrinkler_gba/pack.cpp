@@ -103,7 +103,11 @@ cartridge assemble_cartridge(const input_file& input_file, const std::vector<uns
     };
     shrinkler_cartridge_assembler assembler(input_file, compressed_binary, depacker_settings);
 
-    return cartridge(assembler.data());
+    return cartridge
+    {
+        .data = assembler.data(),
+        .depacker_size = assembler.depacker_size()
+    };
 }
 
 void fix_cartridge_for_ezf_advance(std::vector<unsigned char>& cartridge_data, const console& console)
@@ -129,12 +133,12 @@ void pack(const options& opts)
     // TODO: currently we only do shrinkler compression. Later we'll also support lzss+huffman compression
     auto compressed_binary = compress(input_file.data(), opts);
     auto cartridge = assemble_cartridge(input_file, compressed_binary, opts);
-    fix_cartridge_for_ezf_advance(cartridge.data(), console);
+    fix_cartridge_for_ezf_advance(cartridge.data, console);
 
     console.verbose("Uncompressed size: {:4} bytes", input_file.data().size());
     console.verbose("Compressed size  : {:4} bytes", compressed_binary.size());
-    console.verbose("Depacker size    : {:4} bytes (excluding code in cartridge header)", cartridge.depacker_size());
-    console.verbose("Cartridge size   : {:4} bytes", cartridge.data().size());
+    console.verbose("Depacker size    : {:4} bytes (excluding code in cartridge header)", cartridge.depacker_size);
+    console.verbose("Cartridge size   : {:4} bytes", cartridge.data.size());
 
     // TODO: implement the remaining 5/6/whatever steps (see old implementation):
     //       * Write result to disk
