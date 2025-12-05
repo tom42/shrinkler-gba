@@ -20,6 +20,7 @@ module;
 #include <bit>
 #include <concepts>
 #include <cstdint>
+#include <gsl/gsl>
 #include <lzasm/arm/arm32/divided_thumb_assembler.hpp>
 #include <stdexcept>
 #include <string>
@@ -227,7 +228,7 @@ label("code_start"s);
 
     // Initialize input and output pointers.
     adr(inp, "packed_intro"s);
-    ldr(outp, input_file.load_address());
+    ldr(outp, gsl::narrow<int32_t>(input_file.load_address()));
 
     // Initialize range decoder state.
     // rvalue will be set to 0 by the loop that follows.
@@ -293,7 +294,7 @@ label("donedecompressing"s);
     debug_check_decompressed_data_size(input_file);
     debug_check_decompressed_data(input_file);
     debug_check_sp_on_exit();
-    ldr(outp, input_file.entry());
+    ldr(outp, gsl::narrow<int32_t>(input_file.entry()));
     bx(outp);
 
     ////////////////////////////////////////////////////////////////////////////
@@ -418,11 +419,11 @@ void shrinkler_cartridge_assembler::debug_check_decompressed_data_size(const inp
     }
 
     // outp = outp - load_address = actual number of bytes depacked
-    ldr(tmp1, input_file.load_address());
+    ldr(tmp1, gsl::narrow<int32_t>(input_file.load_address()));
     sub(outp, outp, tmp1);
 
     // Compare actual with expected number of bytes depacked
-    ldr(tmp1, input_file.loaded_data_size());
+    ldr(tmp1, gsl::narrow<int32_t>(input_file.loaded_data_size()));
     cmp(outp, tmp1);
     beq("decompressed_data_size_ok"s);
     debug_call_panic_routine("Wrong decompressed data size\n");
@@ -446,10 +447,10 @@ void shrinkler_cartridge_assembler::debug_check_decompressed_data(const input_fi
 
     // Calculate adler32 checksum of depacked data
     ldr(base, 65521);
-    ldr(decompressed_data, input_file.load_address());
+    ldr(decompressed_data, gsl::narrow<int32_t>(input_file.load_address()));
     mov(s1, 1);
     mov(s2, 0);
-    ldr(loop_counter, input_file.loaded_data_size());
+    ldr(loop_counter, gsl::narrow<int32_t>(input_file.loaded_data_size()));
 label("adler32_loop"s);
     ldrb(byte, decompressed_data, 0);
     add(s1, byte);
@@ -469,7 +470,7 @@ label("s2_ok"s);
     orr(s1, s2);
 
     // Compare expected and actual checksum
-    ldr(expected_checksum, adler32(input_file.data()));
+    ldr(expected_checksum, gsl::narrow<int32_t>(adler32(input_file.data())));
     cmp(s1, expected_checksum);
     beq("checksum_ok"s);
     debug_call_panic_routine("Wrong decompressed data checksum\n");
@@ -525,7 +526,7 @@ label("panic"s);
 
     // Print panic message using Mappy / VisualBoyAdvance debug output.
     // r2 must point to a zero terminated string.
-    ldr(r0, 0xc0ded00d);
+    ldr(r0, gsl::narrow<int32_t>(0xc0ded00d));
     mov(r1, 0);
     and_(r0, r0);
 
