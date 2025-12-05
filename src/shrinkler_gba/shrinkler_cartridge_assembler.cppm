@@ -24,10 +24,12 @@ public:
 class cartridge final
 {
 public:
-    cartridge(const std::vector<unsigned char>& data)
-        : m_data(data)
-    {
+    cartridge(const std::vector<unsigned char>& data) : m_data(data) {}
 
+    // TODO: remove this? Should fixing up the cartridge not be part of this class?
+    std::vector<unsigned char>& data()
+    {
+        return m_data;
     }
 
 private:

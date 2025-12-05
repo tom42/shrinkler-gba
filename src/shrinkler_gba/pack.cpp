@@ -91,7 +91,7 @@ std::vector<unsigned char> compress(const std::vector<unsigned char>& uncompress
     return compressed_binary;
 }
 
-std::vector<unsigned char> assemble_cartridge(const input_file& input_file, const std::vector<unsigned char>& compressed_binary, const options& opts)
+cartridge assemble_cartridge(const input_file& input_file, const std::vector<unsigned char>& compressed_binary, const options& opts)
 {
     // TODO: later we'll have multiple algorithms, but for the time being that's fine
     //       * Note that since the total size is given by cart header + depacker + packed program this means that both compress() and assemble_cartridge() possibly need to go into some sort of class
@@ -102,7 +102,8 @@ std::vector<unsigned char> assemble_cartridge(const input_file& input_file, cons
         .debug_checks = opts.debug_checks()
     };
     shrinkler_cartridge_assembler assembler(input_file, compressed_binary, depacker_settings);
-    return assembler.data();
+
+    return cartridge(assembler.data());
 }
 
 void fix_cartridge_for_ezf_advance(std::vector<unsigned char>& cartridge_data, const console& console)
@@ -127,13 +128,13 @@ void pack(const options& opts)
     auto input_file = load_input_file(opts.input_file().string(), console);
     // TODO: currently we only do shrinkler compression. Later we'll also support lzss+huffman compression
     auto compressed_binary = compress(input_file.data(), opts);
-    auto cartridge_data = assemble_cartridge(input_file, compressed_binary, opts);
-    fix_cartridge_for_ezf_advance(cartridge_data, console);
+    auto cartridge = assemble_cartridge(input_file, compressed_binary, opts);
+    fix_cartridge_for_ezf_advance(cartridge.data(), console);
 
     console.verbose("Uncompressed size: {:4} bytes", input_file.data().size());
     console.verbose("Compressed size  : {:4} bytes", compressed_binary.size());
     //console.verbose("Depacker size    : {:4} bytes (excluding code in cartridge header)", cartridge_assembler.depacker_size()); // TODO: somehow implement this. Problem: we don't have the assembler.
-    console.verbose("Cartridge size   : {:4} bytes", cartridge_data.size());
+    console.verbose("Cartridge size   : {:4} bytes", cartridge.data().size());
 
     // TODO: implement the remaining 5/6/whatever steps (see old implementation):
     //       * Write result to disk
