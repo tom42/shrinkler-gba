@@ -133,7 +133,7 @@ void pack(const options& opts)
 
     console.verbose("Uncompressed size: {:4} bytes", input_file.data().size());
     console.verbose("Compressed size  : {:4} bytes", compressed_binary.size());
-    //console.verbose("Depacker size    : {:4} bytes (excluding code in cartridge header)", cartridge_assembler.depacker_size()); // TODO: somehow implement this. Problem: we don't have the assembler.
+    console.verbose("Depacker size    : {:4} bytes (excluding code in cartridge header)", cartridge.depacker_size());
     console.verbose("Cartridge size   : {:4} bytes", cartridge.data().size());
 
     // TODO: implement the remaining 5/6/whatever steps (see old implementation):

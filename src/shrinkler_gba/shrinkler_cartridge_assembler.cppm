@@ -32,6 +32,12 @@ public:
         return m_data;
     }
 
+    size_t depacker_size() const
+    {
+        // TODO: real implementation
+        return 0;
+    }
+
 private:
     std::vector<unsigned char> m_data;
 };
