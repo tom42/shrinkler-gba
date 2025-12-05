@@ -21,6 +21,19 @@ public:
     bool debug_checks = false;
 };
 
+class cartridge final
+{
+public:
+    cartridge(const std::vector<unsigned char>& data)
+        : m_data(data)
+    {
+
+    }
+
+private:
+    std::vector<unsigned char> m_data;
+};
+
 class shrinkler_cartridge_assembler final : private lzasm::arm::arm32::divided_thumb_assembler
 {
 public:
