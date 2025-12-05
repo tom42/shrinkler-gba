@@ -14,9 +14,8 @@ import :input_file;
 namespace shrinkler_gba
 {
 
-class shrinkler_depacker_settings final
+struct shrinkler_depacker_settings final
 {
-public:
     bool code_in_header = true;
     bool debug_checks = false;
 };
