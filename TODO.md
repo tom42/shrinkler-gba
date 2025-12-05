@@ -21,9 +21,10 @@ SPDX-License-Identifier: MIT
 * Delete CMakeListst.old.txt
 * Go through directories/files (top level in particular, but not only), see what's still needed
 
-## Depackers
+## Compression and decompression
+* Experiment with Shrinkler's option to disable the parity context
 * Automatically figure out which compression scheme to use (Shrinkler or LZSS)
-* Leave the system in a cleaner state, with the option to omit cleanup in order to save space:
+* Leave the GBA in a cleaner state after decompression, with the option to omit cleanup in order to save space:
   * Preserve CPU registers (not that easy for high registers in Thumb state)
   * Clear memory used by depacker (IWRAM / EWRAM)
   * Preserve sp: already implemented, but could add option to omit this for the really desperate
@@ -76,8 +77,6 @@ SPDX-License-Identifier: MIT
         * When we execute code, is the stack pointer pointing at the right place?
         * Did we have a buffer overrun on the stack? (In the contexts array)
 * Ensure all source files are using spaces, not tabs
-* Set up libshrinkler
-  * Do we add that new bytes parameter thing?
 * Redo our own code:
   * Do we provide the parity context option?
     * Well maybe not at first. It would mean we have to update the decompressor

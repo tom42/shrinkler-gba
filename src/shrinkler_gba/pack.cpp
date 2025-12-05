@@ -77,13 +77,14 @@ std::vector<unsigned char> compress(const std::vector<unsigned char>& uncompress
     // TODO: encode (get compressed data + compression info)
     // TODO: dump compression info
     // TODO: progress output for libshrinkler? => Well what is not implemented inside libshrinkler
-    // TODO: check parameters
-    //       * What about the parity context? (Well we can measure whether messing with it yields smaller binaries, but as I understand it also needs a different packer)
     using namespace libshrinkler;
 
     encoder_parameters encoder_parameters(opts.shrinkler_parameters());
     encoder_parameters.endianness(endianness::little);
 
+    // Note: we could experiment with disabling the parity context,
+    // but so far I have not seen a binary where that yielded better compression.
+    // Moreover we'd have to use an alternate depacker.
     encoder encoder;
     encoder.parameters(encoder_parameters);
 
