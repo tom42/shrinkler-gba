@@ -25,39 +25,4 @@ void gba_packer::pack(const options& options)
     write_to_disk(cart_data, options.output_file());
 }
 
-void gba_packer::write_to_disk(const std::vector<unsigned char>& data, const std::filesystem::path& filename)
-{
-    try
-    {
-        std::ofstream file;
-        file.open(filename.string(), std::ios::binary | std::ios::trunc);
-        if (!file)
-        {
-            auto e = errno;
-            throw std::system_error(e, std::generic_category());
-        }
-
-        file.write(reinterpret_cast<const char*>(data.data()), data.size());
-        if (!file)
-        {
-            auto e = errno;
-            throw std::system_error(e, std::generic_category());
-        }
-
-        file.close();
-    }
-    catch (const std::system_error& e)
-    {
-        remove_output_file(filename);
-        throw std::runtime_error(std::format("Could not write {}: {}", filename.string(), e.what()));
-    }
-}
-
-void gba_packer::remove_output_file(const std::filesystem::path& filename)
-{
-    // Delete file, ignore any error. Use overload of remove that does not throw.
-    std::error_code e;
-    std::filesystem::remove(filename, e);
-}
-
 }
