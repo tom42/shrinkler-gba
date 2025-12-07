@@ -185,7 +185,6 @@ void pack(const options& opts)
     console.verbose("Depacker size    : {:4} bytes (excluding code in cartridge header)", cartridge.depacker_size);
     console.verbose("Cartridge size   : {:4} bytes", cartridge.data.size());
 
-    // TODO: verbose message: writing what file
     write_to_disk(cartridge.data, opts.output_file(), console);
 }
 
