@@ -152,7 +152,6 @@ void write_to_disk(const std::vector<unsigned char>& data, const std::filesystem
             throw std::system_error(e, std::generic_category());
         }
 
-        // TODO: cast like that needed here?
         file.write(reinterpret_cast<const char*>(data.data()), gsl::narrow<std::streamsize>(data.size()));
         if (!file)
         {
