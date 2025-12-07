@@ -3,11 +3,15 @@
 
 module;
 
+#include <cerrno>
 #include <elfio/elfio.hpp>
 #include <filesystem>
+#include <format>
 #include <fstream>
 #include <stdexcept>
+#include <string>
 #include <system_error>
+#include <vector>
 
 module shrinkler_gba;
 import :input_file;
