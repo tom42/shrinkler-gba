@@ -8,6 +8,7 @@ module;
 #include <filesystem>
 #include <format>
 #include <fstream>
+#include <gsl/gsl>
 #include <stdexcept>
 #include <string>
 #include <system_error>
@@ -152,7 +153,7 @@ void write_to_disk(const std::vector<unsigned char>& data, const std::filesystem
         }
 
         // TODO: cast like that needed here?
-        file.write(reinterpret_cast<const char*>(data.data()), data.size());
+        file.write(reinterpret_cast<const char*>(data.data()), gsl::narrow<std::streamsize>(data.size()));
         if (!file)
         {
             auto e = errno;
