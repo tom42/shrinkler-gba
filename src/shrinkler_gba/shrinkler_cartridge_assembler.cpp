@@ -22,6 +22,7 @@ module;
 #include <cstdint>
 #include <format>
 #include <gsl/gsl>
+#include <iostream>
 #include <lzasm/arm/arm32/divided_thumb_assembler.hpp>
 #include <stdexcept>
 #include <string>
