@@ -137,15 +137,14 @@ void remove_output_file(const std::filesystem::path& filename)
     std::filesystem::remove(filename, e);
 }
 
-// TODO: take string instead of path? => less code here
-void write_to_disk(const std::vector<unsigned char>& data, const std::filesystem::path& filename, const console& console)
+void write_to_disk(const std::vector<unsigned char>& data, const std::string& filename, const console& console)
 {
     try
     {
-        console.verbose("Writing: {}", filename.string());
+        console.verbose("Writing: {}", filename);
 
         std::ofstream file;
-        file.open(filename.string(), std::ios::binary | std::ios::trunc);
+        file.open(filename, std::ios::binary | std::ios::trunc);
         if (!file)
         {
             auto e = errno;
@@ -164,7 +163,7 @@ void write_to_disk(const std::vector<unsigned char>& data, const std::filesystem
     catch (const std::system_error& e)
     {
         remove_output_file(filename);
-        throw std::runtime_error(std::format("Could not write {}: {}", filename.string(), e.what()));
+        throw std::runtime_error(std::format("Could not write {}: {}", filename, e.what()));
     }
 }
 
@@ -185,7 +184,7 @@ void pack(const options& opts)
     console.verbose("Depacker size    : {:4} bytes (excluding code in cartridge header)", cartridge.depacker_size);
     console.verbose("Cartridge size   : {:4} bytes", cartridge.data.size());
 
-    write_to_disk(cartridge.data, opts.output_file(), console);
+    write_to_disk(cartridge.data, opts.output_file().string(), console);
 }
 
 }
