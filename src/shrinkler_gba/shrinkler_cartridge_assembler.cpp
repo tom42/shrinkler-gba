@@ -15,8 +15,6 @@
 // non-obvious, and Blueberry gave a nice explanation of this on the A.D.A.
 // coding forum. It can be found in 3rdparty/Shrinkler/DepackerExplained.md.
 
-// TODO: when --debug-checks is given, this throws narrowing error. Not good. Need to investigate.
-
 module;
 
 #include <bit>
@@ -474,7 +472,7 @@ label("s2_ok"s);
     orr(s1, s2);
 
     // Compare expected and actual checksum
-    ldr(expected_checksum, gsl::narrow<int32_t>(adler32(input_file.data())));
+    ldr(expected_checksum, adler32(input_file.data())); // TODO: this may very well overflow, so must not use gsl::narrow() here. adler32 returns uint32_t, so what we REALLY want is some sort of make_signed
     cmp(s1, expected_checksum);
     beq("checksum_ok"s);
     debug_call_panic_routine("Wrong decompressed data checksum\n");
@@ -530,7 +528,7 @@ label("panic"s);
 
     // Print panic message using Mappy / VisualBoyAdvance debug output.
     // r2 must point to a zero terminated string.
-    ldr(r0, gsl::narrow<int32_t>(0xc0ded00d));
+    ldr(r0, 0xc0ded00d); // TODO: must not use gsl::narrow here: 0xc0ded00d DOES not fit into an int. Sigh.
     mov(r1, 0);
     and_(r0, r0);
 
