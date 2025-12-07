@@ -167,24 +167,30 @@ void write_to_disk(const std::vector<unsigned char>& data, const std::string& fi
     }
 }
 
+void display_sizes(const input_file& input_file, const std::vector<unsigned char>& compressed_binary, const cartridge& cartridge, const console& console)
+{
+    console.verbose("Uncompressed binary size: {:4} bytes", input_file.data().size());
+    console.verbose("Compressed binary size  : {:4} bytes", compressed_binary.size());
+    console.verbose("Depacker size           : {:4} bytes (excluding code in cartridge header)", cartridge.depacker_size);
+    console.verbose("Cartridge size          : {:4} bytes", cartridge.data.size());
+}
+
 }
 
 void pack(const options& opts)
 {
     auto console = create_console(opts);
     auto input_file = load_input_file(opts.input_file().string(), console);
+
     // TODO: currently we only do shrinkler compression. Later we'll also support lzss+huffman compression
+    //       => This must somehow be abstracted
+    //       => Note that the cartridge fix must be done individually, since different compression algos may yield different compressed data
     auto compressed_binary = compress(input_file.data(), opts);
     auto cartridge = assemble_cartridge(input_file, compressed_binary, opts);
     fix_cartridge_for_ezf_advance(cartridge.data, console);
 
-    // TODO: slap: move this elsewhere?
-    console.verbose("Uncompressed size: {:4} bytes", input_file.data().size());
-    console.verbose("Compressed size  : {:4} bytes", compressed_binary.size());
-    console.verbose("Depacker size    : {:4} bytes (excluding code in cartridge header)", cartridge.depacker_size);
-    console.verbose("Cartridge size   : {:4} bytes", cartridge.data.size());
-
     write_to_disk(cartridge.data, opts.output_file().string(), console);
+    display_sizes(input_file, compressed_binary, cartridge, console);
 }
 
 }
