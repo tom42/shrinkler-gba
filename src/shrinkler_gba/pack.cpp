@@ -136,10 +136,13 @@ void remove_output_file(const std::filesystem::path& filename)
     std::filesystem::remove(filename, e);
 }
 
-void write_to_disk(const std::vector<unsigned char>& data, const std::filesystem::path& filename)
+// TODO: take string instead of path? => less code here
+void write_to_disk(const std::vector<unsigned char>& data, const std::filesystem::path& filename, const console& console)
 {
     try
     {
+        console.verbose("Writing: {}", filename.string());
+
         std::ofstream file;
         file.open(filename.string(), std::ios::binary | std::ios::trunc);
         if (!file)
@@ -176,13 +179,14 @@ void pack(const options& opts)
     auto cartridge = assemble_cartridge(input_file, compressed_binary, opts);
     fix_cartridge_for_ezf_advance(cartridge.data, console);
 
+    // TODO: slap: move this elsewhere?
     console.verbose("Uncompressed size: {:4} bytes", input_file.data().size());
     console.verbose("Compressed size  : {:4} bytes", compressed_binary.size());
     console.verbose("Depacker size    : {:4} bytes (excluding code in cartridge header)", cartridge.depacker_size);
     console.verbose("Cartridge size   : {:4} bytes", cartridge.data.size());
 
-    // TODO: implement the remaining 5/6/whatever steps (see old implementation):
-    //       * Write result to disk
+    // TODO: verbose message: writing what file
+    write_to_disk(cartridge.data, opts.output_file(), console);
 }
 
 }
