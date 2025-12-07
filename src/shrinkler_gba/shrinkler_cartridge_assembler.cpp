@@ -15,6 +15,8 @@
 // non-obvious, and Blueberry gave a nice explanation of this on the A.D.A.
 // coding forum. It can be found in 3rdparty/Shrinkler/DepackerExplained.md.
 
+// TODO: when --debug-checks is given, this throws narrowing error. Not good. Need to investigate.
+
 module;
 
 #include <bit>
