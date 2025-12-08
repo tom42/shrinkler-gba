@@ -23,6 +23,7 @@ struct shrinkler_depacker_settings final
 struct cartridge final
 {
     std::vector<unsigned char> data;
+    size_t compressed_size = 0;
     size_t depacker_size = 0;
 };
 

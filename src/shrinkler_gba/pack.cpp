@@ -112,6 +112,7 @@ cartridge assemble_cartridge(const input_file& input_file, const std::vector<uns
     return cartridge
     {
         .data = assembler.data(),
+        .compressed_size = compressed_binary.size(),
         .depacker_size = assembler.depacker_size()
     };
 }
@@ -167,10 +168,10 @@ void write_to_disk(const std::vector<unsigned char>& data, const std::string& fi
     }
 }
 
-void display_sizes(const input_file& input_file, const std::vector<unsigned char>& compressed_binary, const cartridge& cartridge, const console& console)
+void display_sizes(const input_file& input_file, const cartridge& cartridge, const console& console)
 {
     console.verbose("Uncompressed binary size: {:4} bytes", input_file.data().size());
-    console.verbose("Compressed binary size  : {:4} bytes", compressed_binary.size());
+    console.verbose("Compressed binary size  : {:4} bytes", cartridge.compressed_size);
     console.verbose("Depacker size           : {:4} bytes (excluding code in cartridge header)", cartridge.depacker_size);
     console.verbose("Cartridge size          : {:4} bytes", cartridge.data.size());
 }
@@ -190,7 +191,7 @@ void pack(const options& opts)
     fix_cartridge_for_ezf_advance(cartridge.data, console);
 
     write_to_disk(cartridge.data, opts.output_file().string(), console);
-    display_sizes(input_file, compressed_binary, cartridge, console);
+    display_sizes(input_file, cartridge, console);
 }
 
 }
