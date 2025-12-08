@@ -5,6 +5,7 @@
 #include <catch2/generators/catch_generators.hpp>
 #include <sstream>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -17,14 +18,19 @@ namespace shrinkler_gba_unit_test
 using shrinkler_gba::parse_command_line_result;
 using std::make_pair;
 using std::string;
+using std::string_view;
 using std::vector;
 
 namespace
 {
 
-vector<char> to_vector(const string& s)
+vector<char> to_zstring_vector(string_view s)
 {
-    return vector<char>(s.c_str(), s.c_str() + s.size() + 1);
+    vector<char> v;
+    v.reserve(s.size() + 1);
+    v.append_range(s);
+    v.push_back('\0');
+    return v;
 }
 
 parse_command_line_result parse_command_line(const char* command_line)
@@ -33,12 +39,12 @@ parse_command_line_result parse_command_line(const char* command_line)
 
     // Split string into individual arguments
     vector<vector<char>> args;
-    args.push_back(to_vector("program_name"));
+    args.push_back(to_zstring_vector("program_name"));
     std::istringstream stream(command_line);
     string s;
     while (stream >> s)
     {
-        args.push_back(to_vector(s));
+        args.push_back(to_zstring_vector(s));
     }
 
     // Put together argv array
