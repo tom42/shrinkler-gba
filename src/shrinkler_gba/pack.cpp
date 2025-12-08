@@ -124,11 +124,20 @@ cartridge pack_shrinkler(const input_file& input_file, const options& opts)
     return assemble_shrinkler_cartridge(input_file, compressed_binary, opts);
 }
 
-cartridge pack_lzss(const input_file& /*input_file*/)
+cartridge pack_lzss(const input_file& input_file)
 {
+    std::vector<unsigned char> lzss_data;
+    agbpack::optimal_lzss_encoder lzss_encoder;
+    lzss_encoder.encode(input_file.data().begin(), input_file.data().end(), back_inserter(lzss_data));
+
+    std::vector<unsigned char> huffman_data;
+    agbpack::huffman_encoder huffman_encoder;
+    huffman_encoder.options(agbpack::huffman_options::h4);
+    huffman_encoder.encode(lzss_data.begin(), lzss_data.end(), back_inserter(huffman_data));
+
     // TODO: LZSS compression, followed by 4 Bit huffman
     // TODO: Assemble cartridge
-    return {}; // TODO: return real cartridge
+    return {}; // TODO: return real cartridge instance (with all data filled in)
 }
 
 void fix_cartridge_for_ezf_advance(std::vector<unsigned char>& cartridge_data, const console& console)
