@@ -28,7 +28,11 @@ vector<char> to_zstring_vector(string_view s)
 {
     vector<char> v;
     v.reserve(s.size() + 1);
+#ifdef __cpp_lib_containers_ranges
     v.append_range(s);
+#else
+    v.insert(v.end(), s.begin(), s.end());
+#endif
     v.push_back('\0');
     return v;
 }
