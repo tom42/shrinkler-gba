@@ -16,6 +16,7 @@ module;
 
 module shrinkler_gba;
 import :input_file;
+import agbpack;
 import libshrinkler;
 
 namespace shrinkler_gba
