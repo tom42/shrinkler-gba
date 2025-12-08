@@ -123,6 +123,13 @@ cartridge pack_shrinkler(const input_file& input_file, const options& opts)
     return assemble_shrinkler_cartridge(input_file, compressed_binary, opts);
 }
 
+cartridge pack_lzss(const input_file& /*input_file*/)
+{
+    // TODO: LZSS compression, followed by 4 Bit huffman
+    // TODO: Assemble cartridge
+    return {}; // TODO: return real cartridge
+}
+
 void fix_cartridge_for_ezf_advance(std::vector<unsigned char>& cartridge_data, const console& console)
 {
     // EZF Advance removes trailing 0xff bytes.
@@ -197,6 +204,10 @@ void pack(const options& opts)
 
     write_to_disk(cartridge.data, opts.output_file().string(), console);
     display_sizes(input_file, cartridge, console);
+
+    // TODO: test code: LZSS. What we really want to do is: we want to try a number of methods and then choose the best one
+    auto cartridge2 = pack_lzss(input_file);
+    display_sizes(input_file, cartridge2, console);
 }
 
 }
