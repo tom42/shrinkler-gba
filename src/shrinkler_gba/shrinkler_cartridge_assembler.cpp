@@ -121,6 +121,12 @@ constexpr uint32_t rgb8(uint32_t r, uint32_t g, uint32_t b)
     return rgb5(r >> 3, g >> 3, b >> 3);
 }
 
+template <std::unsigned_integral TUnsigned>
+constexpr auto to_signed(TUnsigned u)
+{
+    return static_cast<std::make_signed_t<TUnsigned>>(u);
+}
+
 }
 
 shrinkler_cartridge_assembler::shrinkler_cartridge_assembler(const input_file& input_file, const std::vector<unsigned char>& compressed_program, const shrinkler_depacker_settings& settings)
@@ -510,7 +516,7 @@ label("s2_ok"s);
     orr(s1, s2);
 
     // Compare expected and actual checksum
-    ldr(expected_checksum, adler32(input_file.data())); // TODO: this may very well overflow, so must not use gsl::narrow() here. adler32 returns uint32_t, so what we REALLY want is some sort of make_signed
+    ldr(expected_checksum, to_signed(adler32(input_file.data())));
     cmp(s1, expected_checksum);
     beq("checksum_ok"s);
     debug_call_panic_routine("Wrong decompressed data checksum\n");
@@ -566,7 +572,7 @@ label("panic"s);
 
     // Print panic message using Mappy / VisualBoyAdvance debug output.
     // r2 must point to a zero terminated string.
-    ldr(r0, 0xc0ded00d); // TODO: must not use gsl::narrow here: 0xc0ded00d DOES not fit into an int. Sigh.
+    ldr(r0, to_signed(0xc0ded00d));
     mov(r1, 0);
     and_(r0, r0);
 
