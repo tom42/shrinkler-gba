@@ -46,6 +46,7 @@ cartridge lzss_packer::pack(const input_file& input_file)
 	// TODO: which of the options from the command line do we respect?
 	//       * --debug-checks? (probably no?)
 	//       * --no-code-in-header (probably yes?)
+	// TODO: experiment: LZSS only, LZSS+H4, LZSS+H8 (?)
 	return {};
 }
 

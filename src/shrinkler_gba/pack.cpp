@@ -123,22 +123,6 @@ cartridge pack_shrinkler(const input_file& input_file, const options& opts)
     return assemble_shrinkler_cartridge(input_file, compressed_binary, opts);
 }
 
-cartridge pack_lzss(const input_file& input_file)
-{
-    std::vector<unsigned char> lzss_data;
-    agbpack::optimal_lzss_encoder lzss_encoder;
-    lzss_encoder.encode(input_file.data().begin(), input_file.data().end(), back_inserter(lzss_data));
-
-    std::vector<unsigned char> huffman_data;
-    agbpack::huffman_encoder huffman_encoder;
-    huffman_encoder.options(agbpack::huffman_options::h4);
-    huffman_encoder.encode(lzss_data.begin(), lzss_data.end(), back_inserter(huffman_data));
-
-    // TODO: experiment: LZSS only, LZSS+H4, LZSS+H8 (?)
-    // TODO: Assemble cartridge
-    return {}; // TODO: return real cartridge instance (with all data filled in)
-}
-
 void fix_cartridge_for_ezf_advance(std::vector<unsigned char>& cartridge_data, const console& console)
 {
     // EZF Advance removes trailing 0xff bytes.
@@ -215,10 +199,10 @@ void pack(const options& opts)
     display_sizes(input_file, cartridge, console);
 
     // TODO: test code: LZSS. What we really want to do is: we want to try a number of methods and then choose the best one
-    auto cartridge2 = pack_lzss(input_file); // TODO: move this into class lzss_packer (and later to the same for a class shrinkler_packer)
-    display_sizes(input_file, cartridge2, console);
+    // TODO: have a similar class for shrinkler: shrinkler_packer
     lzss_packer lzss_packer;
-    lzss_packer.pack(input_file);
+    auto cartridge2 = lzss_packer.pack(input_file);
+    display_sizes(input_file, cartridge2, console);
 }
 
 }

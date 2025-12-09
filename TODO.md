@@ -8,8 +8,6 @@ SPDX-License-Identifier: MIT
 * Modernize this code
   * See where we can replace 'const std::string&' by std::string_view
   * When all done: fix reuse compliancy
-  * Redo CMakeLists.txt
-  * Stop using subtrees. Get stuff using FetchContent. Our own, anyway.
   * Use agbpack to pack tiny intros
   * CI builds with github actions
     * gcc/clang/windows
@@ -17,9 +15,7 @@ SPDX-License-Identifier: MIT
   * Redo source tree organization (top level src/test directory, see e.g. agbpack)
   * Remove the following blurb from all copyright notices:
     'Port of the Shrinkler Amiga executable cruncher for the GBA'
-* Get rid of wrapper header for shrinkler code: treat it as system header instead
 * Add uninstall target
-* Delete CMakeListst.old.txt
 * Go through directories/files (top level in particular, but not only), see what's still needed
 
 ## Compression and decompression
@@ -83,4 +79,3 @@ SPDX-License-Identifier: MIT
     * Well maybe not at first. It would mean we have to update the decompressor
     * Well, Amiga Shrinkler supports this for data only, not code. We can start like that too, if we see that an intro packs better with that option
       we can always provide it for code and assemble an appropriate depacker for that.
-  * Are we going to have a data option? (pack/write raw data, little endian for starters, maybe later with a big endian option? [does anybody need this?])
