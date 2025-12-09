@@ -42,6 +42,8 @@ private:
         //       * For starters we do NOT stick code into the header
         arm_branch("code_start"s);
         emit_nintendo_logo();
+        emit_remaining_header();
+
     label("code_start"s);
         label("here"s).b("here"s); // TODO: endless loop, remove
 
