@@ -56,9 +56,16 @@ private:
         align(2);
     label("code_start"s);
         arm_to_thumb(r0);
+
+        // Huffman decode
+        adr(r0, "packed_intro"s);
+        ldr(r1, mem_ewram); // TODO: that's only to get started: we depack to start of EWRAM, so we can see what we're doing
+        swi(0x13);          // TODO: constant for swi number?
+
         // TODO: huffman decode to EWRAM (where to? => somewhere where it does not interfere with the load address)
         // TODO: lzss decode to load address
         label("here"s).b("here"s); // TODO: endless loop, remove
+        pool();
 
         ////////////////////////////////////////////////////////////////////////
         // Compressed intro.
