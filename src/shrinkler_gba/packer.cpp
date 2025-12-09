@@ -35,6 +35,13 @@ void cartridge_assembler::emit_nintendo_logo()
     byte(0x21, 0xd4, 0xf8, 0x07);
 }
 
+void cartridge_assembler::throw_if_wrong_lc(lzasm::arm::arm32::address_t expected_lc, const char* what) const
+{
+    if (current_lc() != expected_lc)
+    {
+        throw std::runtime_error(std::format("INTERNAL ERROR: {} is at wrong offset. Expected it to be at {:#x}, but it is at {:#x}", what, expected_lc, current_lc()));
+    }
+}
 
 void cartridge_assembler::throw_if_not_aligned(lzasm::arm::arm32::address_t alignment) const
 {

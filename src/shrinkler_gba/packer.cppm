@@ -35,6 +35,7 @@ public:
 
     virtual ~cartridge_assembler() = default;
 
+    void throw_if_wrong_lc(lzasm::arm::arm32::address_t expected_lc, const char* what) const;
     void throw_if_not_aligned(lzasm::arm::arm32::address_t alignment) const;
 
 protected:

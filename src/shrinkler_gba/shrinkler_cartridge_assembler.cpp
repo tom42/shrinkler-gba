@@ -587,14 +587,6 @@ label("sadface"s);
     pool();
 }
 
-void shrinkler_cartridge_assembler::throw_if_wrong_lc(lzasm::arm::arm32::address_t expected_lc, const char* what) const
-{
-    if (current_lc() != expected_lc)
-    {
-        throw std::runtime_error(std::format("INTERNAL ERROR: {} is at wrong offset. Expected it to be at {:#x}, but it is at {:#x}", what, expected_lc, current_lc()));
-    }
-}
-
 void shrinkler_cartridge_assembler::throw_if_fixed_byte_wrong() const
 {
     auto actual_byte = m_data.at(ofs_fixed_byte);
