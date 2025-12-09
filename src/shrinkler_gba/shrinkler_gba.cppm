@@ -9,6 +9,7 @@ export import :console;
 export import :elf_info;
 export import :gba;
 export import :input_file;
+export import :lzss_packer;
 export import :options;
 export import :pack;
 export import :packer;

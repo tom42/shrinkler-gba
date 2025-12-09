@@ -13,6 +13,7 @@ set(
   elf_info.cppm
   gba.cppm
   input_file.cppm
+  lzss_packer.cppm
   options.cppm
   pack.cppm
   packer.cppm

@@ -7,6 +7,7 @@ module;
 #include <vector>
 
 export module shrinkler_gba:packer;
+import :input_file;
 
 namespace shrinkler_gba
 {
@@ -22,6 +23,8 @@ class packer
 {
 public:
     virtual ~packer() = default;
+
+    virtual cartridge pack(const input_file& input_file) = 0;
 };
 
 }
