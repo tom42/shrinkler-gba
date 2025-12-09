@@ -56,6 +56,8 @@ private:
         align(2);
     label("code_start"s);
         arm_to_thumb(r0);
+        // TODO: huffman decode to EWRAM (where to? => somewhere where it does not interfere with the load address)
+        // TODO: lzss decode to load address
         label("here"s).b("here"s); // TODO: endless loop, remove
 
         ////////////////////////////////////////////////////////////////////////
