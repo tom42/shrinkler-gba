@@ -29,6 +29,7 @@ set(
   input_file.cpp
   lzss_packer.cpp
   pack.cpp
+  packer.cpp
   shrinkler_cartridge_assembler.cpp
   table_printer.cpp)
 

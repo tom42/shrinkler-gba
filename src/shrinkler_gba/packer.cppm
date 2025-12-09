@@ -33,6 +33,8 @@ public:
 class cartridge_assembler : public lzasm::arm::arm32::divided_thumb_assembler
 {
 public:
+    void emit_nintendo_logo();
+
     virtual ~cartridge_assembler() = default;
 };
 

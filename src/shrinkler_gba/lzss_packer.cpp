@@ -18,7 +18,7 @@ using namespace std::literals::string_literals;
 namespace
 {
 
-class lzss_cartridge_assembler final : private lzasm::arm::arm32::divided_thumb_assembler
+class lzss_cartridge_assembler final : private cartridge_assembler
 {
 public:
     lzss_cartridge_assembler()
@@ -39,6 +39,7 @@ private:
     std::vector<unsigned char> assemble()
     {
         arm_branch("code_start"s);
+        emit_nintendo_logo();
     label("code_start"s);
 
         return link(mem_rom);

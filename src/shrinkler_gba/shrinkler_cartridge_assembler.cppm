@@ -10,6 +10,7 @@ module;
 
 export module shrinkler_gba:shrinkler_cartridge_assembler;
 import :input_file;
+import :packer;
 
 namespace shrinkler_gba
 {
@@ -20,7 +21,7 @@ struct shrinkler_depacker_settings final
     bool debug_checks = false;
 };
 
-class shrinkler_cartridge_assembler final : private lzasm::arm::arm32::divided_thumb_assembler
+class shrinkler_cartridge_assembler final : private cartridge_assembler
 {
 public:
     shrinkler_cartridge_assembler(const input_file& input_file, const std::vector<unsigned char>& compressed_program, const shrinkler_depacker_settings& settings);
@@ -39,7 +40,6 @@ private:
     void write_complement();
     std::vector<unsigned char> assemble(const input_file& input_file, const std::vector<unsigned char>& compressed_program);
 
-    void emit_nintendo_logo();
     void emit_remaining_header();
 
     // Macro that calls the panic routine if the size of the decompressed data is incorrect.
