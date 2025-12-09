@@ -13,6 +13,7 @@ import agbpack;
 namespace shrinkler_gba
 {
 
+using namespace lzasm::arm::arm32;
 using namespace std::literals::string_literals;
 
 namespace
@@ -44,7 +45,12 @@ private:
         emit_nintendo_logo();
         emit_remaining_header();
 
+        // Entry point. Initially the GBA is in ARM state.
+        // Immediately switch to Thumb state.
+        throw_if_not_aligned(2);
+        align(2);
     label("code_start"s);
+        arm_to_thumb(r0);
         label("here"s).b("here"s); // TODO: endless loop, remove
 
         return link(mem_rom);
