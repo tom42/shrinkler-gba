@@ -4,6 +4,7 @@
 module;
 
 #include <cstddef>
+#include <lzasm/arm/arm32/divided_thumb_assembler.hpp>
 #include <vector>
 
 export module shrinkler_gba:packer;
@@ -27,7 +28,9 @@ public:
     virtual cartridge pack(const input_file& input_file) = 0;
 };
 
-class cartridge_assembler
+// TODO: public, protected or private inheritance
+// TODO: this is a mixin class I think? How do we forbid instantiation
+class cartridge_assembler : public lzasm::arm::arm32::divided_thumb_assembler
 {
 public:
     virtual ~cartridge_assembler() = default;
