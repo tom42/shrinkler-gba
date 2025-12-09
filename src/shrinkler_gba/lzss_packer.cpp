@@ -13,6 +13,8 @@ import agbpack;
 namespace shrinkler_gba
 {
 
+using namespace std::literals::string_literals;
+
 namespace
 {
 
@@ -21,6 +23,7 @@ class lzss_cartridge_assembler final : private lzasm::arm::arm32::divided_thumb_
 public:
 	lzss_cartridge_assembler()
 	{
+		m_data = assemble();
 		// TODO: assemble stuff
 		// TODO: write complement
 		// TODO: final assertion: fixed byte
@@ -33,6 +36,11 @@ public:
 	}
 
 private:
+	void assemble()
+	{
+		return link(mem_rom);
+	}
+
 	std::vector<unsigned char> m_data;
 };
 
