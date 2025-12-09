@@ -23,6 +23,15 @@ std::vector<unsigned char> lzss_compress(const std::vector<unsigned char>& input
 	return output;
 }
 
+std::vector<unsigned char> huffman_compress(const std::vector<unsigned char>& input)
+{
+	std::vector<unsigned char> output;
+	agbpack::huffman_encoder huffman_encoder;
+	huffman_encoder.options(agbpack::huffman_options::h4);
+	huffman_encoder.encode(input.begin(), input.end(), back_inserter(output));
+	return output;
+}
+
 }
 
 cartridge lzss_packer::pack(const input_file& input_file)
@@ -32,7 +41,7 @@ cartridge lzss_packer::pack(const input_file& input_file)
 	//         * lzss (move from pack.cpp)
 	//         * huffman (move from pack.cpp)
 	//       * assemble
-	auto x = lzss_compress(input_file.data()); // TODO: name: x
+	auto x = huffman_compress(lzss_compress(input_file.data())); // TODO: name: x
 	return {};
 }
 
