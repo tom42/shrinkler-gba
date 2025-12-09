@@ -38,9 +38,12 @@ public:
 private:
     std::vector<unsigned char> assemble()
     {
+        // TODO: later, honor the --no-code-in-header option
+        //       * For starters we do NOT stick code into the header
         arm_branch("code_start"s);
         emit_nintendo_logo();
     label("code_start"s);
+        label("here"s).b("here"s); // TODO: endless loop, remove
 
         return link(mem_rom);
     }
