@@ -22,9 +22,9 @@ namespace
 class lzss_cartridge_assembler final : private cartridge_assembler
 {
 public:
-    lzss_cartridge_assembler()
+    lzss_cartridge_assembler(const std::vector<unsigned char>& compressed_binary)
     {
-        m_data = assemble();
+        m_data = assemble(compressed_binary);
         // TODO: assemble stuff
         // TODO: write complement
         // TODO: final assertion: fixed byte
@@ -36,8 +36,13 @@ public:
         return m_data;
     }
 
+    size_t depacker_size() const
+    {
+        return m_depacker_size;
+    }
+
 private:
-    std::vector<unsigned char> assemble()
+    std::vector<unsigned char> assemble(const std::vector<unsigned char>& compressed_binary)
     {
         // TODO: later, honor the --no-code-in-header option
         //       * For starters we do NOT stick code into the header
@@ -53,10 +58,23 @@ private:
         arm_to_thumb(r0);
         label("here"s).b("here"s); // TODO: endless loop, remove
 
+        ////////////////////////////////////////////////////////////////////////
+        // Compressed intro.
+        // Must be word aligned, since
+        // * The BIOS needs it that way
+        // * We use adr to load the address to the packed data,
+        //   which requires word alignment.
+        ////////////////////////////////////////////////////////////////////////
+        align(2);
+        m_depacker_size = current_lc() - gba_header_size;
+    label("packed_intro"s);
+        incbin(compressed_binary.begin(), compressed_binary.end());
+
         return link(mem_rom);
     }
 
     std::vector<unsigned char> m_data;
+    size_t m_depacker_size{};
 };
 
 std::vector<unsigned char> lzss_compress(const std::vector<unsigned char>& input)
@@ -96,12 +114,12 @@ cartridge assemble_cartridge(const std::vector<unsigned char>& compressed_binary
     //         * middle of EWRAM? Advantage: most likely we'll depack to the beginning of IWRAM or EWRAM, so middle should not intefere too much
     //         * If the entry point is in IWRAM, use EWRAM as tmp buffer
     //         * If the entry point is in EWRAM, use IWRAM as tmp buffer
-    lzss_cartridge_assembler assembler;
+    lzss_cartridge_assembler assembler(compressed_binary);
     return cartridge
     {
         .data = assembler.data(),
-        .compressed_size = compressed_binary.size()
-        // TODO: fill in depacker size
+        .compressed_size = compressed_binary.size(),
+        .depacker_size = assembler.depacker_size()
     };
 }
 
