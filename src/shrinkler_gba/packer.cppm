@@ -28,9 +28,8 @@ public:
     virtual cartridge pack(const input_file& input_file) = 0;
 };
 
-// TODO: public, protected or private inheritance
-// TODO: this is a mixin class I think? How do we forbid instantiation
-class cartridge_assembler : public lzasm::arm::arm32::divided_thumb_assembler
+// TODO: this is a mixin class I think? How do we forbid instantiation => make all constructors protected
+class cartridge_assembler : protected lzasm::arm::arm32::divided_thumb_assembler
 {
 public:
     void emit_nintendo_logo();
