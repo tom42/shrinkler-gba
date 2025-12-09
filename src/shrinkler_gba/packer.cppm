@@ -27,4 +27,10 @@ public:
     virtual cartridge pack(const input_file& input_file) = 0;
 };
 
+class cartridge_assembler
+{
+public:
+    virtual ~cartridge_assembler() = default;
+};
+
 }
