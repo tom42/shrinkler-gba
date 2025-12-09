@@ -61,16 +61,23 @@ cartridge assemble_cartridge()
 	//       * decode LZSS into the final location
 	//       * where IS the temporary buffer?
 	//         * end of EWRAM?
+	//         * middle of EWRAM? Advantage: most likely we'll depack to the beginning of IWRAM or EWRAM, so middle should not intefere too much
 	//         * If the entry point is in IWRAM, use EWRAM as tmp buffer
 	//         * If the entry point is in EWRAM, use IWRAM as tmp buffer
-	return {};
+	lzss_cartridge_assembler assembler;
+	return cartridge
+	{
+		// TODO: fill in cartridge data
+		// TODO: fill in compressed binary size
+		// TODO: fill in depacker size
+	};
 }
 
 }
 
 cartridge lzss_packer::pack(const input_file& input_file)
 {
-	auto compressed_data = huffman_compress(lzss_compress(input_file.data()));
+	auto compressed_binary = huffman_compress(lzss_compress(input_file.data()));
 	return assemble_cartridge();
 }
 
