@@ -66,7 +66,7 @@ private:
 
     const shrinkler_depacker_settings m_settings;
     std::vector<unsigned char> m_data;
-    size_t m_depacker_size;
+    size_t m_depacker_size{};
 };
 
 }
