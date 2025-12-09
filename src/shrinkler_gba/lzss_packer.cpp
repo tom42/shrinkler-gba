@@ -32,16 +32,20 @@ std::vector<unsigned char> huffman_compress(const std::vector<unsigned char>& in
 	return output;
 }
 
+std::vector<unsigned char> compress(const std::vector<unsigned char>& input)
+{
+	return huffman_compress(lzss_compress(input));
+}
+
 }
 
 cartridge lzss_packer::pack(const input_file& input_file)
 {
-	// TODO: real implementation
-	//       * pack
-	//         * lzss (move from pack.cpp)
-	//         * huffman (move from pack.cpp)
-	//       * assemble
-	auto x = huffman_compress(lzss_compress(input_file.data())); // TODO: name: x
+	auto compressed_data = huffman_compress(lzss_compress(input_file.data()));
+	// TODO: assemble and return real cartridge
+	// TODO: which of the options from the command line do we respect?
+	//       * --debug-checks? (probably no?)
+	//       * --no-code-in-header (probably yes?)
 	return {};
 }
 
