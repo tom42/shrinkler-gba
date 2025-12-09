@@ -80,8 +80,7 @@ input_file load_input_file(const std::string& path, const console& console)
 
 std::vector<unsigned char> shrinkler_compress(const std::vector<unsigned char>& uncompressed_binary, const options& opts)
 {
-    // TODO: encode (get compressed data + compression info)
-    // TODO: dump compression info
+    // TODO: dump compression info (whatever it is that encoder can spit out additionally and that we might want to output - the references warning thing, mostly)
     // TODO: progress output for libshrinkler? => Well what is not implemented inside libshrinkler
     using namespace libshrinkler;
 
@@ -135,7 +134,7 @@ cartridge pack_lzss(const input_file& input_file)
     huffman_encoder.options(agbpack::huffman_options::h4);
     huffman_encoder.encode(lzss_data.begin(), lzss_data.end(), back_inserter(huffman_data));
 
-    // TODO: LZSS compression, followed by 4 Bit huffman
+    // TODO: experiment: LZSS only, LZSS+H4, LZSS+H8 (?)
     // TODO: Assemble cartridge
     return {}; // TODO: return real cartridge instance (with all data filled in)
 }
