@@ -35,6 +35,8 @@ public:
 
     virtual ~cartridge_assembler() = default;
 
+    void throw_if_not_aligned(lzasm::arm::arm32::address_t alignment) const;
+
 protected:
     cartridge_assembler() = default;
     cartridge_assembler(const cartridge_assembler&) = default;

@@ -595,16 +595,6 @@ void shrinkler_cartridge_assembler::throw_if_wrong_lc(lzasm::arm::arm32::address
     }
 }
 
-void shrinkler_cartridge_assembler::throw_if_not_aligned(lzasm::arm::arm32::address_t alignment) const
-{
-    auto byte_alignment = 1u << alignment;
-
-    if (current_lc() % byte_alignment)
-    {
-        throw std::runtime_error(std::format("INTERNAL ERROR: Location counter is not aligned to {} bytes. We're wasting space", byte_alignment));
-    }
-}
-
 void shrinkler_cartridge_assembler::throw_if_fixed_byte_wrong() const
 {
     auto actual_byte = m_data.at(ofs_fixed_byte);

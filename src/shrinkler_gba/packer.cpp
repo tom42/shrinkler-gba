@@ -1,6 +1,11 @@
 // SPDX-FileCopyrightText: 2025 Thomas Mathys
 // SPDX-License-Identifier: MIT
 
+module;
+
+#include <format>
+#include <iostream>
+
 module shrinkler_gba;
 
 namespace shrinkler_gba
@@ -30,5 +35,15 @@ void cartridge_assembler::emit_nintendo_logo()
     byte(0x21, 0xd4, 0xf8, 0x07);
 }
 
+
+void cartridge_assembler::throw_if_not_aligned(lzasm::arm::arm32::address_t alignment) const
+{
+    auto byte_alignment = 1u << alignment;
+
+    if (current_lc() % byte_alignment)
+    {
+        throw std::runtime_error(std::format("INTERNAL ERROR: Location counter is not aligned to {} bytes. We're wasting space", byte_alignment));
+    }
+}
 
 }
