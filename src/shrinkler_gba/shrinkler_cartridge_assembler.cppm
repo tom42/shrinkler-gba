@@ -20,13 +20,6 @@ struct shrinkler_depacker_settings final
     bool debug_checks = false;
 };
 
-struct cartridge final
-{
-    std::vector<unsigned char> data;
-    size_t compressed_size = 0;
-    size_t depacker_size = 0;
-};
-
 class shrinkler_cartridge_assembler final : private lzasm::arm::arm32::divided_thumb_assembler
 {
 public:

@@ -15,6 +15,7 @@ set(
   input_file.cppm
   options.cppm
   pack.cppm
+  packer.cppm
   shrinkler_cartridge_assembler.cppm
   shrinkler_gba.cppm
   table_printer.cppm
