@@ -58,8 +58,9 @@ std::vector<unsigned char> compress(const std::vector<unsigned char>& input)
 	return huffman_compress(lzss_compress(input));
 }
 
-cartridge assemble_cartridge()
+cartridge assemble_cartridge(const std::vector<unsigned char>& compressed_binary)
 {
+	// TODO: replace std::vector<unsigned char> by something simple
 	// TODO: assemble and return real cartridge
 	// TODO: which of the options from the command line do we respect?
 	//       * --debug-checks? (probably no?)
@@ -76,7 +77,7 @@ cartridge assemble_cartridge()
 	return cartridge
 	{
 		// TODO: fill in cartridge data
-		// TODO: fill in compressed binary size
+		.compressed_size = compressed_binary.size()
 		// TODO: fill in depacker size
 	};
 }
@@ -86,7 +87,7 @@ cartridge assemble_cartridge()
 cartridge lzss_packer::pack(const input_file& input_file)
 {
 	auto compressed_binary = huffman_compress(lzss_compress(input_file.data()));
-	return assemble_cartridge();
+	return assemble_cartridge(compressed_binary);
 }
 
 }
