@@ -62,10 +62,17 @@ private:
         ldr(r1, mem_ewram); // TODO: that's only to get started: we depack to start of EWRAM, so we can see what we're doing
         swi(0x13);          // TODO: constant for swi number?
 
+        // LZSS decode to load address
+        mov(r0, r1);
+        ldr(r1, mem_iwram); // TODO: unhardcode: that's the load address from input_file
+        swi(0x11);          // TODO: constant for swi number?
+
+        // Branch to entry point
+        ldr(r0, mem_iwram); // TODO: unhardcode: that's the entry point from input_file
+        bx(r0);
+
         // TODO: huffman decode to EWRAM (where to? => somewhere where it does not interfere with the load address)
         // TODO: lzss decode to load address
-        // TODO: branch to entry point
-        label("here"s).b("here"s); // TODO: endless loop, remove
         pool();
 
         ////////////////////////////////////////////////////////////////////////
