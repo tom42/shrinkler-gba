@@ -185,7 +185,7 @@ void display_section_headers(const ELFIO::elfio& reader, const console& console)
             to_hex(s.get_link(), 2),
             to_hex(s.get_info(), 3),
             to_hex(s.get_addr_align(), 2),
-            is_section_included(&s) ? "Y" : "N" });
+            is_section_included(&s) ? "Y" : "" });
     }
 
     console.verbose("Section headers");
