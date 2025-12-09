@@ -19,6 +19,14 @@ namespace
 class lzss_cartridge_assembler final : private lzasm::arm::arm32::divided_thumb_assembler
 {
 public:
+	lzss_cartridge_assembler()
+	{
+		// TODO: assemble stuff
+		// TODO: write complement
+		// TODO: final assertion: fixed byte
+		// TODO: final assertion: complement
+	}
+
 	const std::vector<unsigned char>& data() const
 	{
 		return m_data;
