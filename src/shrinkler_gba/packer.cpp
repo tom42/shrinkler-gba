@@ -35,6 +35,38 @@ void cartridge_assembler::emit_nintendo_logo()
     byte(0x21, 0xd4, 0xf8, 0x07);
 }
 
+void cartridge_assembler::emit_remaining_header()
+{
+    // Game title (12 bytes), game code (4 bytes) and maker code (2 bytes)
+    throw_if_wrong_lc(ofs_game_title, "game title");
+    byte(0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
+    byte(0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
+    byte(0x00, 0x00, 0x00, 0x00);
+    byte(0x00, 0x00);
+
+    // Fixed byte of value 0x96, followed by unit code
+    throw_if_wrong_lc(ofs_fixed_byte, "fixed byte");
+    byte(fixed_byte_value);
+    byte(0x00);
+
+    // Device type (1 byte), followed by 7 unused bytes
+    throw_if_wrong_lc(ofs_device_type, "device type");
+    byte(0x00);
+    byte(0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
+
+    // Game version (1 byte)
+    throw_if_wrong_lc(ofs_game_version, "game version");
+    byte(0x00);
+
+    // Complement (will have to be fixed, so that checksum is 0)
+    throw_if_wrong_lc(ofs_complement, "complement");
+    byte(0x00);
+
+    // Reserved area
+    throw_if_wrong_lc(ofs_reserved2, "reserved area 2");
+    byte(0x00, 0x00);
+}
+
 void cartridge_assembler::throw_if_wrong_lc(lzasm::arm::arm32::address_t expected_lc, const char* what) const
 {
     if (current_lc() != expected_lc)

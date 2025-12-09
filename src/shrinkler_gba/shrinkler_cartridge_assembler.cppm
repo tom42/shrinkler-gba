@@ -40,8 +40,6 @@ private:
     void write_complement();
     std::vector<unsigned char> assemble(const input_file& input_file, const std::vector<unsigned char>& compressed_program);
 
-    void emit_remaining_header();
-
     // Macro that calls the panic routine if the size of the decompressed data is incorrect.
     // This macro expects outp (the output pointer) to point to the byte after the last decompressed byte.
     // This macro clobbers all registers except sp.

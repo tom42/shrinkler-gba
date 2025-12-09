@@ -87,8 +87,6 @@ constexpr uint32_t reg_dispcnt = reg_base + 0x00;
 constexpr uint32_t mode_4 = 4;
 constexpr uint32_t bg2_on = 1 << 10;
 
-constexpr auto fixed_byte_value = 0x96;
-
 // Register aliases
 constexpr auto inp = r0;        // Compressed data
 constexpr auto outp = r1;       // Decompressed data
@@ -394,38 +392,6 @@ void shrinkler_cartridge_assembler::write_complement()
     const size_t complement_byte_offset = m_settings.code_in_header ? ofs_game_version : ofs_complement;
     const size_t complement_byte_index = complement_byte_offset - ofs_game_title;
     m_data[ofs_game_title + complement_byte_index] = calculate_complement(&m_data[ofs_game_title], complement_byte_index);
-}
-
-void shrinkler_cartridge_assembler::emit_remaining_header()
-{
-    // Game title (12 bytes), game code (4 bytes) and maker code (2 bytes)
-    throw_if_wrong_lc(ofs_game_title, "game title");
-    byte(0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
-    byte(0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
-    byte(0x00, 0x00, 0x00, 0x00);
-    byte(0x00, 0x00);
-
-    // Fixed byte of value 0x96, followed by unit code
-    throw_if_wrong_lc(ofs_fixed_byte, "fixed byte");
-    byte(fixed_byte_value);
-    byte(0x00);
-
-    // Device type (1 byte), followed by 7 unused bytes
-    throw_if_wrong_lc(ofs_device_type, "device type");
-    byte(0x00);
-    byte(0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
-
-    // Game version (1 byte)
-    throw_if_wrong_lc(ofs_game_version, "game version");
-    byte(0x00);
-
-    // Complement (will have to be fixed, so that checksum is 0)
-    throw_if_wrong_lc(ofs_complement, "complement");
-    byte(0x00);
-
-    // Reserved area
-    throw_if_wrong_lc(ofs_reserved2, "reserved area 2");
-    byte(0x00, 0x00);
 }
 
 void shrinkler_cartridge_assembler::debug_check_decompressed_data_size(const input_file& input_file)
