@@ -4,6 +4,7 @@
 module;
 
 #include <iterator>
+#include <lzasm/arm/arm32/divided_thumb_assembler.hpp>
 #include <vector>
 
 module shrinkler_gba;
@@ -14,6 +15,18 @@ namespace shrinkler_gba
 
 namespace
 {
+
+class lzss_cartridge_assembler final : private lzasm::arm::arm32::divided_thumb_assembler
+{
+public:
+	const std::vector<unsigned char>& data() const
+	{
+		return m_data;
+	}
+
+private:
+	std::vector<unsigned char> m_data;
+};
 
 std::vector<unsigned char> lzss_compress(const std::vector<unsigned char>& input)
 {
@@ -37,17 +50,28 @@ std::vector<unsigned char> compress(const std::vector<unsigned char>& input)
 	return huffman_compress(lzss_compress(input));
 }
 
+cartridge assemble_cartridge()
+{
+	// TODO: assemble and return real cartridge
+	// TODO: which of the options from the command line do we respect?
+	//       * --debug-checks? (probably no?)
+	//       * --no-code-in-header (probably yes?)
+	// TODO: basically we
+	//       * decode huffman into a temporary buffer
+	//       * decode LZSS into the final location
+	//       * where IS the temporary buffer?
+	//         * end of EWRAM?
+	//         * If the entry point is in IWRAM, use EWRAM as tmp buffer
+	//         * If the entry point is in EWRAM, use IWRAM as tmp buffer
+	return {};
+}
+
 }
 
 cartridge lzss_packer::pack(const input_file& input_file)
 {
 	auto compressed_data = huffman_compress(lzss_compress(input_file.data()));
-	// TODO: assemble and return real cartridge
-	// TODO: which of the options from the command line do we respect?
-	//       * --debug-checks? (probably no?)
-	//       * --no-code-in-header (probably yes?)
-	// TODO: experiment: LZSS only, LZSS+H4, LZSS+H8 (?)
-	return {};
+	return assemble_cartridge();
 }
 
 }
