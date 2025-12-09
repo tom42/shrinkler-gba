@@ -64,6 +64,7 @@ private:
 
         // TODO: huffman decode to EWRAM (where to? => somewhere where it does not interfere with the load address)
         // TODO: lzss decode to load address
+        // TODO: branch to entry point
         label("here"s).b("here"s); // TODO: endless loop, remove
         pool();
 
