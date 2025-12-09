@@ -79,11 +79,6 @@ namespace
 
 constexpr auto initial_sp = 0x03007f00;
 
-// GBA memory areas
-constexpr uint32_t mem_bg_palette = 0x05000000;
-constexpr uint32_t mem_vram = 0x06000000;
-constexpr uint32_t mem_rom = 0x08000000;
-
 // GBA register addresses
 constexpr uint32_t reg_base = 0x04000000;
 constexpr uint32_t reg_dispcnt = reg_base + 0x00;
