@@ -27,6 +27,7 @@ set(
   console.cpp
   elf_info.cpp
   input_file.cpp
+  lzss_packer.cpp
   pack.cpp
   shrinkler_cartridge_assembler.cpp
   table_printer.cpp)

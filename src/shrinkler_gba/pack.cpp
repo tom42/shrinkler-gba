@@ -215,8 +215,10 @@ void pack(const options& opts)
     display_sizes(input_file, cartridge, console);
 
     // TODO: test code: LZSS. What we really want to do is: we want to try a number of methods and then choose the best one
-    auto cartridge2 = pack_lzss(input_file);
+    auto cartridge2 = pack_lzss(input_file); // TODO: move this into class lzss_packer (and later to the same for a class shrinkler_packer)
     display_sizes(input_file, cartridge2, console);
+    lzss_packer lzss_packer;
+    lzss_packer.pack(input_file);
 }
 
 }

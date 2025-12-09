@@ -10,6 +10,7 @@ namespace shrinkler_gba
 class lzss_packer final : public packer
 {
 public:
+	virtual cartridge pack(const input_file& input_file) override;
 };
 
 }
