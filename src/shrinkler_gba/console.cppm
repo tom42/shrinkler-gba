@@ -68,6 +68,11 @@ public:
         m_verbose_stream = stream;
     }
 
+    std::ostream* verbose_stream() const
+    {
+        return m_verbose_stream;
+    }
+
     bool is_verbose_enabled() const
     {
         return m_verbose_stream;

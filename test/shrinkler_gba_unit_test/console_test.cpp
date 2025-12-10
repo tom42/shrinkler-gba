@@ -90,6 +90,15 @@ TEST_CASE("console")
             "formatted: 42\n");
     }
 
+    SECTION("get and set verbose stream")
+    {
+        std::stringstream stream;
+
+        console.verbose_stream(&stream);
+
+        CHECK(console.verbose_stream() == &stream);
+    }
+
     SECTION("is_verbose_enabled")
     {
         console.verbose_stream(nullptr);
