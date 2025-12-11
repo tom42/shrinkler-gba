@@ -73,7 +73,6 @@ private:
         bx(r0);
 
         // TODO: huffman decode to EWRAM (where to? => somewhere where it does not interfere with the load address)
-        // TODO: lzss decode to load address
         pool();
 
         ////////////////////////////////////////////////////////////////////////
