@@ -37,7 +37,6 @@ public:
     }
 
 private:
-    void write_complement();
     std::vector<unsigned char> assemble(const input_file& input_file, const std::vector<unsigned char>& compressed_program);
 
     // Macro that calls the panic routine if the size of the decompressed data is incorrect.

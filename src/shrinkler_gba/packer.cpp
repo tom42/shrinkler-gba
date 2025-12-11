@@ -67,6 +67,22 @@ void cartridge_assembler::emit_remaining_header()
     byte(0x00, 0x00);
 }
 
+void cartridge_assembler::write_complement(std::vector<unsigned char>& cartridge_data, const size_t complement_byte_offset)
+{
+    // TODO: move this comment elsewhere or reformulate it: like that it does not make sense here
+    // If we have no code in the header then we can use header fields normally and calculate and patch the complement field.
+    //
+    // If we do have code in the header, the complement field is part of a harmless bogus opcode that we inserted there.
+    // It is a "mov rn,xx" instruction, where the complement field encodes the "mov rn" part. As destination register we
+    // choose a register that we do not use and where we do not care that it gets clobbered.
+    //
+    // The game version field encodes the immediate value ("xx"), which we do not care about and which we can choose freely.
+    // So we calculate a value for the game version field like we'd normally to for the complement field and then update
+    // the game version field instead of the complement field.
+    const size_t complement_byte_index = complement_byte_offset - ofs_game_title;
+    cartridge_data[ofs_game_title + complement_byte_index] = calculate_complement(&cartridge_data[ofs_game_title], complement_byte_index);
+}
+
 void cartridge_assembler::throw_if_wrong_lc(lzasm::arm::arm32::address_t expected_lc, const char* what) const
 {
     if (current_lc() != expected_lc)
