@@ -384,7 +384,7 @@ void shrinkler_cartridge_assembler::write_complement()
     //
     // If we do have code in the header, the complement field is part of a harmless bogus opcode that we inserted there.
     // It is a "mov rn,xx" instruction, where the complement field encodes the "mov rn" part. As destination register we
-    // chose a register that we do not use and where we do not care that it gets clobbered.
+    // choose a register that we do not use and where we do not care that it gets clobbered.
     //
     // The game version field encodes the immediate value ("xx"), which we do not care about and which we can choose freely.
     // So we calculate a value for the game version field like we'd normally to for the complement field and then update
