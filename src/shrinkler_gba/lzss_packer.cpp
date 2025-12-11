@@ -58,14 +58,17 @@ private:
     label("code_start"s);
         arm_to_thumb(r0);
 
+        // Decompress data using BIOS functions.
+        // Note that the BIOS functions modify r0 and r1, so don't try to be smart with reusing register contents.
+
         // Huffman decode
         adr(r0, "packed_intro"s);
         ldr(r1, mem_ewram); // TODO: that's only to get started: we depack to start of EWRAM, so we can see what we're doing
         swi(0x13);          // TODO: constant for swi number?
 
         // LZSS decode to load address
-        mov(r0, r1);
-        ldr(r1, mem_iwram); // TODO: unhardcode: that's the load address from input_file
+        mov(r0, r1);        // TODO: CAREFUL: THIS DOES NOT WORK WITH REAL BIOS: r1 has been clobbered and does not contain the address we loaded above => load address using ldr again instead!
+        ldr(r1, mem_iwram); // TODO: unhardcode: that's the load address from input_file => load that
         swi(0x11);          // TODO: constant for swi number?
 
         // Branch to entry point
