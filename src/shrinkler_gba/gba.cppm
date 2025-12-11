@@ -27,6 +27,7 @@ SHRINKLER_GBA_EXPORT_FOR_UNIT_TESTING inline constexpr size_t ofs_game_version =
 inline constexpr size_t ofs_complement = 0xbd;
 inline constexpr size_t ofs_reserved2 = 0xbe;
 
+// The value of the fixed byte at ofs_fixed_byte
 inline constexpr auto fixed_byte_value = 0x96;
 
 }
