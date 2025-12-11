@@ -25,7 +25,6 @@ public:
     lzss_cartridge_assembler(const std::vector<unsigned char>& compressed_binary)
     {
         m_data = assemble(compressed_binary);
-        // TODO: assemble stuff
         // TODO: write complement
         // TODO: final assertion: fixed byte
         // TODO: final assertion: complement
