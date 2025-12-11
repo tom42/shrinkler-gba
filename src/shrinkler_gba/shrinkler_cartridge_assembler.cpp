@@ -129,8 +129,8 @@ shrinkler_cartridge_assembler::shrinkler_cartridge_assembler(const input_file& i
 
     write_complement();
 
-    throw_if_fixed_byte_wrong();
-    throw_if_complement_wrong();
+    throw_if_fixed_byte_wrong(m_data);
+    throw_if_complement_wrong(m_data);
 }
 
 std::vector<unsigned char> shrinkler_cartridge_assembler::assemble(const input_file& input_file, const std::vector<unsigned char>& compressed_program)
@@ -551,25 +551,6 @@ label("sadface"s);
     byte(0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01);
     byte(0x00, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x00);
     pool();
-}
-
-void shrinkler_cartridge_assembler::throw_if_fixed_byte_wrong() const
-{
-    auto actual_byte = m_data.at(ofs_fixed_byte);
-    if (actual_byte != fixed_byte_value)
-    {
-        throw std::runtime_error(std::format("INTERNAL ERROR: Fixed byte at {:#x} has wrong value. Should be {:#x}, but is {:#x}", ofs_fixed_byte, fixed_byte_value, actual_byte));
-    }
-}
-
-void shrinkler_cartridge_assembler::throw_if_complement_wrong() const
-{
-    auto expected_complement = calculate_complement(&m_data[ofs_game_title]);
-    auto actual_complement = m_data.at(ofs_complement);
-    if (actual_complement != expected_complement)
-    {
-        throw std::runtime_error(std::format("INTERNAL ERROR: Complement at {:#x} has wrong value. Should be {:#x}, but is {:#x}", ofs_complement, expected_complement, actual_complement));
-    }
 }
 
 }

@@ -61,9 +61,6 @@ private:
     // This message will be printed using Mappy / VisualBoyAdvance debug output.
     void debug_emit_panic_routine();
 
-    void throw_if_fixed_byte_wrong() const;
-    void throw_if_complement_wrong() const;
-
     const shrinkler_depacker_settings m_settings;
     std::vector<unsigned char> m_data;
     size_t m_depacker_size{};

@@ -25,9 +25,11 @@ public:
     lzss_cartridge_assembler(const std::vector<unsigned char>& compressed_binary)
     {
         m_data = assemble(compressed_binary);
+
         // TODO: write complement
-        // TODO: final assertion: fixed byte
-        // TODO: final assertion: complement
+
+        throw_if_fixed_byte_wrong(m_data);
+        throw_if_complement_wrong(m_data);
     }
 
     const std::vector<unsigned char>& data() const

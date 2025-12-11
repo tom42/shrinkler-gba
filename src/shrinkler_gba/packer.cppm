@@ -38,6 +38,8 @@ public:
 
     void throw_if_wrong_lc(lzasm::arm::arm32::address_t expected_lc, const char* what) const;
     void throw_if_not_aligned(lzasm::arm::arm32::address_t alignment) const;
+    void throw_if_fixed_byte_wrong(const std::vector<unsigned char>& cartridge_data) const;
+    void throw_if_complement_wrong(const std::vector<unsigned char>& cartridge_data) const;
 
 protected:
     cartridge_assembler() = default;

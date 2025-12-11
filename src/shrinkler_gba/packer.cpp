@@ -85,4 +85,25 @@ void cartridge_assembler::throw_if_not_aligned(lzasm::arm::arm32::address_t alig
     }
 }
 
+void cartridge_assembler::throw_if_fixed_byte_wrong(const std::vector<unsigned char>& cartridge_data) const
+{
+    auto actual_byte = cartridge_data.at(ofs_fixed_byte);
+    if (actual_byte != fixed_byte_value)
+    {
+        throw std::runtime_error(std::format("INTERNAL ERROR: Fixed byte at {:#x} has wrong value. Should be {:#x}, but is {:#x}", ofs_fixed_byte, fixed_byte_value, actual_byte));
+    }
+}
+
+void cartridge_assembler::throw_if_complement_wrong(const std::vector<unsigned char>& cartridge_data) const
+{
+    // TODO: should we do a size check of cartridge_data here, so that we don't buffer overflow when calculating the complement?
+
+    auto expected_complement = calculate_complement(&cartridge_data[ofs_game_title]);
+    auto actual_complement = cartridge_data.at(ofs_complement);
+    if (actual_complement != expected_complement)
+    {
+        throw std::runtime_error(std::format("INTERNAL ERROR: Complement at {:#x} has wrong value. Should be {:#x}, but is {:#x}", ofs_complement, expected_complement, actual_complement));
+    }
+}
+
 }
