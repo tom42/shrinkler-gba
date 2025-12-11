@@ -26,7 +26,7 @@ public:
     {
         m_data = assemble(compressed_binary);
 
-        // TODO: write complement
+        write_complement(m_data, ofs_complement);
 
         throw_if_fixed_byte_wrong(m_data);
         throw_if_complement_wrong(m_data);
