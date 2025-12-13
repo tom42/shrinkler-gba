@@ -30,4 +30,8 @@ inline constexpr size_t ofs_reserved2 = 0xbe;
 // The value of the fixed byte at ofs_fixed_byte
 inline constexpr auto fixed_byte_value = 0x96;
 
+// Software interrupt numbers
+inline constexpr auto swi_lz77_uncomp_wram = 0x11;
+inline constexpr auto swi_huff_uncomp = 0x13;
+
 }

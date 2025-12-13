@@ -67,12 +67,12 @@ private:
         // Huffman decode to temporary buffer
         adr(r0, "packed_intro"s);
         ldr(r1, lzss_packed_data);
-        swi(0x13);          // TODO: constant for swi number?
+        swi(swi_huff_uncomp);
 
         // LZSS decode to load address
         ldr(r0, lzss_packed_data);
         ldr(r1, input_file.load_address());
-        swi(0x11);          // TODO: constant for swi number?
+        swi(swi_lz77_uncomp_wram);
 
         // Branch to entry point
         ldr(r0, input_file.entry());
