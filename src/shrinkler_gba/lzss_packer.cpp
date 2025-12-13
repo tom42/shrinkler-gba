@@ -105,6 +105,7 @@ private:
 
 std::vector<unsigned char> lzss_compress(const std::vector<unsigned char>& input)
 {
+    // TODO: also verify: verification should really be something provided by agbpack, but since it does not yet do that we'll do it here
     std::vector<unsigned char> output;
     agbpack::optimal_lzss_encoder lzss_encoder;
     lzss_encoder.vram_safe(false);
@@ -114,6 +115,7 @@ std::vector<unsigned char> lzss_compress(const std::vector<unsigned char>& input
 
 std::vector<unsigned char> huffman_compress(const std::vector<unsigned char>& input)
 {
+    // TODO: also verify: verification should really be something provided by agbpack, but since it does not yet do that we'll do it here
     std::vector<unsigned char> output;
     agbpack::huffman_encoder huffman_encoder;
     huffman_encoder.options(agbpack::huffman_options::h4);
