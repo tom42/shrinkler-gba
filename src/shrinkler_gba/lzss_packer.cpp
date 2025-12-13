@@ -64,14 +64,14 @@ private:
         // TODO: that's only to get started: we depack to start of EWRAM, so we can see what we're doing
         const auto lzss_packed_data = mem_ewram;
 
-        // Huffman decode
+        // Huffman decode to temporary buffer
         adr(r0, "packed_intro"s);
         ldr(r1, lzss_packed_data);
         swi(0x13);          // TODO: constant for swi number?
 
         // LZSS decode to load address
         ldr(r0, lzss_packed_data);
-        ldr(r1, mem_iwram); // TODO: unhardcode: that's the load address from input_file => load that
+        ldr(r1, input_file.load_address());
         swi(0x11);          // TODO: constant for swi number?
 
         // Branch to entry point
