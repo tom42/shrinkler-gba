@@ -104,6 +104,7 @@ std::vector<unsigned char> lzss_compress(const std::vector<unsigned char>& input
 {
     std::vector<unsigned char> output;
     agbpack::optimal_lzss_encoder lzss_encoder;
+    lzss_encoder.vram_safe(false);
     lzss_encoder.encode(input.begin(), input.end(), back_inserter(output));
     return output;
 }
