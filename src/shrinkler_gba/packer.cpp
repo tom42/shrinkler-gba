@@ -80,7 +80,8 @@ void cartridge_assembler::write_complement(std::vector<unsigned char>& cartridge
     // So we calculate a value for the game version field like we'd normally to for the complement field and then update
     // the game version field instead of the complement field.
     const size_t complement_byte_index = complement_byte_offset - ofs_game_title;
-    cartridge_data[ofs_game_title + complement_byte_index] = calculate_complement(&cartridge_data[ofs_game_title], complement_byte_index);
+    unsigned char complement = calculate_complement(&cartridge_data[ofs_game_title], complement_byte_index);
+    cartridge_data[ofs_game_title + complement_byte_index] = complement;
 }
 
 void cartridge_assembler::throw_if_wrong_lc(lzasm::arm::arm32::address_t expected_lc, const char* what) const

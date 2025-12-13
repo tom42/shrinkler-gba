@@ -26,7 +26,7 @@ public:
     {
         m_data = assemble(input_file, compressed_binary, options);
 
-        write_complement(m_data, ofs_complement);
+        write_complement(m_data, options.code_in_header ? ofs_complement_if_code_in_header : ofs_complement);
 
         throw_if_fixed_byte_wrong(m_data);
         throw_if_complement_wrong(m_data);
@@ -43,13 +43,14 @@ public:
     }
 
 private:
-    std::vector<unsigned char> assemble(const input_file& input_file, const std::vector<unsigned char>& compressed_binary, const lzss_packer_options& /*options*/)
+    std::vector<unsigned char> assemble(const input_file& input_file, const std::vector<unsigned char>& compressed_binary, const lzss_packer_options& options)
     {
-        // TODO: later, honor the --no-code-in-header option
-        //       * For starters we do NOT stick code into the header
         arm_branch("code_start"s);
         emit_nintendo_logo();
-        emit_remaining_header();
+        if (!options.code_in_header)
+        {
+            emit_remaining_header();
+        }
 
         // Entry point. Initially the GBA is in ARM state.
         // Immediately switch to Thumb state.
@@ -76,12 +77,33 @@ private:
         // LZSS decode to load address
         ldr(r0, lzss_packed_data);
         ldr(r1, input_file.load_address());
+        if (options.code_in_header)
+        {
+            // Fixed byte of value 0x96, followed by unit code which can be freely chosen.
+            // We insert an instruction here that does not bother us and stomp over it.
+            throw_if_wrong_lc(ofs_fixed_byte, "fixed byte");
+            mov(r2, fixed_byte_value);
+        }
         swi(swi_lz77_uncomp_wram);
 
         // Branch to entry point
         ldr(r0, input_file.entry());
         bx(r0);
 
+        if (options.code_in_header)
+        {
+            // Our depacker code is so short that if we put it into the ROM header it won't
+            // even go past the game version byte. The game version byte is somewhere in
+            // the literal pool below, and obviously we do not want anything overwritten
+            // there by the checksum. Therefore we reserve a halfword here, of which we
+            // later patch a byte to get a valid checksum. Luckily this halfword is also
+            // needed to align the literal pool below, so it is not even wasting space.
+            throw_if_wrong_lc(ofs_complement_if_code_in_header, "complement if depacker code is in ROM header");
+            hword(0xffff);
+            throw_if_wrong_lc(ofs_game_version, "game version"); // Sanity check: game version really is in the pool
+        }
+
+        throw_if_not_aligned(2);
         pool();
 
         ////////////////////////////////////////////////////////////////////////
@@ -91,7 +113,7 @@ private:
         // * We use adr to load the address to the packed data,
         //   which requires word alignment.
         ////////////////////////////////////////////////////////////////////////
-        align(2);
+        throw_if_not_aligned(2);
         m_depacker_size = current_lc() - gba_header_size;
     label("packed_intro"s);
         incbin(compressed_binary.begin(), compressed_binary.end());
@@ -99,6 +121,7 @@ private:
         return link(mem_rom);
     }
 
+    static constexpr size_t ofs_complement_if_code_in_header = ofs_game_version - 2;
     std::vector<unsigned char> m_data;
     size_t m_depacker_size{};
 };
@@ -132,8 +155,6 @@ cartridge assemble_cartridge(const input_file& input_file, const std::vector<uns
 {
     // TODO: replace std::vector<unsigned char> by something simple
     // TODO: basically we
-    //       * decode huffman into a temporary buffer
-    //       * decode LZSS into the final location
     //       * where IS the temporary buffer?
     //         * end of EWRAM?
     //         * middle of EWRAM? Advantage: most likely we'll depack to the beginning of IWRAM or EWRAM, so middle should not intefere too much

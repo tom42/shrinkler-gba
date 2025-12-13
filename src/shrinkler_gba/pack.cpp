@@ -192,6 +192,14 @@ void pack(const options& opts)
     // TODO: currently we only do shrinkler compression. Later we'll also support lzss+huffman compression
     //       => This must somehow be abstracted
     //       => Note that the cartridge fix must be done individually, since different compression algos may yield different compressed data
+    //          => Huh? What exactly do I mean? The thing is, this can be done in a generic way because it is the same for all packers,
+    //             but otoh we only know *after* assembling whether the fixing up is necessary. This may or may not increase the final
+    //             cartridge size, so it must be done *before* choosing the smallest cartridge
+    //             => So:
+    //             * For each packer
+    //               * Assemble cart
+    //               * Fix cart for EZF Advance (may or may not be necessary)
+    //             * Choose smallest cart
     auto cartridge = pack_shrinkler(input_file, opts);
     fix_cartridge_for_ezf_advance(cartridge.data, console);
 
