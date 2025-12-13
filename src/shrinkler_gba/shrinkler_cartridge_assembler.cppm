@@ -15,7 +15,7 @@ import :packer;
 namespace shrinkler_gba
 {
 
-// TODO: rename to shrinkler_depacker_options
+// TODO: rename to shrinkler_(de)packer_options
 //       * likeweise, rename "settings" to options where applicable
 struct shrinkler_depacker_settings final
 {

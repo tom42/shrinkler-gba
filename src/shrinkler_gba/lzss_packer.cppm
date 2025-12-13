@@ -8,7 +8,7 @@ namespace shrinkler_gba
 {
 
 // TODO: make use of this
-struct lzss_depacker_options final
+struct lzss_packer_options final
 {
     bool code_in_header = true;
 };
