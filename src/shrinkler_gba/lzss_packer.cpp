@@ -131,9 +131,6 @@ std::vector<unsigned char> compress(const std::vector<unsigned char>& input)
 cartridge assemble_cartridge(const input_file& input_file, const std::vector<unsigned char>& compressed_binary)
 {
     // TODO: replace std::vector<unsigned char> by something simple
-    // TODO: which of the options from the command line do we respect?
-    //       * --debug-checks? (probably no?)
-    //       * --no-code-in-header (probably yes?)
     // TODO: basically we
     //       * decode huffman into a temporary buffer
     //       * decode LZSS into the final location
