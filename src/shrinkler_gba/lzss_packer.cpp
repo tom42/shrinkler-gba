@@ -62,6 +62,10 @@ private:
         // Note that the BIOS functions modify r0 and r1, so don't try to be smart with reusing register contents.
 
         // TODO: that's only to get started: we depack to start of EWRAM, so we can see what we're doing
+        //       * We need to decode somewhere where we're not interfering with the load address. A safe bet might be end of EWRAM
+        //       * We should have a runtime check that this is actually the case. Problem here is that we can't just fail, because
+        //         ultimately we want to pick the smallest of a couple of compression mechanisms, so we can't just die if something
+        //         is not right.
         const auto lzss_packed_data = mem_ewram;
 
         // Huffman decode to temporary buffer
@@ -78,7 +82,6 @@ private:
         ldr(r0, input_file.entry());
         bx(r0);
 
-        // TODO: huffman decode to EWRAM (where to? => somewhere where it does not interfere with the load address)
         pool();
 
         ////////////////////////////////////////////////////////////////////////
