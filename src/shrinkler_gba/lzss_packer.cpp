@@ -22,9 +22,9 @@ namespace
 class lzss_cartridge_assembler final : private cartridge_assembler
 {
 public:
-    lzss_cartridge_assembler(const input_file& input_file, const std::vector<unsigned char>& compressed_binary)
+    lzss_cartridge_assembler(const input_file& input_file, const std::vector<unsigned char>& compressed_binary, const lzss_packer_options& options)
     {
-        m_data = assemble(input_file, compressed_binary);
+        m_data = assemble(input_file, compressed_binary, options);
 
         write_complement(m_data, ofs_complement);
 
@@ -43,7 +43,7 @@ public:
     }
 
 private:
-    std::vector<unsigned char> assemble(const input_file& input_file, const std::vector<unsigned char>& compressed_binary)
+    std::vector<unsigned char> assemble(const input_file& input_file, const std::vector<unsigned char>& compressed_binary, const lzss_packer_options& /*options*/)
     {
         // TODO: later, honor the --no-code-in-header option
         //       * For starters we do NOT stick code into the header
@@ -128,7 +128,7 @@ std::vector<unsigned char> compress(const std::vector<unsigned char>& input)
     return huffman_compress(lzss_compress(input));
 }
 
-cartridge assemble_cartridge(const input_file& input_file, const std::vector<unsigned char>& compressed_binary)
+cartridge assemble_cartridge(const input_file& input_file, const std::vector<unsigned char>& compressed_binary, const lzss_packer_options& options)
 {
     // TODO: replace std::vector<unsigned char> by something simple
     // TODO: basically we
@@ -139,7 +139,7 @@ cartridge assemble_cartridge(const input_file& input_file, const std::vector<uns
     //         * middle of EWRAM? Advantage: most likely we'll depack to the beginning of IWRAM or EWRAM, so middle should not intefere too much
     //         * If the entry point is in IWRAM, use EWRAM as tmp buffer
     //         * If the entry point is in EWRAM, use IWRAM as tmp buffer
-    lzss_cartridge_assembler assembler(input_file, compressed_binary);
+    lzss_cartridge_assembler assembler(input_file, compressed_binary, options);
     return cartridge
     {
         .data = assembler.data(),
@@ -153,7 +153,7 @@ cartridge assemble_cartridge(const input_file& input_file, const std::vector<uns
 cartridge lzss_packer::pack(const input_file& input_file)
 {
     auto compressed_binary = huffman_compress(lzss_compress(input_file.data()));
-    return assemble_cartridge(input_file, compressed_binary);
+    return assemble_cartridge(input_file, compressed_binary, m_options);
 }
 
 }

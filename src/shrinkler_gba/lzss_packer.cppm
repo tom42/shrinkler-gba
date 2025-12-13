@@ -16,7 +16,12 @@ struct lzss_packer_options final
 class lzss_packer final : public packer
 {
 public:
+    lzss_packer(const lzss_packer_options& options) : m_options(options) {}
+
     virtual cartridge pack(const input_file& input_file) override;
+
+private:
+    lzss_packer_options m_options{};
 };
 
 }
