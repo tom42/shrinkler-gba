@@ -130,11 +130,20 @@ private:
 
 std::vector<unsigned char> lzss_compress(const std::vector<unsigned char>& input)
 {
-    // TODO: also verify: verification should really be something provided by agbpack, but since it does not yet do that we'll do it here
     std::vector<unsigned char> output;
     agbpack::optimal_lzss_encoder lzss_encoder;
     lzss_encoder.vram_safe(false);
     lzss_encoder.encode(input.begin(), input.end(), back_inserter(output));
+
+    std::vector<unsigned char> verified;
+    agbpack::lzss_decoder lzss_decoder;
+    lzss_decoder.vram_safe(false);
+    lzss_decoder.decode(output.begin(), output.end(), back_inserter(verified));
+    if (verified != input)
+    {
+        throw std::runtime_error("INTERNAL ERROR: verification of LZSS encoded data failed");
+    }
+
     return output;
 }
 
