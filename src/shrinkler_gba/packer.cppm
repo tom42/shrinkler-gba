@@ -15,7 +15,7 @@ namespace shrinkler_gba
 
 struct cartridge final
 {
-    std::vector<unsigned char> data;
+    bytevector data;
     size_t compressed_size = 0;
     size_t depacker_size = 0;
 };
@@ -36,12 +36,12 @@ public:
 
     virtual ~cartridge_assembler() override = default;
 
-    void write_complement(std::vector<unsigned char>& cartridge_data, const size_t complement_byte_offset);
+    void write_complement(bytevector& cartridge_data, const size_t complement_byte_offset);
 
     void throw_if_wrong_lc(lzasm::arm::arm32::address_t expected_lc, const char* what) const;
     void throw_if_not_aligned(lzasm::arm::arm32::address_t alignment) const;
-    void throw_if_fixed_byte_wrong(const std::vector<unsigned char>& cartridge_data) const;
-    void throw_if_complement_wrong(const std::vector<unsigned char>& cartridge_data) const;
+    void throw_if_fixed_byte_wrong(const bytevector& cartridge_data) const;
+    void throw_if_complement_wrong(const bytevector& cartridge_data) const;
 
 protected:
     cartridge_assembler() = default;

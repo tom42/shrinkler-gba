@@ -9,6 +9,7 @@ module;
 #include <vector>
 
 export module shrinkler_gba:input_file;
+import :utility;
 
 namespace shrinkler_gba
 {
@@ -29,7 +30,7 @@ public:
 
     uint32_t loaded_data_size() const { return gsl::narrow<uint32_t>(m_data.size()); }
 
-    const std::vector<unsigned char>& data() const { return m_data; }
+    const bytevector& data() const { return m_data; }
 
 private:
     void read_entry(const ELFIO::elfio& elfio);
@@ -37,7 +38,7 @@ private:
 
     uint32_t m_entry = 0;
     uint32_t m_load_address = 0;
-    std::vector<unsigned char> m_data;
+    bytevector m_data;
 };
 
 }

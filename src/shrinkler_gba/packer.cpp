@@ -68,7 +68,7 @@ void cartridge_assembler::emit_remaining_header()
     byte(0x00, 0x00);
 }
 
-void cartridge_assembler::write_complement(std::vector<unsigned char>& cartridge_data, const size_t complement_byte_offset)
+void cartridge_assembler::write_complement(bytevector& cartridge_data, const size_t complement_byte_offset)
 {
     // TODO: move this comment elsewhere or reformulate it: like that it does not make sense here
     // If we have no code in the header then we can use header fields normally and calculate and patch the complement field.
@@ -103,7 +103,7 @@ void cartridge_assembler::throw_if_not_aligned(lzasm::arm::arm32::address_t alig
     }
 }
 
-void cartridge_assembler::throw_if_fixed_byte_wrong(const std::vector<unsigned char>& cartridge_data) const
+void cartridge_assembler::throw_if_fixed_byte_wrong(const bytevector& cartridge_data) const
 {
     auto actual_byte = cartridge_data.at(ofs_fixed_byte);
     if (actual_byte != fixed_byte_value)
@@ -112,7 +112,7 @@ void cartridge_assembler::throw_if_fixed_byte_wrong(const std::vector<unsigned c
     }
 }
 
-void cartridge_assembler::throw_if_complement_wrong(const std::vector<unsigned char>& cartridge_data) const
+void cartridge_assembler::throw_if_complement_wrong(const bytevector& cartridge_data) const
 {
     // TODO: should we do a size check of cartridge_data here, so that we don't buffer overflow when calculating the complement?
 

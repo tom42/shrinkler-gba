@@ -11,13 +11,15 @@
 #include "shrinkler_gba_unit_test_config.hpp"
 #include "test_utilities.hpp"
 
+import shrinkler_gba;
+
 namespace shrinkler_gba_unit_test
 {
 
 using std::filesystem::path;
 using std::vector;
 
-std::vector<unsigned char> load_binary_file(const std::string& filename)
+shrinkler_gba::bytevector load_binary_file(const std::string& filename)
 {
     path full_path = std::filesystem::path(SHRINKLER_GBA_UNIT_TEST_TESTDATA_DIRECTORY) / filename;
 
@@ -50,9 +52,9 @@ std::vector<unsigned char> load_binary_file(const std::string& filename)
     return data;
 }
 
-const std::vector<unsigned char> make_bytevector(const char* s)
+shrinkler_gba::bytevector make_bytevector(const char* s)
 {
-    return std::vector<unsigned char>(s, s + std::strlen(s));
+    return shrinkler_gba::bytevector(s, s + std::strlen(s));
 }
 
 }

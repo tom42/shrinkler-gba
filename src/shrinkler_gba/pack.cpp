@@ -78,7 +78,7 @@ input_file load_input_file(const std::string& path, const console& console)
     }
 }
 
-std::vector<unsigned char> shrinkler_compress(const std::vector<unsigned char>& uncompressed_binary, const options& opts)
+bytevector shrinkler_compress(const bytevector& uncompressed_binary, const options& opts)
 {
     // TODO: dump compression info (whatever it is that encoder can spit out additionally and that we might want to output - the references warning thing, mostly)
     using namespace libshrinkler;
@@ -96,7 +96,7 @@ std::vector<unsigned char> shrinkler_compress(const std::vector<unsigned char>& 
     return compressed_binary;
 }
 
-cartridge assemble_shrinkler_cartridge(const input_file& input_file, const std::vector<unsigned char>& compressed_binary, const options& opts)
+cartridge assemble_shrinkler_cartridge(const input_file& input_file, const bytevector& compressed_binary, const options& opts)
 {
     // TODO: later we'll have multiple algorithms, but for the time being that's fine
     //       * Note that since the total size is given by cart header + depacker + packed program this means that both compress() and assemble_cartridge() possibly need to go into some sort of class
@@ -122,7 +122,7 @@ cartridge pack_shrinkler(const input_file& input_file, const options& opts)
     return assemble_shrinkler_cartridge(input_file, compressed_binary, opts);
 }
 
-void fix_cartridge_for_ezf_advance(std::vector<unsigned char>& cartridge_data, const console& console)
+void fix_cartridge_for_ezf_advance(bytevector& cartridge_data, const console& console)
 {
     // EZF Advance removes trailing 0xff bytes.
     // If the last byte is 0xff, pad the image so that nothing important is removed.
@@ -143,7 +143,7 @@ void remove_output_file(const std::filesystem::path& filename)
     std::filesystem::remove(filename, e);
 }
 
-void write_to_disk(const std::vector<unsigned char>& data, const std::string& filename, const console& console)
+void write_to_disk(const bytevector& data, const std::string& filename, const console& console)
 {
     try
     {

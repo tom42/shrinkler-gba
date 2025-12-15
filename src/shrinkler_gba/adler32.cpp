@@ -11,7 +11,7 @@ module shrinkler_gba;
 namespace shrinkler_gba
 {
 
-uint32_t adler32(const std::vector<unsigned char>& data)
+uint32_t adler32(const bytevector& data)
 {
     constexpr auto base = 65521;
 

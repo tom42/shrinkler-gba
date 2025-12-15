@@ -8,6 +8,7 @@ import shrinkler_gba;
 namespace shrinkler_gba_unit_test
 {
 
+using shrinkler_gba::bytevector;
 using shrinkler_gba::calculate_complement;
 using shrinkler_gba::checksum_area_size;
 using shrinkler_gba::ofs_game_title;
@@ -45,7 +46,7 @@ TEST_CASE("complement")
 
     SECTION("calculate complement with fixed complement byte")
     {
-        std::vector<unsigned char> buf(ascending_numbers, ascending_numbers + std::size(ascending_numbers));
+        bytevector buf(ascending_numbers, ascending_numbers + std::size(ascending_numbers));
 
         // We want the real complement byte to have a fixed value, and fix the game version byte instead.
         // Calculate what value the game version byte should have.

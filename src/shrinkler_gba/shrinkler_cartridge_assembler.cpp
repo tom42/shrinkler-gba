@@ -122,7 +122,7 @@ constexpr auto to_signed(TUnsigned u)
 
 }
 
-shrinkler_cartridge_assembler::shrinkler_cartridge_assembler(const input_file& input_file, const std::vector<unsigned char>& compressed_program, const shrinkler_depacker_settings& settings)
+shrinkler_cartridge_assembler::shrinkler_cartridge_assembler(const input_file& input_file, const bytevector& compressed_program, const shrinkler_depacker_settings& settings)
     : m_settings(settings)
 {
     m_data = assemble(input_file, compressed_program);
@@ -133,7 +133,7 @@ shrinkler_cartridge_assembler::shrinkler_cartridge_assembler(const input_file& i
     throw_if_complement_wrong(m_data);
 }
 
-std::vector<unsigned char> shrinkler_cartridge_assembler::assemble(const input_file& input_file, const std::vector<unsigned char>& compressed_program)
+bytevector shrinkler_cartridge_assembler::assemble(const input_file& input_file, const bytevector& compressed_program)
 {
     // 1536 contexts would be sufficient, but 2048 is smaller.
     constexpr auto INIT_ONE_PROB = 0x8000u;

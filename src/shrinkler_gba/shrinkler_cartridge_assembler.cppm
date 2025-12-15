@@ -26,9 +26,9 @@ struct shrinkler_depacker_settings final
 class shrinkler_cartridge_assembler final : private cartridge_assembler
 {
 public:
-    shrinkler_cartridge_assembler(const input_file& input_file, const std::vector<unsigned char>& compressed_program, const shrinkler_depacker_settings& settings);
+    shrinkler_cartridge_assembler(const input_file& input_file, const bytevector& compressed_program, const shrinkler_depacker_settings& settings);
 
-    const std::vector<unsigned char>& data() const
+    const bytevector& data() const
     {
         return m_data;
     }
@@ -39,7 +39,7 @@ public:
     }
 
 private:
-    std::vector<unsigned char> assemble(const input_file& input_file, const std::vector<unsigned char>& compressed_program);
+    bytevector assemble(const input_file& input_file, const bytevector& compressed_program);
 
     // Macro that calls the panic routine if the size of the decompressed data is incorrect.
     // This macro expects outp (the output pointer) to point to the byte after the last decompressed byte.
@@ -63,7 +63,7 @@ private:
     void debug_emit_panic_routine();
 
     const shrinkler_depacker_settings m_settings;
-    std::vector<unsigned char> m_data;
+    bytevector m_data;
     size_t m_depacker_size{};
 };
 

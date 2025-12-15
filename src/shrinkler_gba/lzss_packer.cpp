@@ -24,7 +24,7 @@ namespace
 class lzss_cartridge_assembler final : private cartridge_assembler
 {
 public:
-    lzss_cartridge_assembler(const input_file& input_file, const std::vector<unsigned char>& compressed_binary, const lzss_packer_options& options)
+    lzss_cartridge_assembler(const input_file& input_file, const bytevector& compressed_binary, const lzss_packer_options& options)
     {
         m_data = assemble(input_file, compressed_binary, options);
 
@@ -34,7 +34,7 @@ public:
         throw_if_complement_wrong(m_data);
     }
 
-    const std::vector<unsigned char>& data() const
+    const bytevector& data() const
     {
         return m_data;
     }
@@ -45,7 +45,7 @@ public:
     }
 
 private:
-    std::vector<unsigned char> assemble(const input_file& input_file, const std::vector<unsigned char>& compressed_binary, const lzss_packer_options& options)
+    bytevector assemble(const input_file& input_file, const bytevector& compressed_binary, const lzss_packer_options& options)
     {
         arm_branch("code_start"s);
         emit_nintendo_logo();
@@ -124,18 +124,18 @@ private:
     }
 
     static constexpr size_t ofs_complement_if_code_in_header = ofs_game_version - 2;
-    std::vector<unsigned char> m_data;
+    bytevector m_data;
     size_t m_depacker_size{};
 };
 
-std::vector<unsigned char> lzss_compress(const std::vector<unsigned char>& input)
+bytevector lzss_compress(const bytevector& input)
 {
-    std::vector<unsigned char> output;
+    bytevector output;
     agbpack::optimal_lzss_encoder encoder;
     encoder.vram_safe(false);
     encoder.encode(input.begin(), input.end(), back_inserter(output));
 
-    std::vector<unsigned char> verified;
+    bytevector verified;
     agbpack::lzss_decoder decoder;
     decoder.vram_safe(false);
     decoder.decode(output.begin(), output.end(), back_inserter(verified));
@@ -147,14 +147,14 @@ std::vector<unsigned char> lzss_compress(const std::vector<unsigned char>& input
     return output;
 }
 
-std::vector<unsigned char> huffman_compress(const std::vector<unsigned char>& input)
+bytevector huffman_compress(const bytevector& input)
 {
-    std::vector<unsigned char> output;
+    bytevector output;
     agbpack::huffman_encoder encoder;
     encoder.options(agbpack::huffman_options::h4);
     encoder.encode(input.begin(), input.end(), back_inserter(output));
 
-    std::vector<unsigned char> verified;
+    bytevector verified;
     agbpack::huffman_decoder decoder;
     decoder.decode(output.begin(), output.end(), back_inserter(verified));
     if (verified != input)
@@ -169,14 +169,13 @@ std::vector<unsigned char> huffman_compress(const std::vector<unsigned char>& in
     return output;
 }
 
-std::vector<unsigned char> compress(const std::vector<unsigned char>& input)
+bytevector compress(const bytevector& input)
 {
     return huffman_compress(lzss_compress(input));
 }
 
-cartridge assemble_cartridge(const input_file& input_file, const std::vector<unsigned char>& compressed_binary, const lzss_packer_options& options)
+cartridge assemble_cartridge(const input_file& input_file, const bytevector& compressed_binary, const lzss_packer_options& options)
 {
-    // TODO: replace std::vector<unsigned char> by something simple
     // TODO: basically we
     //       * where IS the temporary buffer?
     //         * end of EWRAM?

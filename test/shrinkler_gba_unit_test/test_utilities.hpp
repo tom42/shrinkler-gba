@@ -7,12 +7,13 @@
 #include <string>
 #include <vector>
 
+import shrinkler_gba;
+
 namespace shrinkler_gba_unit_test
 {
 
-// TODO: consider turning this into a module?
-std::vector<unsigned char> load_binary_file(const std::string& filename);
-const std::vector<unsigned char> make_bytevector(const char* s);
+shrinkler_gba::bytevector load_binary_file(const std::string& filename);
+shrinkler_gba::bytevector make_bytevector(const char* s);
 
 }
 
