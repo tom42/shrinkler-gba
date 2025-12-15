@@ -131,14 +131,14 @@ private:
 std::vector<unsigned char> lzss_compress(const std::vector<unsigned char>& input)
 {
     std::vector<unsigned char> output;
-    agbpack::optimal_lzss_encoder lzss_encoder;
-    lzss_encoder.vram_safe(false);
-    lzss_encoder.encode(input.begin(), input.end(), back_inserter(output));
+    agbpack::optimal_lzss_encoder encoder;
+    encoder.vram_safe(false);
+    encoder.encode(input.begin(), input.end(), back_inserter(output));
 
     std::vector<unsigned char> verified;
-    agbpack::lzss_decoder lzss_decoder;
-    lzss_decoder.vram_safe(false);
-    lzss_decoder.decode(output.begin(), output.end(), back_inserter(verified));
+    agbpack::lzss_decoder decoder;
+    decoder.vram_safe(false);
+    decoder.decode(output.begin(), output.end(), back_inserter(verified));
     if (verified != input)
     {
         throw std::runtime_error("INTERNAL ERROR: verification of LZSS encoded data failed");
@@ -150,13 +150,13 @@ std::vector<unsigned char> lzss_compress(const std::vector<unsigned char>& input
 std::vector<unsigned char> huffman_compress(const std::vector<unsigned char>& input)
 {
     std::vector<unsigned char> output;
-    agbpack::huffman_encoder huffman_encoder;
-    huffman_encoder.options(agbpack::huffman_options::h4);
-    huffman_encoder.encode(input.begin(), input.end(), back_inserter(output));
+    agbpack::huffman_encoder encoder;
+    encoder.options(agbpack::huffman_options::h4);
+    encoder.encode(input.begin(), input.end(), back_inserter(output));
 
     std::vector<unsigned char> verified;
-    agbpack::huffman_decoder huffman_decoder;
-    huffman_decoder.decode(output.begin(), output.end(), back_inserter(verified));
+    agbpack::huffman_decoder decoder;
+    decoder.decode(output.begin(), output.end(), back_inserter(verified));
     if (verified != input)
     {
         // TODO: factor out creation of internal error exceptions? (use a factory method)
