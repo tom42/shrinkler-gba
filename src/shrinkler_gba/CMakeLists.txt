@@ -20,6 +20,7 @@ set(
   shrinkler_cartridge_assembler.cppm
   shrinkler_gba.cppm
   table_printer.cppm
+  utility.cppm
   PRIVATE
   adler32.cpp
   command_line.cpp

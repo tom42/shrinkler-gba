@@ -15,3 +15,4 @@ export import :pack;
 export import :packer;
 export import :shrinkler_cartridge_assembler;
 export import :table_printer;
+export import :utility;
