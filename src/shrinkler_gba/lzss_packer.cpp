@@ -161,8 +161,8 @@ bytevector huffman_compress(const bytevector& input)
     {
         // TODO: factor out creation of internal error exceptions? (use a factory method)
         //       * put that into some utility.cppm module, along with
-        //         * to_signed
-        //         * adler32
+        //         * to_signed => but then give that one a test
+        //         * adler32 => do not forget to also rename its test => utility_test.cpp etc.
         throw std::runtime_error("INTERNAL ERROR: verification of huffman encoded data failed");
     }
 
