@@ -81,7 +81,6 @@ input_file load_input_file(const std::string& path, const console& console)
 std::vector<unsigned char> shrinkler_compress(const std::vector<unsigned char>& uncompressed_binary, const options& opts)
 {
     // TODO: dump compression info (whatever it is that encoder can spit out additionally and that we might want to output - the references warning thing, mostly)
-    // TODO: progress output for libshrinkler? => Well what is not implemented inside libshrinkler
     using namespace libshrinkler;
 
     encoder_parameters encoder_parameters(opts.shrinkler_parameters());
