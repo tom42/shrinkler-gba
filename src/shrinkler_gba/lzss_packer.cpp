@@ -3,7 +3,7 @@
 
 module;
 
-#include <gsl/gsl> // TODO: remove if not used
+#include <gsl/gsl>
 #include <iterator>
 #include <lzasm/arm/arm32/divided_thumb_assembler.hpp>
 #include <vector>
@@ -77,7 +77,7 @@ private:
 
         // LZSS decode to load address
         ldr(r0, lzss_packed_data);
-        ldr(r1, gsl::narrow<int32_t>(input_file.load_address())); // TODO: wrong cast (also in shrinkler code? => check all calls to gsl::narrow())
+        ldr(r1, gsl::narrow<int32_t>(input_file.load_address()));
         if (options.code_in_header)
         {
             // Fixed byte of value 0x96, followed by unit code which can be freely chosen.
@@ -88,7 +88,7 @@ private:
         swi(swi_lz77_uncomp_wram);
 
         // Branch to entry point
-        ldr(r0, gsl::narrow<int32_t>(input_file.entry())); // TODO: that is wrong cast, no? should cast to immediate_t, no? (well should use to_signed) (YES BUT WE HAVE THIS TWICE IN OTHER PACKER TOO)
+        ldr(r0, gsl::narrow<int32_t>(input_file.entry()));
         bx(r0);
 
         if (options.code_in_header)
