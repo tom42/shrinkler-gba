@@ -5,6 +5,7 @@ module;
 
 #include <format>
 #include <iostream>
+#include <lzasm/arm/arm32/divided_thumb_assembler.hpp>
 
 module shrinkler_gba;
 

@@ -34,7 +34,7 @@ public:
     void emit_nintendo_logo();
     void emit_remaining_header();
 
-    virtual ~cartridge_assembler() = default;
+    virtual ~cartridge_assembler() override = default;
 
     void write_complement(std::vector<unsigned char>& cartridge_data, const size_t complement_byte_offset);
 
