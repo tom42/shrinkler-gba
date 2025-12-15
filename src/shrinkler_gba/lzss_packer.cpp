@@ -6,6 +6,7 @@ module;
 #include <gsl/gsl>
 #include <iterator>
 #include <lzasm/arm/arm32/divided_thumb_assembler.hpp>
+#include <stdexcept>
 #include <vector>
 
 module shrinkler_gba;
@@ -139,11 +140,23 @@ std::vector<unsigned char> lzss_compress(const std::vector<unsigned char>& input
 
 std::vector<unsigned char> huffman_compress(const std::vector<unsigned char>& input)
 {
-    // TODO: also verify: verification should really be something provided by agbpack, but since it does not yet do that we'll do it here
     std::vector<unsigned char> output;
     agbpack::huffman_encoder huffman_encoder;
     huffman_encoder.options(agbpack::huffman_options::h4);
     huffman_encoder.encode(input.begin(), input.end(), back_inserter(output));
+
+    std::vector<unsigned char> verified;
+    agbpack::huffman_decoder huffman_decoder;
+    huffman_decoder.decode(output.begin(), output.end(), back_inserter(verified));
+    if (verified != input)
+    {
+        // TODO: factor out creation of internal error exceptions? (use a factory method)
+        //       * put that into some utility.cppm module, along with
+        //         * to_signed
+        //         * adler32
+        throw std::runtime_error("INTERNAL ERROR: verification of huffman encoded data failed");
+    }
+
     return output;
 }
 
