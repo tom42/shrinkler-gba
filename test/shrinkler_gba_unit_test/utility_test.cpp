@@ -2,7 +2,9 @@
 // SPDX-License-Identifier: MIT
 
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/catch_template_test_macros.hpp>
 #include <cstdint>
+#include <limits>
 #include <type_traits>
 
 import shrinkler_gba;
@@ -12,19 +14,15 @@ namespace shrinkler_gba_unit_test
 
 using shrinkler_gba::to_signed;
 
-TEST_CASE("utility_test")
+TEMPLATE_TEST_CASE("to_signed", "", uint16_t, uint32_t)
 {
-    SECTION("to_signed")
-    {
-        constexpr auto unsigned_value = uint16_t(0xffff);
+    constexpr auto unsigned_value = std::numeric_limits<TestType>::max();
 
-        constexpr auto signed_value = to_signed(unsigned_value);
+    constexpr auto signed_value = to_signed(unsigned_value);
 
-        CHECK(sizeof(signed_value) == sizeof(unsigned_value));
-        CHECK(std::is_signed_v<decltype(signed_value)> == true);
-        CHECK(signed_value == -1);
-        // TODO: check another type?
-    }
+    CHECK(sizeof(signed_value) == sizeof(unsigned_value));
+    CHECK(std::is_signed_v<decltype(signed_value)> == true);
+    CHECK(signed_value == -1);
 }
 
 }
