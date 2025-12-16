@@ -65,8 +65,8 @@ module;
 #include <stdexcept>
 #include <string>
 
-
 module shrinkler_gba;
+import :utility;
 
 namespace shrinkler_gba
 {
@@ -112,12 +112,6 @@ constexpr uint32_t rgb5(uint32_t r, uint32_t g, uint32_t b)
 constexpr uint32_t rgb8(uint32_t r, uint32_t g, uint32_t b)
 {
     return rgb5(r >> 3, g >> 3, b >> 3);
-}
-
-template <std::unsigned_integral TUnsigned>
-constexpr auto to_signed(TUnsigned u)
-{
-    return static_cast<std::make_signed_t<TUnsigned>>(u);
 }
 
 }

@@ -18,7 +18,8 @@ add_executable(
   pack_test.cpp
   parse_command_line_test.cpp
   table_printer_test.cpp
-  test_utilities.cpp)
+  test_utilities.cpp
+  utility_test.cpp)
 
 vtg_target_enable_warnings(shrinkler_gba_unit_test)
 target_include_directories(shrinkler_gba_unit_test PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
