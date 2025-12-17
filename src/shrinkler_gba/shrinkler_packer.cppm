@@ -24,9 +24,11 @@ struct shrinkler_packer_options final
 class shrinkler_packer final : public packer
 {
 public:
-    // TODO: add ctor
+    shrinkler_packer(const shrinkler_packer_options& options) : m_options(options) {}
+
     // TODO: add pack()
 private:
+    shrinkler_packer_options m_options{};
 };
 
 }
