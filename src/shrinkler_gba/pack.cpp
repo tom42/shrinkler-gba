@@ -209,11 +209,11 @@ void pack(const options& opts)
     // TODO: have a similar class for shrinkler: shrinkler_packer
     //       * Turn shrinkler_cartridge_assembler.cpp(m) into shrinkler_packer.cpp(m)
     //       * shrinkler_cartridge_assembler will then be private to shrinkler_packer.cpp and be in an anonymous namespace
-    lzss_packer_options options
+    lzss_packer_options lzss_packer_options
     {
         .code_in_header = opts.code_in_header(),
     };
-    lzss_packer lzss_packer(options);
+    lzss_packer lzss_packer(lzss_packer_options);
     auto cartridge2 = lzss_packer.pack(input_file);
     write_to_disk(cartridge2.data, opts.output_file().string(), console);
     display_sizes(input_file, cartridge2, console);
