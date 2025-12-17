@@ -561,7 +561,7 @@ bytevector compress(const bytevector& uncompressed_binary)
 // TODO: arguments
 // TODO: return type
 // TODO: implement
-cartridge assemble_cartridge()
+cartridge assemble_cartridge(const input_file& /*input_file*/, const bytevector& /*compressed_binary*/, const shrinkler_packer_options& /*options*/)
 {
     throw std::runtime_error("TODO: YIKES: implement");
 }
@@ -571,7 +571,7 @@ cartridge assemble_cartridge()
 cartridge shrinkler_packer::pack(const input_file& input_file)
 {
     auto compressed_binary = compress(input_file.data()); // TODO: compress binary, using shrinkler options from command line. This means we need them in shrinkler_packer_options, no?
-    return assemble_cartridge();
+    return assemble_cartridge(input_file, compressed_binary, m_options);
 }
 
 }
