@@ -545,7 +545,7 @@ namespace
 {
 
 // TODO: arguments
-bytevector compress()
+bytevector compress(const bytevector& /*input*/)
 {
     // TODO: real implementation/return value
     return{};
@@ -556,14 +556,14 @@ bytevector compress()
 // TODO: implement
 cartridge assemble_cartridge()
 {
-    throw "TODO: YIKES: implement";
+    throw std::runtime_error("TODO: YIKES: implement");
 }
 
 }
 
-cartridge shrinkler_packer::pack(const input_file& /*input_file*/)
+cartridge shrinkler_packer::pack(const input_file& input_file)
 {
-    auto compressed_binary = compress(); // TODO: compress binary, using shrinkler options from command line. This means we need them in shrinkler_packer_options, no?
+    auto compressed_binary = compress(input_file.data()); // TODO: compress binary, using shrinkler options from command line. This means we need them in shrinkler_packer_options, no?
     return assemble_cartridge();
 }
 

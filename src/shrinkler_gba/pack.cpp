@@ -205,6 +205,18 @@ void pack(const options& opts)
     write_to_disk(cartridge.data, opts.output_file().string(), console);
     display_sizes(input_file, cartridge, console);
 
+    // TODO: more test code: here we test our new shrinkler_packer
+    shrinkler_packer_options shrinkler_packer_options
+    {
+        // TODO: add missing stuff: shrinkler options (anything else?)
+        .code_in_header = opts.code_in_header(),
+        .debug_checks = opts.debug_checks()
+    };
+    shrinkler_packer shrinkler_packer(shrinkler_packer_options);
+    auto cartridge3 = shrinkler_packer.pack(input_file);
+    // TODO: write to disk (really? makes no sense once more, no?)
+    display_sizes(input_file, cartridge3, console);
+
     // TODO: test code: LZSS. What we really want to do is: we want to try a number of methods and then choose the best one
     // TODO: have a similar class for shrinkler: shrinkler_packer
     //       * Turn shrinkler_cartridge_assembler.cpp(m) into shrinkler_packer.cpp(m)
