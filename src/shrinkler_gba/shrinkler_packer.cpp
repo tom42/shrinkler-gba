@@ -545,10 +545,17 @@ namespace
 {
 
 // TODO: arguments
-bytevector compress(const bytevector& /*input*/)
+bytevector compress(const bytevector& uncompressed_binary)
 {
     // TODO: real implementation/return value
-    return{};
+    using namespace libshrinkler;
+
+    // TODO: set up encoder parameters (can't do so already, we don't have them yet)
+
+    encoder encoder;
+    // TODO: set parameters on encoder
+
+    return encoder.encode(uncompressed_binary);
 }
 
 // TODO: arguments
