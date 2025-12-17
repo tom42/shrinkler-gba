@@ -15,6 +15,12 @@ import :packer;
 namespace shrinkler_gba
 {
 
+struct shrinkler_packer_options final
+{
+    bool code_in_header = true;
+    bool debug_checks = false;
+};
+
 class shrinkler_packer final : public packer
 {
 public:
@@ -30,18 +36,10 @@ private:
 namespace shrinkler_gba
 {
 
-// TODO: rename to shrinkler_(de)packer_options
-//       * likewise, rename "settings" to options where applicable
-struct shrinkler_depacker_settings final
-{
-    bool code_in_header = true;
-    bool debug_checks = false;
-};
-
 class shrinkler_cartridge_assembler final : private cartridge_assembler
 {
 public:
-    shrinkler_cartridge_assembler(const input_file& input_file, const bytevector& compressed_program, const shrinkler_depacker_settings& settings);
+    shrinkler_cartridge_assembler(const input_file& input_file, const bytevector& compressed_program, const shrinkler_packer_options& options);
 
     const bytevector& data() const
     {
@@ -77,7 +75,7 @@ private:
     // This message will be printed using Mappy / VisualBoyAdvance debug output.
     void debug_emit_panic_routine();
 
-    const shrinkler_depacker_settings m_settings;
+    const shrinkler_packer_options m_options;
     bytevector m_data;
     size_t m_depacker_size{};
 };

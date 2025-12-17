@@ -101,12 +101,12 @@ cartridge assemble_shrinkler_cartridge(const input_file& input_file, const bytev
     // TODO: later we'll have multiple algorithms, but for the time being that's fine
     //       * Note that since the total size is given by cart header + depacker + packed program this means that both compress() and assemble_cartridge() possibly need to go into some sort of class
     //       * Can we compare the output we're getting here against an old version? Should be bit for bit the same, no?
-    const shrinkler_depacker_settings depacker_settings
+    const shrinkler_packer_options options
     {
         .code_in_header = opts.code_in_header(),
         .debug_checks = opts.debug_checks()
     };
-    shrinkler_cartridge_assembler assembler(input_file, compressed_binary, depacker_settings);
+    shrinkler_cartridge_assembler assembler(input_file, compressed_binary, options);
 
     return cartridge
     {

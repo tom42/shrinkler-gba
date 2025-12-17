@@ -116,8 +116,8 @@ constexpr uint32_t rgb8(uint32_t r, uint32_t g, uint32_t b)
 
 }
 
-shrinkler_cartridge_assembler::shrinkler_cartridge_assembler(const input_file& input_file, const bytevector& compressed_program, const shrinkler_depacker_settings& settings)
-    : m_settings(settings)
+shrinkler_cartridge_assembler::shrinkler_cartridge_assembler(const input_file& input_file, const bytevector& compressed_program, const shrinkler_packer_options& options)
+    : m_options(options)
 {
     m_data = assemble(input_file, compressed_program);
 
@@ -130,7 +130,7 @@ shrinkler_cartridge_assembler::shrinkler_cartridge_assembler(const input_file& i
     // The game version field encodes the immediate value ("xx"), which we do not care about and which we can choose freely.
     // So we calculate a value for the game version field like we'd normally to for the complement field and then update
     // the game version field instead of the complement field.
-    write_complement(m_data, m_settings.code_in_header ? ofs_game_version : ofs_complement);
+    write_complement(m_data, m_options.code_in_header ? ofs_game_version : ofs_complement);
 
     throw_if_fixed_byte_wrong(m_data);
     throw_if_complement_wrong(m_data);
@@ -157,7 +157,7 @@ bytevector shrinkler_cartridge_assembler::assemble(const input_file& input_file,
     arm_branch("code_start"s);
     emit_nintendo_logo();
 
-    if (!m_settings.code_in_header)
+    if (!m_options.code_in_header)
     {
         emit_remaining_header();
     }
@@ -197,7 +197,7 @@ label("newword"s);
     add(inp, 4);
     // Shift data bit into C and make bit 0 the new sentinel bit.
     add(bitbuf, bitbuf);
-    if (m_settings.code_in_header)
+    if (m_options.code_in_header)
     {
         // Fixed byte of value 0x96, followed by unit code which can be freely chosen.
         // We insert an instruction here that does not bother us and stomp over it.
@@ -210,7 +210,7 @@ label("nonewword"s);
     adc(rvalue, rvalue);
     add(isize, isize);
 label("loop_condition"s);
-    if (m_settings.code_in_header)
+    if (m_options.code_in_header)
     {
         // game version (immediate value), followed by complement (opcode).
         // Again, insert an instruction that does not bother us and stomp over it.
@@ -383,7 +383,7 @@ label("packed_intro"s);
 
 void shrinkler_cartridge_assembler::debug_check_decompressed_data_size(const input_file& input_file)
 {
-    if (!m_settings.debug_checks)
+    if (!m_options.debug_checks)
     {
         return;
     }
@@ -402,7 +402,7 @@ label("decompressed_data_size_ok"s);
 
 void shrinkler_cartridge_assembler::debug_check_decompressed_data(const input_file& input_file)
 {
-    if (!m_settings.debug_checks)
+    if (!m_options.debug_checks)
     {
         return;
     }
@@ -449,7 +449,7 @@ label("checksum_ok"s);
 
 void shrinkler_cartridge_assembler::debug_check_sp_on_exit()
 {
-    if (!m_settings.debug_checks)
+    if (!m_options.debug_checks)
     {
         return;
     }
@@ -463,7 +463,7 @@ label("sp_ok"s);
 
 void shrinkler_cartridge_assembler::debug_call_panic_routine(const std::string& message)
 {
-    if (!m_settings.debug_checks)
+    if (!m_options.debug_checks)
     {
         return;
     }
@@ -486,7 +486,7 @@ label(message);
 
 void shrinkler_cartridge_assembler::debug_emit_panic_routine()
 {
-    if (!m_settings.debug_checks)
+    if (!m_options.debug_checks)
     {
         return;
     }
