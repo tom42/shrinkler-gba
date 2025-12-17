@@ -207,6 +207,8 @@ void pack(const options& opts)
 
     // TODO: test code: LZSS. What we really want to do is: we want to try a number of methods and then choose the best one
     // TODO: have a similar class for shrinkler: shrinkler_packer
+    //       * Turn shrinkler_cartridge_assembler.cpp(m) into shrinkler_packer.cpp(m)
+    //       * shrinkler_cartridge_assembler will then be private to shrinkler_packer.cpp and be in an anonymous namespace
     lzss_packer_options options
     {
         .code_in_header = opts.code_in_header(),

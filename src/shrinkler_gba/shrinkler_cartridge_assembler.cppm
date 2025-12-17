@@ -16,7 +16,7 @@ namespace shrinkler_gba
 {
 
 // TODO: rename to shrinkler_(de)packer_options
-//       * likeweise, rename "settings" to options where applicable
+//       * likewise, rename "settings" to options where applicable
 struct shrinkler_depacker_settings final
 {
     bool code_in_header = true;
