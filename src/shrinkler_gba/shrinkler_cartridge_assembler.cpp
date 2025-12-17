@@ -121,6 +121,15 @@ shrinkler_cartridge_assembler::shrinkler_cartridge_assembler(const input_file& i
 {
     m_data = assemble(input_file, compressed_program);
 
+    // If we have no code in the header then we can use header fields normally and calculate and patch the complement field.
+    //
+    // If we do have code in the header, the complement field is part of a harmless bogus opcode that we inserted there.
+    // It is a "mov rn,xx" instruction, where the complement field encodes the "mov rn" part. As destination register we
+    // choose a register that we do not use and where we do not care that it gets clobbered.
+    //
+    // The game version field encodes the immediate value ("xx"), which we do not care about and which we can choose freely.
+    // So we calculate a value for the game version field like we'd normally to for the complement field and then update
+    // the game version field instead of the complement field.
     write_complement(m_data, m_settings.code_in_header ? ofs_game_version : ofs_complement);
 
     throw_if_fixed_byte_wrong(m_data);
