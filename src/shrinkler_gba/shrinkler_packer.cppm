@@ -26,7 +26,8 @@ class shrinkler_packer final : public packer
 public:
     shrinkler_packer(const shrinkler_packer_options& options) : m_options(options) {}
 
-    // TODO: add pack()
+    virtual cartridge pack(const input_file& input_file) override;
+
 private:
     shrinkler_packer_options m_options{};
 };

@@ -540,4 +540,9 @@ label("sadface"s);
     pool();
 }
 
+cartridge shrinkler_packer::pack(const input_file& /*input_file*/)
+{
+    throw "TODO: YIKES: implement";
+}
+
 }
