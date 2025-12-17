@@ -540,9 +540,31 @@ label("sadface"s);
     pool();
 }
 
-cartridge shrinkler_packer::pack(const input_file& /*input_file*/)
+// TODO: define shrinkler_cartridge_assembler entirely in this anonymous namespace
+namespace
+{
+
+// TODO: arguments
+bytevector compress()
+{
+    // TODO: real implementation/return value
+    return{};
+}
+
+// TODO: arguments
+// TODO: return type
+// TODO: implement
+cartridge assemble_cartridge()
 {
     throw "TODO: YIKES: implement";
+}
+
+}
+
+cartridge shrinkler_packer::pack(const input_file& /*input_file*/)
+{
+    auto compressed_binary = compress(); // TODO: compress binary, using shrinkler options from command line. This means we need them in shrinkler_packer_options, no?
+    return assemble_cartridge();
 }
 
 }
