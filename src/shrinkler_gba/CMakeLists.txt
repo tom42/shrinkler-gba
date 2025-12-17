@@ -17,7 +17,7 @@ set(
   options.cppm
   pack.cppm
   packer.cppm
-  shrinkler_cartridge_assembler.cppm
+  shrinkler_packer.cppm
   shrinkler_gba.cppm
   table_printer.cppm
   utility.cppm
@@ -31,7 +31,7 @@ set(
   lzss_packer.cpp
   pack.cpp
   packer.cpp
-  shrinkler_cartridge_assembler.cpp
+  shrinkler_packer.cpp
   table_printer.cpp)
 
 # Production version of shrinkler_gba.

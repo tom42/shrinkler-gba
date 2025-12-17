@@ -13,6 +13,6 @@ export import :lzss_packer;
 export import :options;
 export import :pack;
 export import :packer;
-export import :shrinkler_cartridge_assembler;
+export import :shrinkler_packer;
 export import :table_printer;
 export import :utility;

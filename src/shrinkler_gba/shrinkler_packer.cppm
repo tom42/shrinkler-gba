@@ -8,10 +8,25 @@ module;
 #include <string>
 #include <vector>
 
-export module shrinkler_gba:shrinkler_cartridge_assembler;
+export module shrinkler_gba:shrinkler_packer;
 import :input_file;
 import :packer;
 
+namespace shrinkler_gba
+{
+
+class shrinkler_packer final : public packer
+{
+public:
+    // TODO: add ctor
+    // TODO: add pack()
+private:
+};
+
+}
+
+// TODO: redesign stuff below: the assembler will be hidden
+//       * review headers (in particular, LZASM probably does not need to be here anymore)
 namespace shrinkler_gba
 {
 
