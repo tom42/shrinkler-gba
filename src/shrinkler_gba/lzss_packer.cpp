@@ -141,7 +141,7 @@ bytevector lzss_compress(const bytevector& input)
     decoder.decode(output.begin(), output.end(), back_inserter(verified));
     if (verified != input)
     {
-        throw std::runtime_error("INTERNAL ERROR: verification of LZSS encoded data failed");
+        throw internal_error("verification of LZSS encoded data failed");
     }
 
     return output;
@@ -159,10 +159,8 @@ bytevector huffman_compress(const bytevector& input)
     decoder.decode(output.begin(), output.end(), back_inserter(verified));
     if (verified != input)
     {
-        // TODO: factor out creation of internal error exceptions? (use a factory method)
-        //       * put that into some utility.cppm module, along with
-        //         * adler32 => do not forget to also rename its test => utility_test.cpp etc.
-        throw std::runtime_error("INTERNAL ERROR: verification of huffman encoded data failed");
+        // TODO: move adler32 to utility module. Do not forget to also move its test
+        throw internal_error("verification of huffman encoded data failed");
     }
 
     return output;

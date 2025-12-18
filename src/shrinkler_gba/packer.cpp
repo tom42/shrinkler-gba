@@ -79,7 +79,7 @@ void cartridge_assembler::throw_if_wrong_lc(lzasm::arm::arm32::address_t expecte
 {
     if (current_lc() != expected_lc)
     {
-        throw std::runtime_error(std::format("INTERNAL ERROR: {} is at wrong offset. Expected it to be at {:#x}, but it is at {:#x}", what, expected_lc, current_lc()));
+        throw internal_error(std::format("{} is at wrong offset. Expected it to be at {:#x}, but it is at {:#x}", what, expected_lc, current_lc()));
     }
 }
 
@@ -89,7 +89,7 @@ void cartridge_assembler::throw_if_not_aligned(lzasm::arm::arm32::address_t alig
 
     if (current_lc() % byte_alignment)
     {
-        throw std::runtime_error(std::format("INTERNAL ERROR: Location counter is not aligned to {} bytes. We're wasting space", byte_alignment));
+        throw internal_error(std::format("Location counter is not aligned to {} bytes. We're wasting space", byte_alignment));
     }
 }
 
@@ -98,7 +98,7 @@ void cartridge_assembler::throw_if_fixed_byte_wrong(const bytevector& cartridge_
     auto actual_byte = cartridge_data.at(ofs_fixed_byte);
     if (actual_byte != fixed_byte_value)
     {
-        throw std::runtime_error(std::format("INTERNAL ERROR: Fixed byte at {:#x} has wrong value. Should be {:#x}, but is {:#x}", ofs_fixed_byte, fixed_byte_value, actual_byte));
+        throw internal_error(std::format("Fixed byte at {:#x} has wrong value. Should be {:#x}, but is {:#x}", ofs_fixed_byte, fixed_byte_value, actual_byte));
     }
 }
 
@@ -110,7 +110,7 @@ void cartridge_assembler::throw_if_complement_wrong(const bytevector& cartridge_
     auto actual_complement = cartridge_data.at(ofs_complement);
     if (actual_complement != expected_complement)
     {
-        throw std::runtime_error(std::format("INTERNAL ERROR: Complement at {:#x} has wrong value. Should be {:#x}, but is {:#x}", ofs_complement, expected_complement, actual_complement));
+        throw internal_error(std::format("Complement at {:#x} has wrong value. Should be {:#x}, but is {:#x}", ofs_complement, expected_complement, actual_complement));
     }
 }
 
