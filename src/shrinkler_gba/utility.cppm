@@ -6,7 +6,6 @@ module;
 #include <concepts>
 #include <stdexcept>
 #include <string_view>
-#include <string>
 #include <type_traits>
 #include <vector>
 
@@ -25,12 +24,6 @@ constexpr auto to_signed(TUnsigned u)
     return static_cast<std::make_signed_t<TUnsigned>>(u);
 }
 
-// TODO: that should probably be inline, or we put it into a utility.cpp, which we're going to need anyway for the adler32 code, no?
-std::runtime_error internal_error(std::string_view s)
-{
-    std::string msg("INTERNAL ERROR: ");
-    msg += s;
-    return std::runtime_error(msg);
-}
+std::runtime_error internal_error(std::string_view s);
 
 }

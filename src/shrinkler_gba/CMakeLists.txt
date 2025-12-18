@@ -32,7 +32,8 @@ set(
   pack.cpp
   packer.cpp
   shrinkler_packer.cpp
-  table_printer.cpp)
+  table_printer.cpp
+  utility.cpp)
 
 # Production version of shrinkler_gba.
 add_library(shrinkler_gba)
