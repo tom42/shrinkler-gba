@@ -8,7 +8,6 @@ SPDX-License-Identifier: MIT
 * Modernize this code
   * See where we can replace 'const std::string&' by std::string_view
   * When all done: fix reuse compliancy
-  * Use agbpack to pack tiny intros
   * CI builds with github actions
     * gcc/clang/windows
     * And static quality or however we called it
@@ -43,6 +42,7 @@ SPDX-License-Identifier: MIT
       * Max. size in EWRAM is 256K, if loaded at beginning of EWRAM
       * Size of loaded data is obviously not the entire truth: in principle we'd also have to check bss section(s). Not sure whether that's worth the effort. After all it's well possible to even have bss sections in both EWRAM and IWRAM
     * Entry point must be inside memory area occupied by the binary's loaded data
+  * LZSS packer: the temporary buffer for the LZSS compressed data should not overlap with the load area of the intro (unlikely, but could happen at least in theory)
 
 ## Old stuff below, needs clean up
 * Next steps
@@ -73,7 +73,6 @@ SPDX-License-Identifier: MIT
       * We never really validated it, particularly not the stack data mess
         * When we execute code, is the stack pointer pointing at the right place?
         * Did we have a buffer overrun on the stack? (In the contexts array)
-* Ensure all source files are using spaces, not tabs
 * Redo our own code:
   * Do we provide the parity context option?
     * Well maybe not at first. It would mean we have to update the decompressor
