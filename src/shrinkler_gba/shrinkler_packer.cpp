@@ -558,12 +558,15 @@ bytevector compress(const bytevector& uncompressed_binary)
     return encoder.encode(uncompressed_binary);
 }
 
-// TODO: arguments
-// TODO: return type
-// TODO: implement
-cartridge assemble_cartridge(const input_file& /*input_file*/, const bytevector& /*compressed_binary*/, const shrinkler_packer_options& /*options*/)
+cartridge assemble_cartridge(const input_file& input_file, const bytevector& compressed_binary, const shrinkler_packer_options& options)
 {
-    throw std::runtime_error("TODO: YIKES: implement");
+    shrinkler_cartridge_assembler assembler(input_file, compressed_binary, options);
+    return cartridge
+    {
+        .data = assembler.data(),
+        .compressed_size = compressed_binary.size(),
+        .depacker_size = assembler.depacker_size()
+    };
 }
 
 }
