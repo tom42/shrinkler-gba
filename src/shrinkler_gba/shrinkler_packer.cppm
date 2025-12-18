@@ -1,13 +1,6 @@
 // SPDX-FileCopyrightText: 2021 Thomas Mathys
 // SPDX-License-Identifier: MIT
 
-module;
-
-#include <cstddef>
-#include <lzasm/arm/arm32/divided_thumb_assembler.hpp>
-#include <string>
-#include <vector>
-
 export module shrinkler_gba:shrinkler_packer;
 import :input_file;
 import :packer;
@@ -35,6 +28,3 @@ private:
 };
 
 }
-
-// TODO: redesign stuff below: the assembler will be hidden
-//       * review headers (in particular, LZASM probably does not need to be here anymore)
