@@ -178,6 +178,11 @@ void pack(const options& opts)
     display_sizes(input_file, cartridge, console);
 
     // TODO: test code: LZSS. What we really want to do is: we want to try a number of methods and then choose the best one
+    //       * We can now go and have a method that returns a number of parameterized packers
+    //       * We can then go and run each of the packers and do postprocessing on the result (that is, call fix_cartridge_for_ezf_advance)
+    //       * Once we have this we can pick the smallest result and write that to disk. Yay? Yay.
+    //       * Later we might find that a binary cannot be packed by all packer variants, and we need to handle that gracefully.
+    //         That is, we should filter out these cases and just pick the smallest binary from those packer variants that were able to produce a binary
     // TODO: have a similar class for shrinkler: shrinkler_packer
     //       Note: this is not fixing the cartridge. We REALLY need to do this
     //       * Turn shrinkler_cartridge_assembler.cpp(m) into shrinkler_packer.cpp(m)
