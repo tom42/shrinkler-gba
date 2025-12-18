@@ -205,12 +205,13 @@ void pack(const options& opts)
     write_to_disk(cartridge.data, opts.output_file().string(), console);
     display_sizes(input_file, cartridge, console);
 
-    // TODO: more test code: here we test our new shrinkler_packer
+    // TODO: more test code: here we test our new shrinkler_packer => this is now working, so that it can replace the shrinkler compression code in this file
+    //       Note: this is not fixing the cartridge. We REALLY need to do this
     shrinkler_packer_options shrinkler_packer_options
     {
-        // TODO: add missing stuff: shrinkler options (anything else?)
         .code_in_header = opts.code_in_header(),
-        .debug_checks = opts.debug_checks()
+        .debug_checks = opts.debug_checks(),
+        .encoder_parameters = opts.shrinkler_parameters()
     };
     shrinkler_packer shrinkler_packer(shrinkler_packer_options);
     auto cartridge3 = shrinkler_packer.pack(input_file);
@@ -219,6 +220,7 @@ void pack(const options& opts)
 
     // TODO: test code: LZSS. What we really want to do is: we want to try a number of methods and then choose the best one
     // TODO: have a similar class for shrinkler: shrinkler_packer
+    //       Note: this is not fixing the cartridge. We REALLY need to do this
     //       * Turn shrinkler_cartridge_assembler.cpp(m) into shrinkler_packer.cpp(m)
     //       * shrinkler_cartridge_assembler will then be private to shrinkler_packer.cpp and be in an anonymous namespace
     lzss_packer_options lzss_packer_options

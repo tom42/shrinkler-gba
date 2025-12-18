@@ -544,16 +544,15 @@ label("sadface"s);
 namespace
 {
 
-// TODO: arguments
-bytevector compress(const bytevector& uncompressed_binary)
+bytevector compress(const bytevector& uncompressed_binary, const shrinkler_packer_options& options)
 {
-    // TODO: real implementation/return value
     using namespace libshrinkler;
 
-    // TODO: set up encoder parameters (can't do so already, we don't have them yet)
+    encoder_parameters parameters = options.encoder_parameters;
+    parameters.endianness(endianness::little);
 
     encoder encoder;
-    // TODO: set parameters on encoder
+    encoder.parameters(parameters);
 
     return encoder.encode(uncompressed_binary);
 }
@@ -573,7 +572,7 @@ cartridge assemble_cartridge(const input_file& input_file, const bytevector& com
 
 cartridge shrinkler_packer::pack(const input_file& input_file)
 {
-    auto compressed_binary = compress(input_file.data()); // TODO: compress binary, using shrinkler options from command line. This means we need them in shrinkler_packer_options, no?
+    auto compressed_binary = compress(input_file.data(), m_options);
     return assemble_cartridge(input_file, compressed_binary, m_options);
 }
 
