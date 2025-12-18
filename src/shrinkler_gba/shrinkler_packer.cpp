@@ -114,7 +114,49 @@ constexpr uint32_t rgb8(uint32_t r, uint32_t g, uint32_t b)
     return rgb5(r >> 3, g >> 3, b >> 3);
 }
 
-}
+class shrinkler_cartridge_assembler final : private cartridge_assembler
+{
+public:
+    shrinkler_cartridge_assembler(const input_file& input_file, const bytevector& compressed_program, const shrinkler_packer_options& options);
+
+    const bytevector& data() const
+    {
+        return m_data;
+    }
+
+    size_t depacker_size() const
+    {
+        return m_depacker_size;
+    }
+
+private:
+    bytevector assemble(const input_file& input_file, const bytevector& compressed_program);
+
+    // Macro that calls the panic routine if the size of the decompressed data is incorrect.
+    // This macro expects outp (the output pointer) to point to the byte after the last decompressed byte.
+    // This macro clobbers all registers except sp.
+    void debug_check_decompressed_data_size(const input_file& input_file);
+
+    // Macro that calls the panic routine if the checksum of the decompressed data is incorrect.
+    // This macro clobbers all registers except sp.
+    void debug_check_decompressed_data(const input_file& input_file);
+
+    // Macro that calls the panic routine if the stack pointer has not been restored to its initial value.
+    // This macro clobbers all registers.
+    void debug_check_sp_on_exit();
+
+    // Macro that calls the panic routine. The panic routine clobbers all registers and does not return.
+    void debug_call_panic_routine(const std::string& message);
+
+    // Macro that emits the panic routine. The panic routine clobbers all registers and does not return.
+    // The panic routine must be called with r2 pointing to a zero terminated error message.
+    // This message will be printed using Mappy / VisualBoyAdvance debug output.
+    void debug_emit_panic_routine();
+
+    const shrinkler_packer_options m_options;
+    bytevector m_data;
+    size_t m_depacker_size{};
+};
 
 shrinkler_cartridge_assembler::shrinkler_cartridge_assembler(const input_file& input_file, const bytevector& compressed_program, const shrinkler_packer_options& options)
     : m_options(options)
@@ -539,10 +581,6 @@ label("sadface"s);
     byte(0x00, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x00);
     pool();
 }
-
-// TODO: define shrinkler_cartridge_assembler entirely in this anonymous namespace
-namespace
-{
 
 bytevector compress(const bytevector& uncompressed_binary, const shrinkler_packer_options& options)
 {
