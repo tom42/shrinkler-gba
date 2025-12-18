@@ -546,11 +546,15 @@ namespace
 
 bytevector compress(const bytevector& uncompressed_binary, const shrinkler_packer_options& options)
 {
+    // TODO: dump compression info (whatever it is that encoder can spit out additionally and that we might want to output - the references warning thing, mostly)
     using namespace libshrinkler;
 
     encoder_parameters parameters = options.encoder_parameters;
     parameters.endianness(endianness::little);
 
+    // Note: we could experiment with disabling the parity context,
+    // but so far I have not seen a binary where that yielded better compression.
+    // Moreover we'd have to use an alternate depacker.
     encoder encoder;
     encoder.parameters(parameters);
 

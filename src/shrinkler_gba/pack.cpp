@@ -78,29 +78,8 @@ input_file load_input_file(const std::string& path, const console& console)
     }
 }
 
-bytevector shrinkler_compress(const bytevector& uncompressed_binary, const options& opts)
-{
-    // TODO: dump compression info (whatever it is that encoder can spit out additionally and that we might want to output - the references warning thing, mostly)
-    using namespace libshrinkler;
-
-    encoder_parameters encoder_parameters(opts.shrinkler_parameters());
-    encoder_parameters.endianness(endianness::little);
-
-    // Note: we could experiment with disabling the parity context,
-    // but so far I have not seen a binary where that yielded better compression.
-    // Moreover we'd have to use an alternate depacker.
-    encoder encoder;
-    encoder.parameters(encoder_parameters);
-
-    auto compressed_binary = encoder.encode(uncompressed_binary);
-    return compressed_binary;
-}
-
 cartridge assemble_shrinkler_cartridge(const input_file& input_file, const bytevector& compressed_binary, const options& opts)
 {
-    // TODO: later we'll have multiple algorithms, but for the time being that's fine
-    //       * Note that since the total size is given by cart header + depacker + packed program this means that both compress() and assemble_cartridge() possibly need to go into some sort of class
-    //       * Can we compare the output we're getting here against an old version? Should be bit for bit the same, no?
     const shrinkler_packer_options options
     {
         .code_in_header = opts.code_in_header(),
@@ -188,6 +167,9 @@ void pack(const options& opts)
     auto console = create_console(opts);
     auto input_file = load_input_file(opts.input_file().string(), console);
 
+    // TODO: later we'll have multiple algorithms, but for the time being that's fine
+    //       * Note that since the total size is given by cart header + depacker + packed program this means that both compress() and assemble_cartridge() possibly need to go into some sort of class
+    //       * Can we compare the output we're getting here against an old version? Should be bit for bit the same, no?
     // TODO: currently we only do shrinkler compression. Later we'll also support lzss+huffman compression
     //       => This must somehow be abstracted
     //       => Note that the cartridge fix must be done individually, since different compression algos may yield different compressed data
