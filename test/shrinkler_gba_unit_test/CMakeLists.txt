@@ -9,7 +9,6 @@ configure_file(
 
 add_executable(
   shrinkler_gba_unit_test
-  adler32_test.cpp
   complement_test.cpp
   console_test.cpp
   elf_info_test.cpp

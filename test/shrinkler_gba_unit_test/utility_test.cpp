@@ -6,13 +6,23 @@
 #include <cstdint>
 #include <limits>
 #include <type_traits>
+#include "test_utilities.hpp"
 
 import shrinkler_gba;
 
 namespace shrinkler_gba_unit_test
 {
 
+using shrinkler_gba::adler32;
 using shrinkler_gba::to_signed;
+
+TEST_CASE("adler32")
+{
+    CHECK(adler32(make_bytevector("")) == 0x00000001u);
+    CHECK(adler32(make_bytevector("a")) == 0x00620062u);
+    CHECK(adler32(make_bytevector("abc")) == 0x024d0127u);
+    CHECK(adler32(load_binary_file("lostmarbles.bin")) == 0xeadcf4a9);
+}
 
 TEMPLATE_TEST_CASE("to_signed", "", uint16_t, uint32_t)
 {

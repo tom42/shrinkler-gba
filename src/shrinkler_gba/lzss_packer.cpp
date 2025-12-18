@@ -159,7 +159,6 @@ bytevector huffman_compress(const bytevector& input)
     decoder.decode(output.begin(), output.end(), back_inserter(verified));
     if (verified != input)
     {
-        // TODO: move adler32 to utility module. Do not forget to also move its test
         throw internal_error("verification of huffman encoded data failed");
     }
 

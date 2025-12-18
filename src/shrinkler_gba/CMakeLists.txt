@@ -6,7 +6,6 @@ configure_file(version.hpp.in version.hpp)
 set(
   shrinkler_gba_sources
   PUBLIC FILE_SET CXX_MODULES FILES
-  adler32.cppm
   command_line.cppm
   complement.cppm
   console.cppm
@@ -22,7 +21,6 @@ set(
   table_printer.cppm
   utility.cppm
   PRIVATE
-  adler32.cpp
   command_line.cpp
   complement.cpp
   console.cpp
