@@ -78,27 +78,16 @@ input_file load_input_file(const std::string& path, const console& console)
     }
 }
 
-cartridge assemble_shrinkler_cartridge(const input_file& input_file, const bytevector& compressed_binary, const options& opts)
-{
-    const shrinkler_packer_options options
-    {
-        .code_in_header = opts.code_in_header(),
-        .debug_checks = opts.debug_checks()
-    };
-    shrinkler_cartridge_assembler assembler(input_file, compressed_binary, options);
-
-    return cartridge
-    {
-        .data = assembler.data(),
-        .compressed_size = compressed_binary.size(),
-        .depacker_size = assembler.depacker_size()
-    };
-}
-
 cartridge pack_shrinkler(const input_file& input_file, const options& opts)
 {
-    auto compressed_binary = shrinkler_compress(input_file.data(), opts);
-    return assemble_shrinkler_cartridge(input_file, compressed_binary, opts);
+    shrinkler_packer_options packer_options
+    {
+        .code_in_header = opts.code_in_header(),
+        .debug_checks = opts.debug_checks(),
+        .encoder_parameters = opts.shrinkler_parameters()
+    };
+    shrinkler_packer packer(packer_options);
+    return packer.pack(input_file);
 }
 
 void fix_cartridge_for_ezf_advance(bytevector& cartridge_data, const console& console)
@@ -186,19 +175,6 @@ void pack(const options& opts)
 
     write_to_disk(cartridge.data, opts.output_file().string(), console);
     display_sizes(input_file, cartridge, console);
-
-    // TODO: more test code: here we test our new shrinkler_packer => this is now working, so that it can replace the shrinkler compression code in this file
-    //       Note: this is not fixing the cartridge. We REALLY need to do this
-    shrinkler_packer_options shrinkler_packer_options
-    {
-        .code_in_header = opts.code_in_header(),
-        .debug_checks = opts.debug_checks(),
-        .encoder_parameters = opts.shrinkler_parameters()
-    };
-    shrinkler_packer shrinkler_packer(shrinkler_packer_options);
-    auto cartridge3 = shrinkler_packer.pack(input_file);
-    // TODO: write to disk (really? makes no sense once more, no?)
-    display_sizes(input_file, cartridge3, console);
 
     // TODO: test code: LZSS. What we really want to do is: we want to try a number of methods and then choose the best one
     // TODO: have a similar class for shrinkler: shrinkler_packer
