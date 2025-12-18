@@ -3,6 +3,8 @@
 
 module;
 
+#include <stdexcept>
+#include <string>
 #include <string_view>
 
 module shrinkler_gba;
