@@ -67,6 +67,7 @@ module;
 
 module shrinkler_gba;
 import :utility;
+import libshrinkler;
 
 namespace shrinkler_gba
 {
