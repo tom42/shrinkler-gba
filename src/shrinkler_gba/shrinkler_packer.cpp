@@ -149,13 +149,68 @@ private:
     // Macro that emits the panic routine. The panic routine clobbers all registers and does not return.
     // The panic routine must be called with r2 pointing to a zero terminated error message.
     // This message will be printed using Mappy / VisualBoyAdvance debug output.
-    void debug_emit_panic_routine();
+    void debug_emit_panic_routine()
+    {
+        if (!m_options.debug_checks)
+        {
+            return;
+        }
+
+        align(1);
+    label("panic"s);
+
+        // Print panic message using Mappy / VisualBoyAdvance debug output.
+        // r2 must point to a zero terminated string.
+        ldr(r0, to_signed(0xc0ded00d));
+        mov(r1, 0);
+        and_(r0, r0);
+
+        // Set video mode
+        ldr(r0, mode_4 | bg2_on);
+        ldr(r1, reg_dispcnt);
+        str(r0, r1, 0);
+
+        // Set palette
+        // Set color 0 and 1 using a single 32 bit write
+        ldr(r0, (rgb8(255, 255, 255) << 16) | rgb8(0, 119, 215));
+        ldr(r1, mem_bg_palette);
+        str(r0, r1, 0);
+
+        // Draw sad face
+        adr(r0, "sadface"s);
+        ldr(r1, mem_vram + 4 * 240 + 4);
+        mov(r4, 8);             // Copy 8 lines
+    label("copy_line"s);
+        ldmia(!r0, r2 - r3);    // Read 8 pixels
+        stmia(!r1, r2 - r3);    // Write 8 pixels
+        add(r1, 240 - 8);       // Move to next line
+        sub(r4, r4, 1);
+        bne("copy_line"s);
+
+        // Halt system
+    label("loop"s);
+        b("loop"s);
+
+        // 8x8 8bpp image of sad face
+        align(2);
+    label("sadface"s);
+        byte(0x00, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x00);
+        byte(0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01);
+        byte(0x01, 0x00, 0x01, 0x00, 0x00, 0x01, 0x00, 0x01);
+        byte(0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01);
+        byte(0x01, 0x00, 0x00, 0x01, 0x01, 0x00, 0x00, 0x01);
+        byte(0x01, 0x00, 0x01, 0x00, 0x00, 0x01, 0x00, 0x01);
+        byte(0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01);
+        byte(0x00, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x00);
+        pool();
+    }
 
     const shrinkler_packer_options m_options;
     bytevector m_data;
     size_t m_depacker_size{};
 };
 
+// TODO: inline this and all methods below
 shrinkler_cartridge_assembler::shrinkler_cartridge_assembler(const input_file& input_file, const bytevector& compressed_program, const shrinkler_packer_options& options)
     : m_options(options)
 {
@@ -522,62 +577,6 @@ label(message);
 
     // Align for subsequent thumb code.
     align(1);
-}
-
-void shrinkler_cartridge_assembler::debug_emit_panic_routine()
-{
-    if (!m_options.debug_checks)
-    {
-        return;
-    }
-
-    align(1);
-label("panic"s);
-
-    // Print panic message using Mappy / VisualBoyAdvance debug output.
-    // r2 must point to a zero terminated string.
-    ldr(r0, to_signed(0xc0ded00d));
-    mov(r1, 0);
-    and_(r0, r0);
-
-    // Set video mode
-    ldr(r0, mode_4 | bg2_on);
-    ldr(r1, reg_dispcnt);
-    str(r0, r1, 0);
-
-    // Set palette
-    // Set color 0 and 1 using a single 32 bit write
-    ldr(r0, (rgb8(255, 255, 255) << 16) | rgb8(0, 119, 215));
-    ldr(r1, mem_bg_palette);
-    str(r0, r1, 0);
-
-    // Draw sad face
-    adr(r0, "sadface"s);
-    ldr(r1, mem_vram + 4 * 240 + 4);
-    mov(r4, 8);             // Copy 8 lines
-label("copy_line"s);
-    ldmia(!r0, r2 - r3);    // Read 8 pixels
-    stmia(!r1, r2 - r3);    // Write 8 pixels
-    add(r1, 240 - 8);       // Move to next line
-    sub(r4, r4, 1);
-    bne("copy_line"s);
-
-    // Halt system
-label("loop"s);
-    b("loop"s);
-
-    // 8x8 8bpp image of sad face
-    align(2);
-label("sadface"s);
-    byte(0x00, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x00);
-    byte(0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01);
-    byte(0x01, 0x00, 0x01, 0x00, 0x00, 0x01, 0x00, 0x01);
-    byte(0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01);
-    byte(0x01, 0x00, 0x00, 0x01, 0x01, 0x00, 0x00, 0x01);
-    byte(0x01, 0x00, 0x01, 0x00, 0x00, 0x01, 0x00, 0x01);
-    byte(0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01);
-    byte(0x00, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x00);
-    pool();
 }
 
 bytevector compress(const bytevector& uncompressed_binary, const shrinkler_packer_options& options)
