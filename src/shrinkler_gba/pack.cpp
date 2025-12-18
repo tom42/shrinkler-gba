@@ -159,6 +159,7 @@ void pack(const options& opts)
     // TODO: later we'll have multiple algorithms, but for the time being that's fine
     //       * Note that since the total size is given by cart header + depacker + packed program this means that both compress() and assemble_cartridge() possibly need to go into some sort of class
     //       * Can we compare the output we're getting here against an old version? Should be bit for bit the same, no?
+    //         => We already did that, and all is fine, but we should maybe set that up as some sort of integration test, really
     // TODO: currently we only do shrinkler compression. Later we'll also support lzss+huffman compression
     //       => This must somehow be abstracted
     //       => Note that the cartridge fix must be done individually, since different compression algos may yield different compressed data
