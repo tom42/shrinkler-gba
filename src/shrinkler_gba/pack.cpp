@@ -90,6 +90,15 @@ std::unique_ptr<packer> make_shrinkler_packer(const options& opts)
     return std::make_unique<shrinkler_packer>(packer_options);
 }
 
+std::unique_ptr<packer> make_lzss_packer(const options& opts)
+{
+    lzss_packer_options packer_options
+    {
+        .code_in_header = opts.code_in_header(),
+    };
+    return std::make_unique<lzss_packer>(packer_options);
+}
+
 cartridge pack_shrinkler(const input_file& input_file, const options& opts)
 {
     // TODO: remove this: we will later run all packers from the same loop
