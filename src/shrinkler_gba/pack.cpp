@@ -9,6 +9,7 @@ module;
 #include <format>
 #include <fstream>
 #include <gsl/gsl>
+#include <memory>
 #include <stdexcept>
 #include <string>
 #include <system_error>
@@ -78,7 +79,7 @@ input_file load_input_file(const std::string& path, const console& console)
     }
 }
 
-cartridge pack_shrinkler(const input_file& input_file, const options& opts)
+std::unique_ptr<packer> make_shrinkler_packer(const options& opts)
 {
     shrinkler_packer_options packer_options
     {
@@ -86,8 +87,14 @@ cartridge pack_shrinkler(const input_file& input_file, const options& opts)
         .debug_checks = opts.debug_checks(),
         .encoder_parameters = opts.shrinkler_parameters()
     };
-    shrinkler_packer packer(packer_options);
-    return packer.pack(input_file);
+    return std::make_unique<shrinkler_packer>(packer_options);
+}
+
+cartridge pack_shrinkler(const input_file& input_file, const options& opts)
+{
+    // TODO: remove this: we will later run all packers from the same loop
+    auto packer = make_shrinkler_packer(opts);
+    return packer->pack(input_file);
 }
 
 void fix_cartridge_for_ezf_advance(bytevector& cartridge_data, const console& console)
