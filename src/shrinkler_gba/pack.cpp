@@ -107,13 +107,6 @@ std::vector<std::unique_ptr<packer>> make_packers(const options& opts)
     return packers;
 }
 
-cartridge pack_shrinkler(const input_file& input_file, const options& opts)
-{
-    // TODO: remove this: we will later run all packers from the same loop
-    auto packer = make_shrinkler_packer(opts);
-    return packer->pack(input_file);
-}
-
 void fix_cartridge_for_ezf_advance(bytevector& cartridge_data, const console& console)
 {
     // EZF Advance removes trailing 0xff bytes.
@@ -180,6 +173,15 @@ void pack(const options& opts)
     auto console = create_console(opts);
     auto input_file = load_input_file(opts.input_file().string(), console);
 
+    // TODO: redo stuff below:
+    //       * make packers
+    //       * for each packer
+    //         * Make cartridge
+    //         * Fix up cartridge if needed
+    //         * Display size (but why not do so using table_printer?) => Because packers may output additional data
+    //       * Choose smallest cart (say which one)
+    //       * Write cart to disk
+    /*
     // TODO: later we'll have multiple algorithms, but for the time being that's fine
     //       * Note that since the total size is given by cart header + depacker + packed program this means that both compress() and assemble_cartridge() possibly need to go into some sort of class
     //       * Can we compare the output we're getting here against an old version? Should be bit for bit the same, no?
@@ -219,6 +221,7 @@ void pack(const options& opts)
     auto cartridge2 = lzss_packer.pack(input_file);
     write_to_disk(cartridge2.data, opts.output_file().string(), console);
     display_sizes(input_file, cartridge2, console);
+    */
 }
 
 }
