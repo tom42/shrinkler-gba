@@ -121,6 +121,27 @@ void fix_cartridge_for_ezf_advance(bytevector& cartridge_data, const console& co
     }
 }
 
+void display_sizes(const cartridge& cartridge, const console& console)
+{
+    // TODO: would we want to display what packer has produced this result?
+    console.verbose("Compressed binary size  : {:4} bytes", cartridge.compressed_size);
+    console.verbose("Depacker size           : {:4} bytes (excluding code in cartridge header)", cartridge.depacker_size);
+    console.verbose("Cartridge size          : {:4} bytes", cartridge.data.size());
+}
+
+// TODO: return type: in principle we only need to return the smallest cart, no?
+// TODO: name
+// TODO: do we print which of the packer results will be written as final output?
+void foo(const input_file& input_file, const options& opts, const console& console)
+{
+    for (const auto& packer : make_packers(opts))
+    {
+        auto cartridge = packer->pack(input_file);
+        fix_cartridge_for_ezf_advance(cartridge.data, console);
+        display_sizes(cartridge, console);
+    }
+}
+
 void remove_output_file(const std::filesystem::path& filename)
 {
     // Delete file, ignore any error. Use overload of remove that does not throw.
@@ -158,20 +179,14 @@ void write_to_disk(const bytevector& data, const std::string& filename, const co
     }
 }
 
-void display_sizes(const input_file& input_file, const cartridge& cartridge, const console& console)
-{
-    console.verbose("Uncompressed binary size: {:4} bytes", input_file.data().size());
-    console.verbose("Compressed binary size  : {:4} bytes", cartridge.compressed_size);
-    console.verbose("Depacker size           : {:4} bytes (excluding code in cartridge header)", cartridge.depacker_size);
-    console.verbose("Cartridge size          : {:4} bytes", cartridge.data.size());
-}
-
 }
 
 void pack(const options& opts)
 {
     auto console = create_console(opts);
     auto input_file = load_input_file(opts.input_file().string(), console);
+
+    foo(input_file, opts, console);
 
     // TODO: redo stuff below:
     //       * make packers
