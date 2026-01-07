@@ -7,13 +7,10 @@ SPDX-License-Identifier: MIT
 ## General
 * Modernize this code
   * See where we can replace 'const std::string&' by std::string_view
-  * When all done: fix reuse compliancy
   * CI builds with github actions
     * gcc/clang/windows
-    * And static quality or however we called it
+    * And static quality or however we called it (that included reuse lint I believe)
   * Redo source tree organization (top level src/test directory, see e.g. agbpack)
-  * Remove the following blurb from all copyright notices:
-    'Port of the Shrinkler Amiga executable cruncher for the GBA'
 * Add uninstall target
 * Go through directories/files (top level in particular, but not only), see what's still needed
 
