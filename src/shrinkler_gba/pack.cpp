@@ -190,8 +190,8 @@ void pack(const options& opts)
 {
     auto console = create_console(opts);
     auto input_file = load_input_file(opts.input_file().string(), console);
-
-    foo(input_file, opts, console);
+    auto cartridge = foo(input_file, opts, console);
+    write_to_disk(cartridge.data, opts.output_file().string(), console);
 
     // TODO: redo stuff below:
     //       * make packers
