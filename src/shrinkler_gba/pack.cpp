@@ -10,6 +10,7 @@ module;
 #include <fstream>
 #include <gsl/gsl>
 #include <memory>
+#include <ranges>
 #include <stdexcept>
 #include <string>
 #include <system_error>
@@ -129,10 +130,9 @@ void display_sizes(const cartridge& cartridge, const console& console)
     console.verbose("Cartridge size          : {:4} bytes", cartridge.data.size());
 }
 
-// TODO: return type (cartridge, no?)
 // TODO: name
 // TODO: do we print which of the packer results will be written as final output?
-void foo(const input_file& input_file, const options& opts, const console& console)
+cartridge foo(const input_file& input_file, const options& opts, const console& console)
 {
     std::vector<cartridge> cartridges;
 
@@ -143,7 +143,8 @@ void foo(const input_file& input_file, const options& opts, const console& conso
         display_sizes(cartridges.back() , console);
     }
 
-    // TODO: return smallest cartridge (use min_element or something)
+    // TODO: behavior of min is undefined if range is empty => catch this
+    return std::ranges::min(cartridges, {}, [](const auto& cartridge) { return cartridge.data.size(); });
 }
 
 void remove_output_file(const std::filesystem::path& filename)
