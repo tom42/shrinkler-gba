@@ -193,14 +193,6 @@ void pack(const options& opts)
     auto cartridge = foo(input_file, opts, console);
     write_to_disk(cartridge.data, opts.output_file().string(), console);
 
-    // TODO: redo stuff below:
-    //       * make packers
-    //       * for each packer
-    //         * Make cartridge
-    //         * Fix up cartridge if needed
-    //         * Display size (but why not do so using table_printer?) => Because packers may output additional data
-    //       * Choose smallest cart (say which one)
-    //       * Write cart to disk
     /*
     // TODO: later we'll have multiple algorithms, but for the time being that's fine
     //       * Note that since the total size is given by cart header + depacker + packed program this means that both compress() and assemble_cartridge() possibly need to go into some sort of class
