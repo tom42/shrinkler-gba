@@ -129,17 +129,21 @@ void display_sizes(const cartridge& cartridge, const console& console)
     console.verbose("Cartridge size          : {:4} bytes", cartridge.data.size());
 }
 
-// TODO: return type: in principle we only need to return the smallest cart, no?
+// TODO: return type (cartridge, no?)
 // TODO: name
 // TODO: do we print which of the packer results will be written as final output?
 void foo(const input_file& input_file, const options& opts, const console& console)
 {
+    std::vector<cartridge> cartridges;
+
     for (const auto& packer : make_packers(opts))
     {
-        auto cartridge = packer->pack(input_file);
-        fix_cartridge_for_ezf_advance(cartridge.data, console);
-        display_sizes(cartridge, console);
+        cartridges.push_back(packer->pack(input_file));
+        fix_cartridge_for_ezf_advance(cartridges.back().data, console);
+        display_sizes(cartridges.back() , console);
     }
+
+    // TODO: return smallest cartridge (use min_element or something)
 }
 
 void remove_output_file(const std::filesystem::path& filename)
