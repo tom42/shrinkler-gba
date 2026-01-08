@@ -137,7 +137,6 @@ auto smallest_cartridge(const std::vector<cartridge>& cartridges)
     return std::ranges::min_element(cartridges, {}, [](const auto& cartridge) { return cartridge.data.size(); });
 }
 
-// TODO: do we print which of the packer results will be written as final output?
 cartridge try_all_packers(const input_file& input_file, const options& opts, const console& console)
 {
     std::vector<cartridge> cartridges;
@@ -202,6 +201,7 @@ void pack(const options& opts)
     auto console = create_console(opts);
     auto input_file = load_input_file(opts.input_file().string(), console);
     auto cartridge = try_all_packers(input_file, opts, console);
+    console.verbose("Smallest cartridge is produced by {} ({} bytes)", cartridge.packer, cartridge.data.size());
     write_to_disk(cartridge.data, opts.output_file().string(), console);
 
     // TODO: Can we compare the output we're getting here against an old version? Should be bit for bit the same, no?
