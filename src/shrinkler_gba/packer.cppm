@@ -5,6 +5,7 @@ module;
 
 #include <cstddef>
 #include <lzasm/arm/arm32/divided_thumb_assembler.hpp>
+#include <string>
 #include <vector>
 
 export module shrinkler_gba:packer;
@@ -15,6 +16,7 @@ namespace shrinkler_gba
 
 struct cartridge final
 {
+    std::string packer;
     bytevector data;
     size_t compressed_size = 0;
     size_t depacker_size = 0;

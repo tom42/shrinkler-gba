@@ -125,10 +125,10 @@ void fix_cartridge_for_ezf_advance(bytevector& cartridge_data, const console& co
 
 void display_sizes(const cartridge& cartridge, const console& console)
 {
-    // TODO: would we want to display what packer has produced this result?
-    console.verbose("Compressed binary size  : {:4} bytes", cartridge.compressed_size);
-    console.verbose("Depacker size           : {:4} bytes (excluding code in cartridge header)", cartridge.depacker_size);
-    console.verbose("Cartridge size          : {:4} bytes", cartridge.data.size());
+    console.verbose("Packer                : {}", cartridge.packer);
+    console.verbose("Compressed binary size: {:4} bytes", cartridge.compressed_size);
+    console.verbose("Depacker size         : {:4} bytes (excluding code in cartridge header)", cartridge.depacker_size);
+    console.verbose("Cartridge size        : {:4} bytes", cartridge.data.size());
 }
 
 auto smallest_cartridge(const std::vector<cartridge>& cartridges)
