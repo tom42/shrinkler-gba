@@ -149,8 +149,13 @@ cartridge try_all_packers(const input_file& input_file, const options& opts, con
         display_sizes(cartridges.back() , console);
     }
 
-    // TODO: behavior of min is undefined if range is empty => catch this
-    return *smallest_cartridge(cartridges);
+    auto smallest = smallest_cartridge(cartridges);
+    if (smallest == cartridges.end())
+    {
+        throw std::runtime_error("No packer could compress the input");
+    }
+
+    return *smallest;
 }
 
 void remove_output_file(const std::filesystem::path& filename)
