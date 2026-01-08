@@ -68,7 +68,8 @@ input_file load_input_file(const std::string& path, const console& console)
         if (!input_file.loaded_data_size())
         {
             // Shrinkler does really not like files with size zero.
-            // TODO: what about agbpack (clownlzss + huffman; what's the minimum size they would like to have?)
+            // agbpack LZSS can compress files with size zero. The output for such a file is 4 bytes,
+            // which in turn can be processed by the huffman encoder.
             throw std::runtime_error("File is too small to be compressed");
         }
 
