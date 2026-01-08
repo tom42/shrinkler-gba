@@ -131,6 +131,12 @@ void display_sizes(const cartridge& cartridge, const console& console)
     console.verbose("Cartridge size          : {:4} bytes", cartridge.data.size());
 }
 
+auto smallest_cartridge(const std::vector<cartridge>& cartridges)
+{
+    // Return iterator to avoid unnecessary copy and to have the ability of error handling.
+    return std::ranges::min_element(cartridges, {}, [](const auto& cartridge) { return cartridge.data.size(); });
+}
+
 // TODO: do we print which of the packer results will be written as final output?
 cartridge try_all_packers(const input_file& input_file, const options& opts, const console& console)
 {
@@ -144,7 +150,7 @@ cartridge try_all_packers(const input_file& input_file, const options& opts, con
     }
 
     // TODO: behavior of min is undefined if range is empty => catch this
-    return std::ranges::min(cartridges, {}, [](const auto& cartridge) { return cartridge.data.size(); });
+    return *smallest_cartridge(cartridges);
 }
 
 void remove_output_file(const std::filesystem::path& filename)
