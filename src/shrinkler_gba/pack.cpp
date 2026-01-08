@@ -193,28 +193,9 @@ void pack(const options& opts)
     auto cartridge = foo(input_file, opts, console);
     write_to_disk(cartridge.data, opts.output_file().string(), console);
 
-    /*
-    // TODO: later we'll have multiple algorithms, but for the time being that's fine
-    //       * Note that since the total size is given by cart header + depacker + packed program this means that both compress() and assemble_cartridge() possibly need to go into some sort of class
-    //       * Can we compare the output we're getting here against an old version? Should be bit for bit the same, no?
-    //         => We already did that, and all is fine, but we should maybe set that up as some sort of integration test, really
-    // TODO: currently we only do shrinkler compression. Later we'll also support lzss+huffman compression
-    //       => This must somehow be abstracted
-    //       => Note that the cartridge fix must be done individually, since different compression algos may yield different compressed data
-    //          => Huh? What exactly do I mean? The thing is, this can be done in a generic way because it is the same for all packers,
-    //             but otoh we only know *after* assembling whether the fixing up is necessary. This may or may not increase the final
-    //             cartridge size, so it must be done *before* choosing the smallest cartridge
-    //             => So:
-    //             * For each packer
-    //               * Assemble cart
-    //               * Fix cart for EZF Advance (may or may not be necessary)
-    //             * Choose smallest cart
-    auto cartridge = pack_shrinkler(input_file, opts);
-    fix_cartridge_for_ezf_advance(cartridge.data, console);
-
-    write_to_disk(cartridge.data, opts.output_file().string(), console);
-    display_sizes(input_file, cartridge, console);
-    */
+    // TODO: Can we compare the output we're getting here against an old version? Should be bit for bit the same, no?
+    //       => We already did that, and all is fine, but we should maybe set that up as some sort of integration test, really
+    //
 }
 
 }
