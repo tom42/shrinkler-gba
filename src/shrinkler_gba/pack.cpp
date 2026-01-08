@@ -131,9 +131,8 @@ void display_sizes(const cartridge& cartridge, const console& console)
     console.verbose("Cartridge size          : {:4} bytes", cartridge.data.size());
 }
 
-// TODO: name
 // TODO: do we print which of the packer results will be written as final output?
-cartridge foo(const input_file& input_file, const options& opts, const console& console)
+cartridge try_all_packers(const input_file& input_file, const options& opts, const console& console)
 {
     std::vector<cartridge> cartridges;
 
@@ -191,7 +190,7 @@ void pack(const options& opts)
 {
     auto console = create_console(opts);
     auto input_file = load_input_file(opts.input_file().string(), console);
-    auto cartridge = foo(input_file, opts, console);
+    auto cartridge = try_all_packers(input_file, opts, console);
     write_to_disk(cartridge.data, opts.output_file().string(), console);
 
     // TODO: Can we compare the output we're getting here against an old version? Should be bit for bit the same, no?
