@@ -10,13 +10,10 @@ SPDX-License-Identifier: MIT
   * CI builds with github actions
     * gcc/clang/windows
     * And static quality or however we called it (that included reuse lint I believe)
-  * Redo source tree organization (top level src/test directory, see e.g. agbpack)
 * Add uninstall target
-* Go through directories/files (top level in particular, but not only), see what's still needed
 
 ## Compression and decompression
 * Experiment with Shrinkler's option to disable the parity context
-* Automatically figure out which compression scheme to use (Shrinkler or LZSS)
 * Leave the GBA in a cleaner state after decompression, with the option to omit cleanup in order to save space:
   * Preserve CPU registers (not that easy for high registers in Thumb state)
   * Clear memory used by depacker (IWRAM / EWRAM)
