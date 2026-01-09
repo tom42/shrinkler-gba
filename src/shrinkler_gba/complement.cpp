@@ -4,6 +4,7 @@
 module;
 
 #include <cstddef>
+#include <gsl/gsl>
 
 module shrinkler_gba;
 
@@ -28,7 +29,7 @@ unsigned char calculate_complement(const unsigned char* checksum_area, size_t va
         }
     }
 
-    unsigned char complement = -sum;
+    auto complement = gsl::narrow_cast<unsigned char>(-sum);
     return complement;
 }
 
