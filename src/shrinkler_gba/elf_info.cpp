@@ -89,7 +89,10 @@ std::string get_section_flags(ELFIO::Elf_Xword flags)
 
     if (flags)
     {
-        return to_hex(original_flags);
+        // Overwrite result, no return statement here.
+        // This avoids triggering Clang's -Wnrvo warning when returning result below.
+        // Consider switching off this warning if it becomes annoying.
+        result = to_hex(original_flags);
     }
 
     return result;
