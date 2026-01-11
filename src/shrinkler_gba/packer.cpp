@@ -104,8 +104,6 @@ void cartridge_assembler::throw_if_fixed_byte_wrong(const bytevector& cartridge_
 
 void cartridge_assembler::throw_if_complement_wrong(const bytevector& cartridge_data) const
 {
-    // TODO: should we do a size check of cartridge_data here, so that we don't buffer overflow when calculating the complement?
-
     auto expected_complement = calculate_complement(&cartridge_data[ofs_game_title]);
     auto actual_complement = cartridge_data.at(ofs_complement);
     if (actual_complement != expected_complement)
