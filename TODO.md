@@ -6,7 +6,6 @@ SPDX-License-Identifier: MIT
 # Things to do
 ## General
 * Modernize this code
-  * See where we can replace 'const std::string&' by std::string_view
   * CI builds with github actions
     * gcc/clang/windows
     * And static quality or however we called it (that included reuse lint I believe)
