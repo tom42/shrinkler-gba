@@ -9,7 +9,6 @@ SPDX-License-Identifier: MIT
   * CI builds with github actions
     * gcc/clang/windows
     * And static quality or however we called it (that included reuse lint I believe)
-* Add uninstall target
 
 ## Compression and decompression
 * Experiment with Shrinkler's option to disable the parity context

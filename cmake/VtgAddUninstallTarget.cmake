@@ -10,11 +10,14 @@
 #   The snippets on this wiki are provided under the same license."
 #
 # Usage:
+# * Place VtgAddUninstallTarget.cmake and vtg_cmake_uninstall.cmake.in
+#   in the same directory. A good choice might be ${PROJECT_SOURCE_DIR }/cmake.
+#   That is, a cmake directory located in your CMake project's top-level directory.
 # * In your top-level CMakeLists.txt, include VtgAddUninstallTarget.cmake
 #   Note that a project should only do so if it is the top-level project,
 #   so as not to pollute parent projects with unwanted custom targets.
 #
-# Example:
+# Example (assuming the directory containing VtgAddUninstallTarget.cmake is in CMake's include path):
 #
 #   if(PROJECT_IS_TOP_LEVEL)
 #     include(VtgAddUninstallTarget)
@@ -35,7 +38,3 @@ if(NOT TARGET uninstall)
     uninstall
     COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/vtg_cmake_uninstall.cmake)
 endif()
-
-# TODO:
-# * Add documentation:
-#   * Where to place this file: cmake directory (and along with it the other cmake script we're going to configure)
