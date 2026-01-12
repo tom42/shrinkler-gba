@@ -108,10 +108,6 @@ endif()
 ################################################################################
 
 if(PROJECT_IS_TOP_LEVEL)
-  add_custom_target(
-    reuse-lint
-    COMMAND reuse lint
-    WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}")
-  # TODO: move blurb above also into a smake script?
+  include(VtgAddReuseLintTarget)
   include(VtgAddUninstallTarget)
 endif()
