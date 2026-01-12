@@ -19,15 +19,19 @@
 #   endif()
 
 # Add uninstall target
+# Note: unlike the original code from the CMake wiki we use CMAKE_CURRENT_LIST_DIR to find the .in file.
+# The idea is that vtg_cmake_uninstall.cmake.in is always placed besides VtgAddUninstallTarget.cmake,
+# wherever that may be. By using CMAKE_CURRENT_LIST_DIR inside VtgAddUninstallTarget.cmake,
+# VtgAddUninstallTarget.cmake will always be able to find vtg_cmake_uninstall.cmake.in.
 if(NOT TARGET uninstall)
   configure_file(
-    "${CMAKE_CURRENT_SOURCE_DIR}/vtg_cmake_uninstall.cmake.in"
+    "${CMAKE_CURRENT_LIST_DIR}/vtg_cmake_uninstall.cmake.in"
     "${CMAKE_CURRENT_BINARY_DIR}/vtg_cmake_uninstall.cmake"
     IMMEDIATE @ONLY)
 
   add_custom_target(
     uninstall
-    COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
+    COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/vtg_cmake_uninstall.cmake)
 endif()
 
 # TODO:
