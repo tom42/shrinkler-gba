@@ -11,6 +11,8 @@
 #
 # Usage:
 # * In your top-level CMakeLists.txt, include VtgAddUninstallTarget.cmake
+#   Note that a project should only do so if it is the top-level project,
+#   so as not to pollute parent projects with unwanted custom targets.
 #
 # Example:
 #
@@ -36,5 +38,4 @@ endif()
 
 # TODO:
 # * Add documentation:
-#   * how to use: include in top level CMakeLists.txt, but preferably only if we're the top level project (we should not add unsolicited uninstall targets)
 #   * Where to place this file: cmake directory (and along with it the other cmake script we're going to configure)

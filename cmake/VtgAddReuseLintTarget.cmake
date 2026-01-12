@@ -5,7 +5,7 @@
 #
 # Usage:
 # * In your top-level CMakeLists.txt, include VtgAddReuseLintTarget.cmake
-# * A project should only do so if it is the top-level project,
+#   Note that a project should only do so if it is the top-level project,
 #   so as not to pollute parent projects with unwanted custom targets.
 #
 # Example:
