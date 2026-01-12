@@ -8,6 +8,15 @@
 #
 #   "CMake is distributed under the OSI-approved BSD 3-clause License. [...]
 #   The snippets on this wiki are provided under the same license."
+#
+# Usage:
+# * In your top-level CMakeLists.txt, include VtgAddUninstallTarget.cmake
+#
+# Example:
+#
+#   if(PROJECT_IS_TOP_LEVEL)
+#     include(VtgAddUninstallTarget)
+#   endif()
 
 # TODO:
 # * Add documentation:
