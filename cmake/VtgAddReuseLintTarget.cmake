@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: 2025 Thomas Mathys
 # SPDX-License-Identifier: MIT
 #
-# This script adds a reuse-lint custom target that runs the command 'reuse lint'.
+# This script adds a custom target 'reuse-lint' that runs the command 'reuse lint'.
 #
 # Usage:
 # * In your top-level CMakeLists.txt, include VtgAddReuseLintTarget.cmake

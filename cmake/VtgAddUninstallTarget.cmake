@@ -1,3 +1,10 @@
+# SPDX-FileCopyrightText: Copyright Kitware, Inc. and Contributors
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This scripts adds a custom target 'uninstall' that removes installed files according to install_manifest.txt.
+#
+# Based on: https://gitlab.kitware.com/cmake/community/-/wikis/FAQ#can-i-do-make-uninstall-with-cmake.
+
 # TODO:
 # * Add documentation:
 #   * how to use: include in top level CMakeLists.txt, but preferably only if we're the top level project (we should not add unsolicited uninstall targets)
