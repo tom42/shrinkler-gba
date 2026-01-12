@@ -35,9 +35,6 @@ if(NOT TARGET uninstall)
 endif()
 
 # TODO:
-# * Fix the code above, so that the in-file above is found
 # * Add documentation:
 #   * how to use: include in top level CMakeLists.txt, but preferably only if we're the top level project (we should not add unsolicited uninstall targets)
 #   * Where to place this file: cmake directory (and along with it the other cmake script we're going to configure)
-# * Implement it
-#   * Well actually this is going to get the 2nd portion of that snippet from the Wiki, no?
