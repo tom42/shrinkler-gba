@@ -112,4 +112,6 @@ if(PROJECT_IS_TOP_LEVEL)
     reuse-lint
     COMMAND reuse lint
     WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}")
+  # TODO: move blurb above also into a smake script?
+  include(VtgAddUninstallTarget)
 endif()
