@@ -30,9 +30,6 @@ std::string to_hex(TValue value, NDigits ndigits)
 }
 
 SHRINKLER_GBA_EXPORT_FOR_UNIT_TESTING
-std::string get_section_type(ELFIO::Elf_Word type);
-
-SHRINKLER_GBA_EXPORT_FOR_UNIT_TESTING
 std::string get_section_flags(ELFIO::Elf_Xword flags);
 
 SHRINKLER_GBA_EXPORT_FOR_UNIT_TESTING
