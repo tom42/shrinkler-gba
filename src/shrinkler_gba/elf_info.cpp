@@ -68,18 +68,6 @@ std::string get_section_flags(ELFIO::Elf_Xword flags)
     return result;
 }
 
-std::string get_segment_type(ELFIO::Elf_Word type)
-{
-    static const std::array table{ "NULL", "LOAD", "DYNAMIC", "INTERP", "NOTE", "SHLIB", "PHDR", "TLS" };
-
-    if (type < table.size())
-    {
-        return table[type];
-    }
-
-    return to_hex(type, 8);
-}
-
 std::string get_segment_flags(ELFIO::Elf_Word flags)
 {
     static const std::array table{ "", "X", "W", "WX", "R", "RX", "RW", "RWX" };
@@ -113,7 +101,7 @@ void display_program_headers(const ELFIO::elfio& reader, const console& console)
         const ELFIO::segment& s = *gsl::not_null(reader.segments[i]);
         printer.add_row({
             std::to_string(i),
-            get_segment_type(s.get_type()),
+            ELFIO::dump::str_segment_type(s.get_type()),
             to_hex(s.get_offset(), 6),
             to_hex(s.get_virtual_address(), 8),
             to_hex(s.get_physical_address(), 8),
