@@ -5,13 +5,8 @@ SPDX-License-Identifier: MIT
 
 # Things to do
 ## General
-* Modernize this code
-  * Fix remaining TODO items in code
-  * Get it built with MSVC, Clang and g++ 15.2 (do we even have 15.2 on github? => no. ugh)
-    * Ugh: actually argpppp does not even build with clang++ 18, so we'd have to fix that too before we can set up a github workflow
-  * CI builds with github actions
-    * gcc/clang/windows
-    * And static quality or however we called it (that included reuse lint I believe)
+* Fix remaining TODO items in code
+* Wrap initial version up
 
 ## Compression and decompression
 * Experiment with Shrinkler's option to disable the parity context
@@ -22,7 +17,7 @@ SPDX-License-Identifier: MIT
     * Debug stack check needs to be aware of this
     * If we save/restore other registers, can we merge save/restore of sp into general register saving code?
 * Possible depacker optimizations
-  * Loading of load/entry point adress: e.g. if they can be constructed with lsl/mov. Currently we load
+  * Loading of load/entry point adress: e.g. if they can be constructed with lsl/mov. Currently we always load
     them from a constant pool. At least when they're the same lzasm will already optimize this and will
     only generate one literal.
 
@@ -40,8 +35,6 @@ SPDX-License-Identifier: MIT
   * LZSS packer: the temporary buffer for the LZSS compressed data should not overlap with the load area of the intro (unlikely, but could happen at least in theory)
 
 ## Old stuff below, needs clean up
-* Next steps
-  * Wrap initial version up
 * Notes from various old sources:
   * Old Thumb data depacker (shrinkler_decompress_thumb.s)
     @ * We should make sure we do not write anywhere past the context array
