@@ -172,12 +172,6 @@ bytevector compress(const bytevector& input)
 
 cartridge assemble_cartridge(const input_file& input_file, const bytevector& compressed_binary, const lzss_packer_options& options)
 {
-    // TODO: basically we
-    //       * where IS the temporary buffer?
-    //         * end of EWRAM?
-    //         * middle of EWRAM? Advantage: most likely we'll depack to the beginning of IWRAM or EWRAM, so middle should not intefere too much
-    //         * If the entry point is in IWRAM, use EWRAM as tmp buffer
-    //         * If the entry point is in EWRAM, use IWRAM as tmp buffer
     lzss_cartridge_assembler assembler(input_file, compressed_binary, options);
     return cartridge
     {

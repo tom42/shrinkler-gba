@@ -6,6 +6,8 @@ SPDX-License-Identifier: MIT
 # Things to do
 ## General
 * Modernize this code
+  * Fix remaining TODO items in code
+  * Get it built with MSVC, Clang and g++ 15.2 (do we even have 15.2 on github? => no. ugh)
   * CI builds with github actions
     * gcc/clang/windows
     * And static quality or however we called it (that included reuse lint I believe)
