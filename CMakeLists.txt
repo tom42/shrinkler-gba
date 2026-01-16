@@ -43,9 +43,9 @@ FetchContent_MakeAvailable(agbpack)
 FetchContent_Declare(
   argpppp
   GIT_REPOSITORY    https://github.com/tom42/argpppp
-  GIT_TAG           v0.2.0
+  GIT_TAG           v0.2.1
   SYSTEM
-  FIND_PACKAGE_ARGS 0.2.0 NAMES argpppp)
+  FIND_PACKAGE_ARGS 0.2.1 NAMES argpppp)
 FetchContent_MakeAvailable(argpppp)
 
 #FetchContent_Declare(

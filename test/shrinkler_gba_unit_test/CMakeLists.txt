@@ -20,7 +20,7 @@ add_executable(
   test_utilities.cpp
   utility_test.cpp)
 
-vtg_target_enable_warnings(shrinkler_gba_unit_test)
+vtg_target_enable_warnings_for_test(shrinkler_gba_unit_test)
 target_include_directories(shrinkler_gba_unit_test PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
 target_link_libraries(shrinkler_gba_unit_test PRIVATE shrinkler_gba_unit_testing Catch2::Catch2WithMain elfio::elfio Microsoft.GSL::GSL)
 catch_discover_tests(shrinkler_gba_unit_test)

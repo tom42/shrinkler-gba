@@ -10,6 +10,7 @@ module;
 
 export module shrinkler_gba:packer;
 import :input_file;
+import :utility;
 
 namespace shrinkler_gba
 {

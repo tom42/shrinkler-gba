@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 export module shrinkler_gba:lzss_packer;
+import :input_file;
 import :packer;
 
 namespace shrinkler_gba
