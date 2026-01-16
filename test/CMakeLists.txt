@@ -2,3 +2,4 @@
 # SPDX-License-Identifier: MIT
 
 add_subdirectory(shrinkler_gba_unit_test)
+add_subdirectory(shrinkler_gba_console_test)
