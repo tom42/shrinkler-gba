@@ -6,6 +6,8 @@ SPDX-License-Identifier: MIT
 # Things to do
 ## General
 * Modernize this code
+  * Disable building with g++ on GitHub for the time being. It does not work anyway
+  * Rename branch master to main (our workflows trigger for pushes to main, but shrinkler-gba is so old that it has no main but master)
   * Fix remaining TODO items in code
   * Get it built with MSVC, Clang and g++ 15.2 (do we even have 15.2 on github? => no. ugh)
     * Ugh: actually argpppp does not even build with clang++ 18, so we'd have to fix that too before we can set up a github workflow
