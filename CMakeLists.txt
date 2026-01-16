@@ -48,12 +48,19 @@ FetchContent_Declare(
   FIND_PACKAGE_ARGS 0.2.0 NAMES argpppp)
 FetchContent_MakeAvailable(argpppp)
 
+#FetchContent_Declare(
+#  elfio
+#  GIT_REPOSITORY    https://github.com/serge1/ELFIO
+#  GIT_TAG           Release_3.12
+#  SYSTEM
+#  FIND_PACKAGE_ARGS 3.12 NAMES elfio)
+#FetchContent_MakeAvailable(elfio)
+
 FetchContent_Declare(
   elfio
-  GIT_REPOSITORY    https://github.com/serge1/ELFIO
-  GIT_TAG           Release_3.12
-  SYSTEM
-  FIND_PACKAGE_ARGS 3.12 NAMES elfio)
+  GIT_REPOSITORY    https://github.com/tom42/ELFIO
+  GIT_TAG           3.12-fixes-for-shrinkler-gba
+  SYSTEM)
 FetchContent_MakeAvailable(elfio)
 
 # Note: the ms-gsl 4.2.0 package available in vcpkg contains the version 4.1.0
