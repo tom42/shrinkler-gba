@@ -56,6 +56,8 @@ FetchContent_MakeAvailable(argpppp)
 #  FIND_PACKAGE_ARGS 3.12 NAMES elfio)
 #FetchContent_MakeAvailable(elfio)
 
+# ELFIO 3.12 needs fixes from our own repository in order to build C++ modules with g++ 15.2.
+# See https://github.com/serge1/ELFIO/issues/164.
 FetchContent_Declare(
   elfio
   GIT_REPOSITORY    https://github.com/tom42/ELFIO
