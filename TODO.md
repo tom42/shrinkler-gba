@@ -8,6 +8,7 @@ SPDX-License-Identifier: MIT
 * Modernize this code
   * Fix remaining TODO items in code
   * Get it built with MSVC, Clang and g++ 15.2 (do we even have 15.2 on github? => no. ugh)
+    * Ugh: actually argpppp does not even build with clang++ 18, so we'd have to fix that too before we can set up a github workflow
   * CI builds with github actions
     * gcc/clang/windows
     * And static quality or however we called it (that included reuse lint I believe)
