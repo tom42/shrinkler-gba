@@ -26,6 +26,9 @@ public:
 
         if (!m_output_file_set)
         {
+            // TODO: not sure this is the behavior we want: this always puts the output file next to the input file, wherever that is on the file system
+            //       => However we probably want to have it in the current directory, so if I compress foo/bar/baz.elf, the default output file should be baz.gba
+            //       => See what e.g. (g)cc does when no output file is given
             m_output_file = input_file;
             m_output_file.replace_extension("gba");
         }
