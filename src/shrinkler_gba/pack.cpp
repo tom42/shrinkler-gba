@@ -203,10 +203,6 @@ void pack(const options& opts)
     auto cartridge = try_all_packers(input_file, opts, console);
     console.verbose("Smallest cartridge is produced by {} ({} bytes)", cartridge.packer, cartridge.data.size());
     write_to_disk(cartridge.data, opts.output_file().string(), console);
-
-    // TODO: Can we compare the output we're getting here against an old version? Should be bit for bit the same, no?
-    //       => We already did that, and all is fine, but we should maybe set that up as some sort of integration test, really
-    //
 }
 
 }
