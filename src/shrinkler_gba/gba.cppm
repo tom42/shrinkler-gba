@@ -13,6 +13,7 @@ namespace shrinkler_gba
 
 // GBA memory areas
 inline constexpr uint32_t ewram_start = 0x02000000;
+inline constexpr uint32_t ewram_size = 0x40000;
 inline constexpr uint32_t bg_palette_start = 0x05000000;
 inline constexpr uint32_t vram_start = 0x06000000;
 inline constexpr uint32_t rom_start = 0x08000000;
