@@ -6,7 +6,16 @@ SPDX-License-Identifier: MIT
 # Things to do
 ## General
 * Fix remaining TODO items in code
-* Wrap initial version up
+* Wrap initial version up => go 1.0
+  * Should we mention in the docs that the LZSS depacker will clobber EWRAM as tmp buffer?
+* What if LZSS without H4 is smaller? Will we notice? Should we have a warning for this case?
+  * We can do so, but in principle the depacker code needs to be taken into account too
+  * Well if we had agbpacker we could also use that one to check manually.
+
+## Examples
+* Examples should be self-contained, no big external libraries
+  * 100% assembly tiny example, for which LZSS is selected
+  * C/C++ example
 
 ## Compression and decompression
 * Experiment with Shrinkler's option to disable the parity context
