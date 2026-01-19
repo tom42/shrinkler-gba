@@ -67,11 +67,11 @@ private:
 
         // Huffman decode to temporary buffer
         adr(r0, "packed_intro"s);
-        ldr(r1, m_lzss_depack_buffer);
+        ldr(r1, to_signed(m_lzss_depack_buffer));
         swi(swi_huff_uncomp);
 
         // LZSS decode to load address
-        ldr(r0, m_lzss_depack_buffer);
+        ldr(r0, to_signed(m_lzss_depack_buffer));
         ldr(r1, gsl::narrow<int32_t>(input_file.load_address()));
         if (options.code_in_header)
         {
