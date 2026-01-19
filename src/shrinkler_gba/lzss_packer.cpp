@@ -165,11 +165,6 @@ bytevector huffman_compress(const bytevector& input)
     return output;
 }
 
-bytevector compress(const bytevector& input)
-{
-    return huffman_compress(lzss_compress(input));
-}
-
 cartridge assemble_cartridge(const input_file& input_file, const bytevector& compressed_binary, const lzss_packer_options& options)
 {
     lzss_cartridge_assembler assembler(input_file, compressed_binary, options);
@@ -186,7 +181,8 @@ cartridge assemble_cartridge(const input_file& input_file, const bytevector& com
 
 cartridge lzss_packer::pack(const input_file& input_file)
 {
-    auto compressed_binary = compress(input_file.data());
+    auto lzss_data = lzss_compress(input_file.data());
+    auto compressed_binary = huffman_compress(lzss_data);
     return assemble_cartridge(input_file, compressed_binary, m_options);
 }
 
