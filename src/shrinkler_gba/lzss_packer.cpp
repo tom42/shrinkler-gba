@@ -69,15 +69,15 @@ private:
         //       * We should have a runtime check that this is actually the case. Problem here is that we can't just fail, because
         //         ultimately we want to pick the smallest of a couple of compression mechanisms, so we can't just die if something
         //         is not right.
-        const auto lzss_packed_data = ewram_start;
+        const auto lzss_depack_buffer = ewram_start;
 
         // Huffman decode to temporary buffer
         adr(r0, "packed_intro"s);
-        ldr(r1, lzss_packed_data);
+        ldr(r1, lzss_depack_buffer);
         swi(swi_huff_uncomp);
 
         // LZSS decode to load address
-        ldr(r0, lzss_packed_data);
+        ldr(r0, lzss_depack_buffer);
         ldr(r1, gsl::narrow<int32_t>(input_file.load_address()));
         if (options.code_in_header)
         {
