@@ -160,14 +160,15 @@ bytevector huffman_compress(const bytevector& input)
     return output;
 }
 
-cartridge assemble_cartridge(const input_file& input_file, const bytevector& compressed_binary, const lzss_packer_options& options)
+cartridge assemble_cartridge(const input_file& input_file, const bytevector& compressed_binary, const lzss_packer_options& options, uint32_t lzss_data_size)
 {
-    // TODO: that's only to get started: we depack to start of EWRAM, so we can see what we're doing
-    //       * We need to decode somewhere where we're not interfering with the load address. A safe bet might be end of EWRAM
-    //       * We should have a runtime check that this is actually the case. Problem here is that we can't just fail, because
-    //         ultimately we want to pick the smallest of a couple of compression mechanisms, so we can't just die if something
-    //         is not right.
-    lzss_cartridge_assembler assembler(input_file, compressed_binary, options, ewram_start);
+    // Place the buffer for the LZSS compressed data at the end of EWRAM in the hope this is where it least interferes with the program.
+    uint32_t lzss_depack_buffer = ewram_start + ewram_size - lzss_data_size;
+    // TODO: throw if lzss_depack_buffer is not word aligned (i.e. a multiple of 4 bytes)
+    //       We can throw an internal_error in this case, since it basically means that agbpack is broken because LZSS data size should always be a multiple of 4 bytes
+
+    lzss_cartridge_assembler assembler(input_file, compressed_binary, options, lzss_depack_buffer);
+
     return cartridge
     {
         .packer = "LZSS+H4",
@@ -183,7 +184,7 @@ cartridge lzss_packer::pack(const input_file& input_file)
 {
     auto lzss_data = lzss_compress(input_file.data());
     auto compressed_binary = huffman_compress(lzss_data);
-    return assemble_cartridge(input_file, compressed_binary, m_options);
+    return assemble_cartridge(input_file, compressed_binary, m_options, gsl::narrow<uint32_t>(lzss_data.size()));
 }
 
 }

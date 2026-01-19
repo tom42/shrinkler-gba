@@ -5,8 +5,12 @@ SPDX-License-Identifier: MIT
 
 # Things to do
 ## General
+* Have a command line option that allows selection of a particular packer
 * Fix remaining TODO items in code
 * Wrap initial version up => go 1.0
+  * Test on real hardware:
+    * Shrinkler depacker
+    * LZSS depacker
   * Should we mention in the docs that the LZSS depacker will clobber EWRAM as tmp buffer?
 * What if LZSS without H4 is smaller? Will we notice? Should we have a warning for this case?
   * We can do so, but in principle the depacker code needs to be taken into account too
@@ -44,7 +48,10 @@ SPDX-License-Identifier: MIT
       * Max. size in EWRAM is 256K, if loaded at beginning of EWRAM
       * Size of loaded data is obviously not the entire truth: in principle we'd also have to check bss section(s). Not sure whether that's worth the effort. After all it's well possible to even have bss sections in both EWRAM and IWRAM
     * Entry point must be inside memory area occupied by the binary's loaded data
-  * LZSS packer: the temporary buffer for the LZSS compressed data should not overlap with the load area of the intro (unlikely, but could happen at least in theory)
+  * LZSS packer:
+    * The temporary buffer for the LZSS compressed data must fit into EWRAM
+    * The temporary buffer for the LZSS compressed data must not overlap with the load area of the intro (unlikely, but could happen at least in theory)
+  * If a packer specific sanity check fails the entire program should not abort, it's just that a particular packer is not able to compress the program and should therefore not be considered
 
 ## Old stuff below, needs clean up
 * Notes from various old sources:
