@@ -388,7 +388,7 @@ private:
     label("packed_intro"s);
         incbin(compressed_program.begin(), compressed_program.end());
         debug_emit_panic_routine();
-        return link(mem_rom);
+        return link(rom_start);
     }
 
     // Macro that calls the panic routine if the size of the decompressed data is incorrect.
@@ -529,12 +529,12 @@ private:
         // Set palette
         // Set color 0 and 1 using a single 32 bit write
         ldr(r0, (rgb8(255, 255, 255) << 16) | rgb8(0, 119, 215));
-        ldr(r1, mem_bg_palette);
+        ldr(r1, bg_palette_start);
         str(r0, r1, 0);
 
         // Draw sad face
         adr(r0, "sadface"s);
-        ldr(r1, mem_vram + 4 * 240 + 4);
+        ldr(r1, vram_start + 4 * 240 + 4);
         mov(r4, 8);             // Copy 8 lines
     label("copy_line"s);
         ldmia(!r0, r2 - r3);    // Read 8 pixels

@@ -69,7 +69,7 @@ private:
         //       * We should have a runtime check that this is actually the case. Problem here is that we can't just fail, because
         //         ultimately we want to pick the smallest of a couple of compression mechanisms, so we can't just die if something
         //         is not right.
-        const auto lzss_packed_data = mem_ewram;
+        const auto lzss_packed_data = ewram_start;
 
         // Huffman decode to temporary buffer
         adr(r0, "packed_intro"s);
@@ -120,7 +120,7 @@ private:
     label("packed_intro"s);
         incbin(compressed_binary.begin(), compressed_binary.end());
 
-        return link(mem_rom);
+        return link(rom_start);
     }
 
     static constexpr size_t ofs_complement_if_code_in_header = ofs_game_version - 2;
