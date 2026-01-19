@@ -164,8 +164,10 @@ cartridge assemble_cartridge(const input_file& input_file, const bytevector& com
 {
     // Place the buffer for the LZSS compressed data at the end of EWRAM in the hope this is where it least interferes with the program.
     uint32_t lzss_depack_buffer = ewram_start + ewram_size - lzss_data_size;
-    // TODO: throw if lzss_depack_buffer is not word aligned (i.e. a multiple of 4 bytes)
-    //       We can throw an internal_error in this case, since it basically means that agbpack is broken because LZSS data size should always be a multiple of 4 bytes
+    if (lzss_depack_buffer % 4)
+    {
+        throw internal_error("LZSS depack buffer is not word aligned. This means that agbpack is broken");
+    }
 
     lzss_cartridge_assembler assembler(input_file, compressed_binary, options, lzss_depack_buffer);
 
