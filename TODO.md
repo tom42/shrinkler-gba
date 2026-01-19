@@ -12,10 +12,13 @@ SPDX-License-Identifier: MIT
   * We can do so, but in principle the depacker code needs to be taken into account too
   * Well if we had agbpacker we could also use that one to check manually.
 
-## Examples
+## Examples / Documentation
 * Examples should be self-contained, no big external libraries
   * 100% assembly tiny example, for which LZSS is selected
   * C/C++ example
+* Documentation: RAM Usage of depackers:
+  * Shrinkler: uses top of IWRAM (give approximate size)
+  * LZSS: uses end of EWRAM as temporary buffer for LZSS compressed data
 
 ## Compression and decompression
 * Experiment with Shrinkler's option to disable the parity context
