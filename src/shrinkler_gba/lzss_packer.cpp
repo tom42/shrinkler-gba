@@ -173,7 +173,7 @@ cartridge assemble_cartridge(const input_file& input_file, const bytevector& com
 
     return cartridge
     {
-        .packer = "LZSS+H4",
+        .packer = "LZSS",
         .data = assembler.data(),
         .compressed_size = compressed_binary.size(),
         .depacker_size = assembler.depacker_size()
