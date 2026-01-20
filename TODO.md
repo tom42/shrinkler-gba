@@ -5,6 +5,10 @@ SPDX-License-Identifier: MIT
 
 # Things to do
 ## General
+* Test what happens if input file is
+  * A drive letter
+  * A directory
+  * Empty
 * Have a command line option that allows selection of a particular packer
 * Fix remaining TODO items in code
 * Wrap initial version up => go 1.0
