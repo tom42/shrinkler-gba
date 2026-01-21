@@ -10,6 +10,13 @@ SPDX-License-Identifier: MIT
   * A directory
   * Empty
 * Have a command line option that allows selection of a particular packer
+  * Why exactly? What do we want to achieve with this?
+  * If we do it, then we need the following
+    * Some sort of registry, where we
+      * Can get all packers from
+      * Check by name whether a packer exists
+      * Get a packer by name
+      * Get a list of all packer names
 * Fix remaining TODO items in code
 * Wrap initial version up => go 1.0
   * Test on real hardware:
