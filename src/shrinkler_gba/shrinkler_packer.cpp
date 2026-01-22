@@ -566,7 +566,7 @@ private:
     size_t m_depacker_size{};
 };
 
-bytevector compress(const bytevector& uncompressed_binary, const shrinkler_packer_options& options)
+bytevector compress(const bytevector& uncompressed_binary, const shrinkler_packer_options& options, libshrinkler::compression_info& ci)
 {
     // TODO: dump compression info (whatever it is that encoder can spit out additionally and that we might want to output - the references warning thing, mostly)
     using namespace libshrinkler;
@@ -580,7 +580,7 @@ bytevector compress(const bytevector& uncompressed_binary, const shrinkler_packe
     encoder encoder;
     encoder.parameters(parameters);
 
-    return encoder.encode(uncompressed_binary);
+    return encoder.encode(uncompressed_binary, ci);
 }
 
 cartridge assemble_cartridge(const input_file& input_file, const bytevector& compressed_binary, const shrinkler_packer_options& options)
@@ -599,7 +599,9 @@ cartridge assemble_cartridge(const input_file& input_file, const bytevector& com
 
 cartridge shrinkler_packer::pack(const input_file& input_file)
 {
-    auto compressed_binary = compress(input_file.data(), m_options);
+    libshrinkler::compression_info ci;
+    auto compressed_binary = compress(input_file.data(), m_options, ci);
+
     return assemble_cartridge(input_file, compressed_binary, m_options);
 }
 
