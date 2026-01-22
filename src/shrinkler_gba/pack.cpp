@@ -129,6 +129,11 @@ void display_sizes(const cartridge& cartridge, const console& console)
     console.verbose("Compressed binary size: {:4} bytes", cartridge.compressed_size);
     console.verbose("Depacker size         : {:4} bytes (excluding code in cartridge header)", cartridge.depacker_size);
     console.verbose("Cartridge size        : {:4} bytes", cartridge.data.size());
+
+    for (const auto& info : cartridge.info)
+    {
+        console.out("Note: {}", info);
+    }
 }
 
 auto smallest_cartridge(const std::vector<cartridge>& cartridges)

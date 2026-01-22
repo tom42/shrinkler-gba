@@ -568,7 +568,6 @@ private:
 
 bytevector compress(const bytevector& uncompressed_binary, const shrinkler_packer_options& options, libshrinkler::compression_info& ci)
 {
-    // TODO: dump compression info (whatever it is that encoder can spit out additionally and that we might want to output - the references warning thing, mostly)
     using namespace libshrinkler;
 
     encoder_parameters parameters = options.encoder_parameters;
@@ -602,7 +601,14 @@ cartridge shrinkler_packer::pack(const input_file& input_file)
     libshrinkler::compression_info ci;
     auto compressed_binary = compress(input_file.data(), m_options, ci);
 
-    return assemble_cartridge(input_file, compressed_binary, m_options);
+    auto cartridge = assemble_cartridge(input_file, compressed_binary, m_options);
+
+    if (ci.increase_reference_buffer_hint)
+    {
+        cartridge.info.push_back("Shrinkler compression may benefit from a larger reference buffer (-r option)");
+    }
+
+    return cartridge;
 }
 
 }

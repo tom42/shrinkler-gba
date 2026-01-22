@@ -17,7 +17,6 @@ SPDX-License-Identifier: MIT
       * Check by name whether a packer exists
       * Get a packer by name
       * Get a list of all packer names
-* Fix remaining TODO items in code
 * Wrap initial version up => go 1.0
   * Test on real hardware:
     * Shrinkler depacker

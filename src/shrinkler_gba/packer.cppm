@@ -21,6 +21,7 @@ struct cartridge final
     bytevector data;
     size_t compressed_size = 0;
     size_t depacker_size = 0;
+    std::vector<std::string> info;
 };
 
 class packer
