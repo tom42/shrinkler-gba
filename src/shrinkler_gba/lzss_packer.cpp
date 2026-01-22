@@ -171,13 +171,12 @@ cartridge assemble_cartridge(const input_file& input_file, const bytevector& com
 
     lzss_cartridge_assembler assembler(input_file, compressed_binary, options, lzss_depack_buffer);
 
-    return cartridge
-    {
-        .packer = "LZSS",
-        .data = assembler.data(),
-        .compressed_size = compressed_binary.size(),
-        .depacker_size = assembler.depacker_size()
-    };
+    cartridge c;
+    c.packer = "LZSS";
+    c.data = assembler.data();
+    c.compressed_size = compressed_binary.size();
+    c.depacker_size = assembler.depacker_size();
+    return c;
 }
 
 }
