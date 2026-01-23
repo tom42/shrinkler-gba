@@ -6,6 +6,7 @@ configure_file(version.hpp.in version.hpp)
 set(
   shrinkler_gba_sources
   PUBLIC FILE_SET CXX_MODULES FILES
+  cartridge_assembler.cppm
   command_line.cppm
   complement.cppm
   console.cppm
@@ -21,6 +22,7 @@ set(
   table_printer.cppm
   utility.cppm
   PRIVATE
+  cartridge_assembler.cpp
   command_line.cpp
   complement.cpp
   console.cpp
@@ -28,7 +30,6 @@ set(
   input_file.cpp
   lzss_packer.cpp
   pack.cpp
-  packer.cpp
   shrinkler_packer.cpp
   table_printer.cpp
   utility.cpp)

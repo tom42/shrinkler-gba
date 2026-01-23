@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 export module shrinkler_gba;
+export import :cartridge_assembler;
 export import :command_line;
 export import :complement;
 export import :console;
