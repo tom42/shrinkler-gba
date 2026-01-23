@@ -6,7 +6,6 @@ module;
 #include <gsl/gsl>
 #include <iterator>
 #include <lzasm/arm/arm32/divided_thumb_assembler.hpp>
-#include <stdexcept>
 #include <vector>
 
 module shrinkler_gba;
