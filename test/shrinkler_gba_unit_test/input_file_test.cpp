@@ -5,7 +5,7 @@
 #include <elfio/elfio.hpp>
 #include <filesystem>
 #include <stdexcept>
-#include <string>
+#include <string_view>
 #include "shrinkler_gba_unit_test_config.hpp"
 #include "test_utilities.hpp"
 
@@ -19,7 +19,7 @@ using shrinkler_gba::input_file;
 namespace
 {
 
-input_file create_input_file(const std::string& filename)
+input_file create_input_file(std::string_view filename)
 {
     auto path = std::filesystem::path(SHRINKLER_GBA_UNIT_TEST_TESTDATA_DIRECTORY) / filename;
 

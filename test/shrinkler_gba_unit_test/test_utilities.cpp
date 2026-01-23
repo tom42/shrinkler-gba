@@ -19,7 +19,7 @@ namespace shrinkler_gba_unit_test
 using std::filesystem::path;
 using std::vector;
 
-shrinkler_gba::bytevector load_binary_file(const std::string& filename)
+shrinkler_gba::bytevector load_binary_file(std::string_view filename)
 {
     path full_path = std::filesystem::path(SHRINKLER_GBA_UNIT_TEST_TESTDATA_DIRECTORY) / filename;
 
@@ -52,9 +52,9 @@ shrinkler_gba::bytevector load_binary_file(const std::string& filename)
     return data;
 }
 
-shrinkler_gba::bytevector make_bytevector(const char* s)
+shrinkler_gba::bytevector make_bytevector(std::string_view s)
 {
-    return shrinkler_gba::bytevector(s, s + std::strlen(s));
+    return shrinkler_gba::bytevector(begin(s), end(s));
 }
 
 }
