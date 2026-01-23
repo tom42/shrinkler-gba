@@ -4,7 +4,6 @@
 module;
 
 #include <cstddef>
-#include <lzasm/arm/arm32/divided_thumb_assembler.hpp>
 #include <string>
 #include <vector>
 
@@ -30,6 +29,12 @@ public:
     virtual ~packer() = default;
 
     virtual cartridge pack(const input_file& input_file) = 0;
+};
+
+class packer_registry final
+{
+public:
+private:
 };
 
 }

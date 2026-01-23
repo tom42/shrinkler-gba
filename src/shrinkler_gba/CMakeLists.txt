@@ -30,6 +30,7 @@ set(
   input_file.cpp
   lzss_packer.cpp
   pack.cpp
+  packer.cpp
   shrinkler_packer.cpp
   table_printer.cpp
   utility.cpp)
