@@ -36,10 +36,10 @@ public:
     virtual cartridge pack(const input_file& input_file) = 0;
 };
 
-class packer_registry final
+namespace packer_registry
 {
-public:
-private:
-};
+}
+
+}
 
 }
