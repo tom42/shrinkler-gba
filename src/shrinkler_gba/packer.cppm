@@ -25,7 +25,9 @@ struct cartridge final
 
 struct packer_info final
 {
-    const char* name;
+    constexpr packer_info(const char* name) : m_name(name) {}
+
+    const char* m_name;
 };
 
 class packer
@@ -38,7 +40,10 @@ public:
 
 namespace packer_registry
 {
-}
+
+// TODO: does this need a test?
+// TODO: return all packer infos, sorted alphabetically
+const std::vector<packer_info>& all_packers();
 
 }
 
