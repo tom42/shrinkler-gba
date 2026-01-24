@@ -23,6 +23,11 @@ struct cartridge final
     std::vector<std::string> info;
 };
 
+struct packer_info final
+{
+    const char* name;
+};
+
 class packer
 {
 public:
