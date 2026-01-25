@@ -10,6 +10,7 @@ module;
 
 export module shrinkler_gba:packer;
 import :input_file;
+import :options;
 import :utility;
 
 namespace shrinkler_gba
@@ -35,7 +36,7 @@ public:
 struct packer_info final
 {
     const char* name;
-    std::unique_ptr<packer>(*create)();
+    std::unique_ptr<packer>(*create)(const options& options);
 };
 
 namespace packer_registry
