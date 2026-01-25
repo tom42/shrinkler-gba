@@ -62,20 +62,13 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
         .add({ 'o', "output-file", "Output file name. Default is input file name with extension replaced by .gba", "FILE" },
             set<string>([&](string s) { result.opts.output_file(s); }))
         .add({ 'v', "verbose", "Print verbose messages" }, set<bool>([&](bool) { result.opts.verbose(true); }))
-        // TODO: add list of all packers (how? joined into the doc string or each on a separate line? Is this what doc options are for?)
         // TODO: document: case sensitivity (is it?)
         // TODO: document: what happens if not given (best one is selected)
         // TODO: do we have a special value for selecting the best packer? (well it might be useful for scripting, because we have then a way to always supply the argument)
         // TODO: actually handle the argument
         //       * In the packer registry, look up the packer's name. If found, accept it and store it in options. If not found the command line is wrong
-        .add({ {}, "packer", "Select packer", "PACKER" }, callback([](const auto&, const char*) { return argpppp::ok(); }));
-        for (const auto& packer_info : packer_registry::all_info())
-        {
-            (void)packer_info; // TODO: remove
-            options.add({}, {}); // TODO: add info
-        }
+        .add({ {}, "packer", "Select packer" + packer_list(), "PACKER"}, callback([](const auto&, const char*) { return argpppp::ok(); }))
 
-    options
         .add_header("Depacker options:")
         .add({ {}, "no-code-in-header", "Do not put code into ROM header"},
             set<bool>([&](bool) { result.opts.code_in_header(false); } ))
