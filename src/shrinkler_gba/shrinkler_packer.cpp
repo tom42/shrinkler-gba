@@ -112,6 +112,13 @@ constexpr uint32_t rgb8(uint32_t r, uint32_t g, uint32_t b)
     return rgb5(r >> 3, g >> 3, b >> 3);
 }
 
+struct shrinkler_packer_options final
+{
+    bool code_in_header = true;
+    bool debug_checks = false;
+    libshrinkler::encoder_parameters encoder_parameters{};
+};
+
 class shrinkler_cartridge_assembler final : private cartridge_assembler
 {
 public:

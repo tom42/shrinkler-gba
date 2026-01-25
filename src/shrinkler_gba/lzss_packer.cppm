@@ -8,12 +8,6 @@ import :packer;
 namespace shrinkler_gba
 {
 
-// TODO: this can go into the cpp file, no?
-struct lzss_packer_options final
-{
-    bool code_in_header = true;
-};
-
 class lzss_packer final : public packer
 {
 public:

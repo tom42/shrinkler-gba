@@ -43,7 +43,6 @@ struct packer_info final
 namespace packer_registry
 {
 
-// TODO: does this need a test?
 std::span<const packer_info> all_info();
 
 }

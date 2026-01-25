@@ -20,6 +20,11 @@ using namespace std::literals::string_literals;
 namespace
 {
 
+struct lzss_packer_options final
+{
+    bool code_in_header = true;
+};
+
 class lzss_cartridge_assembler final : private cartridge_assembler
 {
 public:
