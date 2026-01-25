@@ -67,7 +67,13 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
         // TODO: do we have a special value for selecting the best packer? (well it might be useful for scripting, because we have then a way to always supply the argument)
         // TODO: actually handle the argument
         //       * In the packer registry, look up the packer's name. If found, accept it and store it in options. If not found the command line is wrong
-        .add({ {}, "packer", "Select packer" + packer_list(), "PACKER"}, callback([](const auto&, const char*) { return argpppp::ok(); }))
+        .add({ {}, "packer", "Select packer" + packer_list(), "PACKER"}, callback(
+            [](const auto&, const char*)
+            {
+                // TODO: handle 'best': the packer_registry will not find this
+                // TODO: find packer info. If found, stick it into the options. If not found, issue an error somehow
+                return argpppp::ok();
+            }))
 
         .add_header("Depacker options:")
         .add({ {}, "no-code-in-header", "Do not put code into ROM header"},
