@@ -30,6 +30,7 @@ SPDX-License-Identifier: MIT
 * What if LZSS without H4 is smaller? Will we notice? Should we have a warning for this case?
   * We can do so, but in principle the depacker code needs to be taken into account too
   * Well if we had agbpacker we could also use that one to check manually.
+* See whether/how to use clang-tidy
 
 ## Examples / Documentation
 * Examples should be self-contained, no big external libraries
