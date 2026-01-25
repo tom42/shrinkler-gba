@@ -5,6 +5,7 @@ module;
 
 #include <cstddef>
 #include <memory>
+#include <span>
 #include <string>
 #include <vector>
 
@@ -44,7 +45,7 @@ namespace packer_registry
 
 // TODO: does this need a test?
 // TODO: return all packer infos, sorted alphabetically
-const std::vector<packer_info>& all_packers();
+std::span<packer_info> all_packers();
 
 }
 
