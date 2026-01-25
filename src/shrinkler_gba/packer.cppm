@@ -25,9 +25,7 @@ struct cartridge final
 
 struct packer_info final
 {
-    constexpr packer_info(const char* name) : m_name(name) {}
-
-    const char* m_name;
+    const char* name;
 };
 
 class packer
