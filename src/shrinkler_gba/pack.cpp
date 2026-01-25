@@ -81,14 +81,6 @@ input_file load_input_file(const std::string& path, const console& console)
     }
 }
 
-// TODO: do we move this over to the packer_registry?
-std::vector<std::unique_ptr<packer>> make_packers()
-{
-    return packer_registry::all_info()
-        | std::views::transform([](const auto& packer_info) { return packer_info.create(); })
-        | std::ranges::to<std::vector<std::unique_ptr<packer>>>();
-}
-
 void fix_cartridge_for_ezf_advance(bytevector& cartridge_data, const console& console)
 {
     // EZF Advance removes trailing 0xff bytes.
@@ -126,7 +118,7 @@ cartridge try_all_packers(const input_file& input_file, const options& opts, con
 {
     std::vector<cartridge> cartridges;
 
-    for (const auto& packer : make_packers())
+    for (const auto& packer : packer_registry::create_all_packers())
     {
         cartridges.push_back(packer->pack(input_file, opts));
         fix_cartridge_for_ezf_advance(cartridges.back().data, console);

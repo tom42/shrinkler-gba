@@ -45,6 +45,8 @@ namespace packer_registry
 
 std::span<const packer_info> all_info();
 
+std::vector<std::unique_ptr<packer>> create_all_packers();
+
 }
 
 }

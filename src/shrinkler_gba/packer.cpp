@@ -4,7 +4,9 @@
 module;
 
 #include <memory>
+#include <ranges>
 #include <span>
+#include <vector>
 
 module shrinkler_gba;
 
@@ -38,6 +40,13 @@ namespace packer_registry
 std::span<const packer_info> all_info()
 {
     return packers;
+}
+
+std::vector<std::unique_ptr<packer>> create_all_packers()
+{
+    return all_info()
+        | std::views::transform([](const auto& packer_info) { return packer_info.create(); })
+        | std::ranges::to<std::vector<std::unique_ptr<packer>>>();
 }
 
 }
