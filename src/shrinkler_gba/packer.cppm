@@ -45,7 +45,7 @@ namespace packer_registry
 
 // TODO: does this need a test?
 // TODO: return all packer infos, sorted alphabetically
-std::span<packer_info> all_packer_info();
+std::span<packer_info> all_info();
 
 }
 
