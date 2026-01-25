@@ -28,6 +28,24 @@ using std::format;
 using std::string;
 using namespace libshrinkler;
 
+namespace
+{
+
+std::string packer_list()
+{
+    std::string list("\n  best");
+
+    for (const auto& packer_info : packer_registry::all_info())
+    {
+        list += "\n  ";
+        list += packer_info.name;
+    }
+
+    return list;
+}
+
+}
+
 parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf flags_for_unit_test)
 {
     parse_command_line_result result;
