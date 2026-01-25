@@ -81,25 +81,12 @@ input_file load_input_file(const std::string& path, const console& console)
     }
 }
 
-// TODO: this can go: we'll construct packers through the registry/factory thing
-std::unique_ptr<packer> make_shrinkler_packer(const options& /*opts*/)
+// TODO: do we move this over to the packer_registry?
+std::vector<std::unique_ptr<packer>> make_packers()
 {
-    return std::make_unique<shrinkler_packer>();
-}
-
-// TODO: this can go: we'll construct packers through the registry/factory thing
-std::unique_ptr<packer> make_lzss_packer(const options& /*opts*/)
-{
-    return std::make_unique<lzss_packer>();
-}
-
-// TODO: this can go: we'll construct packers through the registry/factory thing
-std::vector<std::unique_ptr<packer>> make_packers(const options& opts)
-{
-    std::vector<std::unique_ptr<packer>> packers;
-    packers.push_back(make_shrinkler_packer(opts));
-    packers.push_back(make_lzss_packer(opts));
-    return packers;
+    return packer_registry::all_info()
+        | std::views::transform([](const auto& packer_info) { return packer_info.create(); })
+        | std::ranges::to<std::vector<std::unique_ptr<packer>>>();
 }
 
 void fix_cartridge_for_ezf_advance(bytevector& cartridge_data, const console& console)
@@ -139,7 +126,7 @@ cartridge try_all_packers(const input_file& input_file, const options& opts, con
 {
     std::vector<cartridge> cartridges;
 
-    for (const auto& packer : make_packers(opts))
+    for (const auto& packer : make_packers())
     {
         cartridges.push_back(packer->pack(input_file, opts));
         fix_cartridge_for_ezf_advance(cartridges.back().data, console);
