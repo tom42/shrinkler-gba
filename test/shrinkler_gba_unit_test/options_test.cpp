@@ -24,6 +24,7 @@ TEST_CASE("options")
         CHECK(testee.verbose() == false);
         CHECK(testee.code_in_header() == true);
         CHECK(testee.debug_checks() == false);
+        CHECK(testee.packer().has_value() == false);
     }
 
     SECTION("input file sets output file if not yet set")

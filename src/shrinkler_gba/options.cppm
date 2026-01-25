@@ -4,6 +4,7 @@
 module;
 
 #include <filesystem>
+#include <optional>
 
 export module shrinkler_gba:options;
 import libshrinkler;
@@ -11,6 +12,7 @@ import libshrinkler;
 namespace shrinkler_gba
 {
 
+// TODO: turn this into a struct: it's just a bunch of data with no real invariant
 export class options final
 {
 public:
@@ -46,6 +48,10 @@ public:
 
     void debug_checks(bool debug_checks) { m_debug_checks = debug_checks; }
 
+    const std::optional<std::string>& packer() const { return m_packer; }
+
+    void packer(std::optional<std::string> packer) { m_packer = std::move(packer); }
+
     const libshrinkler::encoder_parameters& shrinkler_parameters() const { return m_shrinkler_parameters; }
 
     libshrinkler::encoder_parameters& shrinkler_parameters() { return m_shrinkler_parameters; }
@@ -59,6 +65,7 @@ private:
     std::filesystem::path m_output_file;
     bool m_code_in_header = true;
     bool m_debug_checks = false;
+    std::optional<std::string> m_packer;
     libshrinkler::encoder_parameters m_shrinkler_parameters;
 };
 
