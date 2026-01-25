@@ -17,4 +17,14 @@ constinit const packer_info packers[]
 
 }
 
+namespace packer_registry
+{
+
+std::span<const packer_info> all_info()
+{
+    return packers;
+}
+
+}
+
 }
