@@ -37,7 +37,7 @@ public:
 struct packer_info final
 {
     const char* name;
-    std::unique_ptr<packer>(*create)(const options& options);
+    std::unique_ptr<packer>(*create)();
 };
 
 namespace packer_registry
