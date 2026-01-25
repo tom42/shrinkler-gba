@@ -70,7 +70,12 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
         .add({ {}, "packer", "Select packer" + packer_list(), "PACKER"}, callback(
             [](const auto& opt, const char* arg)
             {
-                // TODO: handle 'best': the packer_registry will not find this
+                if (!strcmp(arg, "best"))
+                {
+                    // TODO: clear the packer selection in options. Do we test this?
+                    return argpppp::ok();
+                }
+
                 if (!packer_registry::find_info(arg))
                 {
                     return argpppp::error(opt, arg, "unknown packer");
