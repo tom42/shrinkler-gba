@@ -4,6 +4,7 @@
 module;
 
 #include <cstddef>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -23,17 +24,18 @@ struct cartridge final
     std::vector<std::string> info;
 };
 
-struct packer_info final
-{
-    const char* name;
-};
-
 class packer
 {
 public:
     virtual ~packer() = default;
 
     virtual cartridge pack(const input_file& input_file) = 0;
+};
+
+struct packer_info final
+{
+    const char* name;
+    std::unique_ptr<packer>(*create)();
 };
 
 namespace packer_registry
