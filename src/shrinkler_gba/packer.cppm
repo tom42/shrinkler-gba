@@ -45,7 +45,8 @@ namespace packer_registry
 
 std::span<const packer_info> all_info();
 
-packer_info* find_info(std::string_view packer_name);
+SHRINKLER_GBA_EXPORT_FOR_UNIT_TESTING
+const packer_info* find_info(std::string_view packer_name);
 
 std::vector<std::unique_ptr<packer>> create_all_packers();
 

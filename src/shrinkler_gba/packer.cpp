@@ -42,6 +42,17 @@ std::span<const packer_info> all_info()
     return packers;
 }
 
+const packer_info* find_info(std::string_view packer_name)
+{
+    auto pi = std::ranges::find(all_info(), packer_name, &packer_info::name);
+    if (pi == all_info().end())
+    {
+        return nullptr;
+    }
+
+    return &*pi;
+}
+
 std::vector<std::unique_ptr<packer>> create_all_packers()
 {
     return all_info()
