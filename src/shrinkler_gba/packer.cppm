@@ -31,7 +31,7 @@ class packer
 public:
     virtual ~packer() = default;
 
-    virtual cartridge pack(const input_file& input_file) = 0;
+    virtual cartridge pack(const input_file& input_file, const options& options) = 0;
 };
 
 struct packer_info final

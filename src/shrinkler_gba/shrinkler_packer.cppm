@@ -9,6 +9,7 @@ import libshrinkler;
 namespace shrinkler_gba
 {
 
+// TODO: this can go into the cpp file?
 struct shrinkler_packer_options final
 {
     bool code_in_header = true;
@@ -19,12 +20,7 @@ struct shrinkler_packer_options final
 class shrinkler_packer final : public packer
 {
 public:
-    shrinkler_packer(const shrinkler_packer_options& options) : m_options(options) {}
-
-    virtual cartridge pack(const input_file& input_file) override;
-
-private:
-    shrinkler_packer_options m_options{};
+    virtual cartridge pack(const input_file& input_file, const options& options) override;
 };
 
 }

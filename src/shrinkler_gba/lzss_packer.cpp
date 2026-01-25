@@ -180,11 +180,16 @@ cartridge assemble_cartridge(const input_file& input_file, const bytevector& com
 
 }
 
-cartridge lzss_packer::pack(const input_file& input_file)
+cartridge lzss_packer::pack(const input_file& input_file, const options& options)
 {
+    const lzss_packer_options packer_options
+    {
+        .code_in_header = options.code_in_header(),
+    };
+
     auto lzss_data = lzss_compress(input_file.data());
     auto compressed_binary = huffman_compress(lzss_data);
-    return assemble_cartridge(input_file, compressed_binary, m_options, gsl::narrow<uint32_t>(lzss_data.size()));
+    return assemble_cartridge(input_file, compressed_binary, packer_options, gsl::narrow<uint32_t>(lzss_data.size()));
 }
 
 }

@@ -595,12 +595,19 @@ cartridge assemble_cartridge(const input_file& input_file, const bytevector& com
 
 }
 
-cartridge shrinkler_packer::pack(const input_file& input_file)
+cartridge shrinkler_packer::pack(const input_file& input_file, const options& options)
 {
-    libshrinkler::compression_info ci;
-    auto compressed_binary = compress(input_file.data(), m_options, ci);
+    shrinkler_packer_options packer_options
+    {
+        .code_in_header = options.code_in_header(),
+        .debug_checks = options.debug_checks(),
+        .encoder_parameters = options.shrinkler_parameters()
+    };
 
-    auto cartridge = assemble_cartridge(input_file, compressed_binary, m_options);
+    libshrinkler::compression_info ci;
+    auto compressed_binary = compress(input_file.data(), packer_options, ci);
+
+    auto cartridge = assemble_cartridge(input_file, compressed_binary, packer_options);
 
     if (ci.increase_reference_buffer_hint)
     {

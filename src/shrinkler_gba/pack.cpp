@@ -81,26 +81,19 @@ input_file load_input_file(const std::string& path, const console& console)
     }
 }
 
-std::unique_ptr<packer> make_shrinkler_packer(const options& opts)
+// TODO: this can go: we'll construct packers through the registry/factory thing
+std::unique_ptr<packer> make_shrinkler_packer(const options& /*opts*/)
 {
-    shrinkler_packer_options packer_options
-    {
-        .code_in_header = opts.code_in_header(),
-        .debug_checks = opts.debug_checks(),
-        .encoder_parameters = opts.shrinkler_parameters()
-    };
-    return std::make_unique<shrinkler_packer>(packer_options);
+    return std::make_unique<shrinkler_packer>();
 }
 
-std::unique_ptr<packer> make_lzss_packer(const options& opts)
+// TODO: this can go: we'll construct packers through the registry/factory thing
+std::unique_ptr<packer> make_lzss_packer(const options& /*opts*/)
 {
-    lzss_packer_options packer_options
-    {
-        .code_in_header = opts.code_in_header(),
-    };
-    return std::make_unique<lzss_packer>(packer_options);
+    return std::make_unique<lzss_packer>();
 }
 
+// TODO: this can go: we'll construct packers through the registry/factory thing
 std::vector<std::unique_ptr<packer>> make_packers(const options& opts)
 {
     std::vector<std::unique_ptr<packer>> packers;
@@ -148,7 +141,7 @@ cartridge try_all_packers(const input_file& input_file, const options& opts, con
 
     for (const auto& packer : make_packers(opts))
     {
-        cartridges.push_back(packer->pack(input_file));
+        cartridges.push_back(packer->pack(input_file, opts));
         fix_cartridge_for_ezf_advance(cartridges.back().data, console);
         display_sizes(cartridges.back() , console);
     }

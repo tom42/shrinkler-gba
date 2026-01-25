@@ -8,6 +8,7 @@ import :packer;
 namespace shrinkler_gba
 {
 
+// TODO: this can go into the cpp file, no?
 struct lzss_packer_options final
 {
     bool code_in_header = true;
@@ -16,12 +17,7 @@ struct lzss_packer_options final
 class lzss_packer final : public packer
 {
 public:
-    lzss_packer(const lzss_packer_options& options) : m_options(options) {}
-
-    virtual cartridge pack(const input_file& input_file) override;
-
-private:
-    lzss_packer_options m_options{};
+    virtual cartridge pack(const input_file& input_file, const options& options) override;
 };
 
 }
