@@ -26,6 +26,7 @@ using argpppp::callback;
 using argpppp::set;
 using std::format;
 using std::string;
+using namespace std::string_literals;
 using namespace libshrinkler;
 
 namespace
@@ -70,7 +71,7 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
         .add({ {}, "packer", "Select packer" + packer_list(), "PACKER"}, callback(
             [](const auto& opt, const char* arg)
             {
-                if (!strcmp(arg, "best"))
+                if (arg != "best"s)
                 {
                     // TODO: clear the packer selection in options. Do we test this?
                     return argpppp::ok();
