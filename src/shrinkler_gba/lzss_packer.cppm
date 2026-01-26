@@ -3,6 +3,7 @@
 
 export module shrinkler_gba:lzss_packer;
 import :input_file;
+import :options;
 import :packer;
 
 namespace shrinkler_gba

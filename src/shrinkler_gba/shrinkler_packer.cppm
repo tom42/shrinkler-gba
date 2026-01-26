@@ -3,6 +3,7 @@
 
 export module shrinkler_gba:shrinkler_packer;
 import :input_file;
+import :options;
 import :packer;
 import libshrinkler;
 
