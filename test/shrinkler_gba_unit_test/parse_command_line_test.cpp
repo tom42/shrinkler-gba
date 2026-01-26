@@ -3,9 +3,10 @@
 
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
+#include <optional>
 #include <sstream>
-#include <string>
 #include <string_view>
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -16,10 +17,12 @@ namespace shrinkler_gba_unit_test
 {
 
 using shrinkler_gba::parse_command_line_result;
+using std::optional;
 using std::make_pair;
 using std::string;
 using std::string_view;
 using std::vector;
+using namespace std::string_literals;
 
 namespace
 {
@@ -89,6 +92,7 @@ TEST_CASE("parse_command_line")
         CHECK(result.opts.verbose() == false);
         CHECK(result.opts.code_in_header() == true);
         CHECK(result.opts.debug_checks() == false);
+        CHECK(result.opts.packer().has_value() == false);
     }
 
     SECTION("invalid option")
@@ -144,6 +148,38 @@ TEST_CASE("parse_command_line")
         CHECK(result.opts.debug_checks() == true);
     }
 
+    SECTION("--packer option")
+    {
+        const auto [command_line, expected_packer] = GENERATE(
+            make_pair("input --packer=best", optional<string>{}),
+            make_pair("input --packer=lzss", optional("lzss"s)),
+            make_pair("input --packer=shrinkler", optional("shrinkler"s)));
+
+        auto result = parse_command_line(command_line);
+
+        CHECK(result.success == true);
+        CHECK(result.opts.packer() == expected_packer);
+    }
+
+    SECTION("--packer option, 'best' clears previously set value")
+    {
+        auto result = parse_command_line("input --packer=shrinkler --packer=best");
+
+        CHECK(result.success == true);
+        CHECK(result.opts.packer() == optional<string>{});
+    }
+
+    SECTION("--packer option, missing or bad argument")
+    {
+        auto command_line = GENERATE(
+            "input --packer",
+            "input --packer=bad_packer");
+
+        auto result = parse_command_line(command_line);
+
+        CHECK(result.success == false);
+    }
+
     SECTION("--preset option")
     {
         auto result = parse_command_line("input -p2");
@@ -159,7 +195,7 @@ TEST_CASE("parse_command_line")
 
     SECTION("--iterations option")
     {
-        auto [command_line, expected_iterations] = GENERATE(
+        const auto [command_line, expected_iterations] = GENERATE(
             make_pair("input -i1", 1),
             make_pair("input -i9", 9));
 

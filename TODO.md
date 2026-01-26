@@ -10,18 +10,8 @@ SPDX-License-Identifier: MIT
   * A directory
   * Empty
 * Have a command line option that allows selection of a particular packer
-  * Why exactly? What do we want to achieve with this?
-    * Our test on real hardware, for starters:
-      * We want to produce two binaries: one compressed with shrinkler, one compressed with LZSS
-      * We will probably keep wanting to do this over and over again
-        * So we can just as well implement a switch
-          * Just don't go down the rabbit hole of auto-registration. Just. Don't.
-  * If we do it, then we need the following
-    * Some sort of registry, where we
-      * Can get all packers from
-      * Check by name whether a packer exists
-      * Get a packer by name
-      * Get a list of all packer names
+  * The option is there, but it is not yet honored
+  * Consider renaming lzss to lzss-h4 or something, in case we have later lzss only and/or h4 only
 * Wrap initial version up => go 1.0
   * Test on real hardware:
     * Shrinkler depacker

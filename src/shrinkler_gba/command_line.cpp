@@ -63,17 +63,12 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
         .add({ 'o', "output-file", "Output file name. Default is input file name with extension replaced by .gba", "FILE" },
             set<string>([&](string s) { result.opts.output_file(s); }))
         .add({ 'v', "verbose", "Print verbose messages" }, set<bool>([&](bool) { result.opts.verbose(true); }))
-        // TODO: document: case sensitivity (is it?)
-        // TODO: document: what happens if not given (best one is selected)
-        // TODO: do we have a special value for selecting the best packer? (well it might be useful for scripting, because we have then a way to always supply the argument)
-        // TODO: actually handle the argument
-        //       * In the packer registry, look up the packer's name. If found, accept it and store it in options. If not found the command line is wrong
-        .add({ {}, "packer", "Select packer" + packer_list(), "PACKER"}, callback(
-            [](const auto& opt, const char* arg)
+        .add({ {}, "packer", "Select packer. Case sensitive, default is 'best':" + packer_list(), "PACKER"}, callback(
+            [&](const auto& opt, const char* arg)
             {
-                if (arg != "best"s)
+                if (arg == "best"s)
                 {
-                    // TODO: clear the packer selection in options. Do we test this?
+                    result.opts.packer({});
                     return argpppp::ok();
                 }
 
@@ -82,6 +77,7 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
                     return argpppp::error(opt, arg, "unknown packer");
                 }
 
+                result.opts.packer(arg);
                 return argpppp::ok();
             }))
 
