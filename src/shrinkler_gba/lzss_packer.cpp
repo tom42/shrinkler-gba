@@ -189,7 +189,7 @@ cartridge lzss_packer::pack(const input_file& input_file, const options& options
 {
     const lzss_packer_options packer_options
     {
-        .code_in_header = options.code_in_header(),
+        .code_in_header = options.code_in_header,
     };
 
     auto lzss_data = lzss_compress(input_file.data());

@@ -24,6 +24,8 @@ import libshrinkler;
 namespace shrinkler_gba
 {
 
+namespace fs = std::filesystem;
+
 namespace
 {
 
@@ -31,7 +33,7 @@ console create_console(const options& opts)
 {
     console c;
 
-    if (!opts.verbose())
+    if (!opts.verbose)
     {
         c.verbose_stream(nullptr);
     }
@@ -134,11 +136,11 @@ cartridge try_all_packers(const input_file& input_file, const options& opts, con
     return *smallest;
 }
 
-void remove_output_file(const std::filesystem::path& filename)
+void remove_output_file(const fs::path& filename)
 {
     // Delete file, ignore any error. Use overload of remove that does not throw.
     std::error_code e;
-    std::filesystem::remove(filename, e);
+    fs::remove(filename, e);
 }
 
 void write_to_disk(const bytevector& data, const std::string& filename, const console& console)
@@ -176,7 +178,7 @@ void write_to_disk(const bytevector& data, const std::string& filename, const co
 void pack(const options& opts)
 {
     auto console = create_console(opts);
-    auto input_file = load_input_file(opts.input_file().string(), console);
+    auto input_file = load_input_file(opts.input_file.string(), console);
 
     // TODO: honor --packer option
     //       * If no packer is specified, try all packers
@@ -186,7 +188,7 @@ void pack(const options& opts)
     auto cartridge = try_all_packers(input_file, opts, console);
 
     console.verbose("Smallest cartridge is produced by {} ({} bytes)", cartridge.packer, cartridge.data.size());
-    write_to_disk(cartridge.data, opts.output_file().string(), console);
+    write_to_disk(cartridge.data, opts.output_file.string(), console);
 }
 
 }

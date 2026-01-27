@@ -606,9 +606,9 @@ cartridge shrinkler_packer::pack(const input_file& input_file, const options& op
 {
     shrinkler_packer_options packer_options
     {
-        .code_in_header = options.code_in_header(),
-        .debug_checks = options.debug_checks(),
-        .encoder_parameters = options.shrinkler_parameters()
+        .code_in_header = options.code_in_header,
+        .debug_checks = options.debug_checks,
+        .encoder_parameters = options.shrinkler_parameters
     };
 
     libshrinkler::compression_info ci;

@@ -27,7 +27,7 @@ class pack_fixture
 protected:
     void set_input_file(const char* filename)
     {
-        opts.input_file(std::filesystem::path(SHRINKLER_GBA_UNIT_TEST_TESTDATA_DIRECTORY) / filename);
+        opts.input_file = std::filesystem::path(SHRINKLER_GBA_UNIT_TEST_TESTDATA_DIRECTORY) / filename;
     }
 
     options opts;

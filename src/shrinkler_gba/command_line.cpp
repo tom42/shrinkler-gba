@@ -3,6 +3,7 @@
 
 module;
 
+#include <filesystem>
 #include <format>
 #include <iostream>
 #include <string>
@@ -23,11 +24,13 @@ namespace shrinkler_gba
 {
 
 using argpppp::callback;
+using argpppp::value;
 using argpppp::set;
 using std::format;
 using std::string;
 using namespace std::string_literals;
 using namespace libshrinkler;
+namespace fs = std::filesystem;
 
 namespace
 {
@@ -45,11 +48,17 @@ std::string packer_list()
     return list;
 }
 
+fs::path default_output_file(const fs::path& input_file)
+{
+    return input_file.filename().replace_extension("gba");
+}
+
 }
 
 parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf flags_for_unit_test)
 {
     parse_command_line_result result;
+    bool no_code_in_header = !result.opts.code_in_header;
     argpppp::options options;
     options
         .doc(
@@ -60,15 +69,21 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
         .num_args(1)
 
         .add_header("General options:")
-        .add({ 'o', "output-file", "Output file name. Default is input file name with extension replaced by .gba", "FILE" },
-            set<string>([&](string s) { result.opts.output_file(s); }))
-        .add({ 'v', "verbose", "Print verbose messages" }, set<bool>([&](bool) { result.opts.verbose(true); }))
-        .add({ {}, "packer", "Select packer. Case sensitive, default is 'best':" + packer_list(), "PACKER"}, callback(
+        .add({ 'o', "output-file", "Output file name. Default is input file name with extension replaced by .gba", "FILE" }, callback(
+            [&](const auto&, const char* arg)
+            {
+                // TODO: this is a workaround: we would really like argpppp::value to work with std::filesystem::path
+                //       * We would really like it wo work with anything that is assignable from const char*, no?
+                result.opts.output_file = arg;
+                return argpppp::ok();
+            }))
+        .add({ 'v', "verbose", "Print verbose messages" }, value(result.opts.verbose))
+        .add({ {}, "packer", "Select packer. Case sensitive, default is 'best':" + packer_list(), "PACKER"}, callback( // TODO: have a dedicated option_handler for this, eg parse_packer()
             [&](const auto& opt, const char* arg)
             {
                 if (arg == "best"s)
                 {
-                    result.opts.packer({});
+                    result.opts.packer.reset();
                     return argpppp::ok();
                 }
 
@@ -77,43 +92,41 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
                     return argpppp::error(opt, arg, "unknown packer");
                 }
 
-                result.opts.packer(arg);
+                result.opts.packer = arg;
                 return argpppp::ok();
             }))
 
         .add_header("Depacker options:")
-        .add({ {}, "no-code-in-header", "Do not put code into ROM header"},
-            set<bool>([&](bool) { result.opts.code_in_header(false); } ))
-        .add({ {}, "debug-checks", "Add debug checks to depacker code"},
-            set<bool>([&](bool) { result.opts.debug_checks(true); }))
+        .add({ {}, "no-code-in-header", "Do not put code into ROM header"}, value(no_code_in_header))
+        .add({ {}, "debug-checks", "Add debug checks to depacker code"}, value(result.opts.debug_checks))
 
         .add_header("Shrinkler compression options (default values in parentheses):")
-        .add({ 'a', "same-length", format("Number of matches of same length to consider ({})", result.opts.shrinkler_parameters().same_length()), "N" },
-            set<int>([&](int n) { result.opts.shrinkler_parameters().same_length(n); })
+        .add({ 'a', "same-length", format("Number of matches of same length to consider ({})", result.opts.shrinkler_parameters.same_length()), "N" },
+            set<int>([&](int n) { result.opts.shrinkler_parameters.same_length(n); })
             .min(min_same_length)
             .max(max_same_length))
-        .add({ 'e', "effort", format("Perseverance in finding multiple matches ({})", result.opts.shrinkler_parameters().effort()), "N" },
-            set<int>([&](int n) { result.opts.shrinkler_parameters().effort(n); })
+        .add({ 'e', "effort", format("Perseverance in finding multiple matches ({})", result.opts.shrinkler_parameters.effort()), "N" },
+            set<int>([&](int n) { result.opts.shrinkler_parameters.effort(n); })
             .min(min_effort)
             .max(max_effort))
-        .add({ 'i', "iterations", format("Number of compression iterations ({})", result.opts.shrinkler_parameters().iterations()), "N" },
-            set<int>([&](int n) { result.opts.shrinkler_parameters().iterations(n); })
+        .add({ 'i', "iterations", format("Number of compression iterations ({})", result.opts.shrinkler_parameters.iterations()), "N" },
+            set<int>([&](int n) { result.opts.shrinkler_parameters.iterations(n); })
             .min(min_iterations)
             .max(max_iterations))
-        .add({ 'l', "length-margin", format("Number of shorter matches considered for each match ({})", result.opts.shrinkler_parameters().length_margin()), "N" },
-            set<int>([&](int n) { result.opts.shrinkler_parameters().length_margin(n); })
+        .add({ 'l', "length-margin", format("Number of shorter matches considered for each match ({})", result.opts.shrinkler_parameters.length_margin()), "N" },
+            set<int>([&](int n) { result.opts.shrinkler_parameters.length_margin(n); })
             .min(min_length_margin)
             .max(max_length_margin))
         .add({ 'p', "preset", format("Preset for all compression options except --references ({}..{}, default {})", min_preset, max_preset, default_preset), "PRESET"},
-            set<int>([&](int n) { result.opts.shrinkler_parameters().preset(n); })
+            set<int>([&](int n) { result.opts.shrinkler_parameters.preset(n); })
             .min(min_preset)
             .max(max_preset))
-        .add({ 'r', "references", format("Number of reference edges to keep in memory ({})", result.opts.shrinkler_parameters().references()), "N" },
-            set<int>([&](int n) { result.opts.shrinkler_parameters().references(n); })
+        .add({ 'r', "references", format("Number of reference edges to keep in memory ({})", result.opts.shrinkler_parameters.references()), "N" },
+            set<int>([&](int n) { result.opts.shrinkler_parameters.references(n); })
             .min(min_references)
             .max(max_references))
-        .add({ 's', "skip-length", format("Minimum match length to accept greedily ({})", result.opts.shrinkler_parameters().skip_length()), "N" },
-            set<int>([&](int n) { result.opts.shrinkler_parameters().skip_length(n); })
+        .add({ 's', "skip-length", format("Minimum match length to accept greedily ({})", result.opts.shrinkler_parameters.skip_length()), "N" },
+            set<int>([&](int n) { result.opts.shrinkler_parameters.skip_length(n); })
             .min(min_skip_length)
             .max(max_skip_length))
         ;
@@ -125,10 +138,11 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
     result.success = parse_result.errnum == 0;
     if (result.success)
     {
-        result.opts.input_file(parse_result.args.at(0));
-        if (result.opts.output_file().empty())
+        result.opts.code_in_header = !no_code_in_header; // TODO: workaround: negative logic needed because argpppp does not support negative logic on value<bool>()
+        result.opts.input_file = parse_result.args.at(0);
+        if (!has_output_file(result.opts))
         {
-            result.opts.output_file(result.opts.input_file().filename().replace_extension("gba"));
+            result.opts.output_file = default_output_file(result.opts.input_file);
         }
     }
 

@@ -33,7 +33,7 @@ void check_executable_type(const elfio& elfio)
 
 void check_elf_version(const elfio& elfio)
 {
-    const auto expected_elf_version = 1;
+    constexpr auto expected_elf_version = 1;
 
     auto version = elfio.get_elf_version();
     if (version != expected_elf_version)
@@ -44,7 +44,7 @@ void check_elf_version(const elfio& elfio)
 
 void check_os_abi(const elfio& elfio)
 {
-    const auto expected_abi = ELFIO::ELFOSABI_NONE;
+    constexpr auto expected_abi = ELFIO::ELFOSABI_NONE;
 
     auto osabi = elfio.get_os_abi();
     if (osabi != expected_abi)
@@ -55,7 +55,7 @@ void check_os_abi(const elfio& elfio)
 
 void check_abi_version(const elfio& elfio)
 {
-    const auto expected_abi_version = 0;
+    constexpr auto expected_abi_version = 0;
 
     auto abiversion = elfio.get_abi_version();
     if (abiversion != expected_abi_version)
@@ -66,7 +66,7 @@ void check_abi_version(const elfio& elfio)
 
 void check_object_file_version(const elfio& elfio)
 {
-    const auto expected_object_file_version = 1;
+    constexpr auto expected_object_file_version = 1;
 
     auto e_version = elfio.get_version();
     if (e_version != expected_object_file_version)

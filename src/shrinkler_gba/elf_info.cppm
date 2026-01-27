@@ -25,7 +25,7 @@ SHRINKLER_GBA_EXPORT_FOR_UNIT_TESTING
 template <std::unsigned_integral TValue, std::integral NDigits>
 std::string to_hex(TValue value, NDigits ndigits)
 {
-    const auto prefix_width = 2;
+    constexpr auto prefix_width = 2;
     return std::format("{:#0{}x}", value, ndigits + prefix_width);
 }
 
