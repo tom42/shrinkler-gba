@@ -86,6 +86,7 @@ function(vtg_target_enable_warnings_for_test target)
 
   if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     target_compile_options(${target} PRIVATE -Wno-float-equal)
+    target_compile_options(${target} PRIVATE -Wno-missing-noreturn)
   endif()
 
   if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
