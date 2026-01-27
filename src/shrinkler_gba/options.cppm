@@ -48,7 +48,7 @@ public:
     {
         m_input_file = input_file;
 
-        if (!m_output_file_set)
+        if (m_output_file.empty())
         {
             m_output_file = input_file.filename().replace_extension("gba");
         }
@@ -59,7 +59,6 @@ public:
     void output_file(const std::filesystem::path& output_file)
     {
         m_output_file = output_file;
-        m_output_file_set = true;
     }
 
     bool code_in_header() const { return m_code_in_header; }
@@ -82,7 +81,6 @@ public:
 
 private:
     bool m_verbose = false;
-    bool m_output_file_set = false;
     std::filesystem::path m_input_file;
     std::filesystem::path m_output_file;
     bool m_code_in_header = true;
