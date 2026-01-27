@@ -35,9 +35,9 @@ namespace fs = std::filesystem;
 namespace
 {
 
-std::string packer_list()
+string packer_list()
 {
-    std::string list("\n  best");
+    string list("\n  best");
 
     for (const auto& packer_info : packer_registry::all_info())
     {
