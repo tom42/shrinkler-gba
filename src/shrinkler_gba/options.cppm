@@ -20,6 +20,8 @@ namespace shrinkler_gba
 //             the output file name is not optional and it is up to command line parsing to supply a default.
 //             * For the time being I'd probably prefer that solution
 //       * Then remove logic from input_file. We can either post process this in command_line.cpp(m), or we do it directly in pack.cpp. It does not matter much
+//       * Does it make sense to still have options_test? (Maybe if we at least also check the encoder parameters?)
+//         * Maybe we can remove it, but see which of the old tests regarding input_file/output_file should be reimplemented as part of parse_command_line_test
 // TODO: turn this into a struct: it's just a bunch of data with no real invariant
 //       => We can do this, but we need support for --no-code-in-header, which has inverted logic:
 //       => There is a number of ways to implement this:
@@ -47,11 +49,6 @@ public:
     void input_file(const std::filesystem::path& input_file)
     {
         m_input_file = input_file;
-
-        if (m_output_file.empty())
-        {
-            m_output_file = input_file.filename().replace_extension("gba");
-        }
     }
 
     const std::filesystem::path& output_file() const { return m_output_file; }

@@ -126,6 +126,10 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
     if (result.success)
     {
         result.opts.input_file(parse_result.args.at(0));
+        if (result.opts.output_file().empty())
+        {
+            result.opts.output_file(result.opts.input_file().filename().replace_extension("gba"));
+        }
     }
 
     return result;
