@@ -97,14 +97,7 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
         .num_args(1)
 
         .add_header("General options:")
-        .add({ 'o', "output-file", "Output file name. Default is input file name with extension replaced by .gba", "FILE" }, callback(
-            [&](const auto&, const char* arg)
-            {
-                // TODO: this is a workaround: we would really like argpppp::value to work with std::filesystem::path
-                //       * We would really like it wo work with anything that is assignable from const char*, no?
-                result.opts.output_file = arg;
-                return argpppp::ok();
-            }))
+        .add({ 'o', "output-file", "Output file name. Default is input file name with extension replaced by .gba", "FILE" }, value(result.opts.output_file))
         .add({ 'v', "verbose", "Print verbose messages" }, value(result.opts.verbose))
         .add({ {}, "packer", "Select packer. Case sensitive, default is 'best':" + packer_list(), "PACKER"}, parse_packer(result.opts.packer))
 
