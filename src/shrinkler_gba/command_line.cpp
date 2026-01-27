@@ -6,6 +6,7 @@ module;
 #include <filesystem>
 #include <format>
 #include <iostream>
+#include <optional>
 #include <string>
 #include "version.hpp"
 
@@ -27,6 +28,7 @@ using argpppp::callback;
 using argpppp::value;
 using argpppp::set;
 using std::format;
+using std::optional;
 using std::string;
 using namespace std::string_literals;
 using namespace libshrinkler;
@@ -53,6 +55,32 @@ fs::path default_output_file(const fs::path& input_file)
     return input_file.filename().replace_extension("gba");
 }
 
+class parse_packer final : public argpppp::option_handler
+{
+public:
+    parse_packer(optional<string>& packer) : m_packer(packer) {}
+
+    argpppp::option_handler_result handle_option(const argpppp::option& opt, const char* arg) const override
+    {
+        if (arg == "best"s)
+        {
+            m_packer.reset();
+            return argpppp::ok();
+        }
+
+        if (!packer_registry::find_info(arg))
+        {
+            return argpppp::error(opt, arg, "unknown packer");
+        }
+
+        m_packer = arg;
+        return argpppp::ok();
+    }
+
+private:
+    optional<string>& m_packer;
+};
+
 }
 
 parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf flags_for_unit_test)
@@ -78,23 +106,7 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
                 return argpppp::ok();
             }))
         .add({ 'v', "verbose", "Print verbose messages" }, value(result.opts.verbose))
-        .add({ {}, "packer", "Select packer. Case sensitive, default is 'best':" + packer_list(), "PACKER"}, callback( // TODO: have a dedicated option_handler for this, eg parse_packer()
-            [&](const auto& opt, const char* arg)
-            {
-                if (arg == "best"s)
-                {
-                    result.opts.packer.reset();
-                    return argpppp::ok();
-                }
-
-                if (!packer_registry::find_info(arg))
-                {
-                    return argpppp::error(opt, arg, "unknown packer");
-                }
-
-                result.opts.packer = arg;
-                return argpppp::ok();
-            }))
+        .add({ {}, "packer", "Select packer. Case sensitive, default is 'best':" + packer_list(), "PACKER"}, parse_packer(result.opts.packer))
 
         .add_header("Depacker options:")
         .add({ {}, "no-code-in-header", "Do not put code into ROM header"}, value(no_code_in_header))
