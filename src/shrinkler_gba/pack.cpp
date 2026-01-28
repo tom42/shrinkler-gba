@@ -110,8 +110,21 @@ void display_sizes(const cartridge& cartridge, const console& console)
     }
 }
 
-std::vector<std::unique_ptr<packer>> get_packers()
+std::unique_ptr<packer> get_packer(std::string_view name)
 {
+    // TODO: this can fail!
+    return packer_registry::find_info(name)->create();
+}
+
+std::vector<std::unique_ptr<packer>> get_packers(const options& opts)
+{
+    if (opts.packer.has_value())
+    {
+        std::vector<std::unique_ptr<packer>> p;
+        p.push_back(get_packer(*opts.packer));
+        return p;
+    }
+
     return packer_registry::create_all_packers();
 }
 
@@ -125,7 +138,7 @@ cartridge try_all_packers(const input_file& input_file, const options& opts, con
 {
     std::vector<cartridge> cartridges;
 
-    for (const auto& packer : get_packers())
+    for (const auto& packer : get_packers(opts))
     {
         cartridges.push_back(packer->pack(input_file, opts));
         fix_cartridge_for_ezf_advance(cartridges.back().data, console);
