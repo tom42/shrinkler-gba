@@ -9,8 +9,6 @@ SPDX-License-Identifier: MIT
   * A drive letter
   * A directory
   * Empty
-* Have a command line option that allows selection of a particular packer
-  * The option is there, but it is not yet honored
 * Wrap initial version up => go 1.0
   * Test on real hardware:
     * Shrinkler depacker
@@ -19,6 +17,8 @@ SPDX-License-Identifier: MIT
 * What if LZSS without H4 is smaller? Will we notice? Should we have a warning for this case?
   * We can do so, but in principle the depacker code needs to be taken into account too
   * Well if we had agbpacker we could also use that one to check manually.
+  * It might indeed be possible that a very small binary is smaller when packed with LZSS only,
+    but experimentation will have to show.
 * See whether/how to use clang-tidy
 
 ## Examples / Documentation
