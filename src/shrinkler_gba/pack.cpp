@@ -110,6 +110,11 @@ void display_sizes(const cartridge& cartridge, const console& console)
     }
 }
 
+std::vector<std::unique_ptr<packer>> get_packers()
+{
+    return packer_registry::create_all_packers();
+}
+
 auto smallest_cartridge(const std::vector<cartridge>& cartridges)
 {
     // Return iterator to avoid unnecessary copy and to have the ability of error handling.
@@ -120,7 +125,7 @@ cartridge try_all_packers(const input_file& input_file, const options& opts, con
 {
     std::vector<cartridge> cartridges;
 
-    for (const auto& packer : packer_registry::create_all_packers())
+    for (const auto& packer : get_packers())
     {
         cartridges.push_back(packer->pack(input_file, opts));
         fix_cartridge_for_ezf_advance(cartridges.back().data, console);
