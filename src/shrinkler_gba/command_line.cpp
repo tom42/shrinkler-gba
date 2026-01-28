@@ -86,7 +86,6 @@ private:
 parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf flags_for_unit_test)
 {
     parse_command_line_result result;
-    bool no_code_in_header = !result.opts.code_in_header;
     argpppp::options options;
     options
         .doc(
@@ -102,7 +101,7 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
         .add({ {}, "packer", "Select packer. Case sensitive, default is 'best':" + packer_list(), "PACKER"}, parse_packer(result.opts.packer))
 
         .add_header("Depacker options:")
-        .add({ {}, "no-code-in-header", "Do not put code into ROM header"}, value(no_code_in_header))
+        .add({ {}, "no-code-in-header", "Do not put code into ROM header"}, value(result.opts.code_in_header).negative())
         .add({ {}, "debug-checks", "Add debug checks to depacker code"}, value(result.opts.debug_checks))
 
         .add_header("Shrinkler compression options (default values in parentheses):")
@@ -143,7 +142,6 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
     result.success = parse_result.errnum == 0;
     if (result.success)
     {
-        result.opts.code_in_header = !no_code_in_header; // TODO: workaround: negative logic needed because argpppp does not support negative logic on value<bool>()
         result.opts.input_file = parse_result.args.at(0);
         if (!has_output_file(result.opts))
         {
