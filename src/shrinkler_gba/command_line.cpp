@@ -91,6 +91,7 @@ parse_command_line_result parse_command_line(int argc, char* argv[], argpppp::pf
         .doc(
             SHRINKLER_GBA_PROJECT_NAME " - Shrinkler for the Gameboy Advance by Tom/Vantage\n"
             "Shrinkler compression by Blueberry/Loonies\n"
+            "Optimal LZSS compression by Clownacy\n"
             "https://github.com/tom42/shrinkler-gba")
         .args_doc("FILE")
         .num_args(1)
