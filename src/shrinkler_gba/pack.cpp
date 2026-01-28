@@ -210,7 +210,7 @@ void pack(const options& opts)
 
     auto cartridge = try_all_packers(input_file, opts, console);
 
-    console.verbose("Smallest cartridge is produced by {} ({} bytes)", cartridge.packer, cartridge.data.size());
+    console.verbose("Final size of cartridge produced by {}: {} bytes", cartridge.packer, cartridge.data.size());
     write_to_disk(cartridge.data, opts.output_file.string(), console);
 }
 
