@@ -205,9 +205,6 @@ void pack(const options& opts)
     auto input_file = load_input_file(opts.input_file.string(), console);
 
     // TODO: honor --packer option
-    //       * If no packer is specified, try all packers
-    //       * Else try specified packer
-    //         * Throw if packer does not exist
     //       * If only one packer is specified, adapt error message if compression failed (if packer gave up?)
     auto cartridge = try_all_packers(input_file, opts, console);
 
