@@ -18,6 +18,7 @@ module;
 
 module shrinkler_gba;
 import :input_file;
+import :utility;
 import agbpack;
 import libshrinkler;
 
@@ -112,8 +113,13 @@ void display_sizes(const cartridge& cartridge, const console& console)
 
 std::unique_ptr<packer> get_packer(std::string_view name)
 {
-    // TODO: this can fail!
-    return packer_registry::find_info(name)->create();
+    const packer_info* pi = packer_registry::find_info(name);
+    if (!pi)
+    {
+        throw internal_error(std::format("Unknown packer: '{}'", name));
+    }
+
+    return pi->create();
 }
 
 std::vector<std::unique_ptr<packer>> get_packers(const options& opts)
