@@ -16,7 +16,7 @@ TEST_CASE("packer_registry")
 {
     SECTION("find_info")
     {
-        CHECK(packer_registry::find_info("lzss")->name == "lzss"s);
+        CHECK(packer_registry::find_info("lzss-h4")->name == "lzss-h4"s);
         CHECK(packer_registry::find_info("shrinkler")->name == "shrinkler"s);
         CHECK(packer_registry::find_info("does_not_exist") == nullptr);
     }

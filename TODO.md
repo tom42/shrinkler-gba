@@ -11,7 +11,6 @@ SPDX-License-Identifier: MIT
   * Empty
 * Have a command line option that allows selection of a particular packer
   * The option is there, but it is not yet honored
-  * Consider renaming lzss to lzss-h4 or something, in case we have later lzss only and/or h4 only
 * Wrap initial version up => go 1.0
   * Test on real hardware:
     * Shrinkler depacker

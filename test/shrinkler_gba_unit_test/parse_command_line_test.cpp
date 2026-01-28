@@ -158,7 +158,7 @@ TEST_CASE("parse_command_line")
     {
         const auto [command_line, expected_packer] = GENERATE(
             make_pair("input --packer=best", optional<string>{}),
-            make_pair("input --packer=lzss", optional("lzss"s)),
+            make_pair("input --packer=lzss-h4", optional("lzss-h4"s)),
             make_pair("input --packer=shrinkler", optional("shrinkler"s)));
 
         const auto result = parse_command_line(command_line);

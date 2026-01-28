@@ -28,7 +28,7 @@ std::unique_ptr<packer> create_shrinkler_packer()
 
 constinit const packer_info packers[]
 {
-    { "lzss", create_lzss_packer },
+    { "lzss-h4", create_lzss_packer },
     { "shrinkler", create_shrinkler_packer }
 };
 
