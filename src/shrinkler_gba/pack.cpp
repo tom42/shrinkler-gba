@@ -154,6 +154,10 @@ cartridge try_all_packers(const input_file& input_file, const options& opts, con
     auto smallest = smallest_cartridge(cartridges);
     if (smallest == cartridges.end())
     {
+        // This should not happen for the time being: all packers either return a cartridge or throw.
+        // If it is possible to happen in the future, then we might want to adapt the error message
+        // depending on whether all packers are tried or only a single packer.
+        // In the latter case it might say "<packer name> could not compress the input".
         throw std::runtime_error("No packer could compress the input");
     }
 
@@ -204,8 +208,6 @@ void pack(const options& opts)
     auto console = create_console(opts);
     auto input_file = load_input_file(opts.input_file.string(), console);
 
-    // TODO: honor --packer option
-    //       * If only one packer is specified, adapt error message if compression failed (if packer gave up?)
     auto cartridge = try_all_packers(input_file, opts, console);
 
     console.verbose("Smallest cartridge is produced by {} ({} bytes)", cartridge.packer, cartridge.data.size());
