@@ -10,9 +10,6 @@ SPDX-License-Identifier: MIT
   * A directory
   * Empty
 * Wrap initial version up => go 1.0
-  * Test on real hardware:
-    * Shrinkler depacker
-    * LZSS depacker
   * Should we mention in the docs that the LZSS depacker will clobber EWRAM as tmp buffer?
 * What if LZSS without H4 is smaller? Will we notice? Should we have a warning for this case?
   * We can do so, but in principle the depacker code needs to be taken into account too
