@@ -68,6 +68,35 @@ std::string get_section_flags(ELFIO::Elf_Xword flags)
     return result;
 }
 
+std::string get_segment_type(ELFIO::Elf_Word type)
+{
+    // The following is currently not defined by ELFIO.
+    constexpr auto PT_ARM_EXIDX = 0x70000001;
+
+    switch (type)
+    {
+        // Standard/common segment types
+        case ELFIO::PT_NULL: return "NULL";
+        case ELFIO::PT_LOAD: return "LOAD";
+        case ELFIO::PT_DYNAMIC: return "DYNAMIC";
+        case ELFIO::PT_INTERP: return "INTERP";
+        case ELFIO::PT_NOTE: return "NOTE";
+        case ELFIO::PT_SHLIB: return "SHLIB";
+        case ELFIO::PT_PHDR: return "PHDR";
+        case ELFIO::PT_TLS: return "TLS";
+
+        // OS-specific segment types omitted (range from PT_LOOS to PT_HIOS)
+
+        // Processor-specific segment types (range from PT_LOPROC to PT_HIPROC)
+        // We currently support ARM only. To support multiple processors we'd
+        // have to look at e_machine from the ELF header first.
+        case PT_ARM_EXIDX: return "ARM_EXIDX";
+
+        default:
+            return std::format("? ({:#08x})", type);
+    }
+}
+
 std::string get_segment_flags(ELFIO::Elf_Word flags)
 {
     static const std::array table{ "", "X", "W", "WX", "R", "RX", "RW", "RWX" };
@@ -101,7 +130,7 @@ void display_program_headers(const ELFIO::elfio& reader, const console& console)
         const ELFIO::segment& s = *gsl::not_null(reader.segments[i]);
         printer.add_row({
             std::to_string(i),
-            ELFIO::dump::str_segment_type(s.get_type()),
+            get_segment_type(s.get_type()),
             to_hex(s.get_offset(), 6),
             to_hex(s.get_virtual_address(), 8),
             to_hex(s.get_physical_address(), 8),
