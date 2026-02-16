@@ -42,7 +42,9 @@ std::string get_section_flags(ELFIO::Elf_Xword flags)
         {SHF_ALLOC, 'A'},
         {SHF_EXECINSTR, 'X'},
         {SHF_MERGE, 'M'},
-        {SHF_STRINGS, 'S'}
+        {SHF_STRINGS, 'S'},
+        {SHF_INFO_LINK, 'I'},
+        {SHF_LINK_ORDER, 'L'}
     };
 
     std::string result;
