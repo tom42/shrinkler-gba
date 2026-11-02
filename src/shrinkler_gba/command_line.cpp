@@ -60,20 +60,20 @@ class parse_packer final : public argpppp::option_handler
 public:
     parse_packer(optional<string>& packer) : m_packer(packer) {}
 
-    argpppp::option_handler_result handle_option(const argpppp::option& opt, const char* arg) const override
+    argpppp::option_handler_result handle_option(argpppp::option_occurrence opt) const override
     {
-        if (arg == "best"s)
+        if (opt.c_arg() == "best"s)
         {
             m_packer.reset();
             return argpppp::ok();
         }
 
-        if (!packer_registry::find_info(arg))
+        if (!packer_registry::find_info(opt.c_arg()))
         {
-            return argpppp::error(opt, arg, "unknown packer");
+            return argpppp::error(opt, "unknown packer");
         }
 
-        m_packer = arg;
+        m_packer = opt.c_arg();
         return argpppp::ok();
     }
 
