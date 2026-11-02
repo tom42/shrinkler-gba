@@ -54,8 +54,15 @@ input_file load_input_file(const std::string& path, const console& console)
             throw std::system_error(e, std::generic_category());
         }
 
+#ifdef SHRINKLER_GBA_COMPILER_GNU
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wnull-dereference" // Occurs with g++ and optimizations enabled
+#endif
         ELFIO::elfio elfio;
         if (!elfio.load(stream))
+#ifdef SHRINKLER_GBA_COMPILER_GNU
+#pragma GCC diagnostic pop
+#endif
         {
             throw std::runtime_error("File is not a valid ELF file");
         }
