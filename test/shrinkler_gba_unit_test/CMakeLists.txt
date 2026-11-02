@@ -23,5 +23,6 @@ add_executable(
 
 vtg_target_enable_warnings_for_test(shrinkler_gba_unit_test)
 target_include_directories(shrinkler_gba_unit_test PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
+target_compile_definitions(shrinkler_gba_unit_test PRIVATE SHRINKLER_GBA_COMPILER_${CMAKE_CXX_COMPILER_ID})
 target_link_libraries(shrinkler_gba_unit_test PRIVATE shrinkler_gba_unit_testing Catch2::Catch2WithMain elfio::elfio Microsoft.GSL::GSL)
 catch_discover_tests(shrinkler_gba_unit_test)

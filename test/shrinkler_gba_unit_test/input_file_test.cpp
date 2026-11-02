@@ -23,8 +23,15 @@ input_file create_input_file(std::string_view filename)
 {
     auto path = std::filesystem::path(SHRINKLER_GBA_UNIT_TEST_TESTDATA_DIRECTORY) / filename;
 
+#ifdef SHRINKLER_GBA_COMPILER_GNU
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wnull-dereference" // Occurs with g++ 15.2 and optimizations enabled
+#endif
     ELFIO::elfio elfio;
     if (!elfio.load(path.string()))
+#ifdef SHRINKLER_GBA_COMPILER_GNU
+#pragma GCC diagnostic pop
+#endif
     {
         throw std::runtime_error("Could not load test ELF file");
     }

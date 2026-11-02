@@ -56,7 +56,7 @@ input_file load_input_file(const std::string& path, const console& console)
 
 #ifdef SHRINKLER_GBA_COMPILER_GNU
 #pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wnull-dereference" // Occurs with g++ and optimizations enabled
+#pragma GCC diagnostic ignored "-Wnull-dereference" // Occurs with g++ 15.2 and optimizations enabled
 #endif
         ELFIO::elfio elfio;
         if (!elfio.load(stream))
